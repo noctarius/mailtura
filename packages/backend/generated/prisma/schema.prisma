@@ -1,0 +1,270 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
+  moduleFormat    = "esm"
+  runtime         = "bun"
+  previewFeatures = ["postgresqlExtensions"]
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "foreignKeys"
+  extensions   = []
+}
+
+model tenants {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name       String
+  created_at DateTime
+  created_by String
+  updated_at DateTime?
+  updated_by String?
+}
+
+model contacts {
+  id                          String                    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id                   String                    @db.Uuid
+  SubscriberListContacts      subscriber_list_contacts? @relation(fields: [subscriber_list_contacts_id], references: [id])
+  email                       String
+  first_name                  String?
+  last_name                   String?
+  last_activity_at            DateTime?
+  subscriber_list_contacts_id String?                   @db.Uuid
+  created_at                  DateTime
+  created_by                  String
+  updated_at                  DateTime?
+  updated_by                  String?
+
+  list_ids    String[]       @db.Uuid
+  activity    activities[]
+  bounce      bounces[]
+  subscriber  subscribers[]
+  unsubscribe unsubscribes[]
+
+  @@unique([tenant_id, email])
+}
+
+enum campaign_status {
+  Active
+  Scheduled
+  Completed
+  Draft
+  Paused
+  Cancelled
+}
+
+enum campaign_type {
+  OneTime
+  Automated
+}
+
+model campaigns {
+  id         String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String          @db.Uuid
+  name       String
+  status     campaign_status
+  type       campaign_type
+  recipients Int
+  sent       Int
+  created_at DateTime
+  created_by String
+  updated_at DateTime?
+  updated_by String
+
+  activity activities[]
+
+  @@unique([tenant_id, name])
+}
+
+enum activity_status {
+  Delivered
+  Opened
+  Clicked
+  Pending
+  Scheduled
+  Bounced
+  Failed
+}
+
+enum event_type {
+  Queued
+  Delivered
+  Clicked
+  Opened
+  Failed
+  Bounced
+}
+
+model activities {
+  id                     String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id              String          @db.Uuid
+  receiver               contacts        @relation(fields: [contact_id], references: [id])
+  campaign               campaigns?      @relation(fields: [campaign_id], references: [id])
+  send_name              String
+  subject                String
+  status                 activity_status
+  sent_at                DateTime
+  last_event_received_at DateTime
+  last_event_type        event_type
+  opens                  Int
+  clicks                 Int
+  campaign_id            String?         @db.Uuid
+  contact_id             String          @db.Uuid
+  created_at             DateTime
+  created_by             String
+  updated_at             DateTime?
+  updated_by             String?
+
+  @@index([tenant_id, contact_id, campaign_id])
+}
+
+enum bounce_type {
+  Hard
+  Soft
+}
+
+model bounces {
+  id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id   String      @db.Uuid
+  contact     contacts    @relation(fields: [contact_id], references: [id])
+  bounced_at  DateTime
+  reason      String
+  bounce_type bounce_type
+  contact_id  String      @db.Uuid
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+
+  @@unique([tenant_id, contact_id])
+}
+
+enum subscriber_status {
+  Subscribed
+  Unsubscribed
+  Bounced
+  Complaint
+}
+
+model subscribers {
+  id            String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id     String            @db.Uuid
+  contact       contacts          @relation(fields: [contact_id], references: [id])
+  status        subscriber_status
+  subscribed_at DateTime
+  contact_id    String            @db.Uuid
+  created_at    DateTime
+  created_by    String
+  updated_at    DateTime?
+  updated_by    String?
+
+  @@unique([tenant_id, contact_id])
+}
+
+model subscriber_list {
+  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id   String    @db.Uuid
+  name        String
+  description String?
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+
+  SubscriberListContacts subscriber_list_contacts[]
+
+  @@unique([tenant_id, name])
+}
+
+model subscriber_list_contacts {
+  id                 String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id          String          @db.Uuid
+  subscriberList     subscriber_list @relation(fields: [subscriber_list_id], references: [id])
+  subscriber_list_id String          @db.Uuid
+  created_at         DateTime
+  created_by         String
+  updated_at         DateTime?
+  updated_by         String?
+
+  contacts contacts[]
+}
+
+enum unsubscribe_source {
+  UnsubscribeLink
+  ManualAddition
+  Bounce
+  Api
+  Other
+}
+
+model unsubscribes {
+  id              String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id       String             @db.Uuid
+  contact         contacts           @relation(fields: [contact_id], references: [id])
+  source          unsubscribe_source
+  unsubscribed_at DateTime
+  global          Boolean
+  list_ids        String[]           @db.Uuid
+  contact_id      String             @db.Uuid
+  created_at      DateTime
+  created_by      String
+  updated_at      DateTime?
+  updated_by      String?
+
+  @@unique([tenant_id, contact_id])
+}
+
+model users {
+  id            String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id     String    @db.Uuid
+  email         String
+  first_name    String?
+  last_name     String?
+  role          String
+  is_active     Boolean
+  last_login_at DateTime?
+  permissions   String[]
+  created_at    DateTime
+  created_by    String
+  updated_at    DateTime?
+  updated_by    String?
+}
+
+model api_keys {
+  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id    String    @db.Uuid
+  name         String
+  key          String
+  is_active    Boolean
+  last_used_at DateTime?
+  expires_at   DateTime?
+  permissions  String[]
+  created_at   DateTime
+  created_by   String
+  updated_at   DateTime?
+  updated_by   String?
+}
+
+model template_properties {
+  id            String     @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  templates     templates? @relation(fields: [templates_id], references: [id])
+  tenant_id     String     @db.Uuid
+  templates_id  String?    @db.Uuid
+  name          String
+  type          String
+  default_value Json
+}
+
+model templates {
+  id          String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id   String                @db.Uuid
+  name        String
+  description String?
+  content     String
+  properties  template_properties[]
+  created_at  DateTime
+  created_by  String
+  updated_at  DateTime?
+  updated_by  String?
+}

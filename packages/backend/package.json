@@ -1,0 +1,55 @@
+{
+  "name": "@mailtura/backend",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "NODE_ENV=development tsc-watch --onSuccess \"bun .\"",
+    "dev2": "bun run src/index.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@fastify/cors": "^11.1.0",
+    "@fastify/swagger": "^9.5.2",
+    "@fastify/swagger-ui": "^5.2.3",
+    "@fastify/type-provider-typebox": "^6.0.0",
+    "@mailtura/rpcmodel": "*",
+    "@prisma/client": "^6.16.3",
+    "fastify": "^5.6.1",
+    "fastify-plugin": "^5.1.0",
+    "fastify-type-provider-zod": "^6.0.0",
+    "mjml": "^4.16.1",
+    "mustache": "^4.2.0",
+    "node-html-parser": "^7.0.1",
+    "nodemailer": "^7.0.6",
+    "sanitize-html": "^2.17.0",
+    "typebox": "portal:",
+    "zod": "^4.1.11"
+  },
+  "devDependencies": {
+    "@eslint/js": "portal:",
+    "@types/bun": "^1.2.23",
+    "@types/express": "^5.0.3",
+    "@types/mjml": "^4.7.4",
+    "@types/mustache": "^4.2.6",
+    "@types/sanitize-html": "^2.16.0",
+    "@types/supertest": "^6.0.3",
+    "eslint": "portal:",
+    "eslint-config-prettier": "portal:",
+    "openapi-types": "^12.1.3",
+    "prettier": "portal:",
+    "prettier-plugin-sql-cst": "^0.13.0",
+    "prisma": "^6.16.3",
+    "supertest": "^7.1.4",
+    "tsc-watch": "^7.2.0",
+    "typescript": "portal:",
+    "typescript-eslint": "portal:"
+  },
+  "trustedDependencies": [
+    "@nestjs/core"
+  ]
+}

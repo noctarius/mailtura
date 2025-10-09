@@ -1,0 +1,44 @@
+{
+  "trailingComma": "es5",
+  "useTabs": false,
+  "tabWidth": 2,
+  "semi": true,
+  "singleQuote": false,
+  "quoteProps": "consistent",
+  "printWidth": 120,
+  "endOfLine": "lf",
+  "bracketSpacing": true,
+  "bracketSameLine": false,
+  "arrowParens": "avoid",
+  "sqlKeywordCase": "upper",
+  "jsxSingleQuote": false,
+  "singleAttributePerLine": true,
+  "plugins": [
+    "prettier-plugin-sql-cst"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.jsx",
+        "**/*.tsx",
+        "**/*.ts",
+        "**/*.d.ts"
+      ],
+      "options": {
+        "parser": "typescript"
+      }
+    },
+    {
+      "files": "**/*.json",
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "**/*.sql",
+      "options": {
+        "parser": "postgresql"
+      }
+    }
+  ]
+}

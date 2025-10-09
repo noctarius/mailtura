@@ -1,0 +1,48 @@
+{
+  "name": "@mailtura/frontend",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.app.json",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:openapi": "npx openapi-typescript http://localhost:3000/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
+  },
+  "dependencies": {
+    "@mailtura/rpcmodel": "*",
+    "@monaco-editor/react": "^4.7.0",
+    "@tanstack/react-query": "^5.90.2",
+    "@timepp/murmurhash": "jsr:^0.1.1",
+    "clsx": "^2.1.1",
+    "echarts": "^6.0.0",
+    "echarts-for-react": "3.0.4",
+    "lucide-react": "^0.344.0",
+    "monaco-editor": "^0.54.0",
+    "openapi-fetch": "^0.14.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "typebox": "portal:"
+  },
+  "devDependencies": {
+    "@eslint/js": "portal:",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "autoprefixer": "^10.4.18",
+    "eslint": "portal:",
+    "eslint-plugin-react-hooks": "^5.1.0-rc.0",
+    "eslint-plugin-react-refresh": "^0.4.11",
+    "eslint-plugin-unused-imports": "^4.2.0",
+    "globals": "^15.9.0",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "tslib": "^2.8.1",
+    "typescript": "portal:",
+    "typescript-eslint": "portal:",
+    "vite": "7.1.5"
+  }
+}
