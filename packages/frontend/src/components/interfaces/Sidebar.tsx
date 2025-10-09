@@ -24,8 +24,8 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
       icon: Settings,
       subitems: [
         { id: "account", label: "Account" },
+        { id: "api-keys", label: "API Key Management" },
         { id: "integrations", label: "Integrations" },
-        { id: "billing", label: "Billing" },
       ],
     },
     {

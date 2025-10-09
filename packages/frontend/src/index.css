@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.template-editor-selector-arrow {
+    @apply text-blue-700;
+}
+
+.template-editor-selector-arrow:hover {
+    @apply text-blue-300;
+    cursor: pointer;
+}
+
+.template-editor-selector-arrow:disabled {
+    @apply text-gray-400;
+    cursor: not-allowed;
+}

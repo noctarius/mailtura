@@ -2,6 +2,7 @@ import { Download, Filter, List, Mail, Plus, Search, Trash2 } from "lucide-react
 import React, { useState } from "react";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { formatDateTime } from "../helpers/format-date-time.ts";
+import { getUnsubscribeSourceIcon } from "../helpers/chip-icons.js";
 
 interface ListUnsubscribe {
   id: number;
@@ -235,6 +236,7 @@ const ListUnsubscribes: React.FC = () => {
                         value={item.source}
                         bgColor={"bg-gray-100"}
                         textColor={"text-gray-800"}
+                        icon={getUnsubscribeSourceIcon(item.source)}
                       />
                     </td>
                     <td className="py-4 px-6">

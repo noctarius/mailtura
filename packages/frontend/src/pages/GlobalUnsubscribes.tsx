@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { getTimeSince } from "../helpers/time-since.ts";
 import { formatDateTime } from "../helpers/format-date-time.ts";
+import { getUnsubscribeSourceIcon } from "../helpers/chip-icons.js";
 
 interface GlobalUnsubscribe {
   id: number;
@@ -184,6 +185,7 @@ const GlobalUnsubscribes: React.FC = () => {
                         value={item.source}
                         bgColor={"bg-gray-100"}
                         textColor={"text-gray-800"}
+                        icon={getUnsubscribeSourceIcon(item.source)}
                       />
                     </td>
                     <td className="py-4 px-6">

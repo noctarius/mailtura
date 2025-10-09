@@ -1,22 +1,10 @@
-import {
-  BarChart3,
-  Calendar,
-  Copy,
-  CreditCard as Edit,
-  Filter,
-  MoreHorizontal,
-  Pause,
-  Play,
-  Plus,
-  Search,
-  Send,
-  Users,
-} from "lucide-react";
+import { Copy, CreditCard as Edit, Filter, MoreHorizontal, Plus, Search, Send, Users } from "lucide-react";
 import React, { useState } from "react";
 import TableCellProgressBar from "../components/interfaces/TableCellProgressBar.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
+import { getCampaignStatusIcon } from "../helpers/chip-icons.js";
 
 const Campaigns: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
@@ -139,23 +127,6 @@ const Campaigns: React.FC = () => {
     }
   };
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "active":
-        return <Play className="w-3 h-3" />;
-      case "scheduled":
-        return <Calendar className="w-3 h-3" />;
-      case "completed":
-        return <BarChart3 className="w-3 h-3" />;
-      case "draft":
-        return <Edit className="w-3 h-3" />;
-      case "paused":
-        return <Pause className="w-3 h-3" />;
-      default:
-        return null;
-    }
-  };
-
   const filteredCampaigns = campaigns.filter(campaign => {
     const matchesStatus = selectedStatus === "all" || campaign.status === selectedStatus;
     const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -251,7 +222,7 @@ const Campaigns: React.FC = () => {
                         value={campaign.status}
                         bgColor={getStatusBgColor(campaign.status)}
                         textColor={getStatusTextColor(campaign.status)}
-                        icon={getStatusIcon(campaign.status)}
+                        icon={getCampaignStatusIcon(campaign.status)}
                       />
                     </td>
                     <td className="py-4 px-6">
@@ -260,9 +231,7 @@ const Campaigns: React.FC = () => {
                     <td className="py-4 px-6">
                       <div className="flex items-center space-x-2">
                         <Users className="w-4 h-4 text-gray-400" />
-                        <span className="text-sm text-gray-900">
-                          {campaign.recipients.toLocaleString()}
-                        </span>
+                        <span className="text-sm text-gray-900">{campaign.recipients.toLocaleString()}</span>
                       </div>
                     </td>
                     <td className="py-4 px-6">
@@ -285,9 +254,7 @@ const Campaigns: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <span className="text-sm text-gray-600">
-                        {campaign.status === "scheduled"
-                          ? campaign.scheduledFor
-                          : campaign.lastSent}
+                        {campaign.status === "scheduled" ? campaign.scheduledFor : campaign.lastSent}
                       </span>
                     </td>
                     <td className="py-4 px-6">

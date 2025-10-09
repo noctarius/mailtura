@@ -1,5 +1,6 @@
 import { Bell, Copy, Eye, EyeOff, Globe, Key, Shield } from "lucide-react";
 import React, { useState } from "react";
+import TableCellChip from "../components/interfaces/TableCellChip.js";
 
 const Settings: React.FC = () => {
   const [showApiKey, setShowApiKey] = useState(false);
@@ -106,9 +107,11 @@ const Settings: React.FC = () => {
                   <h3 className="font-medium text-gray-900">mail.yourcompany.com</h3>
                   <p className="text-sm text-gray-600">DKIM authenticated</p>
                 </div>
-                <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-medium rounded-full">
-                  Verified
-                </span>
+                <TableCellChip
+                  value="Verified"
+                  bgColor="bg-green-100"
+                  textColor="text-green-800"
+                />
               </div>
             </div>
 

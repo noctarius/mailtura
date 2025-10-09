@@ -1,23 +1,11 @@
-import {
-  Activity as ActivityIcon,
-  AlertCircle,
-  Calendar,
-  CheckCircle,
-  Clock,
-  Eye,
-  Filter,
-  Loader,
-  MousePointer,
-  Search,
-  User,
-  XCircle,
-} from "lucide-react";
+import { Activity as ActivityIcon, Calendar, Eye, Filter, MousePointer, Search, User } from "lucide-react";
 import React, { useState } from "react";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { formatDateTime } from "../helpers/format-date-time.ts";
 import { getTimeSince } from "../helpers/time-since.ts";
+import { getActivityStatusIcon } from "../helpers/chip-icons.js";
 
 interface SentMessage {
   id: number;
@@ -147,7 +135,7 @@ const Activity: React.FC = () => {
 
   const campaigns = Array.from(new Set(sentMessages.map(msg => msg.campaignName)));
 
-  const getStatusBgColor = (status: string):TailwindBgColor => {
+  const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
       case "delivered":
         return "bg-green-100";
@@ -182,25 +170,6 @@ const Activity: React.FC = () => {
         return "text-red-800";
       default:
         return "text-gray-800";
-    }
-  };
-
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "delivered":
-        return <CheckCircle className="w-3 h-3" />;
-      case "opened":
-        return <Eye className="w-3 h-3" />;
-      case "clicked":
-        return <MousePointer className="w-3 h-3" />;
-      case "pending":
-        return <Loader className="w-3 h-3" />;
-      case "bounced":
-        return <AlertCircle className="w-3 h-3" />;
-      case "failed":
-        return <XCircle className="w-3 h-3" />;
-      default:
-        return <Clock className="w-3 h-3" />;
     }
   };
 
@@ -311,7 +280,7 @@ const Activity: React.FC = () => {
                         value={message.status}
                         bgColor={getStatusBgColor(message.status)}
                         textColor={getStatusTextColor(message.status)}
-                        icon={getStatusIcon(message.status)}
+                        icon={getActivityStatusIcon(message.status)}
                       />
                     </td>
                     <td className="py-4 px-6">
@@ -322,9 +291,7 @@ const Activity: React.FC = () => {
                         </div>
                         <div className="text-sm text-gray-600">{message.subject}</div>
                         <div className="flex items-center space-x-2 text-xs text-gray-500">
-                          <span className="bg-gray-100 px-2 py-1 rounded">
-                            {message.campaignName}
-                          </span>
+                          <span className="bg-gray-100 px-2 py-1 rounded">{message.campaignName}</span>
                           <span>•</span>
                           <span>{message.sendName}</span>
                         </div>
@@ -334,23 +301,15 @@ const Activity: React.FC = () => {
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4 text-gray-400" />
                         <div>
-                          <div className="text-sm text-gray-900">
-                            {formatDateTime(message.sentAt)}
-                          </div>
-                          <div className="text-xs text-gray-500">
-                            {getTimeSince(message.sentAt, true)}
-                          </div>
+                          <div className="text-sm text-gray-900">{formatDateTime(message.sentAt)}</div>
+                          <div className="text-xs text-gray-500">{getTimeSince(message.sentAt, true)}</div>
                         </div>
                       </div>
                     </td>
                     <td className="py-4 px-6">
                       <div>
-                        <div className="text-sm text-gray-900 capitalize">
-                          {message.lastEventType}
-                        </div>
-                        <div className="text-xs text-gray-500">
-                          {getTimeSince(message.lastEventReceived, true)}
-                        </div>
+                        <div className="text-sm text-gray-900 capitalize">{message.lastEventType}</div>
+                        <div className="text-xs text-gray-500">{getTimeSince(message.lastEventReceived, true)}</div>
                       </div>
                     </td>
                     <td className="py-4 px-6">

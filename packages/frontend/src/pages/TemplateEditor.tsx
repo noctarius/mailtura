@@ -1,10 +1,11 @@
 import Editor from "@monaco-editor/react";
-import { Code, Copy, Eye, Save, Send, Settings } from "lucide-react";
+import { Code, Copy, Eye, Save, Send, Settings, Triangle } from "lucide-react";
 import React, { useState } from "react";
 import { usePreviewTemplate } from "../services/use-preview-template.js";
 
 const Templates: React.FC = () => {
   const [editorMode, setEditorMode] = useState<"visual" | "html">("visual");
+  const [templateIndex, setTemplateIndex] = useState(0);
   const [selectedTemplate, setSelectedTemplate] = useState("welcome");
   const [htmlContent, setHtmlContent] = useState(`<mjml>
     <mj-body>
@@ -33,6 +34,8 @@ const Templates: React.FC = () => {
       category: "Transactional",
     },
     { id: "receipt", name: "Order Receipt", category: "Transactional" },
+    { id: "delivery", name: "Delivery Notice", category: "Transactional" },
+    { id: "delivered", name: "Package delivered", category: "Transactional" },
   ];
 
   const { data: renderedTemplate, isLoading } = usePreviewTemplate({
@@ -51,21 +54,41 @@ const Templates: React.FC = () => {
         </div>
 
         <div className="flex-1 p-4">
-          <button className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors mb-4">
-            + New Template
-          </button>
-
-          <div className="space-y-2 columns-5">
-            {templates.map(template => (
+          <div className="grid grid-cols-[40px_repeat(5,1fr)_40px] gap-2 items-center">
+            <div className="flex justify-center items-center h-full w-6">
+              <button
+                className="template-editor-selector-arrow"
+                disabled={templateIndex === 0}
+              >
+                <Triangle
+                  className={"w-6 h-6"}
+                  onClick={() => setTemplateIndex(templateIndex - 1)}
+                  style={{ transform: "rotate(-90deg)", transformOrigin: "center", transformBox: "fill-box" }}
+                />
+              </button>
+            </div>
+            {templates.slice(templateIndex, Math.min(templateIndex + 5, templates.length)).map(template => (
               <div
                 key={template.id}
                 onClick={() => setSelectedTemplate(template.id)}
-                className={`p-3 rounded-lg cursor-pointer transition-colors ${selectedTemplate === template.id ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50"}`}
+                className={`p-3 rounded-lg cursor-pointer text-center transition-colors border ${selectedTemplate === template.id ? "bg-blue-50 border-blue-200" : "hover:bg-gray-50"}`}
               >
                 <div className="font-medium text-gray-900">{template.name}</div>
                 <div className="text-sm text-gray-500">{template.category}</div>
               </div>
             ))}
+            <div className="flex justify-center items-center h-full w-6">
+              <button
+                className="template-editor-selector-arrow"
+                disabled={templateIndex >= templates.length - 5}
+              >
+                <Triangle
+                  className={"w-6 h-6"}
+                  onClick={() => setTemplateIndex(templateIndex + 1)}
+                  style={{ transform: "rotate(90deg)", transformOrigin: "center", transformBox: "fill-box" }}
+                />
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -104,6 +127,10 @@ const Templates: React.FC = () => {
             <button className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
               <Send className="w-4 h-4 inline mr-2" />
               Test Send
+            </button>
+            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+              <Save className="w-4 h-4 inline mr-2" />
+              New Template
             </button>
             <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
               <Save className="w-4 h-4 inline mr-2" />

@@ -14,6 +14,7 @@ import Templates from "./pages/TemplateEditor";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
+import ApiKeyManagement from "./pages/ApiKeyManagement.js";
 
 const queryClient = new QueryClient();
 
@@ -49,7 +50,7 @@ function AppContent() {
         return <Campaigns />;
       case "templates":
         return <Templates />;
-      case "settings":
+      case "account":
         return <Settings />;
       case "contacts":
         return <Contacts />;
@@ -61,6 +62,8 @@ function AppContent() {
         return <ListUnsubscribes />;
       case "bounces":
         return <Bounces />;
+      case "api-keys":
+        return <ApiKeyManagement />;
       default:
         return <Dashboard setActiveView={setActiveView} />;
     }

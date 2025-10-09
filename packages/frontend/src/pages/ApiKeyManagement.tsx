@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { API_PERMISSION_DESCRIPTIONS, ApiKey, ApiPermission } from "../types/auth";
 import { useAuth } from "../hooks/useAuth.tsx";
+import TableCellChip from "../components/interfaces/TableCellChip.js";
 
 const ApiKeyManagement: React.FC = () => {
   const { tenant, hasPermission } = useAuth();
@@ -349,29 +350,28 @@ const ApiKeyManagement: React.FC = () => {
                     <td className="py-4 px-6">
                       <div className="flex flex-wrap gap-1">
                         {apiKey.permissions.slice(0, 2).map(permission => (
-                          <span
-                            key={permission}
-                            className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800"
-                          >
-                            {permission.replace(/_/g, " ")}
-                          </span>
+                          <TableCellChip
+                            value={permission.replace(/_/g, " ")}
+                            bgColor="bg-blue-100"
+                            textColor="text-blue-800"
+                          />
                         ))}
                         {apiKey.permissions.length > 2 && (
-                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-700">
-                            +{apiKey.permissions.length - 2} more
-                          </span>
+                          <TableCellChip
+                            value={`+${apiKey.permissions.length - 2} more`}
+                            bgColor="bg-gray-100"
+                            textColor="text-gray-700"
+                          />
                         )}
                       </div>
                     </td>
                     <td className="py-4 px-6">
-                      <span
-                        className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${
-                          apiKey.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                        }`}
-                      >
-                        {apiKey.isActive ? <CheckCircle className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
-                        <span>{apiKey.isActive ? "Active" : "Inactive"}</span>
-                      </span>
+                      <TableCellChip
+                        value={apiKey.isActive ? "Active" : "Inactive"}
+                        bgColor={apiKey.isActive ? "bg-green-100" : "bg-red-100"}
+                        textColor={apiKey.isActive ? "text-green-800" : "text-red-800"}
+                        icon={apiKey.isActive ? <CheckCircle className="w-3 h-3" /> : <AlertCircle className="w-3 h-3" />}
+                      />
                     </td>
                     <td className="py-4 px-6">
                       <span className="text-sm text-gray-900">{getTimeSince(apiKey.lastUsedAt)}</span>

@@ -72,59 +72,6 @@ const Contacts: React.FC = () => {
     },
   ];
 
-  /*const contacts: Contact[] = [
-    {
-      id: 1,
-      email: "john.doe@example.com",
-      firstName: "John",
-      lastName: "Doe",
-      status: "subscribed",
-      subscribedAt: "2024-01-15",
-      lastActivity: "2 hours ago",
-      lists: ["newsletter", "customers"],
-    },
-    {
-      id: 2,
-      email: "jane.smith@example.com",
-      firstName: "Jane",
-      lastName: "Smith",
-      status: "subscribed",
-      subscribedAt: "2024-01-20",
-      lastActivity: "1 day ago",
-      lists: ["newsletter", "trial-users"],
-    },
-    {
-      id: 3,
-      email: "bob.wilson@example.com",
-      firstName: "Bob",
-      lastName: "Wilson",
-      status: "unsubscribed",
-      subscribedAt: "2024-01-10",
-      lastActivity: "1 week ago",
-      lists: ["customers", "vip"],
-    },
-    {
-      id: 4,
-      email: "alice.brown@example.com",
-      firstName: "Alice",
-      lastName: "Brown",
-      status: "subscribed",
-      subscribedAt: "2024-01-25",
-      lastActivity: "3 hours ago",
-      lists: ["newsletter", "customers", "vip"],
-    },
-    {
-      id: 5,
-      email: "charlie.davis@example.com",
-      firstName: "Charlie",
-      lastName: "Davis",
-      status: "bounced",
-      subscribedAt: "2024-01-12",
-      lastActivity: "2 days ago",
-      lists: ["trial-users"],
-    },
-  ];*/
-
   const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
       case "subscribed":

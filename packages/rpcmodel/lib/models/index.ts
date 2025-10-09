@@ -60,7 +60,7 @@ export const Contact = Type.Object(
     $id: "Contact",
     description: "A contact in the system",
     additionalProperties: false,
-    required: ["id", "name", "email", "listIds", "status", "createdAt", "createdBy"],
+    required: ["id", "email", "listIds", "status", "createdAt", "createdBy"],
   }
 );
 
