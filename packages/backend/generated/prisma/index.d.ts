@@ -4541,11 +4541,13 @@ export namespace Prisma {
   export type CampaignsAvgAggregateOutputType = {
     recipients: number | null
     sent: number | null
+    delivered: number | null
   }
 
   export type CampaignsSumAggregateOutputType = {
     recipients: number | null
     sent: number | null
+    delivered: number | null
   }
 
   export type CampaignsMinAggregateOutputType = {
@@ -4556,6 +4558,7 @@ export namespace Prisma {
     type: $Enums.campaign_type | null
     recipients: number | null
     sent: number | null
+    delivered: number | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -4570,6 +4573,7 @@ export namespace Prisma {
     type: $Enums.campaign_type | null
     recipients: number | null
     sent: number | null
+    delivered: number | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -4584,6 +4588,7 @@ export namespace Prisma {
     type: number
     recipients: number
     sent: number
+    delivered: number
     created_at: number
     created_by: number
     updated_at: number
@@ -4595,11 +4600,13 @@ export namespace Prisma {
   export type CampaignsAvgAggregateInputType = {
     recipients?: true
     sent?: true
+    delivered?: true
   }
 
   export type CampaignsSumAggregateInputType = {
     recipients?: true
     sent?: true
+    delivered?: true
   }
 
   export type CampaignsMinAggregateInputType = {
@@ -4610,6 +4617,7 @@ export namespace Prisma {
     type?: true
     recipients?: true
     sent?: true
+    delivered?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4624,6 +4632,7 @@ export namespace Prisma {
     type?: true
     recipients?: true
     sent?: true
+    delivered?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4638,6 +4647,7 @@ export namespace Prisma {
     type?: true
     recipients?: true
     sent?: true
+    delivered?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4739,10 +4749,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date
     created_by: string
     updated_at: Date | null
-    updated_by: string
+    updated_by: string | null
     _count: CampaignsCountAggregateOutputType | null
     _avg: CampaignsAvgAggregateOutputType | null
     _sum: CampaignsSumAggregateOutputType | null
@@ -4772,6 +4783,7 @@ export namespace Prisma {
     type?: boolean
     recipients?: boolean
     sent?: boolean
+    delivered?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4788,6 +4800,7 @@ export namespace Prisma {
     type?: boolean
     recipients?: boolean
     sent?: boolean
+    delivered?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4802,6 +4815,7 @@ export namespace Prisma {
     type?: boolean
     recipients?: boolean
     sent?: boolean
+    delivered?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4816,13 +4830,14 @@ export namespace Prisma {
     type?: boolean
     recipients?: boolean
     sent?: boolean
+    delivered?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
   }
 
-  export type campaignsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "status" | "type" | "recipients" | "sent" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["campaigns"]>
+  export type campaignsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "status" | "type" | "recipients" | "sent" | "delivered" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["campaigns"]>
   export type campaignsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activity?: boolean | campaigns$activityArgs<ExtArgs>
     _count?: boolean | CampaignsCountOutputTypeDefaultArgs<ExtArgs>
@@ -4843,10 +4858,11 @@ export namespace Prisma {
       type: $Enums.campaign_type
       recipients: number
       sent: number
+      delivered: number
       created_at: Date
       created_by: string
       updated_at: Date | null
-      updated_by: string
+      updated_by: string | null
     }, ExtArgs["result"]["campaigns"]>
     composites: {}
   }
@@ -5278,6 +5294,7 @@ export namespace Prisma {
     readonly type: FieldRef<"campaigns", 'campaign_type'>
     readonly recipients: FieldRef<"campaigns", 'Int'>
     readonly sent: FieldRef<"campaigns", 'Int'>
+    readonly delivered: FieldRef<"campaigns", 'Int'>
     readonly created_at: FieldRef<"campaigns", 'DateTime'>
     readonly created_by: FieldRef<"campaigns", 'String'>
     readonly updated_at: FieldRef<"campaigns", 'DateTime'>
@@ -17003,6 +17020,7 @@ export namespace Prisma {
     type: 'type',
     recipients: 'recipients',
     sent: 'sent',
+    delivered: 'delivered',
     created_at: 'created_at',
     created_by: 'created_by',
     updated_at: 'updated_at',
@@ -17567,10 +17585,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFilter<"campaigns"> | $Enums.campaign_type
     recipients?: IntFilter<"campaigns"> | number
     sent?: IntFilter<"campaigns"> | number
+    delivered?: IntFilter<"campaigns"> | number
     created_at?: DateTimeFilter<"campaigns"> | Date | string
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
-    updated_by?: StringFilter<"campaigns"> | string
+    updated_by?: StringNullableFilter<"campaigns"> | string | null
     activity?: ActivitiesListRelationFilter
   }
 
@@ -17582,10 +17601,11 @@ export namespace Prisma {
     type?: SortOrder
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
-    updated_by?: SortOrder
+    updated_by?: SortOrderInput | SortOrder
     activity?: activitiesOrderByRelationAggregateInput
   }
 
@@ -17601,10 +17621,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFilter<"campaigns"> | $Enums.campaign_type
     recipients?: IntFilter<"campaigns"> | number
     sent?: IntFilter<"campaigns"> | number
+    delivered?: IntFilter<"campaigns"> | number
     created_at?: DateTimeFilter<"campaigns"> | Date | string
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
-    updated_by?: StringFilter<"campaigns"> | string
+    updated_by?: StringNullableFilter<"campaigns"> | string | null
     activity?: ActivitiesListRelationFilter
   }, "id" | "tenant_id_name">
 
@@ -17616,10 +17637,11 @@ export namespace Prisma {
     type?: SortOrder
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
-    updated_by?: SortOrder
+    updated_by?: SortOrderInput | SortOrder
     _count?: campaignsCountOrderByAggregateInput
     _avg?: campaignsAvgOrderByAggregateInput
     _max?: campaignsMaxOrderByAggregateInput
@@ -17638,10 +17660,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeWithAggregatesFilter<"campaigns"> | $Enums.campaign_type
     recipients?: IntWithAggregatesFilter<"campaigns"> | number
     sent?: IntWithAggregatesFilter<"campaigns"> | number
+    delivered?: IntWithAggregatesFilter<"campaigns"> | number
     created_at?: DateTimeWithAggregatesFilter<"campaigns"> | Date | string
     created_by?: StringWithAggregatesFilter<"campaigns"> | string
     updated_at?: DateTimeNullableWithAggregatesFilter<"campaigns"> | Date | string | null
-    updated_by?: StringWithAggregatesFilter<"campaigns"> | string
+    updated_by?: StringNullableWithAggregatesFilter<"campaigns"> | string | null
   }
 
   export type activitiesWhereInput = {
@@ -18646,10 +18669,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
-    updated_by: string
+    updated_by?: string | null
     activity?: activitiesCreateNestedManyWithoutCampaignInput
   }
 
@@ -18661,10 +18685,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
-    updated_by: string
+    updated_by?: string | null
     activity?: activitiesUncheckedCreateNestedManyWithoutCampaignInput
   }
 
@@ -18676,10 +18701,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     activity?: activitiesUpdateManyWithoutCampaignNestedInput
   }
 
@@ -18691,10 +18717,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
     activity?: activitiesUncheckedUpdateManyWithoutCampaignNestedInput
   }
 
@@ -18706,10 +18733,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
-    updated_by: string
+    updated_by?: string | null
   }
 
   export type campaignsUpdateManyMutationInput = {
@@ -18720,10 +18748,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type campaignsUncheckedUpdateManyInput = {
@@ -18734,10 +18763,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type activitiesCreateInput = {
@@ -20003,6 +20033,7 @@ export namespace Prisma {
     type?: SortOrder
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20012,6 +20043,7 @@ export namespace Prisma {
   export type campaignsAvgOrderByAggregateInput = {
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
   }
 
   export type campaignsMaxOrderByAggregateInput = {
@@ -20022,6 +20054,7 @@ export namespace Prisma {
     type?: SortOrder
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20036,6 +20069,7 @@ export namespace Prisma {
     type?: SortOrder
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20045,6 +20079,7 @@ export namespace Prisma {
   export type campaignsSumOrderByAggregateInput = {
     recipients?: SortOrder
     sent?: SortOrder
+    delivered?: SortOrder
   }
 
   export type Enumcampaign_statusWithAggregatesFilter<$PrismaModel = never> = {
@@ -22056,10 +22091,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
-    updated_by: string
+    updated_by?: string | null
   }
 
   export type campaignsUncheckedCreateWithoutActivityInput = {
@@ -22070,10 +22106,11 @@ export namespace Prisma {
     type: $Enums.campaign_type
     recipients: number
     sent: number
+    delivered: number
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
-    updated_by: string
+    updated_by?: string | null
   }
 
   export type campaignsCreateOrConnectWithoutActivityInput = {
@@ -22147,10 +22184,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type campaignsUncheckedUpdateWithoutActivityInput = {
@@ -22161,10 +22199,11 @@ export namespace Prisma {
     type?: Enumcampaign_typeFieldUpdateOperationsInput | $Enums.campaign_type
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
+    delivered?: IntFieldUpdateOperationsInput | number
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: StringFieldUpdateOperationsInput | string
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type contactsCreateWithoutBounceInput = {

@@ -1,6 +1,6 @@
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import type { ContactEntity, TemplateEntity, TenantEntity } from "../database/index.js";
-import { Contact, type Template, Tenant } from "@mailtura/rpcmodel/lib/models";
+import type { CampaignEntity, ContactEntity, TemplateEntity, TenantEntity } from "../database/index.js";
+import { type Campaign, Contact, type Template, Tenant } from "@mailtura/rpcmodel/lib/models";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null
@@ -68,5 +68,26 @@ export function mapTemplate(template: TemplateEntity): Template {
     createdBy: template.created_by,
     updatedAt: mapDateTime(template.updated_at),
     updatedBy: template.updated_by ?? undefined,
+  };
+}
+
+export function mapCampaign(campaign: CampaignEntity): Campaign {
+  return {
+    id: campaign.id,
+    name: campaign.name,
+    type: campaign.type,
+    status: campaign.status,
+    recipients: campaign.recipients,
+    sent: campaign.sent,
+    delivered: campaign.delivered,
+    opened: 0, // TODO map opened
+    clicked: 0, // TODO map clicked
+    deliveryRate: 0, // TODO map deliveryRate
+    openRate: 0, // TODO map openRate
+    clickRate: 0, // TODO map clickRate
+    createdAt: mapDateTime(campaign.created_at),
+    createdBy: campaign.created_by,
+    updatedAt: mapDateTime(campaign.updated_at),
+    updatedBy: campaign.updated_by ?? undefined,
   };
 }

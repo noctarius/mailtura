@@ -16,6 +16,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { mapTenant } from "../mapper.js";
 import { templateRoutes } from "./template.js";
 import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { campaignRoutes } from "./campaign.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -135,5 +136,6 @@ export function tenantRoutes<
 
     subRouter.route("/contacts", contactRoutes);
     subRouter.route("/templates", templateRoutes);
+    subRouter.route("/campaigns", campaignRoutes);
   });
 }

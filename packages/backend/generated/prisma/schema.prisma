@@ -67,10 +67,11 @@ model campaigns {
   type       campaign_type
   recipients Int
   sent       Int
+  delivered  Int
   created_at DateTime
   created_by String
   updated_at DateTime?
-  updated_by String
+  updated_by String?
 
   activity activities[]
 
