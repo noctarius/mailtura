@@ -66,7 +66,7 @@ export function apiKeyRoutes<
           key: request.body.key,
           is_active: true,
           expires_at: request.body.expiresAt,
-          permissions: [],
+          permissions: request.body.permissions,
           created_at: UTC.now().toDate(),
           created_by: "api",
         },
@@ -151,6 +151,7 @@ export function apiKeyRoutes<
           data: {
             name: request.body.name,
             key: request.body.key,
+            permissions: request.body.permissions,
             expires_at: unpackOptionalNullable(fromDateTime(request.body.expiresAt), oldApiKey.expires_at),
             updated_at: UTC.now().toDate(),
             updated_by: "api",

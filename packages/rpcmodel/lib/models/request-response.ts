@@ -135,7 +135,6 @@ export const CreateApiKey = //
     "updatedBy",
     "isActive",
     "lastUsedAt",
-    "permissions",
   ]);
 
 export type CreateApiKey = Static<typeof CreateApiKey>;
@@ -151,7 +150,6 @@ export const UpdateApiKey = //
         "updatedBy",
         "isActive",
         "lastUsedAt",
-        "permissions",
         "expiresAt",
       ])
     ),
