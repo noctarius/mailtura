@@ -14,9 +14,10 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { mapTenant } from "../mapper.js";
-import { templateRoutes } from "./template.js";
 import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/lib/models/request-response.js";
-import { campaignRoutes } from "./campaign.js";
+import { subscriberListRoutes } from "./subscriberlists.js";
+import { campaignRoutes } from "./campaigns.js";
+import { templateRoutes } from "./templates.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -137,5 +138,6 @@ export function tenantRoutes<
     subRouter.route("/contacts", contactRoutes);
     subRouter.route("/templates", templateRoutes);
     subRouter.route("/campaigns", campaignRoutes);
+    subRouter.route("/lists", subscriberListRoutes);
   });
 }

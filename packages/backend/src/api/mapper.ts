@@ -1,6 +1,12 @@
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import type { CampaignEntity, ContactEntity, TemplateEntity, TenantEntity } from "../database/index.js";
-import { type Campaign, Contact, type Template, Tenant } from "@mailtura/rpcmodel/lib/models";
+import type {
+  CampaignEntity,
+  ContactEntity,
+  SubscriberListEntity,
+  TemplateEntity,
+  TenantEntity,
+} from "../database/index.js";
+import { type Campaign, Contact, type SubscriberList, type Template, Tenant } from "@mailtura/rpcmodel/lib/models";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null
@@ -10,6 +16,15 @@ export function mapDateTime<T extends Date, R extends string>(
   }
   return UTC.parse(date).formatIsoTime() as any;
 }
+
+export const unpackOptionalNullable = <TType, T extends TType | null, TOptional extends T | undefined>(
+  value: TOptional,
+  defaultValue: T
+): T => {
+  if (value === null) return null as T;
+  if (value === undefined) return defaultValue;
+  return value;
+};
 
 export function mapTenant(tenant: TenantEntity): Tenant {
   return {
@@ -89,5 +104,17 @@ export function mapCampaign(campaign: CampaignEntity): Campaign {
     createdBy: campaign.created_by,
     updatedAt: mapDateTime(campaign.updated_at),
     updatedBy: campaign.updated_by ?? undefined,
+  };
+}
+
+export function mapSubscriberList(subscriberList: SubscriberListEntity): SubscriberList {
+  return {
+    id: subscriberList.id,
+    name: subscriberList.name,
+    description: subscriberList.description ?? undefined,
+    createdAt: mapDateTime(subscriberList.created_at),
+    createdBy: subscriberList.created_by,
+    updatedAt: mapDateTime(subscriberList.updated_at),
+    updatedBy: subscriberList.updated_by ?? undefined,
   };
 }

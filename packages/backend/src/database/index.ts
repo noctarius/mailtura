@@ -10,7 +10,7 @@ import {
   type contacts,
   type event_type,
   PrismaClient,
-  type subscriber_list,
+  type subscriber_lists,
   type subscriber_status,
   type subscribers,
   type template_properties,
@@ -66,7 +66,7 @@ export type BounceTypeEnum = bounce_type;
 export type BounceEntity = bounces;
 export type SubscriberStatusEnum = subscriber_status;
 export type SubscriberEntity = subscribers;
-export type SubscriberListEntity = subscriber_list;
+export type SubscriberListEntity = subscriber_lists;
 export type UnsubscribeSourceEnum = unsubscribe_source;
 export type UnsubscribeEntity = unsubscribes;
 export type UserEntity = users;

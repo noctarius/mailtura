@@ -1,5 +1,11 @@
-import { type Static, Type } from "typebox";
+import { type Static, type TSchema, Type } from "typebox";
 import { ApiKey, Campaign, Contact, SubscriberList, Template, Tenant, User } from "./index.js";
+
+type Nullable<T extends TSchema> = ReturnType<
+  typeof Type.Optional<ReturnType<typeof Type.Union<[T, ReturnType<typeof Type.Null>]>>>
+>;
+
+const asNullable = <T extends TSchema>(schema: T): Nullable<T> => Type.Optional(Type.Union([schema, Type.Null()]));
 
 export const CreateContact = //
   Type.Omit(Contact, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "status", "tenantId"]);
@@ -99,7 +105,14 @@ export const CreateSubscriberList = //
 export type CreateSubscriberList = Static<typeof CreateSubscriberList>;
 
 export const UpdateSubscriberList = //
-  Type.Partial(Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]));
+  Type.Intersect([
+    Type.Partial(Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "description"])),
+    Type.Object({
+      description: asNullable(Type.String()),
+    }),
+  ]);
+
+export type UpdateSubscriberList = Static<typeof UpdateSubscriberList>;
 
 export const CreateUser = //
   Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastLoginAt", "permissions"]);

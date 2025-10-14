@@ -163,7 +163,7 @@ model subscribers {
   @@unique([tenant_id, contact_id])
 }
 
-model subscriber_list {
+model subscriber_lists {
   id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id   String    @db.Uuid
   name        String
@@ -179,10 +179,10 @@ model subscriber_list {
 }
 
 model subscriber_list_contacts {
-  id                 String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id          String          @db.Uuid
-  subscriberList     subscriber_list @relation(fields: [subscriber_list_id], references: [id])
-  subscriber_list_id String          @db.Uuid
+  id                 String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id          String           @db.Uuid
+  subscriberList     subscriber_lists @relation(fields: [subscriber_list_id], references: [id])
+  subscriber_list_id String           @db.Uuid
   created_at         DateTime
   created_by         String
   updated_at         DateTime?

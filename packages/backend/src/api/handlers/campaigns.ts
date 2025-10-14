@@ -151,6 +151,8 @@ export function campaignRoutes<
           where: { id: campaignId, tenant_id: tenantId },
           data: {
             name: request.body.name,
+            updated_at: UTC.now().toDate(),
+            updated_by: "api",
           },
         });
 

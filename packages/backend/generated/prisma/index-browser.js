@@ -203,7 +203,7 @@ exports.Prisma.SubscribersScalarFieldEnum = {
   updated_by: 'updated_by'
 };
 
-exports.Prisma.Subscriber_listScalarFieldEnum = {
+exports.Prisma.Subscriber_listsScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
   name: 'name',
@@ -374,7 +374,7 @@ exports.Prisma.ModelName = {
   activities: 'activities',
   bounces: 'bounces',
   subscribers: 'subscribers',
-  subscriber_list: 'subscriber_list',
+  subscriber_lists: 'subscriber_lists',
   subscriber_list_contacts: 'subscriber_list_contacts',
   unsubscribes: 'unsubscribes',
   users: 'users',
