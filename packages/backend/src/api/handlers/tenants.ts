@@ -18,6 +18,7 @@ import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/lib/models/reques
 import { subscriberListRoutes } from "./subscriberlists.js";
 import { campaignRoutes } from "./campaigns.js";
 import { templateRoutes } from "./templates.js";
+import { userRoutes } from "./users.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -139,5 +140,6 @@ export function tenantRoutes<
     subRouter.route("/templates", templateRoutes);
     subRouter.route("/campaigns", campaignRoutes);
     subRouter.route("/lists", subscriberListRoutes);
+    subRouter.route("/users", userRoutes);
   });
 }

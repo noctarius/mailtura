@@ -127,11 +127,12 @@ export const UpdateUser = //
       "createdBy",
       "updatedAt",
       "updatedBy",
-      "isActive",
       "lastLoginAt",
       "permissions",
     ])
   );
+
+export type UpdateUser = Static<typeof UpdateUser>;
 
 export const CreateApiKey = //
   Type.Omit(ApiKey, [

@@ -5,8 +5,16 @@ import type {
   SubscriberListEntity,
   TemplateEntity,
   TenantEntity,
+  UserEntity,
 } from "../database/index.js";
-import { type Campaign, Contact, type SubscriberList, type Template, Tenant } from "@mailtura/rpcmodel/lib/models";
+import {
+  type Campaign,
+  Contact,
+  type SubscriberList,
+  type Template,
+  Tenant,
+  type User,
+} from "@mailtura/rpcmodel/lib/models";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null
@@ -116,5 +124,22 @@ export function mapSubscriberList(subscriberList: SubscriberListEntity): Subscri
     createdBy: subscriberList.created_by,
     updatedAt: mapDateTime(subscriberList.updated_at),
     updatedBy: subscriberList.updated_by ?? undefined,
+  };
+}
+
+export function mapUser(user: UserEntity): User {
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    firstName: user.first_name ?? undefined,
+    lastName: user.last_name ?? undefined,
+    isActive: user.is_active,
+    lastLoginAt: mapDateTime(user.last_login_at),
+    permissions: user.permissions || [],
+    createdAt: mapDateTime(user.created_at),
+    createdBy: user.created_by,
+    updatedAt: mapDateTime(user.updated_at),
+    updatedBy: user.updated_by ?? undefined,
   };
 }
