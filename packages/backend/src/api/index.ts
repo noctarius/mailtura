@@ -2,6 +2,7 @@ import type { FastifyInstance } from "fastify";
 import {
   Activity,
   ActivityStatus,
+  ApiKey,
   Bounce,
   BounceType,
   Campaign,
@@ -19,6 +20,7 @@ import {
   Tenant,
   Unsubscribe,
   UnsubscribeSource,
+  User,
 } from "@mailtura/rpcmodel/lib/models";
 import { type Router } from "../router/index.js";
 import type {
@@ -51,6 +53,8 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(Template);
   app.addSchema(EmailMetricsChartData);
   app.addSchema(PerformanceMetricsChartData);
+  app.addSchema(User);
+  app.addSchema(ApiKey);
 }
 
 export function registerRoutes<
