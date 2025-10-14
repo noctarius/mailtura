@@ -137,6 +137,43 @@ export function tenantRoutes<
       }
     );
 
+    subRouter.delete<{ Params: { tenant_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            200: Type.Ref("Tenant"),
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+
+        const found = prisma.tenants.findUnique({
+          where: {
+            id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "Tenant not found");
+        }
+
+        await prisma.tenants.delete({
+          where: {
+            id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
+
     subRouter.route("/contacts", contactRoutes);
     subRouter.route("/templates", templateRoutes);
     subRouter.route("/campaigns", campaignRoutes);
