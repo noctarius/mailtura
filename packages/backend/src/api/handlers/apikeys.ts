@@ -161,5 +161,46 @@ export function apiKeyRoutes<
         return mapApiKey(newApiKey);
       }
     );
+
+    subRouter.delete<{ Params: { tenant_id: string; api_key_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+            api_key_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            204: undefined,
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+        const apiKeyId = request.params.api_key_id;
+
+        const found = await prisma.api_keys.findUnique({
+          where: {
+            id: apiKeyId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "ApiKey not found");
+        }
+
+        await prisma.api_keys.delete({
+          where: {
+            id: apiKeyId,
+            tenant_id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
   });
 }
