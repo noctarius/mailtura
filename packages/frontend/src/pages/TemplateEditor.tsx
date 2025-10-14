@@ -54,10 +54,10 @@ const Templates: React.FC = () => {
         </div>
 
         <div className="flex-1 p-4">
-          <div className="grid grid-cols-[40px_repeat(5,1fr)_40px] gap-2 items-center">
-            <div className="flex justify-center items-center h-full w-6">
+          <div className="grid grid-cols-[40px_repeat(5,1fr)_40px] gap-2 items-center justify-center">
+            <div className="flex justify-center items-center h-full">
               <button
-                className="template-editor-selector-arrow"
+                className="template-editor-selector-arrow bg-blue-50 border-2 p-1 rounded items-center justify-center"
                 disabled={templateIndex === 0}
               >
                 <Triangle
@@ -71,15 +71,15 @@ const Templates: React.FC = () => {
               <div
                 key={template.id}
                 onClick={() => setSelectedTemplate(template.id)}
-                className={`p-3 rounded-lg cursor-pointer text-center transition-colors border ${selectedTemplate === template.id ? "bg-blue-50 border-blue-200" : "hover:bg-gray-50"}`}
+                className={`p-3 rounded-lg cursor-pointer h-full text-center transition-colors border ${selectedTemplate === template.id ? "bg-blue-50 border-blue-200" : "hover:bg-gray-50"}`}
               >
                 <div className="font-medium text-gray-900">{template.name}</div>
                 <div className="text-sm text-gray-500">{template.category}</div>
               </div>
             ))}
-            <div className="flex justify-center items-center h-full w-6">
+            <div className="flex justify-center items-center h-full">
               <button
-                className="template-editor-selector-arrow"
+                className="template-editor-selector-arrow bg-blue-50 border-2 p-1 rounded items-center justify-center"
                 disabled={templateIndex >= templates.length - 5}
               >
                 <Triangle

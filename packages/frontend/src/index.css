@@ -3,15 +3,20 @@
 @tailwind utilities;
 
 .template-editor-selector-arrow {
-    @apply text-blue-700;
+    @apply text-blue-600;
 }
 
-.template-editor-selector-arrow:hover {
-    @apply text-blue-300;
+.template-editor-selector-arrow:not(:disabled):hover {
+    @apply text-blue-900;
+    @apply bg-blue-100;
     cursor: pointer;
 }
 
 .template-editor-selector-arrow:disabled {
     @apply text-gray-400;
     cursor: not-allowed;
+}
+
+.template-editor-selector-arrow:not(:disabled):active {
+    @apply text-blue-300;
 }
