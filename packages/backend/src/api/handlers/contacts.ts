@@ -157,5 +157,46 @@ export function contactRoutes<
         return mapContact(newContact);
       }
     );
+
+    subRouter.delete<{ Params: { tenant_id: string; contact_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+            contact_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            204: Type.Null(),
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+        const contactId = request.params.contact_id;
+
+        const found = prisma.contacts.findUnique({
+          where: {
+            id: contactId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "Contact not found");
+        }
+
+        await prisma.contacts.delete({
+          where: {
+            id: contactId,
+            tenant_id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
   });
 }
