@@ -77,25 +77,31 @@ export const CreateCampaign = //
 export type CreateCampaign = Static<typeof CreateCampaign>;
 
 export const UpdateCampaign = //
-  Type.Partial(
-    Type.Omit(Campaign, [
-      "id",
-      "createdAt",
-      "createdBy",
-      "updatedAt",
-      "updatedBy",
-      "type",
-      "status",
-      "recipients",
-      "sent",
-      "delivered",
-      "opened",
-      "clicked",
-      "deliveryRate",
-      "openRate",
-      "clickRate",
-    ])
-  );
+  Type.Intersect([
+    Type.Partial(
+      Type.Omit(Campaign, [
+        "id",
+        "createdAt",
+        "createdBy",
+        "updatedAt",
+        "updatedBy",
+        "type",
+        "status",
+        "recipients",
+        "sent",
+        "delivered",
+        "opened",
+        "clicked",
+        "deliveryRate",
+        "openRate",
+        "clickRate",
+        "scheduledFor",
+      ])
+    ),
+    Type.Object({
+      scheduledFor: asNullable(Type.String({ format: "date-time" })),
+    }),
+  ]);
 
 export type UpdateCampaign = Static<typeof UpdateCampaign>;
 
@@ -120,22 +126,12 @@ export const CreateUser = //
 export type CreateUser = Static<typeof CreateUser>;
 
 export const UpdateUser = //
-  Type.Partial(
-    Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt"])
-  );
+  Type.Partial(Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt"]));
 
 export type UpdateUser = Static<typeof UpdateUser>;
 
 export const CreateApiKey = //
-  Type.Omit(ApiKey, [
-    "id",
-    "createdAt",
-    "createdBy",
-    "updatedAt",
-    "updatedBy",
-    "isActive",
-    "lastUsedAt",
-  ]);
+  Type.Omit(ApiKey, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastUsedAt"]);
 
 export type CreateApiKey = Static<typeof CreateApiKey>;
 

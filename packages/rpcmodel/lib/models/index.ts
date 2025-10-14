@@ -104,6 +104,7 @@ export const Campaign = //
       deliveryRate: Type.Number({ minimum: 0, maximum: 1 }),
       openRate: Type.Number({ minimum: 0, maximum: 1 }),
       clickRate: Type.Number({ minimum: 0, maximum: 1 }),
+      scheduledFor: Type.Optional(Type.String({ format: "date-time" })),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),

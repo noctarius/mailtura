@@ -13,7 +13,7 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { createError } from "../helpers.js";
 import { CreateCampaign, UpdateCampaign } from "@mailtura/rpcmodel/lib/models/request-response.js";
-import { mapCampaign } from "../mapper.js";
+import { fromDateTime, mapCampaign, unpackOptionalNullable } from "../mapper.js";
 
 export function campaignRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -68,6 +68,7 @@ export function campaignRoutes<
           sent: 0,
           delivered: 0,
           recipients: 0,
+          scheduled_for: fromDateTime(request.body.scheduledFor),
           created_at: UTC.now().toDate(),
           created_by: "api",
         },
@@ -151,6 +152,7 @@ export function campaignRoutes<
           where: { id: campaignId, tenant_id: tenantId },
           data: {
             name: request.body.name,
+            scheduled_for: unpackOptionalNullable(fromDateTime(request.body.scheduledFor), oldCampaign.scheduled_for),
             updated_at: UTC.now().toDate(),
             updated_by: "api",
           },

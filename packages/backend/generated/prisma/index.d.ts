@@ -4559,6 +4559,7 @@ export namespace Prisma {
     recipients: number | null
     sent: number | null
     delivered: number | null
+    scheduled_for: Date | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -4574,6 +4575,7 @@ export namespace Prisma {
     recipients: number | null
     sent: number | null
     delivered: number | null
+    scheduled_for: Date | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -4589,6 +4591,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for: number
     created_at: number
     created_by: number
     updated_at: number
@@ -4618,6 +4621,7 @@ export namespace Prisma {
     recipients?: true
     sent?: true
     delivered?: true
+    scheduled_for?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4633,6 +4637,7 @@ export namespace Prisma {
     recipients?: true
     sent?: true
     delivered?: true
+    scheduled_for?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4648,6 +4653,7 @@ export namespace Prisma {
     recipients?: true
     sent?: true
     delivered?: true
+    scheduled_for?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -4750,6 +4756,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for: Date | null
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -4784,6 +4791,7 @@ export namespace Prisma {
     recipients?: boolean
     sent?: boolean
     delivered?: boolean
+    scheduled_for?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4801,6 +4809,7 @@ export namespace Prisma {
     recipients?: boolean
     sent?: boolean
     delivered?: boolean
+    scheduled_for?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4816,6 +4825,7 @@ export namespace Prisma {
     recipients?: boolean
     sent?: boolean
     delivered?: boolean
+    scheduled_for?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -4831,13 +4841,14 @@ export namespace Prisma {
     recipients?: boolean
     sent?: boolean
     delivered?: boolean
+    scheduled_for?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
   }
 
-  export type campaignsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "status" | "type" | "recipients" | "sent" | "delivered" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["campaigns"]>
+  export type campaignsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "status" | "type" | "recipients" | "sent" | "delivered" | "scheduled_for" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["campaigns"]>
   export type campaignsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activity?: boolean | campaigns$activityArgs<ExtArgs>
     _count?: boolean | CampaignsCountOutputTypeDefaultArgs<ExtArgs>
@@ -4859,6 +4870,7 @@ export namespace Prisma {
       recipients: number
       sent: number
       delivered: number
+      scheduled_for: Date | null
       created_at: Date
       created_by: string
       updated_at: Date | null
@@ -5295,6 +5307,7 @@ export namespace Prisma {
     readonly recipients: FieldRef<"campaigns", 'Int'>
     readonly sent: FieldRef<"campaigns", 'Int'>
     readonly delivered: FieldRef<"campaigns", 'Int'>
+    readonly scheduled_for: FieldRef<"campaigns", 'DateTime'>
     readonly created_at: FieldRef<"campaigns", 'DateTime'>
     readonly created_by: FieldRef<"campaigns", 'String'>
     readonly updated_at: FieldRef<"campaigns", 'DateTime'>
@@ -17021,6 +17034,7 @@ export namespace Prisma {
     recipients: 'recipients',
     sent: 'sent',
     delivered: 'delivered',
+    scheduled_for: 'scheduled_for',
     created_at: 'created_at',
     created_by: 'created_by',
     updated_at: 'updated_at',
@@ -17586,6 +17600,7 @@ export namespace Prisma {
     recipients?: IntFilter<"campaigns"> | number
     sent?: IntFilter<"campaigns"> | number
     delivered?: IntFilter<"campaigns"> | number
+    scheduled_for?: DateTimeNullableFilter<"campaigns"> | Date | string | null
     created_at?: DateTimeFilter<"campaigns"> | Date | string
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
@@ -17602,6 +17617,7 @@ export namespace Prisma {
     recipients?: SortOrder
     sent?: SortOrder
     delivered?: SortOrder
+    scheduled_for?: SortOrderInput | SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -17622,6 +17638,7 @@ export namespace Prisma {
     recipients?: IntFilter<"campaigns"> | number
     sent?: IntFilter<"campaigns"> | number
     delivered?: IntFilter<"campaigns"> | number
+    scheduled_for?: DateTimeNullableFilter<"campaigns"> | Date | string | null
     created_at?: DateTimeFilter<"campaigns"> | Date | string
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
@@ -17638,6 +17655,7 @@ export namespace Prisma {
     recipients?: SortOrder
     sent?: SortOrder
     delivered?: SortOrder
+    scheduled_for?: SortOrderInput | SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -17661,6 +17679,7 @@ export namespace Prisma {
     recipients?: IntWithAggregatesFilter<"campaigns"> | number
     sent?: IntWithAggregatesFilter<"campaigns"> | number
     delivered?: IntWithAggregatesFilter<"campaigns"> | number
+    scheduled_for?: DateTimeNullableWithAggregatesFilter<"campaigns"> | Date | string | null
     created_at?: DateTimeWithAggregatesFilter<"campaigns"> | Date | string
     created_by?: StringWithAggregatesFilter<"campaigns"> | string
     updated_at?: DateTimeNullableWithAggregatesFilter<"campaigns"> | Date | string | null
@@ -18670,6 +18689,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for?: Date | string | null
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -18686,6 +18706,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for?: Date | string | null
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -18702,6 +18723,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18718,6 +18740,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18734,6 +18757,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for?: Date | string | null
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -18749,6 +18773,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18764,6 +18789,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20034,6 +20060,7 @@ export namespace Prisma {
     recipients?: SortOrder
     sent?: SortOrder
     delivered?: SortOrder
+    scheduled_for?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20055,6 +20082,7 @@ export namespace Prisma {
     recipients?: SortOrder
     sent?: SortOrder
     delivered?: SortOrder
+    scheduled_for?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20070,6 +20098,7 @@ export namespace Prisma {
     recipients?: SortOrder
     sent?: SortOrder
     delivered?: SortOrder
+    scheduled_for?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -22092,6 +22121,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for?: Date | string | null
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -22107,6 +22137,7 @@ export namespace Prisma {
     recipients: number
     sent: number
     delivered: number
+    scheduled_for?: Date | string | null
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -22185,6 +22216,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -22200,6 +22232,7 @@ export namespace Prisma {
     recipients?: IntFieldUpdateOperationsInput | number
     sent?: IntFieldUpdateOperationsInput | number
     delivered?: IntFieldUpdateOperationsInput | number
+    scheduled_for?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
