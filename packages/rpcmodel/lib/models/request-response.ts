@@ -1,5 +1,5 @@
 import { type Static, Type } from "typebox";
-import { Contact, Template, Tenant } from "./index.js";
+import { ApiKey, Campaign, Contact, SubscriberList, Template, Tenant, User } from "./index.js";
 
 export const CreateContact = //
   Type.Omit(Contact, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "status", "tenantId"]);
@@ -49,3 +49,103 @@ export const UpdateTenant = //
   Type.Partial(Type.Omit(Tenant, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]));
 
 export type UpdateTenant = Static<typeof UpdateTenant>;
+
+export const CreateCampaign = //
+  Type.Omit(Campaign, [
+    "id",
+    "createdAt",
+    "createdBy",
+    "updatedAt",
+    "updatedBy",
+    "status",
+    "recipients",
+    "sent",
+    "delivered",
+    "opened",
+    "clicked",
+    "deliveryRate",
+    "openRate",
+    "clickRate",
+  ]);
+
+export type CreateCampaign = Static<typeof CreateCampaign>;
+
+export const UpdateCampaign = //
+  Type.Partial(
+    Type.Omit(Campaign, [
+      "id",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "type",
+      "status",
+      "recipients",
+      "sent",
+      "delivered",
+      "opened",
+      "clicked",
+      "deliveryRate",
+      "openRate",
+      "clickRate",
+    ])
+  );
+
+export type UpdateCampaign = Static<typeof UpdateCampaign>;
+
+export const CreateSubscriberList = //
+  Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]);
+
+export type CreateSubscriberList = Static<typeof CreateSubscriberList>;
+
+export const UpdateSubscriberList = //
+  Type.Partial(Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]));
+
+export const CreateUser = //
+  Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastLoginAt", "permissions"]);
+
+export type CreateUser = Static<typeof CreateUser>;
+
+export const UpdateUser = //
+  Type.Partial(
+    Type.Omit(User, [
+      "id",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "isActive",
+      "lastLoginAt",
+      "permissions",
+    ])
+  );
+
+export const CreateApiKey = //
+  Type.Omit(ApiKey, [
+    "id",
+    "createdAt",
+    "createdBy",
+    "updatedAt",
+    "updatedBy",
+    "isActive",
+    "lastUsedAt",
+    "permissions",
+  ]);
+
+export type CreateApiKey = Static<typeof CreateApiKey>;
+
+export const UpdateApiKey = //
+  Type.Partial(
+    Type.Omit(ApiKey, [
+      "id",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "isActive",
+      "lastUsedAt",
+      "permissions",
+    ])
+  );
+
+export type UpdateApiKey = Static<typeof UpdateApiKey>;
