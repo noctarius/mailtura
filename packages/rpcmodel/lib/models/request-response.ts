@@ -115,13 +115,13 @@ export const UpdateSubscriberList = //
 export type UpdateSubscriberList = Static<typeof UpdateSubscriberList>;
 
 export const CreateUser = //
-  Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastLoginAt", "permissions"]);
+  Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastLoginAt"]);
 
 export type CreateUser = Static<typeof CreateUser>;
 
 export const UpdateUser = //
   Type.Partial(
-    Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt", "permissions"])
+    Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt"])
   );
 
 export type UpdateUser = Static<typeof UpdateUser>;
