@@ -171,7 +171,7 @@ export function apiKeyRoutes<
             api_key_id: Type.String({ format: "uuid" }),
           }),
           response: {
-            204: undefined,
+            204: Type.Null(),
             401: Type.Ref("ErrorResponse"),
             404: Type.Ref("ErrorResponse"),
           },

@@ -159,5 +159,46 @@ export function campaignRoutes<
         return mapCampaign(newCampaign);
       }
     );
+
+    subRouter.delete<{ Params: { tenant_id: string; campaign_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+            campaign_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            204: Type.Null(),
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+        const campaignId = request.params.campaign_id;
+
+        const found = prisma.campaigns.findUnique({
+          where: {
+            id: campaignId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "Campaign not found");
+        }
+
+        await prisma.campaigns.delete({
+          where: {
+            id: campaignId,
+            tenant_id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
   });
 }

@@ -31,7 +31,6 @@ await app.register(cors, {
 await app.register(swagger, {
   refResolver: {
     buildLocalReference: (ref) => {
-      console.log('ref', ref)
       return ref["$id"] as string;
     }
   },
