@@ -1,109 +1,65 @@
 import { Copy, CreditCard as Edit, Filter, MoreHorizontal, Plus, Search, Send, Users } from "lucide-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import TableCellProgressBar from "../components/interfaces/TableCellProgressBar.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { getCampaignStatusIcon } from "../helpers/chip-icons.js";
+import { useCampaignQuery } from "../services/use-campaigns-query.js";
+import { formatDateTime } from "../helpers/format-date-time.js";
 
 const Campaigns: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const campaigns = [
+  const { data: loadedCampaigns, isLoading } = useCampaignQuery({
+    tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def",
+  });
+
+  const campaignsRates = [
     {
-      id: 1,
-      name: "Welcome Series - New Users",
-      status: "active",
-      type: "Automated",
-      recipients: 15234,
-      sent: 12890,
-      delivered: 12654,
-      opened: 3045,
-      clicked: 487,
+      id: "0199e418-3e65-71db-87db-9709f5b6bf92",
       deliveryRate: 98.2,
       openRate: 24.1,
       clickRate: 3.8,
-      createdAt: "2024-01-15",
-      lastSent: "2 hours ago",
     },
     {
-      id: 2,
-      name: "Black Friday Promotion",
-      status: "scheduled",
-      type: "One-time",
-      recipients: 45678,
-      sent: 0,
-      delivered: 0,
-      opened: 0,
-      clicked: 0,
+      id: "0199e41d-a200-7e4e-be23-ce12000b4fea",
       deliveryRate: 0,
       openRate: 0,
       clickRate: 0,
-      createdAt: "2024-01-20",
-      scheduledFor: "Nov 24, 2024 9:00 AM",
     },
     {
-      id: 3,
-      name: "Product Update Newsletter",
-      status: "completed",
-      type: "One-time",
-      recipients: 28456,
-      sent: 28456,
-      delivered: 27923,
-      opened: 6702,
-      clicked: 1072,
+      id: "0199e427-9b08-7c52-9267-2d599bdf0f9a",
       deliveryRate: 98.1,
       openRate: 24.0,
       clickRate: 3.8,
-      createdAt: "2024-01-10",
-      lastSent: "3 days ago",
     },
     {
-      id: 4,
-      name: "Cart Abandonment Recovery",
-      status: "active",
-      type: "Automated",
-      recipients: 8934,
-      sent: 7234,
-      delivered: 7089,
-      opened: 1702,
-      clicked: 289,
+      id: "0199e42a-f506-7bdc-be6a-22bbbdd8abb5",
       deliveryRate: 98.0,
       openRate: 24.0,
       clickRate: 4.1,
-      createdAt: "2024-01-05",
-      lastSent: "1 hour ago",
     },
     {
-      id: 5,
-      name: "Monthly Newsletter - December",
-      status: "draft",
-      type: "One-time",
-      recipients: 0,
-      sent: 0,
-      delivered: 0,
-      opened: 0,
-      clicked: 0,
+      id: "0199e42b-94b5-7512-a8f8-f334a119d2f3",
       deliveryRate: 0,
       openRate: 0,
       clickRate: 0,
-      createdAt: "2024-01-22",
-      lastSent: "Never",
     },
   ];
 
   const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
-      case "active":
+      case "Active":
         return "bg-green-100";
-      case "scheduled":
+      case "Scheduled":
         return "bg-blue-100";
-      case "completed":
+      case "Completed":
         return "bg-gray-100";
-      case "draft":
+      case "Draft":
         return "bg-yellow-100";
-      case "paused":
+      case "Paused":
         return "bg-orange-100";
       default:
         return "bg-gray-100";
@@ -112,26 +68,42 @@ const Campaigns: React.FC = () => {
 
   const getStatusTextColor = (status: string): TailwindTextColor => {
     switch (status) {
-      case "active":
+      case "Active":
         return "text-green-800";
-      case "scheduled":
+      case "Scheduled":
         return "text-blue-800";
-      case "completed":
+      case "Completed":
         return "text-gray-800";
-      case "draft":
+      case "Draft":
         return "text-yellow-800";
-      case "paused":
+      case "Paused":
         return "text-orange-800";
       default:
         return "text-gray-800";
     }
   };
 
-  const filteredCampaigns = campaigns.filter(campaign => {
-    const matchesStatus = selectedStatus === "all" || campaign.status === selectedStatus;
-    const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesStatus && matchesSearch;
-  });
+  const campaigns = useMemo(
+    () =>
+      (loadedCampaigns || []).map(campaign => {
+        const campaignRate = campaignsRates.find(rate => rate.id === campaign.id);
+        return {
+          ...campaign,
+          ...campaignRate,
+        };
+      }),
+    [loadedCampaigns, isLoading]
+  );
+
+  const filteredCampaigns = useMemo(
+    () =>
+      (campaigns || []).filter(campaign => {
+        const matchesStatus = selectedStatus === "all" || campaign.status === selectedStatus;
+        const matchesSearch = campaign.name.toLowerCase().includes(searchTerm.toLowerCase());
+        return matchesStatus && matchesSearch;
+      }),
+    [campaigns, isLoading, selectedStatus, searchTerm]
+  );
 
   return (
     <div className="h-full flex flex-col bg-gray-50">
@@ -182,7 +154,7 @@ const Campaigns: React.FC = () => {
           </div>
 
           <div className="text-sm text-gray-600">
-            {filteredCampaigns.length} of {campaigns.length} campaigns
+            {filteredCampaigns.length} of {campaigns?.length || 0} campaigns
           </div>
         </div>
       </div>
@@ -214,7 +186,7 @@ const Campaigns: React.FC = () => {
                     <td className="py-4 px-6">
                       <div>
                         <div className="font-medium text-gray-900">{campaign.name}</div>
-                        <div className="text-sm text-gray-500">Created {campaign.createdAt}</div>
+                        <div className="text-sm text-gray-500">Created {formatDateTime(campaign.createdAt)}</div>
                       </div>
                     </td>
                     <td className="py-4 px-6">
@@ -254,7 +226,7 @@ const Campaigns: React.FC = () => {
                     </td>
                     <td className="py-4 px-6">
                       <span className="text-sm text-gray-600">
-                        {campaign.status === "scheduled" ? campaign.scheduledFor : campaign.lastSent}
+                        {campaign.status === "Scheduled" ? campaign.scheduledFor !== undefined ? formatDateTime(campaign.scheduledFor) : null : formatDateTime(campaign.createdAt)}
                       </span>
                     </td>
                     <td className="py-4 px-6">

@@ -26,7 +26,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-1"][];
+                        "application/json": components["schemas"]["Tenant"][];
                     };
                 };
                 /** @description An error response */
@@ -35,7 +35,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -48,7 +48,6 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
-            /** @description A tenant in the system */
             requestBody: {
                 content: {
                     "application/json": {
@@ -63,7 +62,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-1"];
+                        "application/json": components["schemas"]["Tenant"];
                     };
                 };
                 /** @description An error response */
@@ -72,7 +71,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -107,7 +106,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-1"];
+                        "application/json": components["schemas"]["Tenant"];
                     };
                 };
                 /** @description An error response */
@@ -116,7 +115,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -125,7 +124,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -139,7 +138,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A tenant in the system */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -154,7 +152,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-1"];
+                        "application/json": components["schemas"]["Tenant"];
                     };
                 };
                 /** @description An error response */
@@ -163,7 +161,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -172,7 +170,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -181,13 +179,52 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
         };
         post?: never;
-        delete?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A tenant in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Tenant"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -217,7 +254,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-2"][];
+                        "application/json": components["schemas"]["Contact"][];
                     };
                 };
                 /** @description An error response */
@@ -226,7 +263,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -241,7 +278,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A contact in the system */
             requestBody: {
                 content: {
                     "application/json": {
@@ -261,7 +297,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-2"];
+                        "application/json": components["schemas"]["Contact"];
                     };
                 };
                 /** @description An error response */
@@ -270,7 +306,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -306,7 +342,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-2"];
+                        "application/json": components["schemas"]["Contact"];
                     };
                 };
                 /** @description An error response */
@@ -315,7 +351,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -324,7 +360,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -339,7 +375,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A contact in the system */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -355,7 +390,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-2"];
+                        "application/json": components["schemas"]["Contact"];
                     };
                 };
                 /** @description An error response */
@@ -364,7 +399,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -373,7 +408,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -382,13 +417,51 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
         };
         post?: never;
-        delete?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    contact_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -418,7 +491,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-16"][];
+                        "application/json": components["schemas"]["Template"][];
                     };
                 };
                 /** @description An error response */
@@ -427,7 +500,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -464,7 +537,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-16"];
+                        "application/json": components["schemas"]["Template"];
                     };
                 };
                 /** @description An error response */
@@ -473,7 +546,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -509,7 +582,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-16"];
+                        "application/json": components["schemas"]["Template"];
                     };
                 };
                 /** @description An error response */
@@ -518,7 +591,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -527,7 +600,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -542,7 +615,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A template in the system */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -566,7 +638,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-16"];
+                        "application/json": components["schemas"]["Template"];
                     };
                 };
                 /** @description An error response */
@@ -575,7 +647,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
                 /** @description An error response */
@@ -584,13 +656,51 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
         };
         post?: never;
-        delete?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    template_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -641,7 +751,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["def-0"];
+                        "application/json": components["schemas"]["ErrorResponse"];
                     };
                 };
             };
@@ -652,22 +762,969 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/campaigns/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Campaign"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /**
+                         * @description The type of a campaign
+                         * @default OneTime
+                         */
+                        type: "OneTime" | "Automated";
+                        /** Format: date-time */
+                        scheduledFor?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description A campaign in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Campaign"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/campaigns/{campaign_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    campaign_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A campaign in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Campaign"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    campaign_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                    } & {
+                        scheduledFor?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description A campaign in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Campaign"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    campaign_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/lists/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SubscriberList"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        description?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description A list of subscribers in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SubscriberList"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/lists/{subscriber_list_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    subscriber_list_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A list of subscribers in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SubscriberList"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    subscriber_list_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                    } & {
+                        description?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description A list of subscribers in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SubscriberList"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    subscriber_list_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/users/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        email: string;
+                        firstName?: string;
+                        lastName?: string;
+                        role: string;
+                        permissions: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description A user in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/users/{user_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    user_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A user in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    user_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        email?: string;
+                        firstName?: string;
+                        lastName?: string;
+                        role?: string;
+                        isActive?: boolean;
+                        permissions?: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description A user in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    user_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/api-keys/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ApiKey"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        key: string;
+                        /** Format: date-time */
+                        expiresAt?: string;
+                        permissions: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description An API key in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ApiKey"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/api-keys/{api_key_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    api_key_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description An API key in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ApiKey"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    api_key_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        key?: string;
+                        permissions?: string[];
+                    } & {
+                        expiresAt?: string | null;
+                    };
+                };
+            };
+            responses: {
+                /** @description An API key in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ApiKey"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    api_key_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        /**
-         * ErrorResponse
-         * @description An error response
-         */
-        "def-0": {
+        /** @description An error response */
+        ErrorResponse: {
             message: string;
         };
-        /**
-         * Tenant
-         * @description A tenant in the system
-         */
-        "def-1": {
+        /** @description A tenant in the system */
+        Tenant: {
             /** Format: uuid */
             id: string;
             name: string;
@@ -678,11 +1735,8 @@ export interface components {
             updatedAt?: string;
             updatedBy?: string;
         };
-        /**
-         * Contact
-         * @description A contact in the system
-         */
-        "def-2": {
+        /** @description A contact in the system */
+        Contact: {
             /** Format: uuid */
             id: string;
             email: string;
@@ -700,22 +1754,17 @@ export interface components {
             updatedBy?: string;
         };
         /**
-         * CampaignStatus
          * @description The status of a campaign
          * @default Draft
          */
-        "def-3": "Active" | "Scheduled" | "Completed" | "Draft" | "Paused" | "Cancelled";
+        CampaignStatus: "Active" | "Scheduled" | "Completed" | "Draft" | "Paused" | "Cancelled";
         /**
-         * CampaignType
          * @description The type of a campaign
          * @default OneTime
          */
-        "def-4": "OneTime" | "Automated";
-        /**
-         * Campaign
-         * @description A campaign in the system
-         */
-        "def-5": {
+        CampaignType: "OneTime" | "Automated";
+        /** @description A campaign in the system */
+        Campaign: {
             /** Format: uuid */
             id: string;
             name: string;
@@ -738,6 +1787,8 @@ export interface components {
             openRate: number;
             clickRate: number;
             /** Format: date-time */
+            scheduledFor?: string;
+            /** Format: date-time */
             createdAt: string;
             createdBy: string;
             /** Format: date-time */
@@ -745,22 +1796,17 @@ export interface components {
             updatedBy?: string;
         };
         /**
-         * ActivityStatus
          * @description The status of an activity
          * @default Pending
          */
-        "def-6": "Delivered" | "Opened" | "Clicked" | "Pending" | "Scheduled" | "Bounced" | "Failed";
+        ActivityStatus: "Delivered" | "Opened" | "Clicked" | "Pending" | "Scheduled" | "Bounced" | "Failed";
         /**
-         * EventType
          * @description The type of an event
          * @default Queued
          */
-        "def-7": "Queued" | "Delivered" | "Clicked" | "Opened" | "Failed" | "Bounced";
-        /**
-         * Activity
-         * @description An activity in the system
-         */
-        "def-8": {
+        EventType: "Queued" | "Delivered" | "Clicked" | "Opened" | "Failed" | "Bounced";
+        /** @description An activity in the system */
+        Activity: {
             /** Format: uuid */
             id: string;
             /** @description A contact in the system */
@@ -805,6 +1851,8 @@ export interface components {
                 openRate: number;
                 clickRate: number;
                 /** Format: date-time */
+                scheduledFor?: string;
+                /** Format: date-time */
                 createdAt: string;
                 createdBy: string;
                 /** Format: date-time */
@@ -837,16 +1885,12 @@ export interface components {
             updatedBy?: string;
         };
         /**
-         * BounceType
          * @description The type of a bounce
          * @default Hard
          */
-        "def-9": "Hard" | "Soft";
-        /**
-         * Bounce
-         * @description A bounce in the system
-         */
-        "def-10": {
+        BounceType: "Hard" | "Soft";
+        /** @description A bounce in the system */
+        Bounce: {
             /** Format: uuid */
             id: string;
             /** @description A contact in the system */
@@ -883,16 +1927,12 @@ export interface components {
             updatedBy?: string;
         };
         /**
-         * SubscriberStatus
          * @description The status of a subscriber
          * @default Subscribed
          */
-        "def-11": "Subscribed" | "Unsubscribed" | "Bounced" | "Complaint";
-        /**
-         * Subscriber
-         * @description A subscriber in the system
-         */
-        "def-12": {
+        SubscriberStatus: "Subscribed" | "Unsubscribed" | "Bounced" | "Complaint";
+        /** @description A subscriber in the system */
+        Subscriber: {
             /** Format: uuid */
             id: string;
             /** @description A contact in the system */
@@ -927,11 +1967,8 @@ export interface components {
             updatedAt?: string;
             updatedBy?: string;
         };
-        /**
-         * SubscriberList
-         * @description A list of subscribers in the system
-         */
-        "def-13": {
+        /** @description A list of subscribers in the system */
+        SubscriberList: {
             /** Format: uuid */
             id: string;
             name: string;
@@ -944,16 +1981,12 @@ export interface components {
             updatedBy?: string;
         };
         /**
-         * UnsubscribeSource
          * @description The source of an unsubscribe
          * @default Email
          */
-        "def-14": "UnsubscribeLink" | "ManualAddition" | "Bounce" | "Api" | "Other";
-        /**
-         * Unsubscribe
-         * @description An unsubscribe in the system
-         */
-        "def-15": {
+        UnsubscribeSource: "UnsubscribeLink" | "ManualAddition" | "Bounce" | "Api" | "Other";
+        /** @description An unsubscribe in the system */
+        Unsubscribe: {
             /** Format: uuid */
             id: string;
             /** @description A contact in the system */
@@ -990,11 +2023,8 @@ export interface components {
             updatedAt?: string;
             updatedBy?: string;
         };
-        /**
-         * Template
-         * @description A template in the system
-         */
-        "def-16": {
+        /** @description A template in the system */
+        Template: {
             /** Format: uuid */
             id: string;
             name: string;
@@ -1007,6 +2037,66 @@ export interface components {
                 type: string;
                 default_value: unknown;
             }[];
+            /** Format: date-time */
+            createdAt: string;
+            createdBy: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        };
+        /** @description Email metrics chart data */
+        EmailMetricsChartData: {
+            name: string;
+            sent: number;
+            delivered: number;
+            opened: number;
+            clicked: number;
+            bounced: number;
+            failed: number;
+            complaint: number;
+            pending: number;
+            scheduled: number;
+        };
+        /** @description Performance metrics chart data */
+        PerformanceMetricsChartData: {
+            name: string;
+            deliveryRate: number;
+            openRate: number;
+            clickRate: number;
+            bounceRate: number;
+            failedRate: number;
+        };
+        /** @description A user in the system */
+        User: {
+            /** Format: uuid */
+            id: string;
+            email: string;
+            firstName?: string;
+            lastName?: string;
+            role: string;
+            isActive: boolean;
+            /** Format: date-time */
+            lastLoginAt?: string;
+            permissions: string[];
+            /** Format: date-time */
+            createdAt: string;
+            createdBy: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        };
+        /** @description An API key in the system */
+        ApiKey: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            key: string;
+            isActive: boolean;
+            /** Format: date-time */
+            lastUsedAt?: string;
+            /** Format: date-time */
+            expiresAt?: string;
+            permissions: string[];
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
