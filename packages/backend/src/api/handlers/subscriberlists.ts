@@ -160,5 +160,46 @@ export function subscriberListRoutes<
         return mapSubscriberList(newSubscriberList);
       }
     );
+
+    subRouter.delete<{ Params: { tenant_id: string; subscriber_list_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+            subscriber_list_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            204: Type.Null(),
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+        const subscriberListId = request.params.subscriber_list_id;
+
+        const found = prisma.subscriber_lists.findUnique({
+          where: {
+            id: subscriberListId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "SubscriberList not found");
+        }
+
+        await prisma.subscriber_lists.delete({
+          where: {
+            id: subscriberListId,
+            tenant_id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
   });
 }
