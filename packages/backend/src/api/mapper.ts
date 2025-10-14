@@ -1,5 +1,6 @@
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import type {
+  ApiKeyEntity,
   CampaignEntity,
   ContactEntity,
   SubscriberListEntity,
@@ -8,6 +9,7 @@ import type {
   UserEntity,
 } from "../database/index.js";
 import {
+  type ApiKey,
   type Campaign,
   Contact,
   type SubscriberList,
@@ -23,6 +25,15 @@ export function mapDateTime<T extends Date, R extends string>(
     return undefined as any;
   }
   return UTC.parse(date).formatIsoTime() as any;
+}
+
+export function fromDateTime<T extends string, R extends Date>(
+  dataString: T | undefined | null
+): T extends null ? null : T extends undefined ? R | undefined : R {
+  if (!dataString) {
+    return undefined as any;
+  }
+  return UTC.parse(dataString).toDate() as any;
 }
 
 export const unpackOptionalNullable = <TType, T extends TType | null, TOptional extends T | undefined>(
@@ -141,5 +152,21 @@ export function mapUser(user: UserEntity): User {
     createdBy: user.created_by,
     updatedAt: mapDateTime(user.updated_at),
     updatedBy: user.updated_by ?? undefined,
+  };
+}
+
+export function mapApiKey(apiKey: ApiKeyEntity): ApiKey {
+  return {
+    id: apiKey.id,
+    name: apiKey.name,
+    key: apiKey.key,
+    isActive: apiKey.is_active,
+    lastUsedAt: mapDateTime(apiKey.last_used_at),
+    expiresAt: mapDateTime(apiKey.expires_at),
+    permissions: apiKey.permissions || [],
+    createdAt: mapDateTime(apiKey.created_at),
+    createdBy: apiKey.created_by,
+    updatedAt: mapDateTime(apiKey.updated_at),
+    updatedBy: apiKey.updated_by ?? undefined,
   };
 }

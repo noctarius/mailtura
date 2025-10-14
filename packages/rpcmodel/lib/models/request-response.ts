@@ -121,15 +121,7 @@ export type CreateUser = Static<typeof CreateUser>;
 
 export const UpdateUser = //
   Type.Partial(
-    Type.Omit(User, [
-      "id",
-      "createdAt",
-      "createdBy",
-      "updatedAt",
-      "updatedBy",
-      "lastLoginAt",
-      "permissions",
-    ])
+    Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt", "permissions"])
   );
 
 export type UpdateUser = Static<typeof UpdateUser>;
@@ -149,17 +141,23 @@ export const CreateApiKey = //
 export type CreateApiKey = Static<typeof CreateApiKey>;
 
 export const UpdateApiKey = //
-  Type.Partial(
-    Type.Omit(ApiKey, [
-      "id",
-      "createdAt",
-      "createdBy",
-      "updatedAt",
-      "updatedBy",
-      "isActive",
-      "lastUsedAt",
-      "permissions",
-    ])
-  );
+  Type.Intersect([
+    Type.Partial(
+      Type.Omit(ApiKey, [
+        "id",
+        "createdAt",
+        "createdBy",
+        "updatedAt",
+        "updatedBy",
+        "isActive",
+        "lastUsedAt",
+        "permissions",
+        "expiresAt",
+      ])
+    ),
+    Type.Object({
+      expiresAt: asNullable(Type.String({ format: "date-time" })),
+    }),
+  ]);
 
 export type UpdateApiKey = Static<typeof UpdateApiKey>;
