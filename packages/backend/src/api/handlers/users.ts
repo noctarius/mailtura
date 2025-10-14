@@ -164,5 +164,46 @@ export function userRoutes<
         return mapUser(newUser);
       }
     );
+
+    subRouter.delete<{ Params: { tenant_id: string; user_id: string } }>(
+      "/",
+      {
+        schema: {
+          params: Type.Object({
+            tenant_id: Type.String({ format: "uuid" }),
+            user_id: Type.String({ format: "uuid" }),
+          }),
+          response: {
+            204: Type.Null(),
+            401: Type.Ref("ErrorResponse"),
+            404: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async (request, reply) => {
+        const tenantId = request.params.tenant_id;
+        const userId = request.params.user_id;
+
+        const found = prisma.users.findUnique({
+          where: {
+            id: userId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "User not found");
+        }
+
+        await prisma.users.delete({
+          where: {
+            id: userId,
+            tenant_id: tenantId,
+          },
+        });
+
+        return reply.status(204).send();
+      }
+    );
   });
 }
