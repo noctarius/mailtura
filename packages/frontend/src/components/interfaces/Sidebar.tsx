@@ -1,5 +1,4 @@
-import { Activity, BarChart3, FileText, LogOut, Send, Settings, Shield, TrendingUp, Users, Zap } from "lucide-react";
-import React from "react";
+import { Activity, ChartColumn, FileText, LogOut, Send, Settings, Shield, TrendingUp, Users, Zap } from "lucide-solid";
 import SidebarEntry, { NavigationItem } from "./SidebarEntry.tsx";
 import { useAuth } from "../../hooks/useAuth.tsx";
 
@@ -8,11 +7,11 @@ interface SidebarProps {
   setActiveView: (view: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
+const Sidebar = (props: SidebarProps) => {
   const { user, signOut } = useAuth();
 
   const navItems: NavigationItem[] = [
-    { id: "dashboard", label: "Dashboard", icon: BarChart3 },
+    { id: "dashboard", label: "Dashboard", icon: ChartColumn },
     { id: "campaigns", label: "Campaigns", icon: Send },
     { id: "templates", label: "Templates", icon: FileText },
     { id: "contacts", label: "Contacts", icon: Users },
@@ -42,50 +41,49 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
   ];
 
   return (
-    <div className="w-64 bg-slate-900 text-white flex flex-col">
-      <div className="p-6 border-b border-slate-800">
-        <div className="flex items-center space-x-2">
-          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Zap className="w-5 h-5 text-white" />
+    <div class="w-64 bg-slate-900 text-white flex flex-col">
+      <div class="p-6 border-b border-slate-800">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+            <Zap class="w-5 h-5 text-white" />
           </div>
-          <h1 className="text-xl font-bold">Mailtura</h1>
+          <h1 class="text-xl font-bold">Mailtura</h1>
         </div>
       </div>
 
-      <nav className="flex-1 p-4">
-        <ul className="space-y-2">
+      <nav class="flex-1 p-4">
+        <ul class="space-y-2">
           {navItems.map(item => {
             return (
               <SidebarEntry
-                key={item.id}
                 navigationItem={item}
-                activeView={activeView}
-                setActiveView={setActiveView}
+                activeView={props.activeView}
+                setActiveView={props.setActiveView}
               />
             );
           })}
         </ul>
       </nav>
 
-      <div className="p-4 border-t border-slate-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">{user?.firstName.charAt(0).toUpperCase()}</span>
+      <div class="p-4 border-t border-slate-800">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+              <span class="text-white text-sm font-medium">{user?.firstName.charAt(0).toUpperCase()}</span>
             </div>
             <div>
-              <p className="text-sm font-medium">
+              <p class="text-sm font-medium">
                 {user?.firstName} {user?.lastName}
               </p>
-              <p className="text-xs text-slate-400">{user?.email}</p>
+              <p class="text-xs text-slate-400">{user?.email}</p>
             </div>
           </div>
           <button
             onClick={signOut}
-            className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
+            class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
             title="Sign out"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut class="w-4 h-4" />
           </button>
         </div>
       </div>

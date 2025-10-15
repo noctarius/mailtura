@@ -1,25 +1,25 @@
-import { Eye, EyeOff, Lock, Mail, User, Zap } from "lucide-react";
-import React, { useState } from "react";
+import { Eye, EyeOff, Lock, Mail, User, Zap } from "lucide-solid";
 import { useAuth } from "../hooks/useAuth";
+import { createSignal } from "solid-js";
 
 interface SignUpProps {
   onSwitchToSignIn: () => void;
 }
 
-const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
+const SignUp = (props: SignUpProps) => {
   const { signUp } = useAuth();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [acceptTerms, setAcceptTerms] = useState(false);
+  const [firstName, setFirstName] = createSignal("");
+  const [lastName, setLastName] = createSignal("");
+  const [email, setEmail] = createSignal("");
+  const [password, setPassword] = createSignal("");
+  const [confirmPassword, setConfirmPassword] = createSignal("");
+  const [showPassword, setShowPassword] = createSignal(false);
+  const [showConfirmPassword, setShowConfirmPassword] = createSignal(false);
+  const [isLoading, setIsLoading] = createSignal(false);
+  const [error, setError] = createSignal("");
+  const [acceptTerms, setAcceptTerms] = createSignal(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault();
     setError("");
 
@@ -41,7 +41,7 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
     setIsLoading(true);
 
     try {
-      await signUp(firstName, lastName, email, password);
+      await signUp(firstName(), lastName(), email(), password());
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to create account. Please try again.");
     } finally {
@@ -50,45 +50,45 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+      <div class="max-w-md w-full">
         {/* Logo and Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
-            <Zap className="w-8 h-8 text-white" />
+        <div class="text-center mb-8">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-600 rounded-2xl mb-4">
+            <Zap class="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create account</h1>
-          <p className="text-gray-600">Start your EmailFlow journey today</p>
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Create account</h1>
+          <p class="text-gray-600">Start your EmailFlow journey today</p>
         </div>
 
         {/* Sign Up Form */}
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div class="bg-white rounded-2xl shadow-xl p-8">
           <form
             onSubmit={handleSubmit}
-            className="space-y-6"
+            class="space-y-6"
           >
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                <p className="text-red-600 text-sm">{error}</p>
+              <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                <p class="text-red-600 text-sm">{error()}</p>
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4">
               <div>
                 <label
-                  htmlFor="firstName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  for="firstName"
+                  class="block text-sm font-medium text-gray-700 mb-2"
                 >
                   First name
                 </label>
-                <div className="relative">
-                  <User className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <div class="relative">
+                  <User class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     id="firstName"
                     type="text"
-                    value={firstName}
+                    value={firstName()}
                     onChange={e => setFirstName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                     placeholder="John"
                     required
                   />
@@ -97,19 +97,19 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
 
               <div>
                 <label
-                  htmlFor="lastName"
-                  className="block text-sm font-medium text-gray-700 mb-2"
+                  for="lastName"
+                  class="block text-sm font-medium text-gray-700 mb-2"
                 >
                   Last name
                 </label>
-                <div className="relative">
-                  <User className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <div class="relative">
+                  <User class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     id="lastName"
                     type="text"
-                    value={lastName}
+                    value={lastName()}
                     onChange={e => setLastName(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                    class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                     placeholder="Doe"
                     required
                   />
@@ -119,19 +119,19 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
 
             <div>
               <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                for="email"
+                class="block text-sm font-medium text-gray-700 mb-2"
               >
                 Email address
               </label>
-              <div className="relative">
-                <Mail className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div class="relative">
+                <Mail class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   id="email"
                   type="email"
-                  value={email}
+                  value={email()}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   placeholder="john@example.com"
                   required
                 />
@@ -140,83 +140,83 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
 
             <div>
               <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                for="password"
+                class="block text-sm font-medium text-gray-700 mb-2"
               >
                 Password
               </label>
-              <div className="relative">
-                <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div class="relative">
+                <Lock class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
+                  type={showPassword() ? "text" : "password"}
+                  value={password()}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   placeholder="Create a strong password"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => setShowPassword(!showPassword())}
+                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword() ? <EyeOff class="w-5 h-5" /> : <Eye class="w-5 h-5" />}
                 </button>
               </div>
             </div>
 
             <div>
               <label
-                htmlFor="confirmPassword"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                for="confirmPassword"
+                class="block text-sm font-medium text-gray-700 mb-2"
               >
                 Confirm password
               </label>
-              <div className="relative">
-                <Lock className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div class="relative">
+                <Lock class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   id="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
+                  type={showConfirmPassword() ? "text" : "password"}
+                  value={confirmPassword()}
                   onChange={e => setConfirmPassword(e.target.value)}
-                  className="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
+                  class="w-full pl-10 pr-12 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   placeholder="Confirm your password"
                   required
                 />
                 <button
                   type="button"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword())}
+                  class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showConfirmPassword() ? <EyeOff class="w-5 h-5" /> : <Eye class="w-5 h-5" />}
                 </button>
               </div>
             </div>
 
-            <div className="flex items-start">
+            <div class="flex items-start">
               <input
                 id="acceptTerms"
                 type="checkbox"
-                checked={acceptTerms}
+                checked={acceptTerms()}
                 onChange={e => setAcceptTerms(e.target.checked)}
-                className="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
               <label
-                htmlFor="acceptTerms"
-                className="ml-2 text-sm text-gray-600"
+                for="acceptTerms"
+                class="ml-2 text-sm text-gray-600"
               >
                 I agree to the{" "}
                 <button
                   type="button"
-                  className="text-blue-600 hover:text-blue-700 transition-colors"
+                  class="text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   Terms of Service
                 </button>{" "}
                 and{" "}
                 <button
                   type="button"
-                  className="text-blue-600 hover:text-blue-700 transition-colors"
+                  class="text-blue-600 hover:text-blue-700 transition-colors"
                 >
                   Privacy Policy
                 </button>
@@ -225,19 +225,19 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
 
             <button
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
+              disabled={isLoading()}
+              class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-medium"
             >
-              {isLoading ? "Creating account..." : "Create account"}
+              {isLoading() ? "Creating account..." : "Create account"}
             </button>
           </form>
 
-          <div className="mt-6 text-center">
-            <p className="text-gray-600">
+          <div class="mt-6 text-center">
+            <p class="text-gray-600">
               Already have an account?{" "}
               <button
-                onClick={onSwitchToSignIn}
-                className="text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                onClick={props.onSwitchToSignIn}
+                class="text-blue-600 hover:text-blue-700 font-medium transition-colors"
               >
                 Sign in
               </button>
@@ -246,8 +246,8 @@ const SignUp: React.FC<SignUpProps> = ({ onSwitchToSignIn }) => {
         </div>
 
         {/* Footer */}
-        <div className="text-center mt-8">
-          <p className="text-sm text-gray-500">© 2024 EmailFlow. All rights reserved. </p>
+        <div class="text-center mt-8">
+          <p class="text-sm text-gray-500">© 2024 EmailFlow. All rights reserved. </p>
         </div>
       </div>
     </div>

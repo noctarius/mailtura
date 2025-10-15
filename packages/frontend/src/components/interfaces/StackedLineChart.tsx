@@ -1,16 +1,16 @@
 import type { DataSeries } from "@mailtura/rpcmodel/lib/series/dataseries.js";
-import ReactECharts from "echarts-for-react";
-import React, { useMemo } from "react";
 import { capitalize } from "../../helpers/capitalize.js";
 import { getSolidColor } from "../../helpers/charts-colors.js";
+import { EChartsAutoSize } from "echarts-solid";
+import { createMemo } from "solid-js";
 
 interface StackedLineChartProps {
   xSeries: string[];
   data: DataSeries<string>[];
 }
 
-const StackLineChart: React.FC<StackedLineChartProps> = ({ xSeries, data }) => {
-  const buildOptions = useMemo(() => {
+const StackLineChart = (props: StackedLineChartProps) => {
+  const buildOptions = createMemo(() => {
     return {
       tooltip: {
         trigger: "axis",
@@ -34,7 +34,7 @@ const StackLineChart: React.FC<StackedLineChartProps> = ({ xSeries, data }) => {
         },
       },
       legend: {
-        data: data.map(series => capitalize(series.series)),
+        data: props.data.map(series => capitalize(series.series)),
         bottom: 0,
         textStyle: {
           color: "#6b7280",
@@ -49,7 +49,7 @@ const StackLineChart: React.FC<StackedLineChartProps> = ({ xSeries, data }) => {
       xAxis: {
         type: "category",
         boundaryGap: false,
-        data: xSeries,
+        data: props.xSeries,
         axisLine: {
           lineStyle: {
             color: "#e5e7eb",
@@ -77,8 +77,8 @@ const StackLineChart: React.FC<StackedLineChartProps> = ({ xSeries, data }) => {
           },
         },
       },
-      series: data.map((series, index) => {
-        const dataPoints = data.find(d => d.series === series.series)?.entries;
+      series: props.data.map((series, index) => {
+        const dataPoints = props.data.find(d => d.series === series.series)?.entries;
         return {
           name: capitalize(series.series),
           type: "line",
@@ -99,12 +99,12 @@ const StackLineChart: React.FC<StackedLineChartProps> = ({ xSeries, data }) => {
         };
       }),
     };
-  }, [xSeries, data]);
+  });
 
   return (
     <div style={{ height: "100%", width: "100%" }}>
-      <ReactECharts
-        option={buildOptions}
+      <EChartsAutoSize
+        option={buildOptions()}
         style={{ height: "100%", width: "100%" }}
         opts={{ renderer: "canvas" }}
       />

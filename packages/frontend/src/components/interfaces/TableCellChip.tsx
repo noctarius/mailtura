@@ -1,19 +1,19 @@
-import React from "react";
 import clsx from "clsx";
 import { TailwindBgColor } from "../../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../../helpers/tailwind-text-colors.ts";
+import { JSX } from "solid-js";
 
 interface TableCellChipProps {
   value: string;
   bgColor: TailwindBgColor;
   textColor: TailwindTextColor;
-  icon?: React.ReactNode;
+  icon?: JSX.Element;
 }
 
-const TableCellChip: React.FC<TableCellChipProps> = ({ value, bgColor, textColor, icon }) => {
+const TableCellChip = (props: TableCellChipProps) => {
   return (
     <span
-      className={clsx(
+      class={clsx(
         "inline-flex",
         "items-center",
         "space-x-1",
@@ -21,12 +21,12 @@ const TableCellChip: React.FC<TableCellChipProps> = ({ value, bgColor, textColor
         "py-1",
         "rounded-full",
         "text-xs font-medium",
-        bgColor,
-        textColor
+        props.bgColor,
+        props.textColor
       )}
     >
-      {icon}
-      <span className="capitalize">{value}</span>
+      {props.icon}
+      <span class="capitalize">{props.value}</span>
     </span>
   );
 };

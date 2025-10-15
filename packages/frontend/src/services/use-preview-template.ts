@@ -1,5 +1,5 @@
 import { useApi } from "../hooks/useApi.js";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/solid-query";
 import * as murmurhash from "@timepp/murmurhash";
 
 interface PreviewTemplateProps {
@@ -11,8 +11,8 @@ interface PreviewTemplateProps {
 export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTemplateProps) {
   const client = useApi();
 
-  const cacheKey = murmurhash.murmurHash3_x86_128(content).toString()
-  return useQuery({
+  const cacheKey = murmurhash.murmurHash3_x86_128(content).toString();
+  return useQuery(() => ({
     queryKey: ["template-preview", cacheKey],
     queryFn: async () => {
       const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview", {
@@ -29,7 +29,7 @@ export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTem
             lastName: "Doe",
           },
         },
-        parseAs: "text"
+        parseAs: "text",
       });
 
       if (response.error) {
@@ -38,5 +38,5 @@ export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTem
 
       return response.data;
     },
-  });
+  }));
 }

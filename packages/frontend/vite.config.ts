@@ -1,11 +1,11 @@
-import react from "@vitejs/plugin-react";
+import solidPlugin from "vite-plugin-solid";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [solidPlugin()],
   optimizeDeps: {
-    exclude: ["lucide-react"],
+    exclude: ["lucide-solid"],
   },
   resolve: {
     preserveSymlinks: true, // this is the fix!
@@ -20,12 +20,9 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (id.includes("moment"))
-              return "vendor-moment";
-            if (id.includes("lucide-react"))
-              return "vendor-lucide";
-            if (id.includes("echarts"))
-              return "vendor-echarts";
+            if (id.includes("moment")) return "vendor-moment";
+            if (id.includes("lucide-solid")) return "vendor-lucide";
+            if (id.includes("echarts")) return "vendor-echarts";
             return "vendor";
           }
 

@@ -1,5 +1,5 @@
 import { useApi } from "../hooks/useApi.js";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/solid-query";
 
 interface CampaignsQueryProps {
   tenantId: string;
@@ -8,7 +8,7 @@ interface CampaignsQueryProps {
 export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
   const client = useApi();
 
-  return useQuery({
+  return useQuery(() => ({
     queryKey: ["campaigns", tenantId],
     queryFn: async () => {
       const response = await client.GET("/api/v1/tenants/{tenant_id}/campaigns/", {
@@ -25,5 +25,5 @@ export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
 
       return response.data;
     },
-  });
+  }));
 }

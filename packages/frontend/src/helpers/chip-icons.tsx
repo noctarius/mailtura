@@ -11,20 +11,20 @@ import {
   Pause,
   Play, Webhook,
   XCircle,
-} from "lucide-react";
+} from "lucide-solid";
 
 export function getCampaignStatusIcon(status: string) {
   switch (status) {
     case "Active":
-      return <Play className="w-3 h-3" />;
+      return <Play class="w-3 h-3" />;
     case "Scheduled":
-      return <Calendar className="w-3 h-3" />;
+      return <Calendar class="w-3 h-3" />;
     case "Completed":
-      return <BarChart3 className="w-3 h-3" />;
+      return <BarChart3 class="w-3 h-3" />;
     case "Draft":
-      return <Edit className="w-3 h-3" />;
+      return <Edit class="w-3 h-3" />;
     case "Paused":
-      return <Pause className="w-3 h-3" />;
+      return <Pause class="w-3 h-3" />;
     default:
       return null;
   }
@@ -33,29 +33,29 @@ export function getCampaignStatusIcon(status: string) {
 export function getActivityStatusIcon(status: string) {
   switch (status) {
     case "delivered":
-      return <CheckCircle className="w-3 h-3" />;
+      return <CheckCircle class="w-3 h-3" />;
     case "opened":
-      return <Eye className="w-3 h-3" />;
+      return <Eye class="w-3 h-3" />;
     case "clicked":
-      return <MousePointer className="w-3 h-3" />;
+      return <MousePointer class="w-3 h-3" />;
     case "pending":
-      return <Loader className="w-3 h-3" />;
+      return <Loader class="w-3 h-3" />;
     case "bounced":
-      return <AlertCircle className="w-3 h-3" />;
+      return <AlertCircle class="w-3 h-3" />;
     case "failed":
-      return <XCircle className="w-3 h-3" />;
+      return <XCircle class="w-3 h-3" />;
     default:
-      return <Clock className="w-3 h-3" />;
+      return <Clock class="w-3 h-3" />;
   }
 }
 
 export function getUnsubscribeSourceIcon(source: string) {
   switch (source) {
     case "API Request":
-      return <Webhook className="w-3 h-3" />;
+      return <Webhook class="w-3 h-3" />;
     case "Unsubscribe Link":
-      return <Link className="w-3 h-3" />;
+      return <Link class="w-3 h-3" />;
     case "Manual Addition":
-      return <Edit className="w-3 h-3" />;
+      return <Edit class="w-3 h-3" />;
   }
 }

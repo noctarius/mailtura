@@ -1,10 +1,8 @@
-import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import { render } from "solid-js/web";
 import "./index.css";
+import App from "./App.js";
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const wrapper = document.getElementById("root");
+if (!wrapper) throw new Error("Wrapper div not found");
+
+render(() => <App />, wrapper);
