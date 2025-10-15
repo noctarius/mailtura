@@ -1,6 +1,6 @@
 import { MonacoEditor } from "solid-monaco";
 import { Code, Copy, Eye, Save, Send, Settings, Triangle } from "lucide-solid";
-import { usePreviewTemplate } from "../services/use-preview-template.js";
+import { usePreviewTemplateQuery } from "../services/use-preview-template-query.js";
 import { createSignal } from "solid-js";
 
 const Templates = () => {
@@ -38,10 +38,10 @@ const Templates = () => {
     { id: "delivered", name: "Package delivered", category: "Transactional" },
   ];
 
-  const { data: renderedTemplate, isLoading } = usePreviewTemplate({
+  const previewTemplateQuery = usePreviewTemplateQuery({
     tenantId: "af52e600-5ead-4ffd-9cfa-de4f104b5518",
     templateId: "af52e600-5ead-4ffd-9cfa-de4f104b5518",
-    content: htmlContent(),
+    content: htmlContent,
   });
 
   return (
@@ -148,7 +148,7 @@ const Templates = () => {
                 language="html"
                 value={htmlContent()}
                 options={{ minimap: { enabled: false }, scrollBeyondLastLine: false }}
-                onChange={e => (e ? setHtmlContent(e) : null)}
+                onChange={e => setHtmlContent(e)}
               />
             </div>
           ) : (
@@ -191,9 +191,9 @@ const Templates = () => {
               <div class="p-4 border-b border-gray-200 bg-gray-50">
                 <h4 class="font-semibold text-gray-900">Preview</h4>
               </div>
-              {!isLoading && (
+              {!previewTemplateQuery.isLoading && (
                 <iframe
-                  srcdoc={renderedTemplate}
+                  srcdoc={previewTemplateQuery.data}
                   class="p-4 w-full h-full border-none"
                 />
               )}

@@ -3,6 +3,7 @@ import { capitalize } from "../../helpers/capitalize.js";
 import { getSolidColor } from "../../helpers/charts-colors.js";
 import { EChartsAutoSize } from "echarts-solid";
 import { createMemo } from "solid-js";
+import { EChartsOption } from "echarts";
 
 interface StackedLineChartProps {
   xSeries: string[];
@@ -10,16 +11,15 @@ interface StackedLineChartProps {
 }
 
 const StackLineChart = (props: StackedLineChartProps) => {
-  const buildOptions = createMemo(() => {
+  const buildOptions = createMemo((): EChartsOption => {
     return {
+      //@ts-expect-error(formatter type error)
       tooltip: {
         trigger: "axis",
         axisPointer: {
           type: "cross",
         },
-        formatter: (
-          params: { axisValue: number; seriesName: string; value: string; color: string }[]
-        ) => {
+        formatter(params: { axisValue: number; seriesName: string; value: string; color: string }[]) {
           return `<div style="font-weight: bold; margin-bottom: 8px;">${params[0].axisValue}</div>${params.reduce(
             (acc, param) => {
               return `${acc}
@@ -106,7 +106,7 @@ const StackLineChart = (props: StackedLineChartProps) => {
       <EChartsAutoSize
         option={buildOptions()}
         style={{ height: "100%", width: "100%" }}
-        opts={{ renderer: "canvas" }}
+        initOptions={{ renderer: "svg" }}
       />
     </div>
   );

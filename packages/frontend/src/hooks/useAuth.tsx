@@ -1,7 +1,7 @@
 import { AuthState, Permissions, ROLE_PERMISSIONS, Tenant, User } from "../types/auth.js";
-import { createContext, createEffect, createSignal, ParentComponent, useContext } from "solid-js";
+import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 
-interface AuthContextType extends AuthState {
+interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   signOut: () => void;
@@ -9,6 +9,10 @@ interface AuthContextType extends AuthState {
   hasAnyPermission: (permissions: Permissions[]) => boolean;
   hasAllPermissions: (permissions: Permissions[]) => boolean;
   switchTenant: (tenantId: string) => Promise<void>;
+  isAuthenticated: () => boolean;
+  user: () => User | null;
+  tenant: () => Tenant | null;
+  isLoading: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -216,8 +220,15 @@ export const useAuthProvider = () => {
     setAuthState(updatedAuthState);
   };
 
+  const isAuthenticated = createMemo(() => authState().isAuthenticated || false);
+  const user = createMemo(() => authState().user);
+  const tenant = createMemo(() => authState().tenant);
+  const isLoading = createMemo(() => authState().loading || false);
   return {
-    ...authState(),
+    isAuthenticated,
+    user,
+    tenant,
+    isLoading,
     signIn,
     signUp,
     signOut,

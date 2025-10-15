@@ -5,15 +5,17 @@ import * as murmurhash from "@timepp/murmurhash";
 interface PreviewTemplateProps {
   tenantId: string;
   templateId: string;
-  content: string;
+  content: () => string;
 }
 
-export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTemplateProps) {
+const hash = (content: string) => murmurhash.murmurHash3_x86_128(content).toString();
+
+export function usePreviewTemplateQuery({ tenantId, templateId, content }: PreviewTemplateProps) {
   const client = useApi();
 
-  const cacheKey = murmurhash.murmurHash3_x86_128(content).toString();
+  const cacheKey = () => ["template-preview", hash(content())];
   return useQuery(() => ({
-    queryKey: ["template-preview", cacheKey],
+    queryKey: cacheKey(),
     queryFn: async () => {
       const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview", {
         params: {
@@ -23,7 +25,7 @@ export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTem
           },
         },
         body: {
-          content,
+          content: content(),
           data: {
             firstName: "John",
             lastName: "Doe",

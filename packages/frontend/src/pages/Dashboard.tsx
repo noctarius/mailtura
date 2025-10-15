@@ -2,11 +2,7 @@ import ChartSection from "../components/interfaces/ChartSection";
 import MetricsGrid from "../components/interfaces/MetricsGrid";
 import RecentActivity from "../components/interfaces/RecentActivity";
 
-interface DashboardProps {
-  setActiveView: (view: string) => void;
-}
-
-const Dashboard = (props: DashboardProps) => {
+const Dashboard = () => {
   return (
     <div class="p-8">
       <div class="mb-8">
@@ -21,7 +17,7 @@ const Dashboard = (props: DashboardProps) => {
           <ChartSection />
         </div>
         <div class="lg:col-span-1">
-          <RecentActivity setActiveView={props.setActiveView} />
+          <RecentActivity />
         </div>
       </div>
     </div>

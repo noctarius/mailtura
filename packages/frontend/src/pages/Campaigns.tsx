@@ -12,7 +12,7 @@ const Campaigns = () => {
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
 
-  const { data: loadedCampaigns, isLoading } = useCampaignQuery({
+  const campaignQuery = useCampaignQuery({
     tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def",
   });
 
@@ -83,26 +83,22 @@ const Campaigns = () => {
     }
   };
 
-  const campaigns = createMemo(
-    () =>
-      (loadedCampaigns || []).map(campaign => {
-        const campaignRate = campaignsRates.find(rate => rate.id === campaign.id);
-        return {
-          ...campaign,
-          ...campaignRate,
-        };
-      }),
-    [loadedCampaigns, isLoading]
+  const campaigns = createMemo(() =>
+    (campaignQuery.data || []).map(campaign => {
+      const campaignRate = campaignsRates.find(rate => rate.id === campaign.id);
+      return {
+        ...campaign,
+        ...campaignRate,
+      };
+    }),
   );
 
-  const filteredCampaigns = createMemo(
-    () =>
-      (campaigns() || []).filter(campaign => {
-        const matchesStatus = selectedStatus() === "all" || campaign.status === selectedStatus();
-        const matchesSearch = campaign.name.toLowerCase().includes(searchTerm().toLowerCase());
-        return matchesStatus && matchesSearch;
-      }),
-    [campaigns, isLoading, selectedStatus, searchTerm]
+  const filteredCampaigns = createMemo(() =>
+    (campaigns() || []).filter(campaign => {
+      const matchesStatus = selectedStatus() === "all" || campaign.status === selectedStatus();
+      const matchesSearch = campaign.name.toLowerCase().includes(searchTerm().toLowerCase());
+      return matchesStatus && matchesSearch;
+    })
   );
 
   return (
@@ -154,7 +150,7 @@ const Campaigns = () => {
           </div>
 
           <div class="text-sm text-gray-600">
-            {filteredCampaigns.length} of {campaigns?.length || 0} campaigns
+            {filteredCampaigns().length} of {campaigns()?.length || 0} campaigns
           </div>
         </div>
       </div>
@@ -179,9 +175,7 @@ const Campaigns = () => {
               </thead>
               <tbody class="divide-y divide-gray-200">
                 {filteredCampaigns().map(campaign => (
-                  <tr
-                    class="hover:bg-gray-50 transition-colors"
-                  >
+                  <tr class="hover:bg-gray-50 transition-colors">
                     <td class="py-4 px-6">
                       <div>
                         <div class="font-medium text-gray-900">{campaign.name}</div>
@@ -252,7 +246,7 @@ const Campaigns = () => {
           </div>
         </div>
 
-        {filteredCampaigns.length === 0 && (
+        {filteredCampaigns().length === 0 && (
           <div class="text-center py-12">
             <Send class="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 class="text-lg font-medium text-gray-900 mb-2">No campaigns found</h3>

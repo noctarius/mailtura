@@ -1,19 +1,23 @@
 import { Activity, ChartColumn, FileText, LogOut, Send, Settings, Shield, TrendingUp, Users, Zap } from "lucide-solid";
 import SidebarEntry, { NavigationItem } from "./SidebarEntry.tsx";
 import { useAuth } from "../../hooks/useAuth.tsx";
+import { createMemo } from "solid-js";
+import { useLocation } from "@solidjs/router";
 
-interface SidebarProps {
-  activeView: string;
-  setActiveView: (view: string) => void;
-}
+const Sidebar = () => {
+  const auth = useAuth();
+  const user = createMemo(() => auth.user());
 
-const Sidebar = (props: SidebarProps) => {
-  const { user, signOut } = useAuth();
+  const location = useLocation();
+  const activeView = createMemo(() => {
+    const path = location.pathname.endsWith("/") ? location.pathname.slice(0, -1) : location.pathname;
+    return path.split("/").pop();
+  }, [location]);
 
   const navItems: NavigationItem[] = [
     { id: "dashboard", label: "Dashboard", icon: ChartColumn },
     { id: "campaigns", label: "Campaigns", icon: Send },
-    { id: "templates", label: "Templates", icon: FileText },
+    { id: "template-editor", label: "Templates", icon: FileText },
     { id: "contacts", label: "Contacts", icon: Users },
     { id: "activity", label: "Activity", icon: Activity },
     { id: "analytics", label: "Analytics", icon: TrendingUp },
@@ -23,7 +27,7 @@ const Sidebar = (props: SidebarProps) => {
       icon: Settings,
       subitems: [
         { id: "account", label: "Account" },
-        { id: "api-keys", label: "API Key Management" },
+        { id: "api-key-management", label: "API Key Management" },
         { id: "integrations", label: "Integrations" },
         { id: "tenant-management", label: "Tenant Management", permissions: ["manage::tenants"] },
       ],
@@ -57,8 +61,7 @@ const Sidebar = (props: SidebarProps) => {
             return (
               <SidebarEntry
                 navigationItem={item}
-                activeView={props.activeView}
-                setActiveView={props.setActiveView}
+                activeView={activeView}
               />
             );
           })}
@@ -69,17 +72,17 @@ const Sidebar = (props: SidebarProps) => {
         <div class="flex items-center justify-between">
           <div class="flex items-center space-x-3">
             <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
-              <span class="text-white text-sm font-medium">{user?.firstName.charAt(0).toUpperCase()}</span>
+              <span class="text-white text-sm font-medium">{user()?.firstName.charAt(0).toUpperCase()}</span>
             </div>
             <div>
               <p class="text-sm font-medium">
-                {user?.firstName} {user?.lastName}
+                {user()?.firstName} {user()?.lastName}
               </p>
-              <p class="text-xs text-slate-400">{user?.email}</p>
+              <p class="text-xs text-slate-400">{user()?.email}</p>
             </div>
           </div>
           <button
-            onClick={signOut}
+            onClick={auth.signOut}
             class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors"
             title="Sign out"
           >

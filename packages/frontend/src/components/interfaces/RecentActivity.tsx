@@ -1,10 +1,6 @@
 import { AlertCircle, CheckCircle, Clock, Mail } from "lucide-solid";
 
-interface RecentActivityProps {
-  setActiveView: (view: string) => void;
-}
-
-const RecentActivity = (props: RecentActivityProps) => {
+const RecentActivity = () => {
   const activities = [
     {
       id: 1,
@@ -86,14 +82,12 @@ const RecentActivity = (props: RecentActivityProps) => {
         })}
       </div>
 
-      <button
-        class="w-full mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium"
-        onClick={() => {
-          props.setActiveView("activity");
-        }}
+      <a
+        class="button w-full mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium"
+        href="/activity"
       >
         View all activity
-      </button>
+      </a>
     </div>
   );
 };

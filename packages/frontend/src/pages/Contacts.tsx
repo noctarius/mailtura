@@ -15,7 +15,7 @@ import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { useContactsQuery } from "../services/use-contacts-query.js";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
-import { createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 
 interface SubscriberList {
   id: string;
@@ -26,7 +26,7 @@ interface SubscriberList {
 }
 
 const Contacts = () => {
-  const { data: contacts, isLoading } = useContactsQuery({ tenantId: "0199c2c0-7c5e-761d-8b61-f9384f5126ed" });
+  const contactsQuery = useContactsQuery({ tenantId: "0199c2c0-7c5e-761d-8b61-f9384f5126ed" });
 
   const [selectedList, setSelectedList] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
@@ -98,15 +98,16 @@ const Contacts = () => {
     }
   };
 
-  const filteredContacts =
-    contacts?.filter(contact => {
+  const filteredContacts = createMemo(() =>
+    (contactsQuery.data || []).filter(contact => {
       const matchesList = selectedList() === "all" || contact.listIds.includes(selectedList());
       const matchesSearch =
         contact.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
       return matchesList && matchesSearch;
-    }) || [];
+    })
+  );
 
   const AddContactModal = () => {
     const [newContact, setNewContact] = createSignal({
@@ -409,14 +410,14 @@ const Contacts = () => {
             </div>
 
             <div class="text-sm text-gray-600">
-              {filteredContacts.length} of {contacts?.length || 0} contacts
+              {filteredContacts.length} of {contactsQuery.data?.length || 0} contacts
             </div>
           </div>
         </div>
 
         {/* Contacts Table */}
         <div class="flex-1 overflow-auto p-8">
-          {isLoading ? (
+          {contactsQuery.isLoading ? (
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
               <div class="flex flex-col items-center justify-center space-y-4">
                 <div class="relative">
@@ -461,7 +462,7 @@ const Contacts = () => {
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-gray-200">
-                    {filteredContacts.map(contact => (
+                    {filteredContacts().map(contact => (
                       <tr class="hover:bg-gray-50 transition-colors">
                         <td class="py-4 px-6">
                           <div class="flex items-center space-x-3">
