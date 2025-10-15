@@ -4,8 +4,8 @@ VALUES ('0199e407-dd7d-710f-957e-61af00ea997b', 'main', '2025-10-14 18:42:24.752
        ('0199e407-dd7f-7dfb-81fc-f39d09316def', 'customer', '2025-10-14 18:42:24.752', 'api', null, null);
 
 -- Contacts
-INSERT INTO contacts (id, tenant_id, email, first_name, last_name, last_activity_at, created_at, created_by, updated_at, updated_by, list_ids)
-VALUES ('0199c2c1-4c6b-7b41-9c39-7509825164d7', '0199e407-dd7f-7dfb-81fc-f39d09316def', 'john@doe.com', 'John', 'Doe', null, '2025-10-08 07:37:51.977', 'api', null, null, null);
+INSERT INTO contacts (id, tenant_id, email, first_name, last_name, last_activity_at, created_at, created_by, updated_at, updated_by)
+VALUES ('0199c2c1-4c6b-7b41-9c39-7509825164d7', '0199e407-dd7f-7dfb-81fc-f39d09316def', 'john@doe.com', 'John', 'Doe', null, '2025-10-08 07:37:51.977', 'api', null, null);
 
 -- Campaigns
 INSERT INTO campaigns (id, tenant_id, name, status, type, recipients, sent, created_at, created_by, updated_at, updated_by, delivered, scheduled_for)
