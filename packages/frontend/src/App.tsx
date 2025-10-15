@@ -15,6 +15,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
 import ApiKeyManagement from "./pages/ApiKeyManagement.js";
+import TenantManagement from "./pages/TenantManagement.js";
 
 const queryClient = new QueryClient();
 
@@ -64,6 +65,8 @@ function AppContent() {
         return <Bounces />;
       case "api-keys":
         return <ApiKeyManagement />;
+      case "tenant-management":
+        return <TenantManagement />;
       default:
         return <Dashboard setActiveView={setActiveView} />;
     }

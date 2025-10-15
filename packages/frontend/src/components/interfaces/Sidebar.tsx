@@ -26,6 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, setActiveView }) => {
         { id: "account", label: "Account" },
         { id: "api-keys", label: "API Key Management" },
         { id: "integrations", label: "Integrations" },
+        { id: "tenant-management", label: "Tenant Management", permissions: ["manage::tenants"] },
       ],
     },
     {
