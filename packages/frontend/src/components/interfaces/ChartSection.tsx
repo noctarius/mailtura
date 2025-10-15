@@ -1,9 +1,9 @@
-import React, { useState } from "react";
 import { objectToDataSeries } from "../../helpers/object-to-data-series.js";
 import StackedLineChart from "./StackedLineChart.js";
+import { createSignal } from "solid-js";
 
-const ChartSection: React.FC = () => {
-  const [chartType, setChartType] = useState<"emails" | "performance">("emails");
+const ChartSection = () => {
+  const [chartType, setChartType] = createSignal<"emails" | "performance">("emails");
 
   const emailData = [
     { name: "Jan", sent: 45000, delivered: 44100, opened: 10584, clicked: 1673 },
@@ -24,30 +24,30 @@ const ChartSection: React.FC = () => {
   ];
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-      <div className="flex items-center justify-between mb-6">
+    <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+      <div class="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Email Analytics</h3>
-          <p className="text-sm text-gray-600">Track your email campaign performance over time</p>
+          <h3 class="text-lg font-semibold text-gray-900">Email Analytics</h3>
+          <p class="text-sm text-gray-600">Track your email campaign performance over time</p>
         </div>
-        <div className="flex space-x-2">
+        <div class="flex space-x-2">
           <button
             onClick={() => setChartType("emails")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${chartType === "emails" ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100"}`}
+            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${chartType() === "emails" ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100"}`}
           >
             Email Volume
           </button>
           <button
             onClick={() => setChartType("performance")}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${chartType === "performance" ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100"}`}
+            class={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${chartType() === "performance" ? "bg-blue-100 text-blue-700" : "text-gray-600 hover:bg-gray-100"}`}
           >
             Performance
           </button>
         </div>
       </div>
 
-      <div className="h-80">
-        {chartType === "emails" ? (
+      <div class="h-80">
+        {chartType() === "emails" ? (
           <StackedLineChart
             xSeries={emailData.map(item => item.name)}
             data={objectToDataSeries("name", emailData)}

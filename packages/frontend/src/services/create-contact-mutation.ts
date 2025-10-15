@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/solid-query";
 import { CreateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
 
 interface CreateContactProps {
@@ -20,10 +20,10 @@ const createContact = async (tenantId: string, contact: CreateContact) => {
 export function useCreateContact({ tenantId, contact }: CreateContactProps) {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  return useMutation(() => ({
     mutationFn: () => createContact(tenantId, contact),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["contacts", tenantId] });
     },
-  });
+  }));
 }

@@ -1,11 +1,11 @@
-import { Activity as ActivityIcon, Calendar, Eye, Filter, MousePointer, Search, User } from "lucide-react";
-import React, { useState } from "react";
+import { Activity as ActivityIcon, Calendar, Eye, Filter, MousePointer, Search, User } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { formatDateTime } from "../helpers/format-date-time.ts";
 import { getTimeSince } from "../helpers/time-since.ts";
 import { getActivityStatusIcon } from "../helpers/chip-icons.js";
+import { createSignal } from "solid-js";
 
 interface SentMessage {
   id: number;
@@ -21,10 +21,10 @@ interface SentMessage {
   subject: string;
 }
 
-const Activity: React.FC = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedStatus, setSelectedStatus] = useState("all");
-  const [selectedCampaign, setSelectedCampaign] = useState("all");
+const Activity = () => {
+  const [searchTerm, setSearchTerm] = createSignal("");
+  const [selectedStatus, setSelectedStatus] = createSignal("all");
+  const [selectedCampaign, setSelectedCampaign] = createSignal("all");
 
   const sentMessages: SentMessage[] = [
     {
@@ -175,28 +175,28 @@ const Activity: React.FC = () => {
 
   const filteredMessages = sentMessages.filter(message => {
     const matchesSearch =
-      message.receiverEmail.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.campaignName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.sendName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.subject.toLowerCase().includes(searchTerm.toLowerCase());
+      message.receiverEmail.toLowerCase().includes(searchTerm().toLowerCase()) ||
+      message.campaignName.toLowerCase().includes(searchTerm().toLowerCase()) ||
+      message.sendName.toLowerCase().includes(searchTerm().toLowerCase()) ||
+      message.subject.toLowerCase().includes(searchTerm().toLowerCase());
 
-    const matchesStatus = selectedStatus === "all" || message.status === selectedStatus;
-    const matchesCampaign = selectedCampaign === "all" || message.campaignName === selectedCampaign;
+    const matchesStatus = selectedStatus() === "all" || message.status === selectedStatus();
+    const matchesCampaign = selectedCampaign() === "all" || message.campaignName === selectedCampaign();
 
     return matchesSearch && matchesStatus && matchesCampaign;
   });
 
   return (
-    <div className="h-full flex flex-col bg-gray-50">
+    <div class="h-full flex flex-col bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-8">
-        <div className="flex items-center justify-between">
+      <div class="bg-white border-b border-gray-200 p-8">
+        <div class="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Activity</h1>
-            <p className="text-gray-600">Track all sent messages and their delivery status</p>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Activity</h1>
+            <p class="text-gray-600">Track all sent messages and their delivery status</p>
           </div>
-          <div className="flex items-center space-x-4">
-            <div className="text-sm text-gray-600">
+          <div class="flex items-center space-x-4">
+            <div class="text-sm text-gray-600">
               {filteredMessages.length} of {sentMessages.length} messages
             </div>
           </div>
@@ -204,26 +204,26 @@ const Activity: React.FC = () => {
       </div>
 
       {/* Filters and Search */}
-      <div className="bg-white border-b border-gray-200 p-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <div className="relative">
-              <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+      <div class="bg-white border-b border-gray-200 p-6">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <div class="relative">
+              <Search class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
                 placeholder="Search messages, emails, campaigns..."
-                value={searchTerm}
+                value={searchTerm()}
                 onChange={e => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-96"
+                class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-96"
               />
             </div>
 
-            <div className="flex items-center space-x-2">
-              <Filter className="w-5 h-5 text-gray-400" />
+            <div class="flex items-center space-x-2">
+              <Filter class="w-5 h-5 text-gray-400" />
               <select
-                value={selectedStatus}
+                value={selectedStatus()}
                 onChange={e => setSelectedStatus(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Status</option>
                 <option value="delivered">Delivered</option>
@@ -235,14 +235,13 @@ const Activity: React.FC = () => {
               </select>
 
               <select
-                value={selectedCampaign}
+                value={selectedCampaign()}
                 onChange={e => setSelectedCampaign(e.target.value)}
-                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Campaigns</option>
                 {campaigns.map(campaign => (
                   <option
-                    key={campaign}
                     value={campaign}
                   >
                     {campaign}
@@ -255,27 +254,26 @@ const Activity: React.FC = () => {
       </div>
 
       {/* Messages Table */}
-      <div className="flex-1 overflow-auto p-8">
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+      <div class="flex-1 overflow-auto p-8">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full">
+              <thead class="bg-gray-50 border-b border-gray-200">
                 <tr>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Status</th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Message</th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Sent At</th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Last Event</th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Opens</th>
-                  <th className="text-left py-4 px-6 font-semibold text-gray-900">Clicks</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Status</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Message</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Sent At</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Last Event</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Opens</th>
+                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Clicks</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody class="divide-y divide-gray-200">
                 {filteredMessages.map(message => (
                   <tr
-                    key={message.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    class="hover:bg-gray-50 transition-colors"
                   >
-                    <td className="py-4 px-6">
+                    <td class="py-4 px-6">
                       <TableCellChip
                         value={message.status}
                         bgColor={getStatusBgColor(message.status)}
@@ -283,45 +281,45 @@ const Activity: React.FC = () => {
                         icon={getActivityStatusIcon(message.status)}
                       />
                     </td>
-                    <td className="py-4 px-6">
-                      <div className="space-y-1">
-                        <div className="flex items-center space-x-2">
-                          <User className="w-4 h-4 text-gray-400" />
-                          <span className="font-medium text-gray-900">{message.receiverEmail}</span>
+                    <td class="py-4 px-6">
+                      <div class="space-y-1">
+                        <div class="flex items-center space-x-2">
+                          <User class="w-4 h-4 text-gray-400" />
+                          <span class="font-medium text-gray-900">{message.receiverEmail}</span>
                         </div>
-                        <div className="text-sm text-gray-600">{message.subject}</div>
-                        <div className="flex items-center space-x-2 text-xs text-gray-500">
-                          <span className="bg-gray-100 px-2 py-1 rounded">{message.campaignName}</span>
+                        <div class="text-sm text-gray-600">{message.subject}</div>
+                        <div class="flex items-center space-x-2 text-xs text-gray-500">
+                          <span class="bg-gray-100 px-2 py-1 rounded">{message.campaignName}</span>
                           <span>•</span>
                           <span>{message.sendName}</span>
                         </div>
                       </div>
                     </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4 text-gray-400" />
+                    <td class="py-4 px-6">
+                      <div class="flex items-center space-x-2">
+                        <Calendar class="w-4 h-4 text-gray-400" />
                         <div>
-                          <div className="text-sm text-gray-900">{formatDateTime(message.sentAt)}</div>
-                          <div className="text-xs text-gray-500">{getTimeSince(message.sentAt, true)}</div>
+                          <div class="text-sm text-gray-900">{formatDateTime(message.sentAt)}</div>
+                          <div class="text-xs text-gray-500">{getTimeSince(message.sentAt, true)}</div>
                         </div>
                       </div>
                     </td>
-                    <td className="py-4 px-6">
+                    <td class="py-4 px-6">
                       <div>
-                        <div className="text-sm text-gray-900 capitalize">{message.lastEventType}</div>
-                        <div className="text-xs text-gray-500">{getTimeSince(message.lastEventReceived, true)}</div>
+                        <div class="text-sm text-gray-900 capitalize">{message.lastEventType}</div>
+                        <div class="text-xs text-gray-500">{getTimeSince(message.lastEventReceived, true)}</div>
                       </div>
                     </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center space-x-2">
-                        <Eye className="w-4 h-4 text-blue-500" />
-                        <span className="text-sm font-medium text-gray-900">{message.opens}</span>
+                    <td class="py-4 px-6">
+                      <div class="flex items-center space-x-2">
+                        <Eye class="w-4 h-4 text-blue-500" />
+                        <span class="text-sm font-medium text-gray-900">{message.opens}</span>
                       </div>
                     </td>
-                    <td className="py-4 px-6">
-                      <div className="flex items-center space-x-2">
-                        <MousePointer className="w-4 h-4 text-purple-500" />
-                        <span className="text-sm font-medium text-gray-900">{message.clicks}</span>
+                    <td class="py-4 px-6">
+                      <div class="flex items-center space-x-2">
+                        <MousePointer class="w-4 h-4 text-purple-500" />
+                        <span class="text-sm font-medium text-gray-900">{message.clicks}</span>
                       </div>
                     </td>
                   </tr>
@@ -332,11 +330,11 @@ const Activity: React.FC = () => {
         </div>
 
         {filteredMessages.length === 0 && (
-          <div className="text-center py-12">
-            <ActivityIcon className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No messages found</h3>
-            <p className="text-gray-600 mb-6">
-              {searchTerm || selectedStatus !== "all" || selectedCampaign !== "all"
+          <div class="text-center py-12">
+            <ActivityIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No messages found</h3>
+            <p class="text-gray-600 mb-6">
+              {searchTerm() || selectedStatus() !== "all" || selectedCampaign() !== "all"
                 ? "Try adjusting your search or filter criteria."
                 : "Messages will appear here once you start sending campaigns."}
             </p>

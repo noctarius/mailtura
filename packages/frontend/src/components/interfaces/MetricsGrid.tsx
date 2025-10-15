@@ -1,7 +1,6 @@
-import { Mail, TrendingDown, TrendingUp, Users } from "lucide-react";
-import React from "react";
+import { Mail, TrendingDown, TrendingUp, Users } from "lucide-solid";
 
-const MetricsGrid: React.FC = () => {
+const MetricsGrid = () => {
   const metrics = [
     {
       title: "Emails Sent",
@@ -38,31 +37,26 @@ const MetricsGrid: React.FC = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {metrics.map((metric, index) => {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {metrics.map(metric => {
         const Icon = metric.icon;
         return (
-          <div
-            key={index}
-            className="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
-          >
-            <div className="flex items-center justify-between">
+          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between">
               <div>
-                <p className="text-sm font-medium text-gray-600 mb-1">{metric.title}</p>
-                <p className="text-2xl font-bold text-gray-900">{metric.value}</p>
-                <div className="flex items-center mt-2">
+                <p class="text-sm font-medium text-gray-600 mb-1">{metric.title}</p>
+                <p class="text-2xl font-bold text-gray-900">{metric.value}</p>
+                <div class="flex items-center mt-2">
                   <span
-                    className={`text-sm font-medium ${metric.changeType === "increase" ? "text-green-600" : "text-red-600"}`}
+                    class={`text-sm font-medium ${metric.changeType === "increase" ? "text-green-600" : "text-red-600"}`}
                   >
                     {metric.change}
                   </span>
-                  <span className="text-sm text-gray-500 ml-1">vs last month</span>
+                  <span class="text-sm text-gray-500 ml-1">vs last month</span>
                 </div>
               </div>
-              <div
-                className={`w-12 h-12 rounded-lg ${metric.color} flex items-center justify-center`}
-              >
-                <Icon className="w-6 h-6 text-white" />
+              <div class={`w-12 h-12 rounded-lg ${metric.color} flex items-center justify-center`}>
+                <Icon class="w-6 h-6 text-white" />
               </div>
             </div>
           </div>

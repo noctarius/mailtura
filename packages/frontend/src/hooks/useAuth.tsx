@@ -1,7 +1,7 @@
 import { AuthState, Permissions, ROLE_PERMISSIONS, Tenant, User } from "../types/auth.js";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 
-interface AuthContextType extends AuthState {
+interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   signOut: () => void;
@@ -9,6 +9,10 @@ interface AuthContextType extends AuthState {
   hasAnyPermission: (permissions: Permissions[]) => boolean;
   hasAllPermissions: (permissions: Permissions[]) => boolean;
   switchTenant: (tenantId: string) => Promise<void>;
+  isAuthenticated: () => boolean;
+  user: () => User | null;
+  tenant: () => Tenant | null;
+  isLoading: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -21,18 +25,14 @@ export const useAuth = () => {
   return context;
 };
 
-interface AuthProviderProps {
-  children: ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: ParentComponent = props => {
   const auth = useAuthProvider();
 
-  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={auth}>{props.children}</AuthContext.Provider>;
 };
 
 export const useAuthProvider = () => {
-  const [authState, setAuthState] = useState<AuthState>({
+  const [authState, setAuthState] = createSignal<AuthState>({
     isAuthenticated: false,
     user: null,
     tenant: null,
@@ -97,7 +97,7 @@ export const useAuthProvider = () => {
     },
   ];
 
-  useEffect(() => {
+  createEffect(() => {
     // Check for existing session
     const savedAuth = localStorage.getItem("emailflow_auth");
     if (savedAuth) {
@@ -117,7 +117,7 @@ export const useAuthProvider = () => {
     } else {
       setAuthState(prev => ({ ...prev, loading: false }));
     }
-  }, []);
+  });
 
   const signIn = async (email: string, _password: string): Promise<void> => {
     // Mock authentication - in real app this would be an API call
@@ -182,7 +182,7 @@ export const useAuthProvider = () => {
   const hasPermission = (permission: Permissions): boolean => {
     const [action, resource] = permission.split("::");
 
-    const permissions = authState.user?.permissions ?? [];
+    const permissions = authState().user?.permissions ?? [];
     if (action === "view" && permissions.includes(`manage::${resource}` as Permissions)) {
       return true;
     }
@@ -200,19 +200,19 @@ export const useAuthProvider = () => {
   const switchTenant = async (tenantId: string): Promise<void> => {
     // In real app, this would validate user access to tenant
     const tenant = mockTenants.find(t => t.id === tenantId);
-    if (!tenant || !authState.user) {
+    if (!tenant || !authState().user) {
       throw new Error("Cannot switch to tenant");
     }
 
     const updatedAuthState = {
-      ...authState,
+      ...authState(),
       tenant,
     };
 
     localStorage.setItem(
       "emailflow_auth",
       JSON.stringify({
-        user: authState.user,
+        user: authState().user,
         tenant,
       })
     );
@@ -220,8 +220,15 @@ export const useAuthProvider = () => {
     setAuthState(updatedAuthState);
   };
 
+  const isAuthenticated = createMemo(() => authState().isAuthenticated || false);
+  const user = createMemo(() => authState().user);
+  const tenant = createMemo(() => authState().tenant);
+  const isLoading = createMemo(() => authState().loading || false);
   return {
-    ...authState,
+    isAuthenticated,
+    user,
+    tenant,
+    isLoading,
     signIn,
     signUp,
     signOut,

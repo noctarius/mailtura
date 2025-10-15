@@ -1,19 +1,21 @@
 import { useApi } from "../hooks/useApi.js";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/solid-query";
 import * as murmurhash from "@timepp/murmurhash";
 
 interface PreviewTemplateProps {
   tenantId: string;
   templateId: string;
-  content: string;
+  content: () => string;
 }
 
-export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTemplateProps) {
+const hash = (content: string) => murmurhash.murmurHash3_x86_128(content).toString();
+
+export function usePreviewTemplateQuery({ tenantId, templateId, content }: PreviewTemplateProps) {
   const client = useApi();
 
-  const cacheKey = murmurhash.murmurHash3_x86_128(content).toString()
-  return useQuery({
-    queryKey: ["template-preview", cacheKey],
+  const cacheKey = () => ["template-preview", hash(content())];
+  return useQuery(() => ({
+    queryKey: cacheKey(),
     queryFn: async () => {
       const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview", {
         params: {
@@ -23,13 +25,13 @@ export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTem
           },
         },
         body: {
-          content,
+          content: content(),
           data: {
             firstName: "John",
             lastName: "Doe",
           },
         },
-        parseAs: "text"
+        parseAs: "text",
       });
 
       if (response.error) {
@@ -38,5 +40,5 @@ export function usePreviewTemplate({ tenantId, templateId, content }: PreviewTem
 
       return response.data;
     },
-  });
+  }));
 }

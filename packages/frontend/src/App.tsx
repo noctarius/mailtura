@@ -1,87 +1,106 @@
-import { useState } from "react";
+import { createSignal, lazy, ParentComponent } from "solid-js";
+import { Navigate, RouteDefinition, Router } from "@solidjs/router";
 import Sidebar from "./components/interfaces/Sidebar";
-import Activity from "./pages/Activity";
-import Bounces from "./pages/Bounces";
-import Campaigns from "./pages/Campaigns";
-import Contacts from "./pages/Contacts";
 import Dashboard from "./pages/Dashboard";
-import GlobalUnsubscribes from "./pages/GlobalUnsubscribes";
-import ListUnsubscribes from "./pages/ListUnsubscribes";
-import Settings from "./pages/Settings";
-import SignIn from "./pages/SignIn.tsx";
 import SignUp from "./pages/SignUp.tsx";
-import Templates from "./pages/TemplateEditor";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
-import ApiKeyManagement from "./pages/ApiKeyManagement.js";
-import TenantManagement from "./pages/TenantManagement.js";
+import SignIn from "./pages/SignIn.js";
 
 const queryClient = new QueryClient();
 
+const AppLayout: ParentComponent = props => {
+  return (
+    <>
+      <Sidebar />
+      <main class="flex-1 overflow-auto">{props.children}</main>
+    </>
+  );
+};
+
 function AppContent() {
-  const { isAuthenticated, loading } = useAuth();
-  const [activeView, setActiveView] = useState("dashboard");
-  const [authView, setAuthView] = useState<"signin" | "signup">("signin");
+  const auth = useAuth();
+  const [authView, setAuthView] = createSignal<"signin" | "signup">("signin");
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    if (authView === "signin") {
-      return <SignIn onSwitchToSignUp={() => setAuthView("signup")} />;
-    } else {
-      return <SignUp onSwitchToSignIn={() => setAuthView("signin")} />;
-    }
-  }
-
-  const renderContent = () => {
-    switch (activeView) {
-      case "dashboard":
-        return <Dashboard setActiveView={setActiveView} />;
-      case "campaigns":
-        return <Campaigns />;
-      case "templates":
-        return <Templates />;
-      case "account":
-        return <Settings />;
-      case "contacts":
-        return <Contacts />;
-      case "activity":
-        return <Activity />;
-      case "global-unsubscribes":
-        return <GlobalUnsubscribes />;
-      case "list-unsubscribes":
-        return <ListUnsubscribes />;
-      case "bounces":
-        return <Bounces />;
-      case "api-keys":
-        return <ApiKeyManagement />;
-      case "tenant-management":
-        return <TenantManagement />;
-      default:
-        return <Dashboard setActiveView={setActiveView} />;
-    }
-  };
+  const routes: RouteDefinition[] = [
+    {
+      path: "/",
+      component: () => <Navigate href="/dashboard" />,
+    },
+    {
+      path: "/dashboard",
+      component: () => <Dashboard />,
+    },
+    {
+      path: "/campaigns",
+      component: lazy(() => import("./pages/Campaigns.js")),
+    },
+    {
+      path: "/template-editor",
+      component: lazy(() => import("./pages/TemplateEditor.js")),
+    },
+    {
+      path: "/settings/account",
+      component: lazy(() => import("./pages/Settings.js")),
+    },
+    {
+      path: "/contacts",
+      component: lazy(() => import("./pages/Contacts.js")),
+    },
+    {
+      path: "/activity",
+      component: lazy(() => import("./pages/Activity.js")),
+    },
+    {
+      path: "/suppression/global-unsubscribes",
+      component: lazy(() => import("./pages/GlobalUnsubscribes.js")),
+    },
+    {
+      path: "/suppression/list-unsubscribes",
+      component: lazy(() => import("./pages/ListUnsubscribes.js")),
+    },
+    {
+      path: "/suppression/bounces",
+      component: lazy(() => import("./pages/Bounces.js")),
+    },
+    {
+      path: "/settings/api-key-management",
+      component: lazy(() => import("./pages/ApiKeyManagement.js")),
+    },
+    {
+      path: "/settings/tenant-management",
+      component: lazy(() => import("./pages/TenantManagement.js")),
+    },
+    {
+      path: "*",
+      component: () => <Dashboard />,
+    },
+  ];
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <div className="flex h-screen bg-gray-50">
-        <Sidebar
-          activeView={activeView}
-          setActiveView={setActiveView}
-        />
-        <main className="flex-1 overflow-auto">{renderContent()}</main>
-      </div>
-    </QueryClientProvider>
+    <>
+      {auth.isLoading() ? (
+        <div class="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div class="text-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      ) : !auth.isAuthenticated() ? (
+        authView() === "signin" ? (
+          <SignIn onSwitchToSignUp={() => setAuthView("signup")} />
+        ) : (
+          <SignUp onSwitchToSignIn={() => setAuthView("signin")} />
+        )
+      ) : (
+        <QueryClientProvider client={queryClient}>
+          <div class="flex h-screen bg-gray-50">
+            <Router root={AppLayout}>{routes}</Router>
+          </div>
+        </QueryClientProvider>
+      )}
+    </>
   );
 }
 
