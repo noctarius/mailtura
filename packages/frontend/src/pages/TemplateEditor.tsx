@@ -1,6 +1,6 @@
 import { MonacoEditor } from "solid-monaco";
 import { Code, Copy, Eye, Save, Send, Settings, Triangle } from "lucide-solid";
-import { usePreviewTemplateQuery } from "../services/use-preview-template-query.js";
+import { usePreviewTemplateQuery } from "../services/templates/use-preview-template-query.js";
 import { createSignal } from "solid-js";
 
 const Templates = () => {

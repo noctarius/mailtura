@@ -230,7 +230,8 @@ export const Subscriber = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      contact: Contact,
+      contactId: Type.String({ format: "uuid" }),
+      subscriberListId: Type.String({ format: "uuid" }),
       status: SubscriberStatus,
       subscribedAt: Type.String({ format: "date-time" }),
       createdAt: Type.String({ format: "date-time" }),

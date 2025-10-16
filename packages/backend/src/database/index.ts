@@ -43,8 +43,35 @@ const prisma = new PrismaClient().$extends({
               ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
                 ? args.include?._count.select
                 : {}),
-              bounce: true,
-              unsubscribe: true,
+              bounces: true,
+              unsubscribes: true,
+            },
+          },
+        };
+        return query(args);
+      },
+    },
+    subscriber_lists: {
+      async $allOperations({ operation, args, query }) {
+        if (
+          operation !== "findUnique" &&
+          operation !== "findMany" &&
+          operation !== "findFirst" &&
+          operation !== "findFirstOrThrow" &&
+          operation !== "findUniqueOrThrow"
+        ) {
+          return query(args);
+        }
+
+        args.include = {
+          ...args.include,
+          _count: {
+            ...(typeof args.include?._count === "object" ? args.include?._count : {}),
+            select: {
+              ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
+                ? args.include?._count.select
+                : {}),
+              subscribers: true,
             },
           },
         };
@@ -55,7 +82,7 @@ const prisma = new PrismaClient().$extends({
 });
 
 export type TenantEntity = tenants;
-export type ContactEntity = contacts & { _count?: { bounce?: number; unsubscribe?: number } };
+export type ContactEntity = contacts & { _count?: { bounces?: number; unsubscribes?: number } };
 export type CampaignStatusEnum = campaign_status;
 export type CampaignTypeEnum = campaign_type;
 export type CampaignEntity = campaigns;
@@ -66,7 +93,7 @@ export type BounceTypeEnum = bounce_type;
 export type BounceEntity = bounces;
 export type SubscriberStatusEnum = subscriber_status;
 export type SubscriberEntity = subscribers;
-export type SubscriberListEntity = subscriber_lists;
+export type SubscriberListEntity = subscriber_lists & { _count?: { subscribers?: number } };
 export type UnsubscribeSourceEnum = unsubscribe_source;
 export type UnsubscribeEntity = unsubscribes;
 export type UserEntity = users;

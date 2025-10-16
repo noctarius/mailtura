@@ -4,7 +4,7 @@ import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { getCampaignStatusIcon } from "../helpers/chip-icons.js";
-import { useCampaignQuery } from "../services/use-campaigns-query.js";
+import { useCampaignQuery } from "../services/campaigns/use-campaigns-query.js";
 import { formatDateTime } from "../helpers/format-date-time.js";
 import { createMemo, createSignal } from "solid-js";
 

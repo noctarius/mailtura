@@ -1055,6 +1055,7 @@ export interface paths {
                     "application/json": {
                         name: string;
                         description?: string;
+                        contactCount: number;
                     };
                 };
             };
@@ -1147,6 +1148,7 @@ export interface paths {
                 content: {
                     "application/json": {
                         name?: string;
+                        contactCount?: number;
                     } & {
                         description?: string | null;
                     };
@@ -1973,6 +1975,7 @@ export interface components {
             id: string;
             name: string;
             description?: string;
+            contactCount: number;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;

@@ -1,11 +1,11 @@
 import {
   Calendar,
   CreditCard as Edit,
-  Filter,
+  Ellipsis,
+  Funnel,
   List,
   Loader,
   Mail,
-  MoreHorizontal,
   Plus,
   Search,
   UserPlus,
@@ -13,20 +13,14 @@ import {
 } from "lucide-solid";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
-import { useContactsQuery } from "../services/use-contacts-query.js";
+import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createMemo, createSignal } from "solid-js";
-
-interface SubscriberList {
-  id: string;
-  name: string;
-  description: string;
-  contactCount: number;
-  createdAt: string;
-}
+import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
 
 const Contacts = () => {
-  const contactsQuery = useContactsQuery({ tenantId: "0199c2c0-7c5e-761d-8b61-f9384f5126ed" });
+  const contactsQuery = useContactsQuery({ tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def" });
+  const subscriberListsQuery = useSubscriberListsQuery({ tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def" });
 
   const [selectedList, setSelectedList] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
@@ -34,43 +28,9 @@ const Contacts = () => {
   const [showAddContact, setShowAddContact] = createSignal(false);
   const [showAddList, setShowAddList] = createSignal(false);
 
-  const subscriberLists: SubscriberList[] = [
-    {
-      id: "all",
-      name: "All Contacts",
-      description: "All contacts in your database",
-      contactCount: 15847,
-      createdAt: "2024-01-01",
-    },
-    {
-      id: "newsletter",
-      name: "Newsletter Subscribers",
-      description: "Users subscribed to weekly newsletter",
-      contactCount: 12456,
-      createdAt: "2024-01-15",
-    },
-    {
-      id: "customers",
-      name: "Customers",
-      description: "Active paying customers",
-      contactCount: 3891,
-      createdAt: "2024-01-10",
-    },
-    {
-      id: "trial-users",
-      name: "Trial Users",
-      description: "Users on free trial",
-      contactCount: 2847,
-      createdAt: "2024-01-20",
-    },
-    {
-      id: "vip",
-      name: "VIP Members",
-      description: "Premium tier customers",
-      contactCount: 456,
-      createdAt: "2024-01-25",
-    },
-  ];
+  const subscriberLists = createMemo(() => {
+    return subscriberListsQuery.data
+  })
 
   const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
@@ -190,7 +150,7 @@ const Contacts = () => {
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Subscriber Lists</label>
               <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
-                {subscriberLists.map(list => (
+                {subscriberLists()?.map(list => (
                   <div class="flex items-center space-x-2">
                     <input
                       type="checkbox"
@@ -339,7 +299,7 @@ const Contacts = () => {
 
         <div class="flex-1 overflow-y-auto p-4">
           <div class="space-y-2">
-            {subscriberLists.map(list => (
+            {subscriberLists()?.map(list => (
               <div
                 onClick={() => setSelectedList(list.id)}
                 class={`p-4 rounded-lg cursor-pointer transition-colors ${selectedList() === list.id ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50 border border-transparent"}`}
@@ -365,7 +325,7 @@ const Contacts = () => {
           <div class="flex items-center justify-between">
             <div>
               <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                {subscriberLists.find(list => list.id === selectedList())?.name || "Contacts"}
+                {subscriberLists()?.find(list => list.id === selectedList())?.name || "Contacts"}
               </h1>
               <p class="text-gray-600">Manage your contacts and subscriber lists </p>
             </div>
@@ -395,7 +355,7 @@ const Contacts = () => {
               </div>
 
               <div class="flex items-center space-x-2">
-                <Filter class="w-5 h-5 text-gray-400" />
+                <Funnel class="w-5 h-5 text-gray-400" />
                 <select
                   value={selectedStatus()}
                   onChange={e => setSelectedStatus(e.target.value)}
@@ -491,7 +451,7 @@ const Contacts = () => {
                         <td class="py-4 px-6">
                           <div class="flex flex-col space-y-1">
                             {contact.listIds.map(listId => {
-                              const list = subscriberLists.find(l => l.id === listId);
+                              const list = subscriberLists()?.find(l => l.id === listId);
                               return list ? (
                                 <div class="flex items-center justify-between">
                                   <div class="flex items-center space-x-2">
@@ -521,7 +481,7 @@ const Contacts = () => {
                               <Edit class="w-4 h-4" />
                             </button>
                             <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                              <MoreHorizontal class="w-4 h-4" />
+                              <Ellipsis class="w-4 h-4" />
                             </button>
                           </div>
                         </td>

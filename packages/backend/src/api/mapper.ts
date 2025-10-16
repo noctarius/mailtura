@@ -3,6 +3,7 @@ import type {
   ApiKeyEntity,
   CampaignEntity,
   ContactEntity,
+  SubscriberEntity,
   SubscriberListEntity,
   TemplateEntity,
   TenantEntity,
@@ -12,6 +13,7 @@ import {
   type ApiKey,
   type Campaign,
   Contact,
+  type Subscriber,
   type SubscriberList,
   type Template,
   Tenant,
@@ -56,16 +58,16 @@ export function mapTenant(tenant: TenantEntity): Tenant {
   };
 }
 
-type PotentiallyCountedContact = ContactEntity & { _count?: { bounce?: number; unsubscribe?: number } };
-type CountedContact = PotentiallyCountedContact & { _count: { bounce: number; unsubscribe: number } };
+type PotentiallyCountedContact = ContactEntity & { _count?: { bounces?: number; unsubscribes?: number } };
+type CountedContact = PotentiallyCountedContact & { _count: { bounces: number; unsubscribes: number } };
 export function mapContact(contact: PotentiallyCountedContact): Contact {
   const hasCount = (contact: PotentiallyCountedContact): contact is CountedContact =>
     contact._count !== undefined && //
-    contact._count.bounce !== undefined &&
-    contact._count.unsubscribe !== undefined;
+    contact._count.bounces !== undefined &&
+    contact._count.unsubscribes !== undefined;
 
   const status = hasCount(contact)
-    ? contact._count.bounce > 0 || contact._count.unsubscribe > 0
+    ? contact._count.bounces > 0 || contact._count.unsubscribes > 0
       ? "Unsubscribed"
       : "Subscribed"
     : "Unknown";
@@ -126,15 +128,36 @@ export function mapCampaign(campaign: CampaignEntity): Campaign {
   };
 }
 
-export function mapSubscriberList(subscriberList: SubscriberListEntity): SubscriberList {
+type PotentiallyCountedSubscriberList = SubscriberListEntity & { _count?: { subscribers?: number } };
+type CountedSubscriberList = PotentiallyCountedSubscriberList & { _count: { subscribers: number } };
+export function mapSubscriberList(subscriberList: PotentiallyCountedSubscriberList): SubscriberList {
+  const hasCount = (subscriberList: PotentiallyCountedSubscriberList): subscriberList is CountedSubscriberList =>
+    subscriberList._count !== undefined && //
+    subscriberList._count.subscribers !== undefined;
+
   return {
     id: subscriberList.id,
     name: subscriberList.name,
     description: subscriberList.description ?? undefined,
+    contactCount: hasCount(subscriberList) ? subscriberList._count.subscribers : 0,
     createdAt: mapDateTime(subscriberList.created_at),
     createdBy: subscriberList.created_by,
     updatedAt: mapDateTime(subscriberList.updated_at),
     updatedBy: subscriberList.updated_by ?? undefined,
+  };
+}
+
+export function mapSubscriber(subscriber: SubscriberEntity): Subscriber {
+  return {
+    id: subscriber.id,
+    contactId: subscriber.contact_id,
+    subscriberListId: subscriber.subscriber_list_id,
+    status: subscriber.status,
+    subscribedAt: mapDateTime(subscriber.subscribed_at),
+    createdAt: mapDateTime(subscriber.created_at),
+    createdBy: subscriber.created_by,
+    updatedAt: mapDateTime(subscriber.updated_at),
+    updatedBy: subscriber.updated_by ?? undefined,
   };
 }
 

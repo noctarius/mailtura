@@ -1,17 +1,18 @@
-import { useApi } from "../hooks/useApi.js";
+import { useApi } from "../../hooks/useApi.js";
 import { useQuery } from "@tanstack/solid-query";
+import { subscriberListKey } from "./keys.js";
 
-interface CampaignsQueryProps {
+interface SubscriberListsQueryProps {
   tenantId: string;
 }
 
-export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
+export function useSubscriberListsQuery({ tenantId }: SubscriberListsQueryProps) {
   const client = useApi();
 
   return useQuery(() => ({
-    queryKey: ["campaigns", tenantId],
+    queryKey: subscriberListKey.lists(tenantId),
     queryFn: async () => {
-      const response = await client.GET("/api/v1/tenants/{tenant_id}/campaigns/", {
+      const response = await client.GET("/api/v1/tenants/{tenant_id}/lists/", {
         params: {
           path: {
             tenant_id: tenantId,
