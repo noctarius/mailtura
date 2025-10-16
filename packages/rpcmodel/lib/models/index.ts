@@ -10,7 +10,6 @@ export const ErrorResponse = //
       $id: "ErrorResponse",
       description: "An error response",
       additionalProperties: false,
-      required: ["message"],
     }
   );
 
@@ -30,7 +29,6 @@ export const Tenant = //
       $id: "Tenant",
       description: "A tenant in the system",
       additionalProperties: false,
-      required: ["id", "name", "createdAt", "createdBy"],
     }
   );
 
@@ -55,7 +53,6 @@ export const Contact = //
       $id: "Contact",
       description: "A contact in the system",
       additionalProperties: false,
-      required: ["id", "email", "listIds", "status", "createdAt", "createdBy"],
     }
   );
 
@@ -114,22 +111,6 @@ export const Campaign = //
       $id: "Campaign",
       description: "A campaign in the system",
       additionalProperties: false,
-      required: [
-        "id",
-        "name",
-        "status",
-        "type",
-        "recipients",
-        "sent",
-        "delivered",
-        "opened",
-        "clicked",
-        "deliveryRate",
-        "openRate",
-        "clickRate",
-        "createdAt",
-        "createdBy",
-      ],
     }
   );
 
@@ -197,20 +178,6 @@ export const Activity = //
       $id: "Activity",
       description: "An activity in the system",
       additionalProperties: false,
-      required: [
-        "id",
-        "contact",
-        "sendName",
-        "subject",
-        "status",
-        "sendAt",
-        "lastEventReceivedAt",
-        "lastEventType",
-        "opens",
-        "clicks",
-        "createdAt",
-        "createdBy",
-      ],
     }
   );
 
@@ -242,7 +209,6 @@ export const Bounce = //
       $id: "Bounce",
       description: "A bounce in the system",
       additionalProperties: false,
-      required: ["id", "contact", "bouncedAt", "reason", "bounceType", "createdAt", "createdBy"],
     }
   );
 
@@ -276,7 +242,6 @@ export const Subscriber = //
       $id: "Subscriber",
       description: "A subscriber in the system",
       additionalProperties: false,
-      required: ["id", "contact", "status", "subscribedAt", "createdAt", "createdBy"],
     }
   );
 
@@ -288,6 +253,7 @@ export const SubscriberList = //
       id: Type.String({ format: "uuid" }),
       name: Type.String(),
       description: Type.Optional(Type.String()),
+      contactCount: Type.Integer({ minimum: 0 }),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),
@@ -297,7 +263,6 @@ export const SubscriberList = //
       $id: "SubscriberList",
       description: "A list of subscribers in the system",
       additionalProperties: false,
-      required: ["id", "name", "createdAt", "createdBy"],
     }
   );
 
@@ -339,7 +304,6 @@ export const Unsubscribe = //
       $id: "Unsubscribe",
       description: "An unsubscribe in the system",
       additionalProperties: false,
-      required: ["id", "contact", "source", "unsubscribedAt", "global", "listIds", "createdAt", "createdBy"],
     }
   );
 
@@ -365,7 +329,6 @@ export const User = //
       $id: "User",
       description: "A user in the system",
       additionalProperties: false,
-      required: ["id", "email", "role", "isActive", "permissions", "createdAt", "createdBy"],
     }
   );
 
@@ -390,7 +353,6 @@ export const ApiKey = //
       $id: "ApiKey",
       description: "An API key in the system",
       additionalProperties: false,
-      required: ["id", "name", "key", "isActive", "permissions", "createdAt", "createdBy"],
     }
   );
 
@@ -420,7 +382,6 @@ export const Template = //
       $id: "Template",
       description: "A template in the system",
       additionalProperties: false,
-      required: ["id", "name", "content", "properties", "createdAt", "createdBy"],
     }
   );
 
@@ -444,18 +405,6 @@ export const EmailMetricsChartData = //
       $id: "EmailMetricsChartData",
       description: "Email metrics chart data",
       additionalProperties: false,
-      required: [
-        "name",
-        "sent",
-        "delivered",
-        "opened",
-        "clicked",
-        "bounced",
-        "failed",
-        "complaint",
-        "pending",
-        "scheduled",
-      ],
     }
   );
 
@@ -475,7 +424,6 @@ export const PerformanceMetricsChartData = //
       $id: "PerformanceMetricsChartData",
       description: "Performance metrics chart data",
       additionalProperties: false,
-      required: ["name", "deliveryRate", "openRate", "clickRate", "bounceRate", "failedRate"],
     }
   );
 
