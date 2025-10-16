@@ -94,11 +94,9 @@ function AppContent() {
           <SignUp onSwitchToSignIn={() => setAuthView("signin")} />
         )
       ) : (
-        <QueryClientProvider client={queryClient}>
-          <div class="flex h-screen bg-gray-50">
-            <Router root={AppLayout}>{routes}</Router>
-          </div>
-        </QueryClientProvider>
+        <div class="flex h-screen bg-gray-50">
+          <Router root={AppLayout}>{routes}</Router>
+        </div>
       )}
     </>
   );
@@ -106,11 +104,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
+    <QueryClientProvider client={queryClient}>
       <ApiProvider>
-        <AppContent />
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
       </ApiProvider>
-    </AuthProvider>
+    </QueryClientProvider>
   );
 }
 export default App;

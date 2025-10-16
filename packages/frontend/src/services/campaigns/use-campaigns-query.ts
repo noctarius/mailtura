@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/solid-query";
 import { campaignsKeys } from "./keys.js";
 
 interface CampaignsQueryProps {
-  tenantId: string;
+  tenantId?: string;
 }
 
 export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
@@ -12,6 +12,7 @@ export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
   return useQuery(() => ({
     queryKey: campaignsKeys.campaigns(tenantId),
     queryFn: async () => {
+      if (!tenantId) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/campaigns/", {
         params: {
           path: {
@@ -26,5 +27,6 @@ export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
 
       return response.data;
     },
+    enabled: !!tenantId,
   }));
 }

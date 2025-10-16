@@ -7,13 +7,16 @@ import { getCampaignStatusIcon } from "../helpers/chip-icons.js";
 import { useCampaignQuery } from "../services/campaigns/use-campaigns-query.js";
 import { formatDateTime } from "../helpers/format-date-time.js";
 import { createMemo, createSignal } from "solid-js";
+import { useAuth } from "../hooks/useAuth.js";
 
 const Campaigns = () => {
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
 
+  const auth = useAuth();
+
   const campaignQuery = useCampaignQuery({
-    tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def",
+    tenantId: auth.tenant()?.id,
   });
 
   const campaignsRates = [

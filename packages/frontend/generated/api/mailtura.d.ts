@@ -1238,6 +1238,62 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/lists/{subscriber_list_id}/subscribers/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    subscriber_list_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Subscriber"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/users/": {
         parameters: {
             query?: never;
@@ -1937,24 +1993,10 @@ export interface components {
         Subscriber: {
             /** Format: uuid */
             id: string;
-            /** @description A contact in the system */
-            contact: {
-                /** Format: uuid */
-                id: string;
-                email: string;
-                firstName?: string;
-                lastName?: string;
-                /** Format: date-time */
-                lastActivity?: string;
-                listIds: string[];
-                status: string;
-                /** Format: date-time */
-                createdAt: string;
-                createdBy: string;
-                /** Format: date-time */
-                updatedAt?: string;
-                updatedBy?: string;
-            };
+            /** Format: uuid */
+            contactId: string;
+            /** Format: uuid */
+            subscriberListId: string;
             /**
              * @description The status of a subscriber
              * @default Subscribed

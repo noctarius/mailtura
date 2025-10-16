@@ -1,3 +1,5 @@
+import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
+
 export type Permissions =
   | "view::campaigns"
   | "manage::campaigns"
@@ -35,16 +37,6 @@ export interface User {
   isActive: boolean;
   createdAt: string;
   lastLoginAt?: string;
-}
-
-export interface Tenant {
-  id: string;
-  name: string;
-  domain: string;
-  isActive: boolean;
-  createdAt: string;
-  settings: TenantSettings;
-  userCount: number;
 }
 
 export interface TenantSettings {

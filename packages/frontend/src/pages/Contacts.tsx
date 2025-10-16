@@ -17,10 +17,13 @@ import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
+import { useAuth } from "../hooks/useAuth.js";
+import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
 
 const Contacts = () => {
-  const contactsQuery = useContactsQuery({ tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def" });
-  const subscriberListsQuery = useSubscriberListsQuery({ tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def" });
+  const auth = useAuth();
+
+  const tenantId = () => auth.tenant()?.id;
 
   const [selectedList, setSelectedList] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
@@ -28,9 +31,21 @@ const Contacts = () => {
   const [showAddContact, setShowAddContact] = createSignal(false);
   const [showAddList, setShowAddList] = createSignal(false);
 
+  const contactsQuery = useContactsQuery({ tenantId });
+  const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
+  const subscribersQuery = useSubscribersQuery({ tenantId, subscriber_list_id: selectedList });
+
   const subscriberLists = createMemo(() => {
-    return subscriberListsQuery.data
-  })
+    return [
+      {
+        id: "all",
+        name: "All Contacts",
+        description: "All contacts",
+        contactCount: contactsQuery.data?.length || 0,
+      },
+      ...(subscriberListsQuery.data || []).sort((a, b) => a.name.localeCompare(b.name)),
+    ];
+  });
 
   const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
@@ -60,12 +75,21 @@ const Contacts = () => {
 
   const filteredContacts = createMemo(() =>
     (contactsQuery.data || []).filter(contact => {
-      const matchesList = selectedList() === "all" || contact.listIds.includes(selectedList());
       const matchesSearch =
         contact.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
-      return matchesList && matchesSearch;
+
+      // Filter selected subscribers
+      const isSubscribed =
+        selectedList() === "all" ||
+        (subscribersQuery.data || []).some(
+          subscriber => subscriber.contactId === contact.id && subscriber.status === "Subscribed"
+        );
+
+      const matchesStatus = selectedStatus() === "all" || contact.status === selectedStatus();
+
+      return matchesSearch && isSubscribed && matchesStatus;
     })
   );
 
@@ -362,9 +386,9 @@ const Contacts = () => {
                   class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="all">All Status</option>
-                  <option value="subscribed">Subscribed</option>
-                  <option value="unsubscribed">Unsubscribed</option>
-                  <option value="bounced">Bounced</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Unsubscribed">Unsubscribed</option>
+                  <option value="Bounced">Bounced</option>
                 </select>
               </div>
             </div>
@@ -493,7 +517,7 @@ const Contacts = () => {
             </div>
           )}
 
-          {filteredContacts.length === 0 && (
+          {filteredContacts().length === 0 && (
             <div class="text-center py-12">
               <Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 class="text-lg font-medium text-gray-900 mb-2">No contacts found</h3>
