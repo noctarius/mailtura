@@ -1,6 +1,6 @@
-import { useApi } from "../hooks/useApi.js";
+import { useApi } from "../../hooks/useApi.js";
 import { useQuery } from "@tanstack/solid-query";
-import * as murmurhash from "@timepp/murmurhash";
+import { templateKeys } from "./keys.js";
 
 interface PreviewTemplateProps {
   tenantId: string;
@@ -8,14 +8,11 @@ interface PreviewTemplateProps {
   content: () => string;
 }
 
-const hash = (content: string) => murmurhash.murmurHash3_x86_128(content).toString();
-
 export function usePreviewTemplateQuery({ tenantId, templateId, content }: PreviewTemplateProps) {
   const client = useApi();
 
-  const cacheKey = () => ["template-preview", hash(content())];
   return useQuery(() => ({
-    queryKey: cacheKey(),
+    queryKey: templateKeys.template_preview(tenantId, templateId, content()),
     queryFn: async () => {
       const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview", {
         params: {

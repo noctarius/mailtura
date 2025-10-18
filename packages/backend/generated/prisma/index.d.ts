@@ -49,11 +49,6 @@ export type subscribers = $Result.DefaultSelection<Prisma.$subscribersPayload>
  */
 export type subscriber_lists = $Result.DefaultSelection<Prisma.$subscriber_listsPayload>
 /**
- * Model subscriber_list_contacts
- * 
- */
-export type subscriber_list_contacts = $Result.DefaultSelection<Prisma.$subscriber_list_contactsPayload>
-/**
  * Model unsubscribes
  * 
  */
@@ -373,16 +368,6 @@ export class PrismaClient<
     * ```
     */
   get subscriber_lists(): Prisma.subscriber_listsDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.subscriber_list_contacts`: Exposes CRUD operations for the **subscriber_list_contacts** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Subscriber_list_contacts
-    * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findMany()
-    * ```
-    */
-  get subscriber_list_contacts(): Prisma.subscriber_list_contactsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.unsubscribes`: Exposes CRUD operations for the **unsubscribes** model.
@@ -880,7 +865,6 @@ export namespace Prisma {
     bounces: 'bounces',
     subscribers: 'subscribers',
     subscriber_lists: 'subscriber_lists',
-    subscriber_list_contacts: 'subscriber_list_contacts',
     unsubscribes: 'unsubscribes',
     users: 'users',
     api_keys: 'api_keys',
@@ -904,7 +888,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "subscriber_list_contacts" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates"
+      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1426,80 +1410,6 @@ export namespace Prisma {
           }
         }
       }
-      subscriber_list_contacts: {
-        payload: Prisma.$subscriber_list_contactsPayload<ExtArgs>
-        fields: Prisma.subscriber_list_contactsFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.subscriber_list_contactsFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.subscriber_list_contactsFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          findFirst: {
-            args: Prisma.subscriber_list_contactsFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.subscriber_list_contactsFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          findMany: {
-            args: Prisma.subscriber_list_contactsFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>[]
-          }
-          create: {
-            args: Prisma.subscriber_list_contactsCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          createMany: {
-            args: Prisma.subscriber_list_contactsCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.subscriber_list_contactsCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>[]
-          }
-          delete: {
-            args: Prisma.subscriber_list_contactsDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          update: {
-            args: Prisma.subscriber_list_contactsUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          deleteMany: {
-            args: Prisma.subscriber_list_contactsDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.subscriber_list_contactsUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.subscriber_list_contactsUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>[]
-          }
-          upsert: {
-            args: Prisma.subscriber_list_contactsUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$subscriber_list_contactsPayload>
-          }
-          aggregate: {
-            args: Prisma.Subscriber_list_contactsAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateSubscriber_list_contacts>
-          }
-          groupBy: {
-            args: Prisma.subscriber_list_contactsGroupByArgs<ExtArgs>
-            result: $Utils.Optional<Subscriber_list_contactsGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.subscriber_list_contactsCountArgs<ExtArgs>
-            result: $Utils.Optional<Subscriber_list_contactsCountAggregateOutputType> | number
-          }
-        }
-      }
       unsubscribes: {
         payload: Prisma.$unsubscribesPayload<ExtArgs>
         fields: Prisma.unsubscribesFieldRefs
@@ -1973,7 +1883,6 @@ export namespace Prisma {
     bounces?: bouncesOmit
     subscribers?: subscribersOmit
     subscriber_lists?: subscriber_listsOmit
-    subscriber_list_contacts?: subscriber_list_contactsOmit
     unsubscribes?: unsubscribesOmit
     users?: usersOmit
     api_keys?: api_keysOmit
@@ -2059,17 +1968,17 @@ export namespace Prisma {
    */
 
   export type ContactsCountOutputType = {
-    activity: number
-    bounce: number
-    subscriber: number
-    unsubscribe: number
+    activities: number
+    bounces: number
+    subscribers: number
+    unsubscribes: number
   }
 
   export type ContactsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    activity?: boolean | ContactsCountOutputTypeCountActivityArgs
-    bounce?: boolean | ContactsCountOutputTypeCountBounceArgs
-    subscriber?: boolean | ContactsCountOutputTypeCountSubscriberArgs
-    unsubscribe?: boolean | ContactsCountOutputTypeCountUnsubscribeArgs
+    activities?: boolean | ContactsCountOutputTypeCountActivitiesArgs
+    bounces?: boolean | ContactsCountOutputTypeCountBouncesArgs
+    subscribers?: boolean | ContactsCountOutputTypeCountSubscribersArgs
+    unsubscribes?: boolean | ContactsCountOutputTypeCountUnsubscribesArgs
   }
 
   // Custom InputTypes
@@ -2086,28 +1995,28 @@ export namespace Prisma {
   /**
    * ContactsCountOutputType without action
    */
-  export type ContactsCountOutputTypeCountActivityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ContactsCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: activitiesWhereInput
   }
 
   /**
    * ContactsCountOutputType without action
    */
-  export type ContactsCountOutputTypeCountBounceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ContactsCountOutputTypeCountBouncesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: bouncesWhereInput
   }
 
   /**
    * ContactsCountOutputType without action
    */
-  export type ContactsCountOutputTypeCountSubscriberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ContactsCountOutputTypeCountSubscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: subscribersWhereInput
   }
 
   /**
    * ContactsCountOutputType without action
    */
-  export type ContactsCountOutputTypeCountUnsubscribeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type ContactsCountOutputTypeCountUnsubscribesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: unsubscribesWhereInput
   }
 
@@ -2117,11 +2026,11 @@ export namespace Prisma {
    */
 
   export type CampaignsCountOutputType = {
-    activity: number
+    activities: number
   }
 
   export type CampaignsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    activity?: boolean | CampaignsCountOutputTypeCountActivityArgs
+    activities?: boolean | CampaignsCountOutputTypeCountActivitiesArgs
   }
 
   // Custom InputTypes
@@ -2138,7 +2047,7 @@ export namespace Prisma {
   /**
    * CampaignsCountOutputType without action
    */
-  export type CampaignsCountOutputTypeCountActivityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type CampaignsCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: activitiesWhereInput
   }
 
@@ -2148,11 +2057,11 @@ export namespace Prisma {
    */
 
   export type Subscriber_listsCountOutputType = {
-    SubscriberListContacts: number
+    subscribers: number
   }
 
   export type Subscriber_listsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    SubscriberListContacts?: boolean | Subscriber_listsCountOutputTypeCountSubscriberListContactsArgs
+    subscribers?: boolean | Subscriber_listsCountOutputTypeCountSubscribersArgs
   }
 
   // Custom InputTypes
@@ -2169,39 +2078,8 @@ export namespace Prisma {
   /**
    * Subscriber_listsCountOutputType without action
    */
-  export type Subscriber_listsCountOutputTypeCountSubscriberListContactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: subscriber_list_contactsWhereInput
-  }
-
-
-  /**
-   * Count Type Subscriber_list_contactsCountOutputType
-   */
-
-  export type Subscriber_list_contactsCountOutputType = {
-    contacts: number
-  }
-
-  export type Subscriber_list_contactsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contacts?: boolean | Subscriber_list_contactsCountOutputTypeCountContactsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * Subscriber_list_contactsCountOutputType without action
-   */
-  export type Subscriber_list_contactsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Subscriber_list_contactsCountOutputType
-     */
-    select?: Subscriber_list_contactsCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * Subscriber_list_contactsCountOutputType without action
-   */
-  export type Subscriber_list_contactsCountOutputTypeCountContactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: contactsWhereInput
+  export type Subscriber_listsCountOutputTypeCountSubscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: subscribersWhereInput
   }
 
 
@@ -2460,7 +2338,7 @@ export namespace Prisma {
   type tenantsGetPayload<S extends boolean | null | undefined | tenantsDefaultArgs> = $Result.GetResult<Prisma.$tenantsPayload, S>
 
   type tenantsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<tenantsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<tenantsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: TenantsCountAggregateInputType | true
     }
 
@@ -2902,6 +2780,7 @@ export namespace Prisma {
      * Filter, which tenants to fetch.
      */
     where: tenantsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2920,6 +2799,7 @@ export namespace Prisma {
      * Filter, which tenants to fetch.
      */
     where: tenantsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -2968,6 +2848,7 @@ export namespace Prisma {
      * Filter by unique combinations of tenants.
      */
     distinct?: TenantsScalarFieldEnum | TenantsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3016,6 +2897,7 @@ export namespace Prisma {
      * Filter by unique combinations of tenants.
      */
     distinct?: TenantsScalarFieldEnum | TenantsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3059,6 +2941,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: TenantsScalarFieldEnum | TenantsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3077,6 +2960,7 @@ export namespace Prisma {
      * The data needed to create a tenants.
      */
     data: XOR<tenantsCreateInput, tenantsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3129,6 +3013,7 @@ export namespace Prisma {
      * Choose, which tenants to update.
      */
     where: tenantsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3199,6 +3084,7 @@ export namespace Prisma {
      * In case the tenants was found with the provided `where` argument, update it with this data.
      */
     update: XOR<tenantsUpdateInput, tenantsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3217,6 +3103,7 @@ export namespace Prisma {
      * Filter which tenants to delete.
      */
     where: tenantsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -3265,7 +3152,6 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     last_activity_at: Date | null
-    subscriber_list_contacts_id: string | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -3279,7 +3165,6 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     last_activity_at: Date | null
-    subscriber_list_contacts_id: string | null
     created_at: Date | null
     created_by: string | null
     updated_at: Date | null
@@ -3293,12 +3178,11 @@ export namespace Prisma {
     first_name: number
     last_name: number
     last_activity_at: number
-    subscriber_list_contacts_id: number
+    list_ids: number
     created_at: number
     created_by: number
     updated_at: number
     updated_by: number
-    list_ids: number
     _all: number
   }
 
@@ -3310,7 +3194,6 @@ export namespace Prisma {
     first_name?: true
     last_name?: true
     last_activity_at?: true
-    subscriber_list_contacts_id?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -3324,7 +3207,6 @@ export namespace Prisma {
     first_name?: true
     last_name?: true
     last_activity_at?: true
-    subscriber_list_contacts_id?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -3338,12 +3220,11 @@ export namespace Prisma {
     first_name?: true
     last_name?: true
     last_activity_at?: true
-    subscriber_list_contacts_id?: true
+    list_ids?: true
     created_at?: true
     created_by?: true
     updated_at?: true
     updated_by?: true
-    list_ids?: true
     _all?: true
   }
 
@@ -3426,12 +3307,11 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     last_activity_at: Date | null
-    subscriber_list_contacts_id: string | null
+    list_ids: string[]
     created_at: Date
     created_by: string
     updated_at: Date | null
     updated_by: string | null
-    list_ids: string[]
     _count: ContactsCountAggregateOutputType | null
     _min: ContactsMinAggregateOutputType | null
     _max: ContactsMaxAggregateOutputType | null
@@ -3458,17 +3338,15 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    subscriber_list_contacts_id?: boolean
+    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    list_ids?: boolean
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
-    activity?: boolean | contacts$activityArgs<ExtArgs>
-    bounce?: boolean | contacts$bounceArgs<ExtArgs>
-    subscriber?: boolean | contacts$subscriberArgs<ExtArgs>
-    unsubscribe?: boolean | contacts$unsubscribeArgs<ExtArgs>
+    activities?: boolean | contacts$activitiesArgs<ExtArgs>
+    bounces?: boolean | contacts$bouncesArgs<ExtArgs>
+    subscribers?: boolean | contacts$subscribersArgs<ExtArgs>
+    unsubscribes?: boolean | contacts$unsubscribesArgs<ExtArgs>
     _count?: boolean | ContactsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contacts"]>
 
@@ -3479,13 +3357,11 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    subscriber_list_contacts_id?: boolean
+    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    list_ids?: boolean
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
   }, ExtArgs["result"]["contacts"]>
 
   export type contactsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -3495,13 +3371,11 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    subscriber_list_contacts_id?: boolean
+    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    list_ids?: boolean
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
   }, ExtArgs["result"]["contacts"]>
 
   export type contactsSelectScalar = {
@@ -3511,38 +3385,31 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    subscriber_list_contacts_id?: boolean
+    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    list_ids?: boolean
   }
 
-  export type contactsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "email" | "first_name" | "last_name" | "last_activity_at" | "subscriber_list_contacts_id" | "created_at" | "created_by" | "updated_at" | "updated_by" | "list_ids", ExtArgs["result"]["contacts"]>
+  export type contactsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "email" | "first_name" | "last_name" | "last_activity_at" | "list_ids" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contacts"]>
   export type contactsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
-    activity?: boolean | contacts$activityArgs<ExtArgs>
-    bounce?: boolean | contacts$bounceArgs<ExtArgs>
-    subscriber?: boolean | contacts$subscriberArgs<ExtArgs>
-    unsubscribe?: boolean | contacts$unsubscribeArgs<ExtArgs>
+    activities?: boolean | contacts$activitiesArgs<ExtArgs>
+    bounces?: boolean | contacts$bouncesArgs<ExtArgs>
+    subscribers?: boolean | contacts$subscribersArgs<ExtArgs>
+    unsubscribes?: boolean | contacts$unsubscribesArgs<ExtArgs>
     _count?: boolean | ContactsCountOutputTypeDefaultArgs<ExtArgs>
   }
-  export type contactsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
-  }
-  export type contactsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    SubscriberListContacts?: boolean | contacts$SubscriberListContactsArgs<ExtArgs>
-  }
+  export type contactsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type contactsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $contactsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "contacts"
     objects: {
-      SubscriberListContacts: Prisma.$subscriber_list_contactsPayload<ExtArgs> | null
-      activity: Prisma.$activitiesPayload<ExtArgs>[]
-      bounce: Prisma.$bouncesPayload<ExtArgs>[]
-      subscriber: Prisma.$subscribersPayload<ExtArgs>[]
-      unsubscribe: Prisma.$unsubscribesPayload<ExtArgs>[]
+      activities: Prisma.$activitiesPayload<ExtArgs>[]
+      bounces: Prisma.$bouncesPayload<ExtArgs>[]
+      subscribers: Prisma.$subscribersPayload<ExtArgs>[]
+      unsubscribes: Prisma.$unsubscribesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3551,12 +3418,11 @@ export namespace Prisma {
       first_name: string | null
       last_name: string | null
       last_activity_at: Date | null
-      subscriber_list_contacts_id: string | null
+      list_ids: string[]
       created_at: Date
       created_by: string
       updated_at: Date | null
       updated_by: string | null
-      list_ids: string[]
     }, ExtArgs["result"]["contacts"]>
     composites: {}
   }
@@ -3564,7 +3430,7 @@ export namespace Prisma {
   type contactsGetPayload<S extends boolean | null | undefined | contactsDefaultArgs> = $Result.GetResult<Prisma.$contactsPayload, S>
 
   type contactsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<contactsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<contactsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: ContactsCountAggregateInputType | true
     }
 
@@ -3951,11 +3817,10 @@ export namespace Prisma {
    */
   export interface Prisma__contactsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    SubscriberListContacts<T extends contacts$SubscriberListContactsArgs<ExtArgs> = {}>(args?: Subset<T, contacts$SubscriberListContactsArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    activity<T extends contacts$activityArgs<ExtArgs> = {}>(args?: Subset<T, contacts$activityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$activitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    bounce<T extends contacts$bounceArgs<ExtArgs> = {}>(args?: Subset<T, contacts$bounceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$bouncesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    subscriber<T extends contacts$subscriberArgs<ExtArgs> = {}>(args?: Subset<T, contacts$subscriberArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscribersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    unsubscribe<T extends contacts$unsubscribeArgs<ExtArgs> = {}>(args?: Subset<T, contacts$unsubscribeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$unsubscribesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activities<T extends contacts$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, contacts$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$activitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bounces<T extends contacts$bouncesArgs<ExtArgs> = {}>(args?: Subset<T, contacts$bouncesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$bouncesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscribers<T extends contacts$subscribersArgs<ExtArgs> = {}>(args?: Subset<T, contacts$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscribersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    unsubscribes<T extends contacts$unsubscribesArgs<ExtArgs> = {}>(args?: Subset<T, contacts$unsubscribesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$unsubscribesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3991,12 +3856,11 @@ export namespace Prisma {
     readonly first_name: FieldRef<"contacts", 'String'>
     readonly last_name: FieldRef<"contacts", 'String'>
     readonly last_activity_at: FieldRef<"contacts", 'DateTime'>
-    readonly subscriber_list_contacts_id: FieldRef<"contacts", 'String'>
+    readonly list_ids: FieldRef<"contacts", 'String[]'>
     readonly created_at: FieldRef<"contacts", 'DateTime'>
     readonly created_by: FieldRef<"contacts", 'String'>
     readonly updated_at: FieldRef<"contacts", 'DateTime'>
     readonly updated_by: FieldRef<"contacts", 'String'>
-    readonly list_ids: FieldRef<"contacts", 'String[]'>
   }
     
 
@@ -4021,6 +3885,7 @@ export namespace Prisma {
      * Filter, which contacts to fetch.
      */
     where: contactsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4043,6 +3908,7 @@ export namespace Prisma {
      * Filter, which contacts to fetch.
      */
     where: contactsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4095,6 +3961,7 @@ export namespace Prisma {
      * Filter by unique combinations of contacts.
      */
     distinct?: ContactsScalarFieldEnum | ContactsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4147,6 +4014,7 @@ export namespace Prisma {
      * Filter by unique combinations of contacts.
      */
     distinct?: ContactsScalarFieldEnum | ContactsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4194,6 +4062,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: ContactsScalarFieldEnum | ContactsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4216,6 +4085,7 @@ export namespace Prisma {
      * The data needed to create a contacts.
      */
     data: XOR<contactsCreateInput, contactsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4246,10 +4116,6 @@ export namespace Prisma {
      */
     data: contactsCreateManyInput | contactsCreateManyInput[]
     skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: contactsIncludeCreateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4276,6 +4142,7 @@ export namespace Prisma {
      * Choose, which contacts to update.
      */
     where: contactsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4320,10 +4187,6 @@ export namespace Prisma {
      * Limit how many contacts to update.
      */
     limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: contactsIncludeUpdateManyAndReturn<ExtArgs> | null
   }
 
   /**
@@ -4354,6 +4217,7 @@ export namespace Prisma {
      * In case the contacts was found with the provided `where` argument, update it with this data.
      */
     update: XOR<contactsUpdateInput, contactsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4376,6 +4240,7 @@ export namespace Prisma {
      * Filter which contacts to delete.
      */
     where: contactsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -4393,28 +4258,9 @@ export namespace Prisma {
   }
 
   /**
-   * contacts.SubscriberListContacts
+   * contacts.activities
    */
-  export type contacts$SubscriberListContactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    where?: subscriber_list_contactsWhereInput
-  }
-
-  /**
-   * contacts.activity
-   */
-  export type contacts$activityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type contacts$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the activities
      */
@@ -4436,9 +4282,9 @@ export namespace Prisma {
   }
 
   /**
-   * contacts.bounce
+   * contacts.bounces
    */
-  export type contacts$bounceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type contacts$bouncesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the bounces
      */
@@ -4460,9 +4306,9 @@ export namespace Prisma {
   }
 
   /**
-   * contacts.subscriber
+   * contacts.subscribers
    */
-  export type contacts$subscriberArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type contacts$subscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the subscribers
      */
@@ -4484,9 +4330,9 @@ export namespace Prisma {
   }
 
   /**
-   * contacts.unsubscribe
+   * contacts.unsubscribes
    */
-  export type contacts$unsubscribeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type contacts$unsubscribesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the unsubscribes
      */
@@ -4796,7 +4642,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    activity?: boolean | campaigns$activityArgs<ExtArgs>
+    activities?: boolean | campaigns$activitiesArgs<ExtArgs>
     _count?: boolean | CampaignsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["campaigns"]>
 
@@ -4850,7 +4696,7 @@ export namespace Prisma {
 
   export type campaignsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "status" | "type" | "recipients" | "sent" | "delivered" | "scheduled_for" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["campaigns"]>
   export type campaignsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    activity?: boolean | campaigns$activityArgs<ExtArgs>
+    activities?: boolean | campaigns$activitiesArgs<ExtArgs>
     _count?: boolean | CampaignsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type campaignsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4859,7 +4705,7 @@ export namespace Prisma {
   export type $campaignsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "campaigns"
     objects: {
-      activity: Prisma.$activitiesPayload<ExtArgs>[]
+      activities: Prisma.$activitiesPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4882,7 +4728,7 @@ export namespace Prisma {
   type campaignsGetPayload<S extends boolean | null | undefined | campaignsDefaultArgs> = $Result.GetResult<Prisma.$campaignsPayload, S>
 
   type campaignsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<campaignsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<campaignsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: CampaignsCountAggregateInputType | true
     }
 
@@ -5269,7 +5115,7 @@ export namespace Prisma {
    */
   export interface Prisma__campaignsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    activity<T extends campaigns$activityArgs<ExtArgs> = {}>(args?: Subset<T, campaigns$activityArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$activitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    activities<T extends campaigns$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, campaigns$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$activitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5336,6 +5182,7 @@ export namespace Prisma {
      * Filter, which campaigns to fetch.
      */
     where: campaignsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5358,6 +5205,7 @@ export namespace Prisma {
      * Filter, which campaigns to fetch.
      */
     where: campaignsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5410,6 +5258,7 @@ export namespace Prisma {
      * Filter by unique combinations of campaigns.
      */
     distinct?: CampaignsScalarFieldEnum | CampaignsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5462,6 +5311,7 @@ export namespace Prisma {
      * Filter by unique combinations of campaigns.
      */
     distinct?: CampaignsScalarFieldEnum | CampaignsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5509,6 +5359,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: CampaignsScalarFieldEnum | CampaignsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5531,6 +5382,7 @@ export namespace Prisma {
      * The data needed to create a campaigns.
      */
     data: XOR<campaignsCreateInput, campaignsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5587,6 +5439,7 @@ export namespace Prisma {
      * Choose, which campaigns to update.
      */
     where: campaignsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5661,6 +5514,7 @@ export namespace Prisma {
      * In case the campaigns was found with the provided `where` argument, update it with this data.
      */
     update: XOR<campaignsUpdateInput, campaignsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5683,6 +5537,7 @@ export namespace Prisma {
      * Filter which campaigns to delete.
      */
     where: campaignsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -5700,9 +5555,9 @@ export namespace Prisma {
   }
 
   /**
-   * campaigns.activity
+   * campaigns.activities
    */
-  export type campaigns$activityArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type campaigns$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the activities
      */
@@ -6032,8 +5887,8 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }, ExtArgs["result"]["activities"]>
 
   export type activitiesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6053,8 +5908,8 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }, ExtArgs["result"]["activities"]>
 
   export type activitiesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -6074,8 +5929,8 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }, ExtArgs["result"]["activities"]>
 
   export type activitiesSelectScalar = {
@@ -6099,23 +5954,23 @@ export namespace Prisma {
 
   export type activitiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "send_name" | "subject" | "status" | "sent_at" | "last_event_received_at" | "last_event_type" | "opens" | "clicks" | "campaign_id" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["activities"]>
   export type activitiesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }
   export type activitiesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }
   export type activitiesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    receiver?: boolean | contactsDefaultArgs<ExtArgs>
-    campaign?: boolean | activities$campaignArgs<ExtArgs>
+    receivers?: boolean | contactsDefaultArgs<ExtArgs>
+    campaigns?: boolean | activities$campaignsArgs<ExtArgs>
   }
 
   export type $activitiesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "activities"
     objects: {
-      receiver: Prisma.$contactsPayload<ExtArgs>
-      campaign: Prisma.$campaignsPayload<ExtArgs> | null
+      receivers: Prisma.$contactsPayload<ExtArgs>
+      campaigns: Prisma.$campaignsPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6141,7 +5996,7 @@ export namespace Prisma {
   type activitiesGetPayload<S extends boolean | null | undefined | activitiesDefaultArgs> = $Result.GetResult<Prisma.$activitiesPayload, S>
 
   type activitiesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<activitiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<activitiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: ActivitiesCountAggregateInputType | true
     }
 
@@ -6528,8 +6383,8 @@ export namespace Prisma {
    */
   export interface Prisma__activitiesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    receiver<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    campaign<T extends activities$campaignArgs<ExtArgs> = {}>(args?: Subset<T, activities$campaignArgs<ExtArgs>>): Prisma__campaignsClient<$Result.GetResult<Prisma.$campaignsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    receivers<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    campaigns<T extends activities$campaignsArgs<ExtArgs> = {}>(args?: Subset<T, activities$campaignsArgs<ExtArgs>>): Prisma__campaignsClient<$Result.GetResult<Prisma.$campaignsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6599,6 +6454,7 @@ export namespace Prisma {
      * Filter, which activities to fetch.
      */
     where: activitiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6621,6 +6477,7 @@ export namespace Prisma {
      * Filter, which activities to fetch.
      */
     where: activitiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6673,6 +6530,7 @@ export namespace Prisma {
      * Filter by unique combinations of activities.
      */
     distinct?: ActivitiesScalarFieldEnum | ActivitiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6725,6 +6583,7 @@ export namespace Prisma {
      * Filter by unique combinations of activities.
      */
     distinct?: ActivitiesScalarFieldEnum | ActivitiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6772,6 +6631,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: ActivitiesScalarFieldEnum | ActivitiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6794,6 +6654,7 @@ export namespace Prisma {
      * The data needed to create a activities.
      */
     data: XOR<activitiesCreateInput, activitiesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6854,6 +6715,7 @@ export namespace Prisma {
      * Choose, which activities to update.
      */
     where: activitiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6932,6 +6794,7 @@ export namespace Prisma {
      * In case the activities was found with the provided `where` argument, update it with this data.
      */
     update: XOR<activitiesUpdateInput, activitiesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6954,6 +6817,7 @@ export namespace Prisma {
      * Filter which activities to delete.
      */
     where: activitiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -6971,9 +6835,9 @@ export namespace Prisma {
   }
 
   /**
-   * activities.campaign
+   * activities.campaigns
    */
-  export type activities$campaignArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type activities$campaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the campaigns
      */
@@ -7212,7 +7076,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bounces"]>
 
   export type bouncesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7226,7 +7090,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bounces"]>
 
   export type bouncesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -7240,7 +7104,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["bounces"]>
 
   export type bouncesSelectScalar = {
@@ -7258,19 +7122,19 @@ export namespace Prisma {
 
   export type bouncesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "bounced_at" | "reason" | "bounce_type" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["bounces"]>
   export type bouncesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
   export type bouncesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
   export type bouncesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
 
   export type $bouncesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "bounces"
     objects: {
-      contact: Prisma.$contactsPayload<ExtArgs>
+      contacts: Prisma.$contactsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7290,7 +7154,7 @@ export namespace Prisma {
   type bouncesGetPayload<S extends boolean | null | undefined | bouncesDefaultArgs> = $Result.GetResult<Prisma.$bouncesPayload, S>
 
   type bouncesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<bouncesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<bouncesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: BouncesCountAggregateInputType | true
     }
 
@@ -7677,7 +7541,7 @@ export namespace Prisma {
    */
   export interface Prisma__bouncesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    contact<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    contacts<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7741,6 +7605,7 @@ export namespace Prisma {
      * Filter, which bounces to fetch.
      */
     where: bouncesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7763,6 +7628,7 @@ export namespace Prisma {
      * Filter, which bounces to fetch.
      */
     where: bouncesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7815,6 +7681,7 @@ export namespace Prisma {
      * Filter by unique combinations of bounces.
      */
     distinct?: BouncesScalarFieldEnum | BouncesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7867,6 +7734,7 @@ export namespace Prisma {
      * Filter by unique combinations of bounces.
      */
     distinct?: BouncesScalarFieldEnum | BouncesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7914,6 +7782,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: BouncesScalarFieldEnum | BouncesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7936,6 +7805,7 @@ export namespace Prisma {
      * The data needed to create a bounces.
      */
     data: XOR<bouncesCreateInput, bouncesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -7996,6 +7866,7 @@ export namespace Prisma {
      * Choose, which bounces to update.
      */
     where: bouncesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8074,6 +7945,7 @@ export namespace Prisma {
      * In case the bounces was found with the provided `where` argument, update it with this data.
      */
     update: XOR<bouncesUpdateInput, bouncesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8096,6 +7968,7 @@ export namespace Prisma {
      * Filter which bounces to delete.
      */
     where: bouncesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8146,6 +8019,7 @@ export namespace Prisma {
     tenant_id: string | null
     status: $Enums.subscriber_status | null
     subscribed_at: Date | null
+    subscriber_list_id: string | null
     contact_id: string | null
     created_at: Date | null
     created_by: string | null
@@ -8158,6 +8032,7 @@ export namespace Prisma {
     tenant_id: string | null
     status: $Enums.subscriber_status | null
     subscribed_at: Date | null
+    subscriber_list_id: string | null
     contact_id: string | null
     created_at: Date | null
     created_by: string | null
@@ -8170,6 +8045,7 @@ export namespace Prisma {
     tenant_id: number
     status: number
     subscribed_at: number
+    subscriber_list_id: number
     contact_id: number
     created_at: number
     created_by: number
@@ -8184,6 +8060,7 @@ export namespace Prisma {
     tenant_id?: true
     status?: true
     subscribed_at?: true
+    subscriber_list_id?: true
     contact_id?: true
     created_at?: true
     created_by?: true
@@ -8196,6 +8073,7 @@ export namespace Prisma {
     tenant_id?: true
     status?: true
     subscribed_at?: true
+    subscriber_list_id?: true
     contact_id?: true
     created_at?: true
     created_by?: true
@@ -8208,6 +8086,7 @@ export namespace Prisma {
     tenant_id?: true
     status?: true
     subscribed_at?: true
+    subscriber_list_id?: true
     contact_id?: true
     created_at?: true
     created_by?: true
@@ -8293,6 +8172,7 @@ export namespace Prisma {
     tenant_id: string
     status: $Enums.subscriber_status
     subscribed_at: Date
+    subscriber_list_id: string
     contact_id: string
     created_at: Date
     created_by: string
@@ -8322,12 +8202,14 @@ export namespace Prisma {
     tenant_id?: boolean
     status?: boolean
     subscribed_at?: boolean
+    subscriber_list_id?: boolean
     contact_id?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscribers"]>
 
   export type subscribersSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8335,12 +8217,14 @@ export namespace Prisma {
     tenant_id?: boolean
     status?: boolean
     subscribed_at?: boolean
+    subscriber_list_id?: boolean
     contact_id?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscribers"]>
 
   export type subscribersSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -8348,12 +8232,14 @@ export namespace Prisma {
     tenant_id?: boolean
     status?: boolean
     subscribed_at?: boolean
+    subscriber_list_id?: boolean
     contact_id?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscribers"]>
 
   export type subscribersSelectScalar = {
@@ -8361,6 +8247,7 @@ export namespace Prisma {
     tenant_id?: boolean
     status?: boolean
     subscribed_at?: boolean
+    subscriber_list_id?: boolean
     contact_id?: boolean
     created_at?: boolean
     created_by?: boolean
@@ -8368,27 +8255,32 @@ export namespace Prisma {
     updated_by?: boolean
   }
 
-  export type subscribersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "status" | "subscribed_at" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["subscribers"]>
+  export type subscribersOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "status" | "subscribed_at" | "subscriber_list_id" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["subscribers"]>
   export type subscribersInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }
   export type subscribersIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }
   export type subscribersIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+    subscriber_lists?: boolean | subscriber_listsDefaultArgs<ExtArgs>
   }
 
   export type $subscribersPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "subscribers"
     objects: {
-      contact: Prisma.$contactsPayload<ExtArgs>
+      contacts: Prisma.$contactsPayload<ExtArgs>
+      subscriber_lists: Prisma.$subscriber_listsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       tenant_id: string
       status: $Enums.subscriber_status
       subscribed_at: Date
+      subscriber_list_id: string
       contact_id: string
       created_at: Date
       created_by: string
@@ -8401,7 +8293,7 @@ export namespace Prisma {
   type subscribersGetPayload<S extends boolean | null | undefined | subscribersDefaultArgs> = $Result.GetResult<Prisma.$subscribersPayload, S>
 
   type subscribersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<subscribersFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<subscribersFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: SubscribersCountAggregateInputType | true
     }
 
@@ -8788,7 +8680,8 @@ export namespace Prisma {
    */
   export interface Prisma__subscribersClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    contact<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    contacts<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subscriber_lists<T extends subscriber_listsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, subscriber_listsDefaultArgs<ExtArgs>>): Prisma__subscriber_listsClient<$Result.GetResult<Prisma.$subscriber_listsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8822,6 +8715,7 @@ export namespace Prisma {
     readonly tenant_id: FieldRef<"subscribers", 'String'>
     readonly status: FieldRef<"subscribers", 'subscriber_status'>
     readonly subscribed_at: FieldRef<"subscribers", 'DateTime'>
+    readonly subscriber_list_id: FieldRef<"subscribers", 'String'>
     readonly contact_id: FieldRef<"subscribers", 'String'>
     readonly created_at: FieldRef<"subscribers", 'DateTime'>
     readonly created_by: FieldRef<"subscribers", 'String'>
@@ -8851,6 +8745,7 @@ export namespace Prisma {
      * Filter, which subscribers to fetch.
      */
     where: subscribersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8873,6 +8768,7 @@ export namespace Prisma {
      * Filter, which subscribers to fetch.
      */
     where: subscribersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8925,6 +8821,7 @@ export namespace Prisma {
      * Filter by unique combinations of subscribers.
      */
     distinct?: SubscribersScalarFieldEnum | SubscribersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -8977,6 +8874,7 @@ export namespace Prisma {
      * Filter by unique combinations of subscribers.
      */
     distinct?: SubscribersScalarFieldEnum | SubscribersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9024,6 +8922,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: SubscribersScalarFieldEnum | SubscribersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9046,6 +8945,7 @@ export namespace Prisma {
      * The data needed to create a subscribers.
      */
     data: XOR<subscribersCreateInput, subscribersUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9106,6 +9006,7 @@ export namespace Prisma {
      * Choose, which subscribers to update.
      */
     where: subscribersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9184,6 +9085,7 @@ export namespace Prisma {
      * In case the subscribers was found with the provided `where` argument, update it with this data.
      */
     update: XOR<subscribersUpdateInput, subscribersUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9206,6 +9108,7 @@ export namespace Prisma {
      * Filter which subscribers to delete.
      */
     where: subscribersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9429,7 +9332,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    SubscriberListContacts?: boolean | subscriber_lists$SubscriberListContactsArgs<ExtArgs>
+    subscribers?: boolean | subscriber_lists$subscribersArgs<ExtArgs>
     _count?: boolean | Subscriber_listsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscriber_lists"]>
 
@@ -9468,7 +9371,7 @@ export namespace Prisma {
 
   export type subscriber_listsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "description" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["subscriber_lists"]>
   export type subscriber_listsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    SubscriberListContacts?: boolean | subscriber_lists$SubscriberListContactsArgs<ExtArgs>
+    subscribers?: boolean | subscriber_lists$subscribersArgs<ExtArgs>
     _count?: boolean | Subscriber_listsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type subscriber_listsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -9477,7 +9380,7 @@ export namespace Prisma {
   export type $subscriber_listsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "subscriber_lists"
     objects: {
-      SubscriberListContacts: Prisma.$subscriber_list_contactsPayload<ExtArgs>[]
+      subscribers: Prisma.$subscribersPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9495,7 +9398,7 @@ export namespace Prisma {
   type subscriber_listsGetPayload<S extends boolean | null | undefined | subscriber_listsDefaultArgs> = $Result.GetResult<Prisma.$subscriber_listsPayload, S>
 
   type subscriber_listsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<subscriber_listsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<subscriber_listsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: Subscriber_listsCountAggregateInputType | true
     }
 
@@ -9882,7 +9785,7 @@ export namespace Prisma {
    */
   export interface Prisma__subscriber_listsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    SubscriberListContacts<T extends subscriber_lists$SubscriberListContactsArgs<ExtArgs> = {}>(args?: Subset<T, subscriber_lists$SubscriberListContactsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    subscribers<T extends subscriber_lists$subscribersArgs<ExtArgs> = {}>(args?: Subset<T, subscriber_lists$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscribersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9944,6 +9847,7 @@ export namespace Prisma {
      * Filter, which subscriber_lists to fetch.
      */
     where: subscriber_listsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -9966,6 +9870,7 @@ export namespace Prisma {
      * Filter, which subscriber_lists to fetch.
      */
     where: subscriber_listsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10018,6 +9923,7 @@ export namespace Prisma {
      * Filter by unique combinations of subscriber_lists.
      */
     distinct?: Subscriber_listsScalarFieldEnum | Subscriber_listsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10070,6 +9976,7 @@ export namespace Prisma {
      * Filter by unique combinations of subscriber_lists.
      */
     distinct?: Subscriber_listsScalarFieldEnum | Subscriber_listsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10117,6 +10024,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: Subscriber_listsScalarFieldEnum | Subscriber_listsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10139,6 +10047,7 @@ export namespace Prisma {
      * The data needed to create a subscriber_lists.
      */
     data: XOR<subscriber_listsCreateInput, subscriber_listsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10195,6 +10104,7 @@ export namespace Prisma {
      * Choose, which subscriber_lists to update.
      */
     where: subscriber_listsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10269,6 +10179,7 @@ export namespace Prisma {
      * In case the subscriber_lists was found with the provided `where` argument, update it with this data.
      */
     update: XOR<subscriber_listsUpdateInput, subscriber_listsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10291,6 +10202,7 @@ export namespace Prisma {
      * Filter which subscriber_lists to delete.
      */
     where: subscriber_listsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -10308,27 +10220,27 @@ export namespace Prisma {
   }
 
   /**
-   * subscriber_lists.SubscriberListContacts
+   * subscriber_lists.subscribers
    */
-  export type subscriber_lists$SubscriberListContactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type subscriber_lists$subscribersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
-     * Select specific fields to fetch from the subscriber_list_contacts
+     * Select specific fields to fetch from the subscribers
      */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
+    select?: subscribersSelect<ExtArgs> | null
     /**
-     * Omit specific fields from the subscriber_list_contacts
+     * Omit specific fields from the subscribers
      */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
+    omit?: subscribersOmit<ExtArgs> | null
     /**
      * Choose, which related nodes to fetch as well
      */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    where?: subscriber_list_contactsWhereInput
-    orderBy?: subscriber_list_contactsOrderByWithRelationInput | subscriber_list_contactsOrderByWithRelationInput[]
-    cursor?: subscriber_list_contactsWhereUniqueInput
+    include?: subscribersInclude<ExtArgs> | null
+    where?: subscribersWhereInput
+    orderBy?: subscribersOrderByWithRelationInput | subscribersOrderByWithRelationInput[]
+    cursor?: subscribersWhereUniqueInput
     take?: number
     skip?: number
-    distinct?: Subscriber_list_contactsScalarFieldEnum | Subscriber_list_contactsScalarFieldEnum[]
+    distinct?: SubscribersScalarFieldEnum | SubscribersScalarFieldEnum[]
   }
 
   /**
@@ -10347,1120 +10259,6 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: subscriber_listsInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model subscriber_list_contacts
-   */
-
-  export type AggregateSubscriber_list_contacts = {
-    _count: Subscriber_list_contactsCountAggregateOutputType | null
-    _min: Subscriber_list_contactsMinAggregateOutputType | null
-    _max: Subscriber_list_contactsMaxAggregateOutputType | null
-  }
-
-  export type Subscriber_list_contactsMinAggregateOutputType = {
-    id: string | null
-    tenant_id: string | null
-    subscriber_list_id: string | null
-    created_at: Date | null
-    created_by: string | null
-    updated_at: Date | null
-    updated_by: string | null
-  }
-
-  export type Subscriber_list_contactsMaxAggregateOutputType = {
-    id: string | null
-    tenant_id: string | null
-    subscriber_list_id: string | null
-    created_at: Date | null
-    created_by: string | null
-    updated_at: Date | null
-    updated_by: string | null
-  }
-
-  export type Subscriber_list_contactsCountAggregateOutputType = {
-    id: number
-    tenant_id: number
-    subscriber_list_id: number
-    created_at: number
-    created_by: number
-    updated_at: number
-    updated_by: number
-    _all: number
-  }
-
-
-  export type Subscriber_list_contactsMinAggregateInputType = {
-    id?: true
-    tenant_id?: true
-    subscriber_list_id?: true
-    created_at?: true
-    created_by?: true
-    updated_at?: true
-    updated_by?: true
-  }
-
-  export type Subscriber_list_contactsMaxAggregateInputType = {
-    id?: true
-    tenant_id?: true
-    subscriber_list_id?: true
-    created_at?: true
-    created_by?: true
-    updated_at?: true
-    updated_by?: true
-  }
-
-  export type Subscriber_list_contactsCountAggregateInputType = {
-    id?: true
-    tenant_id?: true
-    subscriber_list_id?: true
-    created_at?: true
-    created_by?: true
-    updated_at?: true
-    updated_by?: true
-    _all?: true
-  }
-
-  export type Subscriber_list_contactsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which subscriber_list_contacts to aggregate.
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of subscriber_list_contacts to fetch.
-     */
-    orderBy?: subscriber_list_contactsOrderByWithRelationInput | subscriber_list_contactsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: subscriber_list_contactsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` subscriber_list_contacts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` subscriber_list_contacts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned subscriber_list_contacts
-    **/
-    _count?: true | Subscriber_list_contactsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: Subscriber_list_contactsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: Subscriber_list_contactsMaxAggregateInputType
-  }
-
-  export type GetSubscriber_list_contactsAggregateType<T extends Subscriber_list_contactsAggregateArgs> = {
-        [P in keyof T & keyof AggregateSubscriber_list_contacts]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateSubscriber_list_contacts[P]>
-      : GetScalarType<T[P], AggregateSubscriber_list_contacts[P]>
-  }
-
-
-
-
-  export type subscriber_list_contactsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: subscriber_list_contactsWhereInput
-    orderBy?: subscriber_list_contactsOrderByWithAggregationInput | subscriber_list_contactsOrderByWithAggregationInput[]
-    by: Subscriber_list_contactsScalarFieldEnum[] | Subscriber_list_contactsScalarFieldEnum
-    having?: subscriber_list_contactsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: Subscriber_list_contactsCountAggregateInputType | true
-    _min?: Subscriber_list_contactsMinAggregateInputType
-    _max?: Subscriber_list_contactsMaxAggregateInputType
-  }
-
-  export type Subscriber_list_contactsGroupByOutputType = {
-    id: string
-    tenant_id: string
-    subscriber_list_id: string
-    created_at: Date
-    created_by: string
-    updated_at: Date | null
-    updated_by: string | null
-    _count: Subscriber_list_contactsCountAggregateOutputType | null
-    _min: Subscriber_list_contactsMinAggregateOutputType | null
-    _max: Subscriber_list_contactsMaxAggregateOutputType | null
-  }
-
-  type GetSubscriber_list_contactsGroupByPayload<T extends subscriber_list_contactsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<Subscriber_list_contactsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof Subscriber_list_contactsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], Subscriber_list_contactsGroupByOutputType[P]>
-            : GetScalarType<T[P], Subscriber_list_contactsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type subscriber_list_contactsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tenant_id?: boolean
-    subscriber_list_id?: boolean
-    created_at?: boolean
-    created_by?: boolean
-    updated_at?: boolean
-    updated_by?: boolean
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-    contacts?: boolean | subscriber_list_contacts$contactsArgs<ExtArgs>
-    _count?: boolean | Subscriber_list_contactsCountOutputTypeDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["subscriber_list_contacts"]>
-
-  export type subscriber_list_contactsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tenant_id?: boolean
-    subscriber_list_id?: boolean
-    created_at?: boolean
-    created_by?: boolean
-    updated_at?: boolean
-    updated_by?: boolean
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["subscriber_list_contacts"]>
-
-  export type subscriber_list_contactsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    tenant_id?: boolean
-    subscriber_list_id?: boolean
-    created_at?: boolean
-    created_by?: boolean
-    updated_at?: boolean
-    updated_by?: boolean
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["subscriber_list_contacts"]>
-
-  export type subscriber_list_contactsSelectScalar = {
-    id?: boolean
-    tenant_id?: boolean
-    subscriber_list_id?: boolean
-    created_at?: boolean
-    created_by?: boolean
-    updated_at?: boolean
-    updated_by?: boolean
-  }
-
-  export type subscriber_list_contactsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "subscriber_list_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["subscriber_list_contacts"]>
-  export type subscriber_list_contactsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-    contacts?: boolean | subscriber_list_contacts$contactsArgs<ExtArgs>
-    _count?: boolean | Subscriber_list_contactsCountOutputTypeDefaultArgs<ExtArgs>
-  }
-  export type subscriber_list_contactsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-  }
-  export type subscriber_list_contactsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    subscriberList?: boolean | subscriber_listsDefaultArgs<ExtArgs>
-  }
-
-  export type $subscriber_list_contactsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "subscriber_list_contacts"
-    objects: {
-      subscriberList: Prisma.$subscriber_listsPayload<ExtArgs>
-      contacts: Prisma.$contactsPayload<ExtArgs>[]
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      tenant_id: string
-      subscriber_list_id: string
-      created_at: Date
-      created_by: string
-      updated_at: Date | null
-      updated_by: string | null
-    }, ExtArgs["result"]["subscriber_list_contacts"]>
-    composites: {}
-  }
-
-  type subscriber_list_contactsGetPayload<S extends boolean | null | undefined | subscriber_list_contactsDefaultArgs> = $Result.GetResult<Prisma.$subscriber_list_contactsPayload, S>
-
-  type subscriber_list_contactsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<subscriber_list_contactsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: Subscriber_list_contactsCountAggregateInputType | true
-    }
-
-  export interface subscriber_list_contactsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['subscriber_list_contacts'], meta: { name: 'subscriber_list_contacts' } }
-    /**
-     * Find zero or one Subscriber_list_contacts that matches the filter.
-     * @param {subscriber_list_contactsFindUniqueArgs} args - Arguments to find a Subscriber_list_contacts
-     * @example
-     * // Get one Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends subscriber_list_contactsFindUniqueArgs>(args: SelectSubset<T, subscriber_list_contactsFindUniqueArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one Subscriber_list_contacts that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {subscriber_list_contactsFindUniqueOrThrowArgs} args - Arguments to find a Subscriber_list_contacts
-     * @example
-     * // Get one Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends subscriber_list_contactsFindUniqueOrThrowArgs>(args: SelectSubset<T, subscriber_list_contactsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Subscriber_list_contacts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsFindFirstArgs} args - Arguments to find a Subscriber_list_contacts
-     * @example
-     * // Get one Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends subscriber_list_contactsFindFirstArgs>(args?: SelectSubset<T, subscriber_list_contactsFindFirstArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first Subscriber_list_contacts that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsFindFirstOrThrowArgs} args - Arguments to find a Subscriber_list_contacts
-     * @example
-     * // Get one Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends subscriber_list_contactsFindFirstOrThrowArgs>(args?: SelectSubset<T, subscriber_list_contactsFindFirstOrThrowArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more Subscriber_list_contacts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findMany()
-     * 
-     * // Get first 10 Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const subscriber_list_contactsWithIdOnly = await prisma.subscriber_list_contacts.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends subscriber_list_contactsFindManyArgs>(args?: SelectSubset<T, subscriber_list_contactsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a Subscriber_list_contacts.
-     * @param {subscriber_list_contactsCreateArgs} args - Arguments to create a Subscriber_list_contacts.
-     * @example
-     * // Create one Subscriber_list_contacts
-     * const Subscriber_list_contacts = await prisma.subscriber_list_contacts.create({
-     *   data: {
-     *     // ... data to create a Subscriber_list_contacts
-     *   }
-     * })
-     * 
-     */
-    create<T extends subscriber_list_contactsCreateArgs>(args: SelectSubset<T, subscriber_list_contactsCreateArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many Subscriber_list_contacts.
-     * @param {subscriber_list_contactsCreateManyArgs} args - Arguments to create many Subscriber_list_contacts.
-     * @example
-     * // Create many Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends subscriber_list_contactsCreateManyArgs>(args?: SelectSubset<T, subscriber_list_contactsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many Subscriber_list_contacts and returns the data saved in the database.
-     * @param {subscriber_list_contactsCreateManyAndReturnArgs} args - Arguments to create many Subscriber_list_contacts.
-     * @example
-     * // Create many Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many Subscriber_list_contacts and only return the `id`
-     * const subscriber_list_contactsWithIdOnly = await prisma.subscriber_list_contacts.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends subscriber_list_contactsCreateManyAndReturnArgs>(args?: SelectSubset<T, subscriber_list_contactsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a Subscriber_list_contacts.
-     * @param {subscriber_list_contactsDeleteArgs} args - Arguments to delete one Subscriber_list_contacts.
-     * @example
-     * // Delete one Subscriber_list_contacts
-     * const Subscriber_list_contacts = await prisma.subscriber_list_contacts.delete({
-     *   where: {
-     *     // ... filter to delete one Subscriber_list_contacts
-     *   }
-     * })
-     * 
-     */
-    delete<T extends subscriber_list_contactsDeleteArgs>(args: SelectSubset<T, subscriber_list_contactsDeleteArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one Subscriber_list_contacts.
-     * @param {subscriber_list_contactsUpdateArgs} args - Arguments to update one Subscriber_list_contacts.
-     * @example
-     * // Update one Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends subscriber_list_contactsUpdateArgs>(args: SelectSubset<T, subscriber_list_contactsUpdateArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more Subscriber_list_contacts.
-     * @param {subscriber_list_contactsDeleteManyArgs} args - Arguments to filter Subscriber_list_contacts to delete.
-     * @example
-     * // Delete a few Subscriber_list_contacts
-     * const { count } = await prisma.subscriber_list_contacts.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends subscriber_list_contactsDeleteManyArgs>(args?: SelectSubset<T, subscriber_list_contactsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Subscriber_list_contacts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends subscriber_list_contactsUpdateManyArgs>(args: SelectSubset<T, subscriber_list_contactsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Subscriber_list_contacts and returns the data updated in the database.
-     * @param {subscriber_list_contactsUpdateManyAndReturnArgs} args - Arguments to update many Subscriber_list_contacts.
-     * @example
-     * // Update many Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more Subscriber_list_contacts and only return the `id`
-     * const subscriber_list_contactsWithIdOnly = await prisma.subscriber_list_contacts.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends subscriber_list_contactsUpdateManyAndReturnArgs>(args: SelectSubset<T, subscriber_list_contactsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one Subscriber_list_contacts.
-     * @param {subscriber_list_contactsUpsertArgs} args - Arguments to update or create a Subscriber_list_contacts.
-     * @example
-     * // Update or create a Subscriber_list_contacts
-     * const subscriber_list_contacts = await prisma.subscriber_list_contacts.upsert({
-     *   create: {
-     *     // ... data to create a Subscriber_list_contacts
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Subscriber_list_contacts we want to update
-     *   }
-     * })
-     */
-    upsert<T extends subscriber_list_contactsUpsertArgs>(args: SelectSubset<T, subscriber_list_contactsUpsertArgs<ExtArgs>>): Prisma__subscriber_list_contactsClient<$Result.GetResult<Prisma.$subscriber_list_contactsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of Subscriber_list_contacts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsCountArgs} args - Arguments to filter Subscriber_list_contacts to count.
-     * @example
-     * // Count the number of Subscriber_list_contacts
-     * const count = await prisma.subscriber_list_contacts.count({
-     *   where: {
-     *     // ... the filter for the Subscriber_list_contacts we want to count
-     *   }
-     * })
-    **/
-    count<T extends subscriber_list_contactsCountArgs>(
-      args?: Subset<T, subscriber_list_contactsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], Subscriber_list_contactsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Subscriber_list_contacts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {Subscriber_list_contactsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends Subscriber_list_contactsAggregateArgs>(args: Subset<T, Subscriber_list_contactsAggregateArgs>): Prisma.PrismaPromise<GetSubscriber_list_contactsAggregateType<T>>
-
-    /**
-     * Group by Subscriber_list_contacts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {subscriber_list_contactsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends subscriber_list_contactsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: subscriber_list_contactsGroupByArgs['orderBy'] }
-        : { orderBy?: subscriber_list_contactsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, subscriber_list_contactsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSubscriber_list_contactsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the subscriber_list_contacts model
-   */
-  readonly fields: subscriber_list_contactsFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for subscriber_list_contacts.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__subscriber_list_contactsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    subscriberList<T extends subscriber_listsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, subscriber_listsDefaultArgs<ExtArgs>>): Prisma__subscriber_listsClient<$Result.GetResult<Prisma.$subscriber_listsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    contacts<T extends subscriber_list_contacts$contactsArgs<ExtArgs> = {}>(args?: Subset<T, subscriber_list_contacts$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the subscriber_list_contacts model
-   */
-  interface subscriber_list_contactsFieldRefs {
-    readonly id: FieldRef<"subscriber_list_contacts", 'String'>
-    readonly tenant_id: FieldRef<"subscriber_list_contacts", 'String'>
-    readonly subscriber_list_id: FieldRef<"subscriber_list_contacts", 'String'>
-    readonly created_at: FieldRef<"subscriber_list_contacts", 'DateTime'>
-    readonly created_by: FieldRef<"subscriber_list_contacts", 'String'>
-    readonly updated_at: FieldRef<"subscriber_list_contacts", 'DateTime'>
-    readonly updated_by: FieldRef<"subscriber_list_contacts", 'String'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * subscriber_list_contacts findUnique
-   */
-  export type subscriber_list_contactsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter, which subscriber_list_contacts to fetch.
-     */
-    where: subscriber_list_contactsWhereUniqueInput
-  }
-
-  /**
-   * subscriber_list_contacts findUniqueOrThrow
-   */
-  export type subscriber_list_contactsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter, which subscriber_list_contacts to fetch.
-     */
-    where: subscriber_list_contactsWhereUniqueInput
-  }
-
-  /**
-   * subscriber_list_contacts findFirst
-   */
-  export type subscriber_list_contactsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter, which subscriber_list_contacts to fetch.
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of subscriber_list_contacts to fetch.
-     */
-    orderBy?: subscriber_list_contactsOrderByWithRelationInput | subscriber_list_contactsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for subscriber_list_contacts.
-     */
-    cursor?: subscriber_list_contactsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` subscriber_list_contacts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` subscriber_list_contacts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of subscriber_list_contacts.
-     */
-    distinct?: Subscriber_list_contactsScalarFieldEnum | Subscriber_list_contactsScalarFieldEnum[]
-  }
-
-  /**
-   * subscriber_list_contacts findFirstOrThrow
-   */
-  export type subscriber_list_contactsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter, which subscriber_list_contacts to fetch.
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of subscriber_list_contacts to fetch.
-     */
-    orderBy?: subscriber_list_contactsOrderByWithRelationInput | subscriber_list_contactsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for subscriber_list_contacts.
-     */
-    cursor?: subscriber_list_contactsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` subscriber_list_contacts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` subscriber_list_contacts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of subscriber_list_contacts.
-     */
-    distinct?: Subscriber_list_contactsScalarFieldEnum | Subscriber_list_contactsScalarFieldEnum[]
-  }
-
-  /**
-   * subscriber_list_contacts findMany
-   */
-  export type subscriber_list_contactsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter, which subscriber_list_contacts to fetch.
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of subscriber_list_contacts to fetch.
-     */
-    orderBy?: subscriber_list_contactsOrderByWithRelationInput | subscriber_list_contactsOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing subscriber_list_contacts.
-     */
-    cursor?: subscriber_list_contactsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` subscriber_list_contacts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` subscriber_list_contacts.
-     */
-    skip?: number
-    distinct?: Subscriber_list_contactsScalarFieldEnum | Subscriber_list_contactsScalarFieldEnum[]
-  }
-
-  /**
-   * subscriber_list_contacts create
-   */
-  export type subscriber_list_contactsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * The data needed to create a subscriber_list_contacts.
-     */
-    data: XOR<subscriber_list_contactsCreateInput, subscriber_list_contactsUncheckedCreateInput>
-  }
-
-  /**
-   * subscriber_list_contacts createMany
-   */
-  export type subscriber_list_contactsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many subscriber_list_contacts.
-     */
-    data: subscriber_list_contactsCreateManyInput | subscriber_list_contactsCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * subscriber_list_contacts createManyAndReturn
-   */
-  export type subscriber_list_contactsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * The data used to create many subscriber_list_contacts.
-     */
-    data: subscriber_list_contactsCreateManyInput | subscriber_list_contactsCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * subscriber_list_contacts update
-   */
-  export type subscriber_list_contactsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * The data needed to update a subscriber_list_contacts.
-     */
-    data: XOR<subscriber_list_contactsUpdateInput, subscriber_list_contactsUncheckedUpdateInput>
-    /**
-     * Choose, which subscriber_list_contacts to update.
-     */
-    where: subscriber_list_contactsWhereUniqueInput
-  }
-
-  /**
-   * subscriber_list_contacts updateMany
-   */
-  export type subscriber_list_contactsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update subscriber_list_contacts.
-     */
-    data: XOR<subscriber_list_contactsUpdateManyMutationInput, subscriber_list_contactsUncheckedUpdateManyInput>
-    /**
-     * Filter which subscriber_list_contacts to update
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * Limit how many subscriber_list_contacts to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * subscriber_list_contacts updateManyAndReturn
-   */
-  export type subscriber_list_contactsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * The data used to update subscriber_list_contacts.
-     */
-    data: XOR<subscriber_list_contactsUpdateManyMutationInput, subscriber_list_contactsUncheckedUpdateManyInput>
-    /**
-     * Filter which subscriber_list_contacts to update
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * Limit how many subscriber_list_contacts to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * subscriber_list_contacts upsert
-   */
-  export type subscriber_list_contactsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * The filter to search for the subscriber_list_contacts to update in case it exists.
-     */
-    where: subscriber_list_contactsWhereUniqueInput
-    /**
-     * In case the subscriber_list_contacts found by the `where` argument doesn't exist, create a new subscriber_list_contacts with this data.
-     */
-    create: XOR<subscriber_list_contactsCreateInput, subscriber_list_contactsUncheckedCreateInput>
-    /**
-     * In case the subscriber_list_contacts was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<subscriber_list_contactsUpdateInput, subscriber_list_contactsUncheckedUpdateInput>
-  }
-
-  /**
-   * subscriber_list_contacts delete
-   */
-  export type subscriber_list_contactsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
-    /**
-     * Filter which subscriber_list_contacts to delete.
-     */
-    where: subscriber_list_contactsWhereUniqueInput
-  }
-
-  /**
-   * subscriber_list_contacts deleteMany
-   */
-  export type subscriber_list_contactsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which subscriber_list_contacts to delete
-     */
-    where?: subscriber_list_contactsWhereInput
-    /**
-     * Limit how many subscriber_list_contacts to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * subscriber_list_contacts.contacts
-   */
-  export type subscriber_list_contacts$contactsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the contacts
-     */
-    select?: contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the contacts
-     */
-    omit?: contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: contactsInclude<ExtArgs> | null
-    where?: contactsWhereInput
-    orderBy?: contactsOrderByWithRelationInput | contactsOrderByWithRelationInput[]
-    cursor?: contactsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: ContactsScalarFieldEnum | ContactsScalarFieldEnum[]
-  }
-
-  /**
-   * subscriber_list_contacts without action
-   */
-  export type subscriber_list_contactsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the subscriber_list_contacts
-     */
-    select?: subscriber_list_contactsSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the subscriber_list_contacts
-     */
-    omit?: subscriber_list_contactsOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: subscriber_list_contactsInclude<ExtArgs> | null
   }
 
 
@@ -11672,7 +10470,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["unsubscribes"]>
 
   export type unsubscribesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11687,7 +10485,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["unsubscribes"]>
 
   export type unsubscribesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11702,7 +10500,7 @@ export namespace Prisma {
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["unsubscribes"]>
 
   export type unsubscribesSelectScalar = {
@@ -11721,19 +10519,19 @@ export namespace Prisma {
 
   export type unsubscribesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "source" | "unsubscribed_at" | "global" | "list_ids" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["unsubscribes"]>
   export type unsubscribesInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
   export type unsubscribesIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
   export type unsubscribesIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    contact?: boolean | contactsDefaultArgs<ExtArgs>
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
   }
 
   export type $unsubscribesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "unsubscribes"
     objects: {
-      contact: Prisma.$contactsPayload<ExtArgs>
+      contacts: Prisma.$contactsPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11754,7 +10552,7 @@ export namespace Prisma {
   type unsubscribesGetPayload<S extends boolean | null | undefined | unsubscribesDefaultArgs> = $Result.GetResult<Prisma.$unsubscribesPayload, S>
 
   type unsubscribesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<unsubscribesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<unsubscribesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: UnsubscribesCountAggregateInputType | true
     }
 
@@ -12141,7 +10939,7 @@ export namespace Prisma {
    */
   export interface Prisma__unsubscribesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    contact<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    contacts<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12206,6 +11004,7 @@ export namespace Prisma {
      * Filter, which unsubscribes to fetch.
      */
     where: unsubscribesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12228,6 +11027,7 @@ export namespace Prisma {
      * Filter, which unsubscribes to fetch.
      */
     where: unsubscribesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12280,6 +11080,7 @@ export namespace Prisma {
      * Filter by unique combinations of unsubscribes.
      */
     distinct?: UnsubscribesScalarFieldEnum | UnsubscribesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12332,6 +11133,7 @@ export namespace Prisma {
      * Filter by unique combinations of unsubscribes.
      */
     distinct?: UnsubscribesScalarFieldEnum | UnsubscribesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12379,6 +11181,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: UnsubscribesScalarFieldEnum | UnsubscribesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12401,6 +11204,7 @@ export namespace Prisma {
      * The data needed to create a unsubscribes.
      */
     data: XOR<unsubscribesCreateInput, unsubscribesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12461,6 +11265,7 @@ export namespace Prisma {
      * Choose, which unsubscribes to update.
      */
     where: unsubscribesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12539,6 +11344,7 @@ export namespace Prisma {
      * In case the unsubscribes was found with the provided `where` argument, update it with this data.
      */
     update: XOR<unsubscribesUpdateInput, unsubscribesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12561,6 +11367,7 @@ export namespace Prisma {
      * Filter which unsubscribes to delete.
      */
     where: unsubscribesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -12896,7 +11703,7 @@ export namespace Prisma {
   type usersGetPayload<S extends boolean | null | undefined | usersDefaultArgs> = $Result.GetResult<Prisma.$usersPayload, S>
 
   type usersCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<usersFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<usersFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: UsersCountAggregateInputType | true
     }
 
@@ -13345,6 +12152,7 @@ export namespace Prisma {
      * Filter, which users to fetch.
      */
     where: usersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13363,6 +12171,7 @@ export namespace Prisma {
      * Filter, which users to fetch.
      */
     where: usersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13411,6 +12220,7 @@ export namespace Prisma {
      * Filter by unique combinations of users.
      */
     distinct?: UsersScalarFieldEnum | UsersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13459,6 +12269,7 @@ export namespace Prisma {
      * Filter by unique combinations of users.
      */
     distinct?: UsersScalarFieldEnum | UsersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13502,6 +12313,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: UsersScalarFieldEnum | UsersScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13520,6 +12332,7 @@ export namespace Prisma {
      * The data needed to create a users.
      */
     data: XOR<usersCreateInput, usersUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13572,6 +12385,7 @@ export namespace Prisma {
      * Choose, which users to update.
      */
     where: usersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13642,6 +12456,7 @@ export namespace Prisma {
      * In case the users was found with the provided `where` argument, update it with this data.
      */
     update: XOR<usersUpdateInput, usersUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13660,6 +12475,7 @@ export namespace Prisma {
      * Filter which users to delete.
      */
     where: usersWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -13979,7 +12795,7 @@ export namespace Prisma {
   type api_keysGetPayload<S extends boolean | null | undefined | api_keysDefaultArgs> = $Result.GetResult<Prisma.$api_keysPayload, S>
 
   type api_keysCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<api_keysFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<api_keysFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: Api_keysCountAggregateInputType | true
     }
 
@@ -14427,6 +13243,7 @@ export namespace Prisma {
      * Filter, which api_keys to fetch.
      */
     where: api_keysWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14445,6 +13262,7 @@ export namespace Prisma {
      * Filter, which api_keys to fetch.
      */
     where: api_keysWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14493,6 +13311,7 @@ export namespace Prisma {
      * Filter by unique combinations of api_keys.
      */
     distinct?: Api_keysScalarFieldEnum | Api_keysScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14541,6 +13360,7 @@ export namespace Prisma {
      * Filter by unique combinations of api_keys.
      */
     distinct?: Api_keysScalarFieldEnum | Api_keysScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14584,6 +13404,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: Api_keysScalarFieldEnum | Api_keysScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14602,6 +13423,7 @@ export namespace Prisma {
      * The data needed to create a api_keys.
      */
     data: XOR<api_keysCreateInput, api_keysUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14654,6 +13476,7 @@ export namespace Prisma {
      * Choose, which api_keys to update.
      */
     where: api_keysWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14724,6 +13547,7 @@ export namespace Prisma {
      * In case the api_keys was found with the provided `where` argument, update it with this data.
      */
     update: XOR<api_keysUpdateInput, api_keysUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -14742,6 +13566,7 @@ export namespace Prisma {
      * Filter which api_keys to delete.
      */
     where: api_keysWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15003,7 +13828,7 @@ export namespace Prisma {
   type template_propertiesGetPayload<S extends boolean | null | undefined | template_propertiesDefaultArgs> = $Result.GetResult<Prisma.$template_propertiesPayload, S>
 
   type template_propertiesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<template_propertiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<template_propertiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: Template_propertiesCountAggregateInputType | true
     }
 
@@ -15450,6 +14275,7 @@ export namespace Prisma {
      * Filter, which template_properties to fetch.
      */
     where: template_propertiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15472,6 +14298,7 @@ export namespace Prisma {
      * Filter, which template_properties to fetch.
      */
     where: template_propertiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15524,6 +14351,7 @@ export namespace Prisma {
      * Filter by unique combinations of template_properties.
      */
     distinct?: Template_propertiesScalarFieldEnum | Template_propertiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15576,6 +14404,7 @@ export namespace Prisma {
      * Filter by unique combinations of template_properties.
      */
     distinct?: Template_propertiesScalarFieldEnum | Template_propertiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15623,6 +14452,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: Template_propertiesScalarFieldEnum | Template_propertiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15645,6 +14475,7 @@ export namespace Prisma {
      * The data needed to create a template_properties.
      */
     data: XOR<template_propertiesCreateInput, template_propertiesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15705,6 +14536,7 @@ export namespace Prisma {
      * Choose, which template_properties to update.
      */
     where: template_propertiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15783,6 +14615,7 @@ export namespace Prisma {
      * In case the template_properties was found with the provided `where` argument, update it with this data.
      */
     update: XOR<template_propertiesUpdateInput, template_propertiesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -15805,6 +14638,7 @@ export namespace Prisma {
      * Filter which template_properties to delete.
      */
     where: template_propertiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16125,7 +14959,7 @@ export namespace Prisma {
   type templatesGetPayload<S extends boolean | null | undefined | templatesDefaultArgs> = $Result.GetResult<Prisma.$templatesPayload, S>
 
   type templatesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<templatesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+    Omit<templatesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
       select?: TemplatesCountAggregateInputType | true
     }
 
@@ -16575,6 +15409,7 @@ export namespace Prisma {
      * Filter, which templates to fetch.
      */
     where: templatesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16597,6 +15432,7 @@ export namespace Prisma {
      * Filter, which templates to fetch.
      */
     where: templatesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16649,6 +15485,7 @@ export namespace Prisma {
      * Filter by unique combinations of templates.
      */
     distinct?: TemplatesScalarFieldEnum | TemplatesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16701,6 +15538,7 @@ export namespace Prisma {
      * Filter by unique combinations of templates.
      */
     distinct?: TemplatesScalarFieldEnum | TemplatesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16748,6 +15586,7 @@ export namespace Prisma {
      */
     skip?: number
     distinct?: TemplatesScalarFieldEnum | TemplatesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16770,6 +15609,7 @@ export namespace Prisma {
      * The data needed to create a templates.
      */
     data: XOR<templatesCreateInput, templatesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16826,6 +15666,7 @@ export namespace Prisma {
      * Choose, which templates to update.
      */
     where: templatesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16900,6 +15741,7 @@ export namespace Prisma {
      * In case the templates was found with the provided `where` argument, update it with this data.
      */
     update: XOR<templatesUpdateInput, templatesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -16922,6 +15764,7 @@ export namespace Prisma {
      * Filter which templates to delete.
      */
     where: templatesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
   }
 
   /**
@@ -17007,6 +15850,14 @@ export namespace Prisma {
   export type TenantsScalarFieldEnum = (typeof TenantsScalarFieldEnum)[keyof typeof TenantsScalarFieldEnum]
 
 
+  export const RelationLoadStrategy: {
+    query: 'query',
+    join: 'join'
+  };
+
+  export type RelationLoadStrategy = (typeof RelationLoadStrategy)[keyof typeof RelationLoadStrategy]
+
+
   export const ContactsScalarFieldEnum: {
     id: 'id',
     tenant_id: 'tenant_id',
@@ -17014,12 +15865,11 @@ export namespace Prisma {
     first_name: 'first_name',
     last_name: 'last_name',
     last_activity_at: 'last_activity_at',
-    subscriber_list_contacts_id: 'subscriber_list_contacts_id',
+    list_ids: 'list_ids',
     created_at: 'created_at',
     created_by: 'created_by',
     updated_at: 'updated_at',
-    updated_by: 'updated_by',
-    list_ids: 'list_ids'
+    updated_by: 'updated_by'
   };
 
   export type ContactsScalarFieldEnum = (typeof ContactsScalarFieldEnum)[keyof typeof ContactsScalarFieldEnum]
@@ -17087,6 +15937,7 @@ export namespace Prisma {
     tenant_id: 'tenant_id',
     status: 'status',
     subscribed_at: 'subscribed_at',
+    subscriber_list_id: 'subscriber_list_id',
     contact_id: 'contact_id',
     created_at: 'created_at',
     created_by: 'created_by',
@@ -17109,19 +15960,6 @@ export namespace Prisma {
   };
 
   export type Subscriber_listsScalarFieldEnum = (typeof Subscriber_listsScalarFieldEnum)[keyof typeof Subscriber_listsScalarFieldEnum]
-
-
-  export const Subscriber_list_contactsScalarFieldEnum: {
-    id: 'id',
-    tenant_id: 'tenant_id',
-    subscriber_list_id: 'subscriber_list_id',
-    created_at: 'created_at',
-    created_by: 'created_by',
-    updated_at: 'updated_at',
-    updated_by: 'updated_by'
-  };
-
-  export type Subscriber_list_contactsScalarFieldEnum = (typeof Subscriber_list_contactsScalarFieldEnum)[keyof typeof Subscriber_list_contactsScalarFieldEnum]
 
 
   export const UnsubscribesScalarFieldEnum: {
@@ -17495,17 +16333,15 @@ export namespace Prisma {
     first_name?: StringNullableFilter<"contacts"> | string | null
     last_name?: StringNullableFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    subscriber_list_contacts_id?: UuidNullableFilter<"contacts"> | string | null
+    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeFilter<"contacts"> | Date | string
     created_by?: StringFilter<"contacts"> | string
     updated_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
     updated_by?: StringNullableFilter<"contacts"> | string | null
-    list_ids?: StringNullableListFilter<"contacts">
-    SubscriberListContacts?: XOR<Subscriber_list_contactsNullableScalarRelationFilter, subscriber_list_contactsWhereInput> | null
-    activity?: ActivitiesListRelationFilter
-    bounce?: BouncesListRelationFilter
-    subscriber?: SubscribersListRelationFilter
-    unsubscribe?: UnsubscribesListRelationFilter
+    activities?: ActivitiesListRelationFilter
+    bounces?: BouncesListRelationFilter
+    subscribers?: SubscribersListRelationFilter
+    unsubscribes?: UnsubscribesListRelationFilter
   }
 
   export type contactsOrderByWithRelationInput = {
@@ -17515,17 +16351,15 @@ export namespace Prisma {
     first_name?: SortOrderInput | SortOrder
     last_name?: SortOrderInput | SortOrder
     last_activity_at?: SortOrderInput | SortOrder
-    subscriber_list_contacts_id?: SortOrderInput | SortOrder
+    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    list_ids?: SortOrder
-    SubscriberListContacts?: subscriber_list_contactsOrderByWithRelationInput
-    activity?: activitiesOrderByRelationAggregateInput
-    bounce?: bouncesOrderByRelationAggregateInput
-    subscriber?: subscribersOrderByRelationAggregateInput
-    unsubscribe?: unsubscribesOrderByRelationAggregateInput
+    activities?: activitiesOrderByRelationAggregateInput
+    bounces?: bouncesOrderByRelationAggregateInput
+    subscribers?: subscribersOrderByRelationAggregateInput
+    unsubscribes?: unsubscribesOrderByRelationAggregateInput
   }
 
   export type contactsWhereUniqueInput = Prisma.AtLeast<{
@@ -17539,17 +16373,15 @@ export namespace Prisma {
     first_name?: StringNullableFilter<"contacts"> | string | null
     last_name?: StringNullableFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    subscriber_list_contacts_id?: UuidNullableFilter<"contacts"> | string | null
+    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeFilter<"contacts"> | Date | string
     created_by?: StringFilter<"contacts"> | string
     updated_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
     updated_by?: StringNullableFilter<"contacts"> | string | null
-    list_ids?: StringNullableListFilter<"contacts">
-    SubscriberListContacts?: XOR<Subscriber_list_contactsNullableScalarRelationFilter, subscriber_list_contactsWhereInput> | null
-    activity?: ActivitiesListRelationFilter
-    bounce?: BouncesListRelationFilter
-    subscriber?: SubscribersListRelationFilter
-    unsubscribe?: UnsubscribesListRelationFilter
+    activities?: ActivitiesListRelationFilter
+    bounces?: BouncesListRelationFilter
+    subscribers?: SubscribersListRelationFilter
+    unsubscribes?: UnsubscribesListRelationFilter
   }, "id" | "tenant_id_email">
 
   export type contactsOrderByWithAggregationInput = {
@@ -17559,12 +16391,11 @@ export namespace Prisma {
     first_name?: SortOrderInput | SortOrder
     last_name?: SortOrderInput | SortOrder
     last_activity_at?: SortOrderInput | SortOrder
-    subscriber_list_contacts_id?: SortOrderInput | SortOrder
+    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    list_ids?: SortOrder
     _count?: contactsCountOrderByAggregateInput
     _max?: contactsMaxOrderByAggregateInput
     _min?: contactsMinOrderByAggregateInput
@@ -17580,12 +16411,11 @@ export namespace Prisma {
     first_name?: StringNullableWithAggregatesFilter<"contacts"> | string | null
     last_name?: StringNullableWithAggregatesFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableWithAggregatesFilter<"contacts"> | Date | string | null
-    subscriber_list_contacts_id?: UuidNullableWithAggregatesFilter<"contacts"> | string | null
+    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeWithAggregatesFilter<"contacts"> | Date | string
     created_by?: StringWithAggregatesFilter<"contacts"> | string
     updated_at?: DateTimeNullableWithAggregatesFilter<"contacts"> | Date | string | null
     updated_by?: StringNullableWithAggregatesFilter<"contacts"> | string | null
-    list_ids?: StringNullableListFilter<"contacts">
   }
 
   export type campaignsWhereInput = {
@@ -17605,7 +16435,7 @@ export namespace Prisma {
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
     updated_by?: StringNullableFilter<"campaigns"> | string | null
-    activity?: ActivitiesListRelationFilter
+    activities?: ActivitiesListRelationFilter
   }
 
   export type campaignsOrderByWithRelationInput = {
@@ -17622,7 +16452,7 @@ export namespace Prisma {
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    activity?: activitiesOrderByRelationAggregateInput
+    activities?: activitiesOrderByRelationAggregateInput
   }
 
   export type campaignsWhereUniqueInput = Prisma.AtLeast<{
@@ -17643,7 +16473,7 @@ export namespace Prisma {
     created_by?: StringFilter<"campaigns"> | string
     updated_at?: DateTimeNullableFilter<"campaigns"> | Date | string | null
     updated_by?: StringNullableFilter<"campaigns"> | string | null
-    activity?: ActivitiesListRelationFilter
+    activities?: ActivitiesListRelationFilter
   }, "id" | "tenant_id_name">
 
   export type campaignsOrderByWithAggregationInput = {
@@ -17706,8 +16536,8 @@ export namespace Prisma {
     created_by?: StringFilter<"activities"> | string
     updated_at?: DateTimeNullableFilter<"activities"> | Date | string | null
     updated_by?: StringNullableFilter<"activities"> | string | null
-    receiver?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
-    campaign?: XOR<CampaignsNullableScalarRelationFilter, campaignsWhereInput> | null
+    receivers?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    campaigns?: XOR<CampaignsNullableScalarRelationFilter, campaignsWhereInput> | null
   }
 
   export type activitiesOrderByWithRelationInput = {
@@ -17727,8 +16557,8 @@ export namespace Prisma {
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    receiver?: contactsOrderByWithRelationInput
-    campaign?: campaignsOrderByWithRelationInput
+    receivers?: contactsOrderByWithRelationInput
+    campaigns?: campaignsOrderByWithRelationInput
   }
 
   export type activitiesWhereUniqueInput = Prisma.AtLeast<{
@@ -17751,8 +16581,8 @@ export namespace Prisma {
     created_by?: StringFilter<"activities"> | string
     updated_at?: DateTimeNullableFilter<"activities"> | Date | string | null
     updated_by?: StringNullableFilter<"activities"> | string | null
-    receiver?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
-    campaign?: XOR<CampaignsNullableScalarRelationFilter, campaignsWhereInput> | null
+    receivers?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    campaigns?: XOR<CampaignsNullableScalarRelationFilter, campaignsWhereInput> | null
   }, "id">
 
   export type activitiesOrderByWithAggregationInput = {
@@ -17815,7 +16645,7 @@ export namespace Prisma {
     created_by?: StringFilter<"bounces"> | string
     updated_at?: DateTimeNullableFilter<"bounces"> | Date | string | null
     updated_by?: StringNullableFilter<"bounces"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
   }
 
   export type bouncesOrderByWithRelationInput = {
@@ -17829,7 +16659,7 @@ export namespace Prisma {
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    contact?: contactsOrderByWithRelationInput
+    contacts?: contactsOrderByWithRelationInput
   }
 
   export type bouncesWhereUniqueInput = Prisma.AtLeast<{
@@ -17847,7 +16677,7 @@ export namespace Prisma {
     created_by?: StringFilter<"bounces"> | string
     updated_at?: DateTimeNullableFilter<"bounces"> | Date | string | null
     updated_by?: StringNullableFilter<"bounces"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
   }, "id" | "tenant_id_contact_id">
 
   export type bouncesOrderByWithAggregationInput = {
@@ -17890,12 +16720,14 @@ export namespace Prisma {
     tenant_id?: UuidFilter<"subscribers"> | string
     status?: Enumsubscriber_statusFilter<"subscribers"> | $Enums.subscriber_status
     subscribed_at?: DateTimeFilter<"subscribers"> | Date | string
+    subscriber_list_id?: UuidFilter<"subscribers"> | string
     contact_id?: UuidFilter<"subscribers"> | string
     created_at?: DateTimeFilter<"subscribers"> | Date | string
     created_by?: StringFilter<"subscribers"> | string
     updated_at?: DateTimeNullableFilter<"subscribers"> | Date | string | null
     updated_by?: StringNullableFilter<"subscribers"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    subscriber_lists?: XOR<Subscriber_listsScalarRelationFilter, subscriber_listsWhereInput>
   }
 
   export type subscribersOrderByWithRelationInput = {
@@ -17903,36 +16735,41 @@ export namespace Prisma {
     tenant_id?: SortOrder
     status?: SortOrder
     subscribed_at?: SortOrder
+    subscriber_list_id?: SortOrder
     contact_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    contact?: contactsOrderByWithRelationInput
+    contacts?: contactsOrderByWithRelationInput
+    subscriber_lists?: subscriber_listsOrderByWithRelationInput
   }
 
   export type subscribersWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    tenant_id_contact_id?: subscribersTenant_idContact_idCompoundUniqueInput
+    tenant_id_contact_id_subscriber_list_id?: subscribersTenant_idContact_idSubscriber_list_idCompoundUniqueInput
     AND?: subscribersWhereInput | subscribersWhereInput[]
     OR?: subscribersWhereInput[]
     NOT?: subscribersWhereInput | subscribersWhereInput[]
     tenant_id?: UuidFilter<"subscribers"> | string
     status?: Enumsubscriber_statusFilter<"subscribers"> | $Enums.subscriber_status
     subscribed_at?: DateTimeFilter<"subscribers"> | Date | string
+    subscriber_list_id?: UuidFilter<"subscribers"> | string
     contact_id?: UuidFilter<"subscribers"> | string
     created_at?: DateTimeFilter<"subscribers"> | Date | string
     created_by?: StringFilter<"subscribers"> | string
     updated_at?: DateTimeNullableFilter<"subscribers"> | Date | string | null
     updated_by?: StringNullableFilter<"subscribers"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
-  }, "id" | "tenant_id_contact_id">
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    subscriber_lists?: XOR<Subscriber_listsScalarRelationFilter, subscriber_listsWhereInput>
+  }, "id" | "tenant_id_contact_id_subscriber_list_id">
 
   export type subscribersOrderByWithAggregationInput = {
     id?: SortOrder
     tenant_id?: SortOrder
     status?: SortOrder
     subscribed_at?: SortOrder
+    subscriber_list_id?: SortOrder
     contact_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -17951,6 +16788,7 @@ export namespace Prisma {
     tenant_id?: UuidWithAggregatesFilter<"subscribers"> | string
     status?: Enumsubscriber_statusWithAggregatesFilter<"subscribers"> | $Enums.subscriber_status
     subscribed_at?: DateTimeWithAggregatesFilter<"subscribers"> | Date | string
+    subscriber_list_id?: UuidWithAggregatesFilter<"subscribers"> | string
     contact_id?: UuidWithAggregatesFilter<"subscribers"> | string
     created_at?: DateTimeWithAggregatesFilter<"subscribers"> | Date | string
     created_by?: StringWithAggregatesFilter<"subscribers"> | string
@@ -17970,7 +16808,7 @@ export namespace Prisma {
     created_by?: StringFilter<"subscriber_lists"> | string
     updated_at?: DateTimeNullableFilter<"subscriber_lists"> | Date | string | null
     updated_by?: StringNullableFilter<"subscriber_lists"> | string | null
-    SubscriberListContacts?: Subscriber_list_contactsListRelationFilter
+    subscribers?: SubscribersListRelationFilter
   }
 
   export type subscriber_listsOrderByWithRelationInput = {
@@ -17982,7 +16820,7 @@ export namespace Prisma {
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    SubscriberListContacts?: subscriber_list_contactsOrderByRelationAggregateInput
+    subscribers?: subscribersOrderByRelationAggregateInput
   }
 
   export type subscriber_listsWhereUniqueInput = Prisma.AtLeast<{
@@ -17998,7 +16836,7 @@ export namespace Prisma {
     created_by?: StringFilter<"subscriber_lists"> | string
     updated_at?: DateTimeNullableFilter<"subscriber_lists"> | Date | string | null
     updated_by?: StringNullableFilter<"subscriber_lists"> | string | null
-    SubscriberListContacts?: Subscriber_list_contactsListRelationFilter
+    subscribers?: SubscribersListRelationFilter
   }, "id" | "tenant_id_name">
 
   export type subscriber_listsOrderByWithAggregationInput = {
@@ -18029,74 +16867,6 @@ export namespace Prisma {
     updated_by?: StringNullableWithAggregatesFilter<"subscriber_lists"> | string | null
   }
 
-  export type subscriber_list_contactsWhereInput = {
-    AND?: subscriber_list_contactsWhereInput | subscriber_list_contactsWhereInput[]
-    OR?: subscriber_list_contactsWhereInput[]
-    NOT?: subscriber_list_contactsWhereInput | subscriber_list_contactsWhereInput[]
-    id?: UuidFilter<"subscriber_list_contacts"> | string
-    tenant_id?: UuidFilter<"subscriber_list_contacts"> | string
-    subscriber_list_id?: UuidFilter<"subscriber_list_contacts"> | string
-    created_at?: DateTimeFilter<"subscriber_list_contacts"> | Date | string
-    created_by?: StringFilter<"subscriber_list_contacts"> | string
-    updated_at?: DateTimeNullableFilter<"subscriber_list_contacts"> | Date | string | null
-    updated_by?: StringNullableFilter<"subscriber_list_contacts"> | string | null
-    subscriberList?: XOR<Subscriber_listsScalarRelationFilter, subscriber_listsWhereInput>
-    contacts?: ContactsListRelationFilter
-  }
-
-  export type subscriber_list_contactsOrderByWithRelationInput = {
-    id?: SortOrder
-    tenant_id?: SortOrder
-    subscriber_list_id?: SortOrder
-    created_at?: SortOrder
-    created_by?: SortOrder
-    updated_at?: SortOrderInput | SortOrder
-    updated_by?: SortOrderInput | SortOrder
-    subscriberList?: subscriber_listsOrderByWithRelationInput
-    contacts?: contactsOrderByRelationAggregateInput
-  }
-
-  export type subscriber_list_contactsWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: subscriber_list_contactsWhereInput | subscriber_list_contactsWhereInput[]
-    OR?: subscriber_list_contactsWhereInput[]
-    NOT?: subscriber_list_contactsWhereInput | subscriber_list_contactsWhereInput[]
-    tenant_id?: UuidFilter<"subscriber_list_contacts"> | string
-    subscriber_list_id?: UuidFilter<"subscriber_list_contacts"> | string
-    created_at?: DateTimeFilter<"subscriber_list_contacts"> | Date | string
-    created_by?: StringFilter<"subscriber_list_contacts"> | string
-    updated_at?: DateTimeNullableFilter<"subscriber_list_contacts"> | Date | string | null
-    updated_by?: StringNullableFilter<"subscriber_list_contacts"> | string | null
-    subscriberList?: XOR<Subscriber_listsScalarRelationFilter, subscriber_listsWhereInput>
-    contacts?: ContactsListRelationFilter
-  }, "id">
-
-  export type subscriber_list_contactsOrderByWithAggregationInput = {
-    id?: SortOrder
-    tenant_id?: SortOrder
-    subscriber_list_id?: SortOrder
-    created_at?: SortOrder
-    created_by?: SortOrder
-    updated_at?: SortOrderInput | SortOrder
-    updated_by?: SortOrderInput | SortOrder
-    _count?: subscriber_list_contactsCountOrderByAggregateInput
-    _max?: subscriber_list_contactsMaxOrderByAggregateInput
-    _min?: subscriber_list_contactsMinOrderByAggregateInput
-  }
-
-  export type subscriber_list_contactsScalarWhereWithAggregatesInput = {
-    AND?: subscriber_list_contactsScalarWhereWithAggregatesInput | subscriber_list_contactsScalarWhereWithAggregatesInput[]
-    OR?: subscriber_list_contactsScalarWhereWithAggregatesInput[]
-    NOT?: subscriber_list_contactsScalarWhereWithAggregatesInput | subscriber_list_contactsScalarWhereWithAggregatesInput[]
-    id?: UuidWithAggregatesFilter<"subscriber_list_contacts"> | string
-    tenant_id?: UuidWithAggregatesFilter<"subscriber_list_contacts"> | string
-    subscriber_list_id?: UuidWithAggregatesFilter<"subscriber_list_contacts"> | string
-    created_at?: DateTimeWithAggregatesFilter<"subscriber_list_contacts"> | Date | string
-    created_by?: StringWithAggregatesFilter<"subscriber_list_contacts"> | string
-    updated_at?: DateTimeNullableWithAggregatesFilter<"subscriber_list_contacts"> | Date | string | null
-    updated_by?: StringNullableWithAggregatesFilter<"subscriber_list_contacts"> | string | null
-  }
-
   export type unsubscribesWhereInput = {
     AND?: unsubscribesWhereInput | unsubscribesWhereInput[]
     OR?: unsubscribesWhereInput[]
@@ -18112,7 +16882,7 @@ export namespace Prisma {
     created_by?: StringFilter<"unsubscribes"> | string
     updated_at?: DateTimeNullableFilter<"unsubscribes"> | Date | string | null
     updated_by?: StringNullableFilter<"unsubscribes"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
   }
 
   export type unsubscribesOrderByWithRelationInput = {
@@ -18127,7 +16897,7 @@ export namespace Prisma {
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
     updated_by?: SortOrderInput | SortOrder
-    contact?: contactsOrderByWithRelationInput
+    contacts?: contactsOrderByWithRelationInput
   }
 
   export type unsubscribesWhereUniqueInput = Prisma.AtLeast<{
@@ -18146,7 +16916,7 @@ export namespace Prisma {
     created_by?: StringFilter<"unsubscribes"> | string
     updated_at?: DateTimeNullableFilter<"unsubscribes"> | Date | string | null
     updated_by?: StringNullableFilter<"unsubscribes"> | string | null
-    contact?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
   }, "id" | "tenant_id_contact_id">
 
   export type unsubscribesOrderByWithAggregationInput = {
@@ -18567,16 +17337,15 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedOneWithoutContactsInput
-    activity?: activitiesCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesCreateNestedManyWithoutContactInput
-    subscriber?: subscribersCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesCreateNestedManyWithoutContactInput
+    activities?: activitiesCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateInput = {
@@ -18586,16 +17355,15 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesUncheckedCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesUncheckedCreateNestedManyWithoutContactInput
-    subscriber?: subscribersUncheckedCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesUncheckedCreateNestedManyWithoutContactInput
+    activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUpdateInput = {
@@ -18605,16 +17373,15 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsUpdateOneWithoutContactsNestedInput
-    activity?: activitiesUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUpdateManyWithoutContactNestedInput
+    activities?: activitiesUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateInput = {
@@ -18624,16 +17391,15 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUncheckedUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUncheckedUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUncheckedUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUncheckedUpdateManyWithoutContactNestedInput
+    activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsCreateManyInput = {
@@ -18643,12 +17409,11 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
   }
 
   export type contactsUpdateManyMutationInput = {
@@ -18658,11 +17423,11 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
   }
 
   export type contactsUncheckedUpdateManyInput = {
@@ -18672,12 +17437,11 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
   }
 
   export type campaignsCreateInput = {
@@ -18694,7 +17458,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    activity?: activitiesCreateNestedManyWithoutCampaignInput
+    activities?: activitiesCreateNestedManyWithoutCampaignsInput
   }
 
   export type campaignsUncheckedCreateInput = {
@@ -18711,7 +17475,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    activity?: activitiesUncheckedCreateNestedManyWithoutCampaignInput
+    activities?: activitiesUncheckedCreateNestedManyWithoutCampaignsInput
   }
 
   export type campaignsUpdateInput = {
@@ -18728,7 +17492,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    activity?: activitiesUpdateManyWithoutCampaignNestedInput
+    activities?: activitiesUpdateManyWithoutCampaignsNestedInput
   }
 
   export type campaignsUncheckedUpdateInput = {
@@ -18745,7 +17509,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    activity?: activitiesUncheckedUpdateManyWithoutCampaignNestedInput
+    activities?: activitiesUncheckedUpdateManyWithoutCampaignsNestedInput
   }
 
   export type campaignsCreateManyInput = {
@@ -18811,8 +17575,8 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    receiver: contactsCreateNestedOneWithoutActivityInput
-    campaign?: campaignsCreateNestedOneWithoutActivityInput
+    receivers: contactsCreateNestedOneWithoutActivitiesInput
+    campaigns?: campaignsCreateNestedOneWithoutActivitiesInput
   }
 
   export type activitiesUncheckedCreateInput = {
@@ -18849,8 +17613,8 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    receiver?: contactsUpdateOneRequiredWithoutActivityNestedInput
-    campaign?: campaignsUpdateOneWithoutActivityNestedInput
+    receivers?: contactsUpdateOneRequiredWithoutActivitiesNestedInput
+    campaigns?: campaignsUpdateOneWithoutActivitiesNestedInput
   }
 
   export type activitiesUncheckedUpdateInput = {
@@ -18937,7 +17701,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    contact: contactsCreateNestedOneWithoutBounceInput
+    contacts: contactsCreateNestedOneWithoutBouncesInput
   }
 
   export type bouncesUncheckedCreateInput = {
@@ -18963,7 +17727,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contact?: contactsUpdateOneRequiredWithoutBounceNestedInput
+    contacts?: contactsUpdateOneRequiredWithoutBouncesNestedInput
   }
 
   export type bouncesUncheckedUpdateInput = {
@@ -19026,7 +17790,8 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    contact: contactsCreateNestedOneWithoutSubscriberInput
+    contacts: contactsCreateNestedOneWithoutSubscribersInput
+    subscriber_lists: subscriber_listsCreateNestedOneWithoutSubscribersInput
   }
 
   export type subscribersUncheckedCreateInput = {
@@ -19034,6 +17799,7 @@ export namespace Prisma {
     tenant_id: string
     status: $Enums.subscriber_status
     subscribed_at: Date | string
+    subscriber_list_id: string
     contact_id: string
     created_at: Date | string
     created_by: string
@@ -19050,7 +17816,8 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contact?: contactsUpdateOneRequiredWithoutSubscriberNestedInput
+    contacts?: contactsUpdateOneRequiredWithoutSubscribersNestedInput
+    subscriber_lists?: subscriber_listsUpdateOneRequiredWithoutSubscribersNestedInput
   }
 
   export type subscribersUncheckedUpdateInput = {
@@ -19058,6 +17825,7 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
     subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriber_list_id?: StringFieldUpdateOperationsInput | string
     contact_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
@@ -19070,6 +17838,7 @@ export namespace Prisma {
     tenant_id: string
     status: $Enums.subscriber_status
     subscribed_at: Date | string
+    subscriber_list_id: string
     contact_id: string
     created_at: Date | string
     created_by: string
@@ -19093,6 +17862,7 @@ export namespace Prisma {
     tenant_id?: StringFieldUpdateOperationsInput | string
     status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
     subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriber_list_id?: StringFieldUpdateOperationsInput | string
     contact_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
@@ -19109,7 +17879,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedManyWithoutSubscriberListInput
+    subscribers?: subscribersCreateNestedManyWithoutSubscriber_listsInput
   }
 
   export type subscriber_listsUncheckedCreateInput = {
@@ -19121,7 +17891,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    SubscriberListContacts?: subscriber_list_contactsUncheckedCreateNestedManyWithoutSubscriberListInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutSubscriber_listsInput
   }
 
   export type subscriber_listsUpdateInput = {
@@ -19133,7 +17903,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    SubscriberListContacts?: subscriber_list_contactsUpdateManyWithoutSubscriberListNestedInput
+    subscribers?: subscribersUpdateManyWithoutSubscriber_listsNestedInput
   }
 
   export type subscriber_listsUncheckedUpdateInput = {
@@ -19145,7 +17915,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    SubscriberListContacts?: subscriber_list_contactsUncheckedUpdateManyWithoutSubscriberListNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutSubscriber_listsNestedInput
   }
 
   export type subscriber_listsCreateManyInput = {
@@ -19181,79 +17951,6 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type subscriber_list_contactsCreateInput = {
-    id?: string
-    tenant_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    subscriberList: subscriber_listsCreateNestedOneWithoutSubscriberListContactsInput
-    contacts?: contactsCreateNestedManyWithoutSubscriberListContactsInput
-  }
-
-  export type subscriber_list_contactsUncheckedCreateInput = {
-    id?: string
-    tenant_id: string
-    subscriber_list_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    contacts?: contactsUncheckedCreateNestedManyWithoutSubscriberListContactsInput
-  }
-
-  export type subscriber_list_contactsUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriberList?: subscriber_listsUpdateOneRequiredWithoutSubscriberListContactsNestedInput
-    contacts?: contactsUpdateManyWithoutSubscriberListContactsNestedInput
-  }
-
-  export type subscriber_list_contactsUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    subscriber_list_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contacts?: contactsUncheckedUpdateManyWithoutSubscriberListContactsNestedInput
-  }
-
-  export type subscriber_list_contactsCreateManyInput = {
-    id?: string
-    tenant_id: string
-    subscriber_list_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-  }
-
-  export type subscriber_list_contactsUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type subscriber_list_contactsUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    subscriber_list_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
   export type unsubscribesCreateInput = {
     id?: string
     tenant_id: string
@@ -19265,7 +17962,7 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    contact: contactsCreateNestedOneWithoutUnsubscribeInput
+    contacts: contactsCreateNestedOneWithoutUnsubscribesInput
   }
 
   export type unsubscribesUncheckedCreateInput = {
@@ -19293,7 +17990,7 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contact?: contactsUpdateOneRequiredWithoutUnsubscribeNestedInput
+    contacts?: contactsUpdateOneRequiredWithoutUnsubscribesNestedInput
   }
 
   export type unsubscribesUncheckedUpdateInput = {
@@ -19893,29 +18590,12 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type UuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
-  }
-
   export type StringNullableListFilter<$PrismaModel = never> = {
     equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
     has?: string | StringFieldRefInput<$PrismaModel> | null
     hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
     hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
     isEmpty?: boolean
-  }
-
-  export type Subscriber_list_contactsNullableScalarRelationFilter = {
-    is?: subscriber_list_contactsWhereInput | null
-    isNot?: subscriber_list_contactsWhereInput | null
   }
 
   export type ActivitiesListRelationFilter = {
@@ -19970,12 +18650,11 @@ export namespace Prisma {
     first_name?: SortOrder
     last_name?: SortOrder
     last_activity_at?: SortOrder
-    subscriber_list_contacts_id?: SortOrder
+    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
     updated_by?: SortOrder
-    list_ids?: SortOrder
   }
 
   export type contactsMaxOrderByAggregateInput = {
@@ -19985,7 +18664,6 @@ export namespace Prisma {
     first_name?: SortOrder
     last_name?: SortOrder
     last_activity_at?: SortOrder
-    subscriber_list_contacts_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -19999,26 +18677,10 @@ export namespace Prisma {
     first_name?: SortOrder
     last_name?: SortOrder
     last_activity_at?: SortOrder
-    subscriber_list_contacts_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
     updated_by?: SortOrder
-  }
-
-  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type Enumcampaign_statusFilter<$PrismaModel = never> = {
@@ -20161,6 +18823,18 @@ export namespace Prisma {
     not?: NestedEnumevent_typeFilter<$PrismaModel> | $Enums.event_type
   }
 
+  export type UuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
   export type ContactsScalarRelationFilter = {
     is?: contactsWhereInput
     isNot?: contactsWhereInput
@@ -20258,6 +18932,21 @@ export namespace Prisma {
     _max?: NestedEnumevent_typeFilter<$PrismaModel>
   }
 
+  export type UuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
   export type Enumbounce_typeFilter<$PrismaModel = never> = {
     equals?: $Enums.bounce_type | Enumbounce_typeFieldRefInput<$PrismaModel>
     in?: $Enums.bounce_type[] | ListEnumbounce_typeFieldRefInput<$PrismaModel>
@@ -20326,9 +19015,15 @@ export namespace Prisma {
     not?: NestedEnumsubscriber_statusFilter<$PrismaModel> | $Enums.subscriber_status
   }
 
-  export type subscribersTenant_idContact_idCompoundUniqueInput = {
+  export type Subscriber_listsScalarRelationFilter = {
+    is?: subscriber_listsWhereInput
+    isNot?: subscriber_listsWhereInput
+  }
+
+  export type subscribersTenant_idContact_idSubscriber_list_idCompoundUniqueInput = {
     tenant_id: string
     contact_id: string
+    subscriber_list_id: string
   }
 
   export type subscribersCountOrderByAggregateInput = {
@@ -20336,6 +19031,7 @@ export namespace Prisma {
     tenant_id?: SortOrder
     status?: SortOrder
     subscribed_at?: SortOrder
+    subscriber_list_id?: SortOrder
     contact_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -20348,6 +19044,7 @@ export namespace Prisma {
     tenant_id?: SortOrder
     status?: SortOrder
     subscribed_at?: SortOrder
+    subscriber_list_id?: SortOrder
     contact_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -20360,6 +19057,7 @@ export namespace Prisma {
     tenant_id?: SortOrder
     status?: SortOrder
     subscribed_at?: SortOrder
+    subscriber_list_id?: SortOrder
     contact_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
@@ -20375,16 +19073,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumsubscriber_statusFilter<$PrismaModel>
     _max?: NestedEnumsubscriber_statusFilter<$PrismaModel>
-  }
-
-  export type Subscriber_list_contactsListRelationFilter = {
-    every?: subscriber_list_contactsWhereInput
-    some?: subscriber_list_contactsWhereInput
-    none?: subscriber_list_contactsWhereInput
-  }
-
-  export type subscriber_list_contactsOrderByRelationAggregateInput = {
-    _count?: SortOrder
   }
 
   export type subscriber_listsTenant_idNameCompoundUniqueInput = {
@@ -20419,51 +19107,6 @@ export namespace Prisma {
     tenant_id?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    created_at?: SortOrder
-    created_by?: SortOrder
-    updated_at?: SortOrder
-    updated_by?: SortOrder
-  }
-
-  export type Subscriber_listsScalarRelationFilter = {
-    is?: subscriber_listsWhereInput
-    isNot?: subscriber_listsWhereInput
-  }
-
-  export type ContactsListRelationFilter = {
-    every?: contactsWhereInput
-    some?: contactsWhereInput
-    none?: contactsWhereInput
-  }
-
-  export type contactsOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type subscriber_list_contactsCountOrderByAggregateInput = {
-    id?: SortOrder
-    tenant_id?: SortOrder
-    subscriber_list_id?: SortOrder
-    created_at?: SortOrder
-    created_by?: SortOrder
-    updated_at?: SortOrder
-    updated_by?: SortOrder
-  }
-
-  export type subscriber_list_contactsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    tenant_id?: SortOrder
-    subscriber_list_id?: SortOrder
-    created_at?: SortOrder
-    created_by?: SortOrder
-    updated_at?: SortOrder
-    updated_by?: SortOrder
-  }
-
-  export type subscriber_list_contactsMinOrderByAggregateInput = {
-    id?: SortOrder
-    tenant_id?: SortOrder
-    subscriber_list_id?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20779,65 +19422,59 @@ export namespace Prisma {
     set: string[]
   }
 
-  export type subscriber_list_contactsCreateNestedOneWithoutContactsInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutContactsInput, subscriber_list_contactsUncheckedCreateWithoutContactsInput>
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutContactsInput
-    connect?: subscriber_list_contactsWhereUniqueInput
-  }
-
-  export type activitiesCreateNestedManyWithoutReceiverInput = {
-    create?: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput> | activitiesCreateWithoutReceiverInput[] | activitiesUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutReceiverInput | activitiesCreateOrConnectWithoutReceiverInput[]
-    createMany?: activitiesCreateManyReceiverInputEnvelope
+  export type activitiesCreateNestedManyWithoutReceiversInput = {
+    create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
+    createMany?: activitiesCreateManyReceiversInputEnvelope
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
   }
 
-  export type bouncesCreateNestedManyWithoutContactInput = {
-    create?: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput> | bouncesCreateWithoutContactInput[] | bouncesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: bouncesCreateOrConnectWithoutContactInput | bouncesCreateOrConnectWithoutContactInput[]
-    createMany?: bouncesCreateManyContactInputEnvelope
+  export type bouncesCreateNestedManyWithoutContactsInput = {
+    create?: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput> | bouncesCreateWithoutContactsInput[] | bouncesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: bouncesCreateOrConnectWithoutContactsInput | bouncesCreateOrConnectWithoutContactsInput[]
+    createMany?: bouncesCreateManyContactsInputEnvelope
     connect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
   }
 
-  export type subscribersCreateNestedManyWithoutContactInput = {
-    create?: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput> | subscribersCreateWithoutContactInput[] | subscribersUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: subscribersCreateOrConnectWithoutContactInput | subscribersCreateOrConnectWithoutContactInput[]
-    createMany?: subscribersCreateManyContactInputEnvelope
+  export type subscribersCreateNestedManyWithoutContactsInput = {
+    create?: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput> | subscribersCreateWithoutContactsInput[] | subscribersUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutContactsInput | subscribersCreateOrConnectWithoutContactsInput[]
+    createMany?: subscribersCreateManyContactsInputEnvelope
     connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
   }
 
-  export type unsubscribesCreateNestedManyWithoutContactInput = {
-    create?: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput> | unsubscribesCreateWithoutContactInput[] | unsubscribesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactInput | unsubscribesCreateOrConnectWithoutContactInput[]
-    createMany?: unsubscribesCreateManyContactInputEnvelope
+  export type unsubscribesCreateNestedManyWithoutContactsInput = {
+    create?: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput> | unsubscribesCreateWithoutContactsInput[] | unsubscribesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
+    createMany?: unsubscribesCreateManyContactsInputEnvelope
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
   }
 
-  export type activitiesUncheckedCreateNestedManyWithoutReceiverInput = {
-    create?: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput> | activitiesCreateWithoutReceiverInput[] | activitiesUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutReceiverInput | activitiesCreateOrConnectWithoutReceiverInput[]
-    createMany?: activitiesCreateManyReceiverInputEnvelope
+  export type activitiesUncheckedCreateNestedManyWithoutReceiversInput = {
+    create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
+    createMany?: activitiesCreateManyReceiversInputEnvelope
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
   }
 
-  export type bouncesUncheckedCreateNestedManyWithoutContactInput = {
-    create?: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput> | bouncesCreateWithoutContactInput[] | bouncesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: bouncesCreateOrConnectWithoutContactInput | bouncesCreateOrConnectWithoutContactInput[]
-    createMany?: bouncesCreateManyContactInputEnvelope
+  export type bouncesUncheckedCreateNestedManyWithoutContactsInput = {
+    create?: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput> | bouncesCreateWithoutContactsInput[] | bouncesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: bouncesCreateOrConnectWithoutContactsInput | bouncesCreateOrConnectWithoutContactsInput[]
+    createMany?: bouncesCreateManyContactsInputEnvelope
     connect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
   }
 
-  export type subscribersUncheckedCreateNestedManyWithoutContactInput = {
-    create?: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput> | subscribersCreateWithoutContactInput[] | subscribersUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: subscribersCreateOrConnectWithoutContactInput | subscribersCreateOrConnectWithoutContactInput[]
-    createMany?: subscribersCreateManyContactInputEnvelope
+  export type subscribersUncheckedCreateNestedManyWithoutContactsInput = {
+    create?: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput> | subscribersCreateWithoutContactsInput[] | subscribersUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutContactsInput | subscribersCreateOrConnectWithoutContactsInput[]
+    createMany?: subscribersCreateManyContactsInputEnvelope
     connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
   }
 
-  export type unsubscribesUncheckedCreateNestedManyWithoutContactInput = {
-    create?: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput> | unsubscribesCreateWithoutContactInput[] | unsubscribesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactInput | unsubscribesCreateOrConnectWithoutContactInput[]
-    createMany?: unsubscribesCreateManyContactInputEnvelope
+  export type unsubscribesUncheckedCreateNestedManyWithoutContactsInput = {
+    create?: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput> | unsubscribesCreateWithoutContactsInput[] | unsubscribesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
+    createMany?: unsubscribesCreateManyContactsInputEnvelope
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
   }
 
@@ -20846,139 +19483,129 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type subscriber_list_contactsUpdateOneWithoutContactsNestedInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutContactsInput, subscriber_list_contactsUncheckedCreateWithoutContactsInput>
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutContactsInput
-    upsert?: subscriber_list_contactsUpsertWithoutContactsInput
-    disconnect?: subscriber_list_contactsWhereInput | boolean
-    delete?: subscriber_list_contactsWhereInput | boolean
-    connect?: subscriber_list_contactsWhereUniqueInput
-    update?: XOR<XOR<subscriber_list_contactsUpdateToOneWithWhereWithoutContactsInput, subscriber_list_contactsUpdateWithoutContactsInput>, subscriber_list_contactsUncheckedUpdateWithoutContactsInput>
-  }
-
-  export type activitiesUpdateManyWithoutReceiverNestedInput = {
-    create?: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput> | activitiesCreateWithoutReceiverInput[] | activitiesUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutReceiverInput | activitiesCreateOrConnectWithoutReceiverInput[]
-    upsert?: activitiesUpsertWithWhereUniqueWithoutReceiverInput | activitiesUpsertWithWhereUniqueWithoutReceiverInput[]
-    createMany?: activitiesCreateManyReceiverInputEnvelope
+  export type activitiesUpdateManyWithoutReceiversNestedInput = {
+    create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
+    upsert?: activitiesUpsertWithWhereUniqueWithoutReceiversInput | activitiesUpsertWithWhereUniqueWithoutReceiversInput[]
+    createMany?: activitiesCreateManyReceiversInputEnvelope
     set?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     disconnect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     delete?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
-    update?: activitiesUpdateWithWhereUniqueWithoutReceiverInput | activitiesUpdateWithWhereUniqueWithoutReceiverInput[]
-    updateMany?: activitiesUpdateManyWithWhereWithoutReceiverInput | activitiesUpdateManyWithWhereWithoutReceiverInput[]
+    update?: activitiesUpdateWithWhereUniqueWithoutReceiversInput | activitiesUpdateWithWhereUniqueWithoutReceiversInput[]
+    updateMany?: activitiesUpdateManyWithWhereWithoutReceiversInput | activitiesUpdateManyWithWhereWithoutReceiversInput[]
     deleteMany?: activitiesScalarWhereInput | activitiesScalarWhereInput[]
   }
 
-  export type bouncesUpdateManyWithoutContactNestedInput = {
-    create?: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput> | bouncesCreateWithoutContactInput[] | bouncesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: bouncesCreateOrConnectWithoutContactInput | bouncesCreateOrConnectWithoutContactInput[]
-    upsert?: bouncesUpsertWithWhereUniqueWithoutContactInput | bouncesUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: bouncesCreateManyContactInputEnvelope
+  export type bouncesUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput> | bouncesCreateWithoutContactsInput[] | bouncesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: bouncesCreateOrConnectWithoutContactsInput | bouncesCreateOrConnectWithoutContactsInput[]
+    upsert?: bouncesUpsertWithWhereUniqueWithoutContactsInput | bouncesUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: bouncesCreateManyContactsInputEnvelope
     set?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     disconnect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     delete?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     connect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
-    update?: bouncesUpdateWithWhereUniqueWithoutContactInput | bouncesUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: bouncesUpdateManyWithWhereWithoutContactInput | bouncesUpdateManyWithWhereWithoutContactInput[]
+    update?: bouncesUpdateWithWhereUniqueWithoutContactsInput | bouncesUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: bouncesUpdateManyWithWhereWithoutContactsInput | bouncesUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: bouncesScalarWhereInput | bouncesScalarWhereInput[]
   }
 
-  export type subscribersUpdateManyWithoutContactNestedInput = {
-    create?: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput> | subscribersCreateWithoutContactInput[] | subscribersUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: subscribersCreateOrConnectWithoutContactInput | subscribersCreateOrConnectWithoutContactInput[]
-    upsert?: subscribersUpsertWithWhereUniqueWithoutContactInput | subscribersUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: subscribersCreateManyContactInputEnvelope
+  export type subscribersUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput> | subscribersCreateWithoutContactsInput[] | subscribersUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutContactsInput | subscribersCreateOrConnectWithoutContactsInput[]
+    upsert?: subscribersUpsertWithWhereUniqueWithoutContactsInput | subscribersUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: subscribersCreateManyContactsInputEnvelope
     set?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     disconnect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     delete?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
-    update?: subscribersUpdateWithWhereUniqueWithoutContactInput | subscribersUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: subscribersUpdateManyWithWhereWithoutContactInput | subscribersUpdateManyWithWhereWithoutContactInput[]
+    update?: subscribersUpdateWithWhereUniqueWithoutContactsInput | subscribersUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: subscribersUpdateManyWithWhereWithoutContactsInput | subscribersUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: subscribersScalarWhereInput | subscribersScalarWhereInput[]
   }
 
-  export type unsubscribesUpdateManyWithoutContactNestedInput = {
-    create?: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput> | unsubscribesCreateWithoutContactInput[] | unsubscribesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactInput | unsubscribesCreateOrConnectWithoutContactInput[]
-    upsert?: unsubscribesUpsertWithWhereUniqueWithoutContactInput | unsubscribesUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: unsubscribesCreateManyContactInputEnvelope
+  export type unsubscribesUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput> | unsubscribesCreateWithoutContactsInput[] | unsubscribesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
+    upsert?: unsubscribesUpsertWithWhereUniqueWithoutContactsInput | unsubscribesUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: unsubscribesCreateManyContactsInputEnvelope
     set?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     disconnect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     delete?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
-    update?: unsubscribesUpdateWithWhereUniqueWithoutContactInput | unsubscribesUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: unsubscribesUpdateManyWithWhereWithoutContactInput | unsubscribesUpdateManyWithWhereWithoutContactInput[]
+    update?: unsubscribesUpdateWithWhereUniqueWithoutContactsInput | unsubscribesUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: unsubscribesUpdateManyWithWhereWithoutContactsInput | unsubscribesUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: unsubscribesScalarWhereInput | unsubscribesScalarWhereInput[]
   }
 
-  export type activitiesUncheckedUpdateManyWithoutReceiverNestedInput = {
-    create?: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput> | activitiesCreateWithoutReceiverInput[] | activitiesUncheckedCreateWithoutReceiverInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutReceiverInput | activitiesCreateOrConnectWithoutReceiverInput[]
-    upsert?: activitiesUpsertWithWhereUniqueWithoutReceiverInput | activitiesUpsertWithWhereUniqueWithoutReceiverInput[]
-    createMany?: activitiesCreateManyReceiverInputEnvelope
+  export type activitiesUncheckedUpdateManyWithoutReceiversNestedInput = {
+    create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
+    upsert?: activitiesUpsertWithWhereUniqueWithoutReceiversInput | activitiesUpsertWithWhereUniqueWithoutReceiversInput[]
+    createMany?: activitiesCreateManyReceiversInputEnvelope
     set?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     disconnect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     delete?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
-    update?: activitiesUpdateWithWhereUniqueWithoutReceiverInput | activitiesUpdateWithWhereUniqueWithoutReceiverInput[]
-    updateMany?: activitiesUpdateManyWithWhereWithoutReceiverInput | activitiesUpdateManyWithWhereWithoutReceiverInput[]
+    update?: activitiesUpdateWithWhereUniqueWithoutReceiversInput | activitiesUpdateWithWhereUniqueWithoutReceiversInput[]
+    updateMany?: activitiesUpdateManyWithWhereWithoutReceiversInput | activitiesUpdateManyWithWhereWithoutReceiversInput[]
     deleteMany?: activitiesScalarWhereInput | activitiesScalarWhereInput[]
   }
 
-  export type bouncesUncheckedUpdateManyWithoutContactNestedInput = {
-    create?: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput> | bouncesCreateWithoutContactInput[] | bouncesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: bouncesCreateOrConnectWithoutContactInput | bouncesCreateOrConnectWithoutContactInput[]
-    upsert?: bouncesUpsertWithWhereUniqueWithoutContactInput | bouncesUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: bouncesCreateManyContactInputEnvelope
+  export type bouncesUncheckedUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput> | bouncesCreateWithoutContactsInput[] | bouncesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: bouncesCreateOrConnectWithoutContactsInput | bouncesCreateOrConnectWithoutContactsInput[]
+    upsert?: bouncesUpsertWithWhereUniqueWithoutContactsInput | bouncesUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: bouncesCreateManyContactsInputEnvelope
     set?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     disconnect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     delete?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
     connect?: bouncesWhereUniqueInput | bouncesWhereUniqueInput[]
-    update?: bouncesUpdateWithWhereUniqueWithoutContactInput | bouncesUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: bouncesUpdateManyWithWhereWithoutContactInput | bouncesUpdateManyWithWhereWithoutContactInput[]
+    update?: bouncesUpdateWithWhereUniqueWithoutContactsInput | bouncesUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: bouncesUpdateManyWithWhereWithoutContactsInput | bouncesUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: bouncesScalarWhereInput | bouncesScalarWhereInput[]
   }
 
-  export type subscribersUncheckedUpdateManyWithoutContactNestedInput = {
-    create?: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput> | subscribersCreateWithoutContactInput[] | subscribersUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: subscribersCreateOrConnectWithoutContactInput | subscribersCreateOrConnectWithoutContactInput[]
-    upsert?: subscribersUpsertWithWhereUniqueWithoutContactInput | subscribersUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: subscribersCreateManyContactInputEnvelope
+  export type subscribersUncheckedUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput> | subscribersCreateWithoutContactsInput[] | subscribersUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutContactsInput | subscribersCreateOrConnectWithoutContactsInput[]
+    upsert?: subscribersUpsertWithWhereUniqueWithoutContactsInput | subscribersUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: subscribersCreateManyContactsInputEnvelope
     set?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     disconnect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     delete?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
     connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
-    update?: subscribersUpdateWithWhereUniqueWithoutContactInput | subscribersUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: subscribersUpdateManyWithWhereWithoutContactInput | subscribersUpdateManyWithWhereWithoutContactInput[]
+    update?: subscribersUpdateWithWhereUniqueWithoutContactsInput | subscribersUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: subscribersUpdateManyWithWhereWithoutContactsInput | subscribersUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: subscribersScalarWhereInput | subscribersScalarWhereInput[]
   }
 
-  export type unsubscribesUncheckedUpdateManyWithoutContactNestedInput = {
-    create?: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput> | unsubscribesCreateWithoutContactInput[] | unsubscribesUncheckedCreateWithoutContactInput[]
-    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactInput | unsubscribesCreateOrConnectWithoutContactInput[]
-    upsert?: unsubscribesUpsertWithWhereUniqueWithoutContactInput | unsubscribesUpsertWithWhereUniqueWithoutContactInput[]
-    createMany?: unsubscribesCreateManyContactInputEnvelope
+  export type unsubscribesUncheckedUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput> | unsubscribesCreateWithoutContactsInput[] | unsubscribesUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
+    upsert?: unsubscribesUpsertWithWhereUniqueWithoutContactsInput | unsubscribesUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: unsubscribesCreateManyContactsInputEnvelope
     set?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     disconnect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     delete?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
-    update?: unsubscribesUpdateWithWhereUniqueWithoutContactInput | unsubscribesUpdateWithWhereUniqueWithoutContactInput[]
-    updateMany?: unsubscribesUpdateManyWithWhereWithoutContactInput | unsubscribesUpdateManyWithWhereWithoutContactInput[]
+    update?: unsubscribesUpdateWithWhereUniqueWithoutContactsInput | unsubscribesUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: unsubscribesUpdateManyWithWhereWithoutContactsInput | unsubscribesUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: unsubscribesScalarWhereInput | unsubscribesScalarWhereInput[]
   }
 
-  export type activitiesCreateNestedManyWithoutCampaignInput = {
-    create?: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput> | activitiesCreateWithoutCampaignInput[] | activitiesUncheckedCreateWithoutCampaignInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignInput | activitiesCreateOrConnectWithoutCampaignInput[]
-    createMany?: activitiesCreateManyCampaignInputEnvelope
+  export type activitiesCreateNestedManyWithoutCampaignsInput = {
+    create?: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput> | activitiesCreateWithoutCampaignsInput[] | activitiesUncheckedCreateWithoutCampaignsInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignsInput | activitiesCreateOrConnectWithoutCampaignsInput[]
+    createMany?: activitiesCreateManyCampaignsInputEnvelope
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
   }
 
-  export type activitiesUncheckedCreateNestedManyWithoutCampaignInput = {
-    create?: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput> | activitiesCreateWithoutCampaignInput[] | activitiesUncheckedCreateWithoutCampaignInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignInput | activitiesCreateOrConnectWithoutCampaignInput[]
-    createMany?: activitiesCreateManyCampaignInputEnvelope
+  export type activitiesUncheckedCreateNestedManyWithoutCampaignsInput = {
+    create?: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput> | activitiesCreateWithoutCampaignsInput[] | activitiesUncheckedCreateWithoutCampaignsInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignsInput | activitiesCreateOrConnectWithoutCampaignsInput[]
+    createMany?: activitiesCreateManyCampaignsInputEnvelope
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
   }
 
@@ -20998,43 +19625,43 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type activitiesUpdateManyWithoutCampaignNestedInput = {
-    create?: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput> | activitiesCreateWithoutCampaignInput[] | activitiesUncheckedCreateWithoutCampaignInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignInput | activitiesCreateOrConnectWithoutCampaignInput[]
-    upsert?: activitiesUpsertWithWhereUniqueWithoutCampaignInput | activitiesUpsertWithWhereUniqueWithoutCampaignInput[]
-    createMany?: activitiesCreateManyCampaignInputEnvelope
+  export type activitiesUpdateManyWithoutCampaignsNestedInput = {
+    create?: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput> | activitiesCreateWithoutCampaignsInput[] | activitiesUncheckedCreateWithoutCampaignsInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignsInput | activitiesCreateOrConnectWithoutCampaignsInput[]
+    upsert?: activitiesUpsertWithWhereUniqueWithoutCampaignsInput | activitiesUpsertWithWhereUniqueWithoutCampaignsInput[]
+    createMany?: activitiesCreateManyCampaignsInputEnvelope
     set?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     disconnect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     delete?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
-    update?: activitiesUpdateWithWhereUniqueWithoutCampaignInput | activitiesUpdateWithWhereUniqueWithoutCampaignInput[]
-    updateMany?: activitiesUpdateManyWithWhereWithoutCampaignInput | activitiesUpdateManyWithWhereWithoutCampaignInput[]
+    update?: activitiesUpdateWithWhereUniqueWithoutCampaignsInput | activitiesUpdateWithWhereUniqueWithoutCampaignsInput[]
+    updateMany?: activitiesUpdateManyWithWhereWithoutCampaignsInput | activitiesUpdateManyWithWhereWithoutCampaignsInput[]
     deleteMany?: activitiesScalarWhereInput | activitiesScalarWhereInput[]
   }
 
-  export type activitiesUncheckedUpdateManyWithoutCampaignNestedInput = {
-    create?: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput> | activitiesCreateWithoutCampaignInput[] | activitiesUncheckedCreateWithoutCampaignInput[]
-    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignInput | activitiesCreateOrConnectWithoutCampaignInput[]
-    upsert?: activitiesUpsertWithWhereUniqueWithoutCampaignInput | activitiesUpsertWithWhereUniqueWithoutCampaignInput[]
-    createMany?: activitiesCreateManyCampaignInputEnvelope
+  export type activitiesUncheckedUpdateManyWithoutCampaignsNestedInput = {
+    create?: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput> | activitiesCreateWithoutCampaignsInput[] | activitiesUncheckedCreateWithoutCampaignsInput[]
+    connectOrCreate?: activitiesCreateOrConnectWithoutCampaignsInput | activitiesCreateOrConnectWithoutCampaignsInput[]
+    upsert?: activitiesUpsertWithWhereUniqueWithoutCampaignsInput | activitiesUpsertWithWhereUniqueWithoutCampaignsInput[]
+    createMany?: activitiesCreateManyCampaignsInputEnvelope
     set?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     disconnect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     delete?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
     connect?: activitiesWhereUniqueInput | activitiesWhereUniqueInput[]
-    update?: activitiesUpdateWithWhereUniqueWithoutCampaignInput | activitiesUpdateWithWhereUniqueWithoutCampaignInput[]
-    updateMany?: activitiesUpdateManyWithWhereWithoutCampaignInput | activitiesUpdateManyWithWhereWithoutCampaignInput[]
+    update?: activitiesUpdateWithWhereUniqueWithoutCampaignsInput | activitiesUpdateWithWhereUniqueWithoutCampaignsInput[]
+    updateMany?: activitiesUpdateManyWithWhereWithoutCampaignsInput | activitiesUpdateManyWithWhereWithoutCampaignsInput[]
     deleteMany?: activitiesScalarWhereInput | activitiesScalarWhereInput[]
   }
 
-  export type contactsCreateNestedOneWithoutActivityInput = {
-    create?: XOR<contactsCreateWithoutActivityInput, contactsUncheckedCreateWithoutActivityInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutActivityInput
+  export type contactsCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<contactsCreateWithoutActivitiesInput, contactsUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutActivitiesInput
     connect?: contactsWhereUniqueInput
   }
 
-  export type campaignsCreateNestedOneWithoutActivityInput = {
-    create?: XOR<campaignsCreateWithoutActivityInput, campaignsUncheckedCreateWithoutActivityInput>
-    connectOrCreate?: campaignsCreateOrConnectWithoutActivityInput
+  export type campaignsCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<campaignsCreateWithoutActivitiesInput, campaignsUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: campaignsCreateOrConnectWithoutActivitiesInput
     connect?: campaignsWhereUniqueInput
   }
 
@@ -21046,27 +19673,27 @@ export namespace Prisma {
     set?: $Enums.event_type
   }
 
-  export type contactsUpdateOneRequiredWithoutActivityNestedInput = {
-    create?: XOR<contactsCreateWithoutActivityInput, contactsUncheckedCreateWithoutActivityInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutActivityInput
-    upsert?: contactsUpsertWithoutActivityInput
+  export type contactsUpdateOneRequiredWithoutActivitiesNestedInput = {
+    create?: XOR<contactsCreateWithoutActivitiesInput, contactsUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutActivitiesInput
+    upsert?: contactsUpsertWithoutActivitiesInput
     connect?: contactsWhereUniqueInput
-    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutActivityInput, contactsUpdateWithoutActivityInput>, contactsUncheckedUpdateWithoutActivityInput>
+    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutActivitiesInput, contactsUpdateWithoutActivitiesInput>, contactsUncheckedUpdateWithoutActivitiesInput>
   }
 
-  export type campaignsUpdateOneWithoutActivityNestedInput = {
-    create?: XOR<campaignsCreateWithoutActivityInput, campaignsUncheckedCreateWithoutActivityInput>
-    connectOrCreate?: campaignsCreateOrConnectWithoutActivityInput
-    upsert?: campaignsUpsertWithoutActivityInput
+  export type campaignsUpdateOneWithoutActivitiesNestedInput = {
+    create?: XOR<campaignsCreateWithoutActivitiesInput, campaignsUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: campaignsCreateOrConnectWithoutActivitiesInput
+    upsert?: campaignsUpsertWithoutActivitiesInput
     disconnect?: campaignsWhereInput | boolean
     delete?: campaignsWhereInput | boolean
     connect?: campaignsWhereUniqueInput
-    update?: XOR<XOR<campaignsUpdateToOneWithWhereWithoutActivityInput, campaignsUpdateWithoutActivityInput>, campaignsUncheckedUpdateWithoutActivityInput>
+    update?: XOR<XOR<campaignsUpdateToOneWithWhereWithoutActivitiesInput, campaignsUpdateWithoutActivitiesInput>, campaignsUncheckedUpdateWithoutActivitiesInput>
   }
 
-  export type contactsCreateNestedOneWithoutBounceInput = {
-    create?: XOR<contactsCreateWithoutBounceInput, contactsUncheckedCreateWithoutBounceInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutBounceInput
+  export type contactsCreateNestedOneWithoutBouncesInput = {
+    create?: XOR<contactsCreateWithoutBouncesInput, contactsUncheckedCreateWithoutBouncesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutBouncesInput
     connect?: contactsWhereUniqueInput
   }
 
@@ -21074,137 +19701,95 @@ export namespace Prisma {
     set?: $Enums.bounce_type
   }
 
-  export type contactsUpdateOneRequiredWithoutBounceNestedInput = {
-    create?: XOR<contactsCreateWithoutBounceInput, contactsUncheckedCreateWithoutBounceInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutBounceInput
-    upsert?: contactsUpsertWithoutBounceInput
+  export type contactsUpdateOneRequiredWithoutBouncesNestedInput = {
+    create?: XOR<contactsCreateWithoutBouncesInput, contactsUncheckedCreateWithoutBouncesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutBouncesInput
+    upsert?: contactsUpsertWithoutBouncesInput
     connect?: contactsWhereUniqueInput
-    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutBounceInput, contactsUpdateWithoutBounceInput>, contactsUncheckedUpdateWithoutBounceInput>
+    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutBouncesInput, contactsUpdateWithoutBouncesInput>, contactsUncheckedUpdateWithoutBouncesInput>
   }
 
-  export type contactsCreateNestedOneWithoutSubscriberInput = {
-    create?: XOR<contactsCreateWithoutSubscriberInput, contactsUncheckedCreateWithoutSubscriberInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberInput
+  export type contactsCreateNestedOneWithoutSubscribersInput = {
+    create?: XOR<contactsCreateWithoutSubscribersInput, contactsUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutSubscribersInput
     connect?: contactsWhereUniqueInput
+  }
+
+  export type subscriber_listsCreateNestedOneWithoutSubscribersInput = {
+    create?: XOR<subscriber_listsCreateWithoutSubscribersInput, subscriber_listsUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: subscriber_listsCreateOrConnectWithoutSubscribersInput
+    connect?: subscriber_listsWhereUniqueInput
   }
 
   export type Enumsubscriber_statusFieldUpdateOperationsInput = {
     set?: $Enums.subscriber_status
   }
 
-  export type contactsUpdateOneRequiredWithoutSubscriberNestedInput = {
-    create?: XOR<contactsCreateWithoutSubscriberInput, contactsUncheckedCreateWithoutSubscriberInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberInput
-    upsert?: contactsUpsertWithoutSubscriberInput
+  export type contactsUpdateOneRequiredWithoutSubscribersNestedInput = {
+    create?: XOR<contactsCreateWithoutSubscribersInput, contactsUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutSubscribersInput
+    upsert?: contactsUpsertWithoutSubscribersInput
     connect?: contactsWhereUniqueInput
-    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutSubscriberInput, contactsUpdateWithoutSubscriberInput>, contactsUncheckedUpdateWithoutSubscriberInput>
+    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutSubscribersInput, contactsUpdateWithoutSubscribersInput>, contactsUncheckedUpdateWithoutSubscribersInput>
   }
 
-  export type subscriber_list_contactsCreateNestedManyWithoutSubscriberListInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput> | subscriber_list_contactsCreateWithoutSubscriberListInput[] | subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput[]
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput | subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput[]
-    createMany?: subscriber_list_contactsCreateManySubscriberListInputEnvelope
-    connect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-  }
-
-  export type subscriber_list_contactsUncheckedCreateNestedManyWithoutSubscriberListInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput> | subscriber_list_contactsCreateWithoutSubscriberListInput[] | subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput[]
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput | subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput[]
-    createMany?: subscriber_list_contactsCreateManySubscriberListInputEnvelope
-    connect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-  }
-
-  export type subscriber_list_contactsUpdateManyWithoutSubscriberListNestedInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput> | subscriber_list_contactsCreateWithoutSubscriberListInput[] | subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput[]
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput | subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput[]
-    upsert?: subscriber_list_contactsUpsertWithWhereUniqueWithoutSubscriberListInput | subscriber_list_contactsUpsertWithWhereUniqueWithoutSubscriberListInput[]
-    createMany?: subscriber_list_contactsCreateManySubscriberListInputEnvelope
-    set?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    disconnect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    delete?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    connect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    update?: subscriber_list_contactsUpdateWithWhereUniqueWithoutSubscriberListInput | subscriber_list_contactsUpdateWithWhereUniqueWithoutSubscriberListInput[]
-    updateMany?: subscriber_list_contactsUpdateManyWithWhereWithoutSubscriberListInput | subscriber_list_contactsUpdateManyWithWhereWithoutSubscriberListInput[]
-    deleteMany?: subscriber_list_contactsScalarWhereInput | subscriber_list_contactsScalarWhereInput[]
-  }
-
-  export type subscriber_list_contactsUncheckedUpdateManyWithoutSubscriberListNestedInput = {
-    create?: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput> | subscriber_list_contactsCreateWithoutSubscriberListInput[] | subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput[]
-    connectOrCreate?: subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput | subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput[]
-    upsert?: subscriber_list_contactsUpsertWithWhereUniqueWithoutSubscriberListInput | subscriber_list_contactsUpsertWithWhereUniqueWithoutSubscriberListInput[]
-    createMany?: subscriber_list_contactsCreateManySubscriberListInputEnvelope
-    set?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    disconnect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    delete?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    connect?: subscriber_list_contactsWhereUniqueInput | subscriber_list_contactsWhereUniqueInput[]
-    update?: subscriber_list_contactsUpdateWithWhereUniqueWithoutSubscriberListInput | subscriber_list_contactsUpdateWithWhereUniqueWithoutSubscriberListInput[]
-    updateMany?: subscriber_list_contactsUpdateManyWithWhereWithoutSubscriberListInput | subscriber_list_contactsUpdateManyWithWhereWithoutSubscriberListInput[]
-    deleteMany?: subscriber_list_contactsScalarWhereInput | subscriber_list_contactsScalarWhereInput[]
-  }
-
-  export type subscriber_listsCreateNestedOneWithoutSubscriberListContactsInput = {
-    create?: XOR<subscriber_listsCreateWithoutSubscriberListContactsInput, subscriber_listsUncheckedCreateWithoutSubscriberListContactsInput>
-    connectOrCreate?: subscriber_listsCreateOrConnectWithoutSubscriberListContactsInput
+  export type subscriber_listsUpdateOneRequiredWithoutSubscribersNestedInput = {
+    create?: XOR<subscriber_listsCreateWithoutSubscribersInput, subscriber_listsUncheckedCreateWithoutSubscribersInput>
+    connectOrCreate?: subscriber_listsCreateOrConnectWithoutSubscribersInput
+    upsert?: subscriber_listsUpsertWithoutSubscribersInput
     connect?: subscriber_listsWhereUniqueInput
+    update?: XOR<XOR<subscriber_listsUpdateToOneWithWhereWithoutSubscribersInput, subscriber_listsUpdateWithoutSubscribersInput>, subscriber_listsUncheckedUpdateWithoutSubscribersInput>
   }
 
-  export type contactsCreateNestedManyWithoutSubscriberListContactsInput = {
-    create?: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput> | contactsCreateWithoutSubscriberListContactsInput[] | contactsUncheckedCreateWithoutSubscriberListContactsInput[]
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberListContactsInput | contactsCreateOrConnectWithoutSubscriberListContactsInput[]
-    createMany?: contactsCreateManySubscriberListContactsInputEnvelope
-    connect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
+  export type subscribersCreateNestedManyWithoutSubscriber_listsInput = {
+    create?: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput> | subscribersCreateWithoutSubscriber_listsInput[] | subscribersUncheckedCreateWithoutSubscriber_listsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutSubscriber_listsInput | subscribersCreateOrConnectWithoutSubscriber_listsInput[]
+    createMany?: subscribersCreateManySubscriber_listsInputEnvelope
+    connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
   }
 
-  export type contactsUncheckedCreateNestedManyWithoutSubscriberListContactsInput = {
-    create?: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput> | contactsCreateWithoutSubscriberListContactsInput[] | contactsUncheckedCreateWithoutSubscriberListContactsInput[]
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberListContactsInput | contactsCreateOrConnectWithoutSubscriberListContactsInput[]
-    createMany?: contactsCreateManySubscriberListContactsInputEnvelope
-    connect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
+  export type subscribersUncheckedCreateNestedManyWithoutSubscriber_listsInput = {
+    create?: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput> | subscribersCreateWithoutSubscriber_listsInput[] | subscribersUncheckedCreateWithoutSubscriber_listsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutSubscriber_listsInput | subscribersCreateOrConnectWithoutSubscriber_listsInput[]
+    createMany?: subscribersCreateManySubscriber_listsInputEnvelope
+    connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
   }
 
-  export type subscriber_listsUpdateOneRequiredWithoutSubscriberListContactsNestedInput = {
-    create?: XOR<subscriber_listsCreateWithoutSubscriberListContactsInput, subscriber_listsUncheckedCreateWithoutSubscriberListContactsInput>
-    connectOrCreate?: subscriber_listsCreateOrConnectWithoutSubscriberListContactsInput
-    upsert?: subscriber_listsUpsertWithoutSubscriberListContactsInput
-    connect?: subscriber_listsWhereUniqueInput
-    update?: XOR<XOR<subscriber_listsUpdateToOneWithWhereWithoutSubscriberListContactsInput, subscriber_listsUpdateWithoutSubscriberListContactsInput>, subscriber_listsUncheckedUpdateWithoutSubscriberListContactsInput>
+  export type subscribersUpdateManyWithoutSubscriber_listsNestedInput = {
+    create?: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput> | subscribersCreateWithoutSubscriber_listsInput[] | subscribersUncheckedCreateWithoutSubscriber_listsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutSubscriber_listsInput | subscribersCreateOrConnectWithoutSubscriber_listsInput[]
+    upsert?: subscribersUpsertWithWhereUniqueWithoutSubscriber_listsInput | subscribersUpsertWithWhereUniqueWithoutSubscriber_listsInput[]
+    createMany?: subscribersCreateManySubscriber_listsInputEnvelope
+    set?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    disconnect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    delete?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    update?: subscribersUpdateWithWhereUniqueWithoutSubscriber_listsInput | subscribersUpdateWithWhereUniqueWithoutSubscriber_listsInput[]
+    updateMany?: subscribersUpdateManyWithWhereWithoutSubscriber_listsInput | subscribersUpdateManyWithWhereWithoutSubscriber_listsInput[]
+    deleteMany?: subscribersScalarWhereInput | subscribersScalarWhereInput[]
   }
 
-  export type contactsUpdateManyWithoutSubscriberListContactsNestedInput = {
-    create?: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput> | contactsCreateWithoutSubscriberListContactsInput[] | contactsUncheckedCreateWithoutSubscriberListContactsInput[]
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberListContactsInput | contactsCreateOrConnectWithoutSubscriberListContactsInput[]
-    upsert?: contactsUpsertWithWhereUniqueWithoutSubscriberListContactsInput | contactsUpsertWithWhereUniqueWithoutSubscriberListContactsInput[]
-    createMany?: contactsCreateManySubscriberListContactsInputEnvelope
-    set?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    disconnect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    delete?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    connect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    update?: contactsUpdateWithWhereUniqueWithoutSubscriberListContactsInput | contactsUpdateWithWhereUniqueWithoutSubscriberListContactsInput[]
-    updateMany?: contactsUpdateManyWithWhereWithoutSubscriberListContactsInput | contactsUpdateManyWithWhereWithoutSubscriberListContactsInput[]
-    deleteMany?: contactsScalarWhereInput | contactsScalarWhereInput[]
-  }
-
-  export type contactsUncheckedUpdateManyWithoutSubscriberListContactsNestedInput = {
-    create?: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput> | contactsCreateWithoutSubscriberListContactsInput[] | contactsUncheckedCreateWithoutSubscriberListContactsInput[]
-    connectOrCreate?: contactsCreateOrConnectWithoutSubscriberListContactsInput | contactsCreateOrConnectWithoutSubscriberListContactsInput[]
-    upsert?: contactsUpsertWithWhereUniqueWithoutSubscriberListContactsInput | contactsUpsertWithWhereUniqueWithoutSubscriberListContactsInput[]
-    createMany?: contactsCreateManySubscriberListContactsInputEnvelope
-    set?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    disconnect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    delete?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    connect?: contactsWhereUniqueInput | contactsWhereUniqueInput[]
-    update?: contactsUpdateWithWhereUniqueWithoutSubscriberListContactsInput | contactsUpdateWithWhereUniqueWithoutSubscriberListContactsInput[]
-    updateMany?: contactsUpdateManyWithWhereWithoutSubscriberListContactsInput | contactsUpdateManyWithWhereWithoutSubscriberListContactsInput[]
-    deleteMany?: contactsScalarWhereInput | contactsScalarWhereInput[]
+  export type subscribersUncheckedUpdateManyWithoutSubscriber_listsNestedInput = {
+    create?: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput> | subscribersCreateWithoutSubscriber_listsInput[] | subscribersUncheckedCreateWithoutSubscriber_listsInput[]
+    connectOrCreate?: subscribersCreateOrConnectWithoutSubscriber_listsInput | subscribersCreateOrConnectWithoutSubscriber_listsInput[]
+    upsert?: subscribersUpsertWithWhereUniqueWithoutSubscriber_listsInput | subscribersUpsertWithWhereUniqueWithoutSubscriber_listsInput[]
+    createMany?: subscribersCreateManySubscriber_listsInputEnvelope
+    set?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    disconnect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    delete?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    connect?: subscribersWhereUniqueInput | subscribersWhereUniqueInput[]
+    update?: subscribersUpdateWithWhereUniqueWithoutSubscriber_listsInput | subscribersUpdateWithWhereUniqueWithoutSubscriber_listsInput[]
+    updateMany?: subscribersUpdateManyWithWhereWithoutSubscriber_listsInput | subscribersUpdateManyWithWhereWithoutSubscriber_listsInput[]
+    deleteMany?: subscribersScalarWhereInput | subscribersScalarWhereInput[]
   }
 
   export type unsubscribesCreatelist_idsInput = {
     set: string[]
   }
 
-  export type contactsCreateNestedOneWithoutUnsubscribeInput = {
-    create?: XOR<contactsCreateWithoutUnsubscribeInput, contactsUncheckedCreateWithoutUnsubscribeInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutUnsubscribeInput
+  export type contactsCreateNestedOneWithoutUnsubscribesInput = {
+    create?: XOR<contactsCreateWithoutUnsubscribesInput, contactsUncheckedCreateWithoutUnsubscribesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutUnsubscribesInput
     connect?: contactsWhereUniqueInput
   }
 
@@ -21221,12 +19806,12 @@ export namespace Prisma {
     push?: string | string[]
   }
 
-  export type contactsUpdateOneRequiredWithoutUnsubscribeNestedInput = {
-    create?: XOR<contactsCreateWithoutUnsubscribeInput, contactsUncheckedCreateWithoutUnsubscribeInput>
-    connectOrCreate?: contactsCreateOrConnectWithoutUnsubscribeInput
-    upsert?: contactsUpsertWithoutUnsubscribeInput
+  export type contactsUpdateOneRequiredWithoutUnsubscribesNestedInput = {
+    create?: XOR<contactsCreateWithoutUnsubscribesInput, contactsUncheckedCreateWithoutUnsubscribesInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutUnsubscribesInput
+    upsert?: contactsUpsertWithoutUnsubscribesInput
     connect?: contactsWhereUniqueInput
-    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutUnsubscribeInput, contactsUpdateWithoutUnsubscribeInput>, contactsUncheckedUpdateWithoutUnsubscribeInput>
+    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutUnsubscribesInput, contactsUpdateWithoutUnsubscribesInput>, contactsUncheckedUpdateWithoutUnsubscribesInput>
   }
 
   export type usersCreatepermissionsInput = {
@@ -21464,31 +20049,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type NestedUuidNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type NestedEnumcampaign_statusFilter<$PrismaModel = never> = {
     equals?: $Enums.campaign_status | Enumcampaign_statusFieldRefInput<$PrismaModel>
     in?: $Enums.campaign_status[] | ListEnumcampaign_statusFieldRefInput<$PrismaModel>
@@ -21564,6 +20124,17 @@ export namespace Prisma {
     not?: NestedEnumevent_typeFilter<$PrismaModel> | $Enums.event_type
   }
 
+  export type NestedUuidNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedEnumactivity_statusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.activity_status | Enumactivity_statusFieldRefInput<$PrismaModel>
     in?: $Enums.activity_status[] | ListEnumactivity_statusFieldRefInput<$PrismaModel>
@@ -21582,6 +20153,20 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumevent_typeFilter<$PrismaModel>
     _max?: NestedEnumevent_typeFilter<$PrismaModel>
+  }
+
+  export type NestedUuidNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedUuidNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumbounce_typeFilter<$PrismaModel = never> = {
@@ -21671,32 +20256,7 @@ export namespace Prisma {
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
 
-  export type subscriber_list_contactsCreateWithoutContactsInput = {
-    id?: string
-    tenant_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    subscriberList: subscriber_listsCreateNestedOneWithoutSubscriberListContactsInput
-  }
-
-  export type subscriber_list_contactsUncheckedCreateWithoutContactsInput = {
-    id?: string
-    tenant_id: string
-    subscriber_list_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-  }
-
-  export type subscriber_list_contactsCreateOrConnectWithoutContactsInput = {
-    where: subscriber_list_contactsWhereUniqueInput
-    create: XOR<subscriber_list_contactsCreateWithoutContactsInput, subscriber_list_contactsUncheckedCreateWithoutContactsInput>
-  }
-
-  export type activitiesCreateWithoutReceiverInput = {
+  export type activitiesCreateWithoutReceiversInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -21711,10 +20271,10 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    campaign?: campaignsCreateNestedOneWithoutActivityInput
+    campaigns?: campaignsCreateNestedOneWithoutActivitiesInput
   }
 
-  export type activitiesUncheckedCreateWithoutReceiverInput = {
+  export type activitiesUncheckedCreateWithoutReceiversInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -21732,17 +20292,17 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type activitiesCreateOrConnectWithoutReceiverInput = {
+  export type activitiesCreateOrConnectWithoutReceiversInput = {
     where: activitiesWhereUniqueInput
-    create: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput>
+    create: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput>
   }
 
-  export type activitiesCreateManyReceiverInputEnvelope = {
-    data: activitiesCreateManyReceiverInput | activitiesCreateManyReceiverInput[]
+  export type activitiesCreateManyReceiversInputEnvelope = {
+    data: activitiesCreateManyReceiversInput | activitiesCreateManyReceiversInput[]
     skipDuplicates?: boolean
   }
 
-  export type bouncesCreateWithoutContactInput = {
+  export type bouncesCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     bounced_at: Date | string
@@ -21754,7 +20314,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type bouncesUncheckedCreateWithoutContactInput = {
+  export type bouncesUncheckedCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     bounced_at: Date | string
@@ -21766,17 +20326,17 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type bouncesCreateOrConnectWithoutContactInput = {
+  export type bouncesCreateOrConnectWithoutContactsInput = {
     where: bouncesWhereUniqueInput
-    create: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput>
+    create: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput>
   }
 
-  export type bouncesCreateManyContactInputEnvelope = {
-    data: bouncesCreateManyContactInput | bouncesCreateManyContactInput[]
+  export type bouncesCreateManyContactsInputEnvelope = {
+    data: bouncesCreateManyContactsInput | bouncesCreateManyContactsInput[]
     skipDuplicates?: boolean
   }
 
-  export type subscribersCreateWithoutContactInput = {
+  export type subscribersCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     status: $Enums.subscriber_status
@@ -21785,30 +20345,32 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
+    subscriber_lists: subscriber_listsCreateNestedOneWithoutSubscribersInput
   }
 
-  export type subscribersUncheckedCreateWithoutContactInput = {
+  export type subscribersUncheckedCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     status: $Enums.subscriber_status
     subscribed_at: Date | string
+    subscriber_list_id: string
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
   }
 
-  export type subscribersCreateOrConnectWithoutContactInput = {
+  export type subscribersCreateOrConnectWithoutContactsInput = {
     where: subscribersWhereUniqueInput
-    create: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput>
+    create: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput>
   }
 
-  export type subscribersCreateManyContactInputEnvelope = {
-    data: subscribersCreateManyContactInput | subscribersCreateManyContactInput[]
+  export type subscribersCreateManyContactsInputEnvelope = {
+    data: subscribersCreateManyContactsInput | subscribersCreateManyContactsInput[]
     skipDuplicates?: boolean
   }
 
-  export type unsubscribesCreateWithoutContactInput = {
+  export type unsubscribesCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     source: $Enums.unsubscribe_source
@@ -21821,7 +20383,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type unsubscribesUncheckedCreateWithoutContactInput = {
+  export type unsubscribesUncheckedCreateWithoutContactsInput = {
     id?: string
     tenant_id: string
     source: $Enums.unsubscribe_source
@@ -21834,61 +20396,30 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type unsubscribesCreateOrConnectWithoutContactInput = {
+  export type unsubscribesCreateOrConnectWithoutContactsInput = {
     where: unsubscribesWhereUniqueInput
-    create: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput>
+    create: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput>
   }
 
-  export type unsubscribesCreateManyContactInputEnvelope = {
-    data: unsubscribesCreateManyContactInput | unsubscribesCreateManyContactInput[]
+  export type unsubscribesCreateManyContactsInputEnvelope = {
+    data: unsubscribesCreateManyContactsInput | unsubscribesCreateManyContactsInput[]
     skipDuplicates?: boolean
   }
 
-  export type subscriber_list_contactsUpsertWithoutContactsInput = {
-    update: XOR<subscriber_list_contactsUpdateWithoutContactsInput, subscriber_list_contactsUncheckedUpdateWithoutContactsInput>
-    create: XOR<subscriber_list_contactsCreateWithoutContactsInput, subscriber_list_contactsUncheckedCreateWithoutContactsInput>
-    where?: subscriber_list_contactsWhereInput
-  }
-
-  export type subscriber_list_contactsUpdateToOneWithWhereWithoutContactsInput = {
-    where?: subscriber_list_contactsWhereInput
-    data: XOR<subscriber_list_contactsUpdateWithoutContactsInput, subscriber_list_contactsUncheckedUpdateWithoutContactsInput>
-  }
-
-  export type subscriber_list_contactsUpdateWithoutContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    subscriberList?: subscriber_listsUpdateOneRequiredWithoutSubscriberListContactsNestedInput
-  }
-
-  export type subscriber_list_contactsUncheckedUpdateWithoutContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    subscriber_list_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type activitiesUpsertWithWhereUniqueWithoutReceiverInput = {
+  export type activitiesUpsertWithWhereUniqueWithoutReceiversInput = {
     where: activitiesWhereUniqueInput
-    update: XOR<activitiesUpdateWithoutReceiverInput, activitiesUncheckedUpdateWithoutReceiverInput>
-    create: XOR<activitiesCreateWithoutReceiverInput, activitiesUncheckedCreateWithoutReceiverInput>
+    update: XOR<activitiesUpdateWithoutReceiversInput, activitiesUncheckedUpdateWithoutReceiversInput>
+    create: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput>
   }
 
-  export type activitiesUpdateWithWhereUniqueWithoutReceiverInput = {
+  export type activitiesUpdateWithWhereUniqueWithoutReceiversInput = {
     where: activitiesWhereUniqueInput
-    data: XOR<activitiesUpdateWithoutReceiverInput, activitiesUncheckedUpdateWithoutReceiverInput>
+    data: XOR<activitiesUpdateWithoutReceiversInput, activitiesUncheckedUpdateWithoutReceiversInput>
   }
 
-  export type activitiesUpdateManyWithWhereWithoutReceiverInput = {
+  export type activitiesUpdateManyWithWhereWithoutReceiversInput = {
     where: activitiesScalarWhereInput
-    data: XOR<activitiesUpdateManyMutationInput, activitiesUncheckedUpdateManyWithoutReceiverInput>
+    data: XOR<activitiesUpdateManyMutationInput, activitiesUncheckedUpdateManyWithoutReceiversInput>
   }
 
   export type activitiesScalarWhereInput = {
@@ -21913,20 +20444,20 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"activities"> | string | null
   }
 
-  export type bouncesUpsertWithWhereUniqueWithoutContactInput = {
+  export type bouncesUpsertWithWhereUniqueWithoutContactsInput = {
     where: bouncesWhereUniqueInput
-    update: XOR<bouncesUpdateWithoutContactInput, bouncesUncheckedUpdateWithoutContactInput>
-    create: XOR<bouncesCreateWithoutContactInput, bouncesUncheckedCreateWithoutContactInput>
+    update: XOR<bouncesUpdateWithoutContactsInput, bouncesUncheckedUpdateWithoutContactsInput>
+    create: XOR<bouncesCreateWithoutContactsInput, bouncesUncheckedCreateWithoutContactsInput>
   }
 
-  export type bouncesUpdateWithWhereUniqueWithoutContactInput = {
+  export type bouncesUpdateWithWhereUniqueWithoutContactsInput = {
     where: bouncesWhereUniqueInput
-    data: XOR<bouncesUpdateWithoutContactInput, bouncesUncheckedUpdateWithoutContactInput>
+    data: XOR<bouncesUpdateWithoutContactsInput, bouncesUncheckedUpdateWithoutContactsInput>
   }
 
-  export type bouncesUpdateManyWithWhereWithoutContactInput = {
+  export type bouncesUpdateManyWithWhereWithoutContactsInput = {
     where: bouncesScalarWhereInput
-    data: XOR<bouncesUpdateManyMutationInput, bouncesUncheckedUpdateManyWithoutContactInput>
+    data: XOR<bouncesUpdateManyMutationInput, bouncesUncheckedUpdateManyWithoutContactsInput>
   }
 
   export type bouncesScalarWhereInput = {
@@ -21945,20 +20476,20 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"bounces"> | string | null
   }
 
-  export type subscribersUpsertWithWhereUniqueWithoutContactInput = {
+  export type subscribersUpsertWithWhereUniqueWithoutContactsInput = {
     where: subscribersWhereUniqueInput
-    update: XOR<subscribersUpdateWithoutContactInput, subscribersUncheckedUpdateWithoutContactInput>
-    create: XOR<subscribersCreateWithoutContactInput, subscribersUncheckedCreateWithoutContactInput>
+    update: XOR<subscribersUpdateWithoutContactsInput, subscribersUncheckedUpdateWithoutContactsInput>
+    create: XOR<subscribersCreateWithoutContactsInput, subscribersUncheckedCreateWithoutContactsInput>
   }
 
-  export type subscribersUpdateWithWhereUniqueWithoutContactInput = {
+  export type subscribersUpdateWithWhereUniqueWithoutContactsInput = {
     where: subscribersWhereUniqueInput
-    data: XOR<subscribersUpdateWithoutContactInput, subscribersUncheckedUpdateWithoutContactInput>
+    data: XOR<subscribersUpdateWithoutContactsInput, subscribersUncheckedUpdateWithoutContactsInput>
   }
 
-  export type subscribersUpdateManyWithWhereWithoutContactInput = {
+  export type subscribersUpdateManyWithWhereWithoutContactsInput = {
     where: subscribersScalarWhereInput
-    data: XOR<subscribersUpdateManyMutationInput, subscribersUncheckedUpdateManyWithoutContactInput>
+    data: XOR<subscribersUpdateManyMutationInput, subscribersUncheckedUpdateManyWithoutContactsInput>
   }
 
   export type subscribersScalarWhereInput = {
@@ -21969,6 +20500,7 @@ export namespace Prisma {
     tenant_id?: UuidFilter<"subscribers"> | string
     status?: Enumsubscriber_statusFilter<"subscribers"> | $Enums.subscriber_status
     subscribed_at?: DateTimeFilter<"subscribers"> | Date | string
+    subscriber_list_id?: UuidFilter<"subscribers"> | string
     contact_id?: UuidFilter<"subscribers"> | string
     created_at?: DateTimeFilter<"subscribers"> | Date | string
     created_by?: StringFilter<"subscribers"> | string
@@ -21976,20 +20508,20 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"subscribers"> | string | null
   }
 
-  export type unsubscribesUpsertWithWhereUniqueWithoutContactInput = {
+  export type unsubscribesUpsertWithWhereUniqueWithoutContactsInput = {
     where: unsubscribesWhereUniqueInput
-    update: XOR<unsubscribesUpdateWithoutContactInput, unsubscribesUncheckedUpdateWithoutContactInput>
-    create: XOR<unsubscribesCreateWithoutContactInput, unsubscribesUncheckedCreateWithoutContactInput>
+    update: XOR<unsubscribesUpdateWithoutContactsInput, unsubscribesUncheckedUpdateWithoutContactsInput>
+    create: XOR<unsubscribesCreateWithoutContactsInput, unsubscribesUncheckedCreateWithoutContactsInput>
   }
 
-  export type unsubscribesUpdateWithWhereUniqueWithoutContactInput = {
+  export type unsubscribesUpdateWithWhereUniqueWithoutContactsInput = {
     where: unsubscribesWhereUniqueInput
-    data: XOR<unsubscribesUpdateWithoutContactInput, unsubscribesUncheckedUpdateWithoutContactInput>
+    data: XOR<unsubscribesUpdateWithoutContactsInput, unsubscribesUncheckedUpdateWithoutContactsInput>
   }
 
-  export type unsubscribesUpdateManyWithWhereWithoutContactInput = {
+  export type unsubscribesUpdateManyWithWhereWithoutContactsInput = {
     where: unsubscribesScalarWhereInput
-    data: XOR<unsubscribesUpdateManyMutationInput, unsubscribesUncheckedUpdateManyWithoutContactInput>
+    data: XOR<unsubscribesUpdateManyMutationInput, unsubscribesUncheckedUpdateManyWithoutContactsInput>
   }
 
   export type unsubscribesScalarWhereInput = {
@@ -22009,7 +20541,7 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"unsubscribes"> | string | null
   }
 
-  export type activitiesCreateWithoutCampaignInput = {
+  export type activitiesCreateWithoutCampaignsInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -22024,10 +20556,10 @@ export namespace Prisma {
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    receiver: contactsCreateNestedOneWithoutActivityInput
+    receivers: contactsCreateNestedOneWithoutActivitiesInput
   }
 
-  export type activitiesUncheckedCreateWithoutCampaignInput = {
+  export type activitiesUncheckedCreateWithoutCampaignsInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -22045,74 +20577,72 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type activitiesCreateOrConnectWithoutCampaignInput = {
+  export type activitiesCreateOrConnectWithoutCampaignsInput = {
     where: activitiesWhereUniqueInput
-    create: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput>
+    create: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput>
   }
 
-  export type activitiesCreateManyCampaignInputEnvelope = {
-    data: activitiesCreateManyCampaignInput | activitiesCreateManyCampaignInput[]
+  export type activitiesCreateManyCampaignsInputEnvelope = {
+    data: activitiesCreateManyCampaignsInput | activitiesCreateManyCampaignsInput[]
     skipDuplicates?: boolean
   }
 
-  export type activitiesUpsertWithWhereUniqueWithoutCampaignInput = {
+  export type activitiesUpsertWithWhereUniqueWithoutCampaignsInput = {
     where: activitiesWhereUniqueInput
-    update: XOR<activitiesUpdateWithoutCampaignInput, activitiesUncheckedUpdateWithoutCampaignInput>
-    create: XOR<activitiesCreateWithoutCampaignInput, activitiesUncheckedCreateWithoutCampaignInput>
+    update: XOR<activitiesUpdateWithoutCampaignsInput, activitiesUncheckedUpdateWithoutCampaignsInput>
+    create: XOR<activitiesCreateWithoutCampaignsInput, activitiesUncheckedCreateWithoutCampaignsInput>
   }
 
-  export type activitiesUpdateWithWhereUniqueWithoutCampaignInput = {
+  export type activitiesUpdateWithWhereUniqueWithoutCampaignsInput = {
     where: activitiesWhereUniqueInput
-    data: XOR<activitiesUpdateWithoutCampaignInput, activitiesUncheckedUpdateWithoutCampaignInput>
+    data: XOR<activitiesUpdateWithoutCampaignsInput, activitiesUncheckedUpdateWithoutCampaignsInput>
   }
 
-  export type activitiesUpdateManyWithWhereWithoutCampaignInput = {
+  export type activitiesUpdateManyWithWhereWithoutCampaignsInput = {
     where: activitiesScalarWhereInput
-    data: XOR<activitiesUpdateManyMutationInput, activitiesUncheckedUpdateManyWithoutCampaignInput>
+    data: XOR<activitiesUpdateManyMutationInput, activitiesUncheckedUpdateManyWithoutCampaignsInput>
   }
 
-  export type contactsCreateWithoutActivityInput = {
+  export type contactsCreateWithoutActivitiesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedOneWithoutContactsInput
-    bounce?: bouncesCreateNestedManyWithoutContactInput
-    subscriber?: subscribersCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesCreateNestedManyWithoutContactInput
+    bounces?: bouncesCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsUncheckedCreateWithoutActivityInput = {
+  export type contactsUncheckedCreateWithoutActivitiesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    bounce?: bouncesUncheckedCreateNestedManyWithoutContactInput
-    subscriber?: subscribersUncheckedCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesUncheckedCreateNestedManyWithoutContactInput
+    bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsCreateOrConnectWithoutActivityInput = {
+  export type contactsCreateOrConnectWithoutActivitiesInput = {
     where: contactsWhereUniqueInput
-    create: XOR<contactsCreateWithoutActivityInput, contactsUncheckedCreateWithoutActivityInput>
+    create: XOR<contactsCreateWithoutActivitiesInput, contactsUncheckedCreateWithoutActivitiesInput>
   }
 
-  export type campaignsCreateWithoutActivityInput = {
+  export type campaignsCreateWithoutActivitiesInput = {
     id?: string
     tenant_id: string
     name: string
@@ -22128,7 +20658,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type campaignsUncheckedCreateWithoutActivityInput = {
+  export type campaignsUncheckedCreateWithoutActivitiesInput = {
     id?: string
     tenant_id: string
     name: string
@@ -22144,70 +20674,68 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type campaignsCreateOrConnectWithoutActivityInput = {
+  export type campaignsCreateOrConnectWithoutActivitiesInput = {
     where: campaignsWhereUniqueInput
-    create: XOR<campaignsCreateWithoutActivityInput, campaignsUncheckedCreateWithoutActivityInput>
+    create: XOR<campaignsCreateWithoutActivitiesInput, campaignsUncheckedCreateWithoutActivitiesInput>
   }
 
-  export type contactsUpsertWithoutActivityInput = {
-    update: XOR<contactsUpdateWithoutActivityInput, contactsUncheckedUpdateWithoutActivityInput>
-    create: XOR<contactsCreateWithoutActivityInput, contactsUncheckedCreateWithoutActivityInput>
+  export type contactsUpsertWithoutActivitiesInput = {
+    update: XOR<contactsUpdateWithoutActivitiesInput, contactsUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<contactsCreateWithoutActivitiesInput, contactsUncheckedCreateWithoutActivitiesInput>
     where?: contactsWhereInput
   }
 
-  export type contactsUpdateToOneWithWhereWithoutActivityInput = {
+  export type contactsUpdateToOneWithWhereWithoutActivitiesInput = {
     where?: contactsWhereInput
-    data: XOR<contactsUpdateWithoutActivityInput, contactsUncheckedUpdateWithoutActivityInput>
+    data: XOR<contactsUpdateWithoutActivitiesInput, contactsUncheckedUpdateWithoutActivitiesInput>
   }
 
-  export type contactsUpdateWithoutActivityInput = {
+  export type contactsUpdateWithoutActivitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsUpdateOneWithoutContactsNestedInput
-    bounce?: bouncesUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUpdateManyWithoutContactNestedInput
+    bounces?: bouncesUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
   }
 
-  export type contactsUncheckedUpdateWithoutActivityInput = {
+  export type contactsUncheckedUpdateWithoutActivitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    bounce?: bouncesUncheckedUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUncheckedUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUncheckedUpdateManyWithoutContactNestedInput
+    bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
   }
 
-  export type campaignsUpsertWithoutActivityInput = {
-    update: XOR<campaignsUpdateWithoutActivityInput, campaignsUncheckedUpdateWithoutActivityInput>
-    create: XOR<campaignsCreateWithoutActivityInput, campaignsUncheckedCreateWithoutActivityInput>
+  export type campaignsUpsertWithoutActivitiesInput = {
+    update: XOR<campaignsUpdateWithoutActivitiesInput, campaignsUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<campaignsCreateWithoutActivitiesInput, campaignsUncheckedCreateWithoutActivitiesInput>
     where?: campaignsWhereInput
   }
 
-  export type campaignsUpdateToOneWithWhereWithoutActivityInput = {
+  export type campaignsUpdateToOneWithWhereWithoutActivitiesInput = {
     where?: campaignsWhereInput
-    data: XOR<campaignsUpdateWithoutActivityInput, campaignsUncheckedUpdateWithoutActivityInput>
+    data: XOR<campaignsUpdateWithoutActivitiesInput, campaignsUncheckedUpdateWithoutActivitiesInput>
   }
 
-  export type campaignsUpdateWithoutActivityInput = {
+  export type campaignsUpdateWithoutActivitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -22223,7 +20751,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type campaignsUncheckedUpdateWithoutActivityInput = {
+  export type campaignsUncheckedUpdateWithoutActivitiesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
@@ -22239,242 +20767,130 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type contactsCreateWithoutBounceInput = {
+  export type contactsCreateWithoutBouncesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedOneWithoutContactsInput
-    activity?: activitiesCreateNestedManyWithoutReceiverInput
-    subscriber?: subscribersCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesCreateNestedManyWithoutContactInput
+    activities?: activitiesCreateNestedManyWithoutReceiversInput
+    subscribers?: subscribersCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsUncheckedCreateWithoutBounceInput = {
+  export type contactsUncheckedCreateWithoutBouncesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesUncheckedCreateNestedManyWithoutReceiverInput
-    subscriber?: subscribersUncheckedCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesUncheckedCreateNestedManyWithoutContactInput
+    activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsCreateOrConnectWithoutBounceInput = {
+  export type contactsCreateOrConnectWithoutBouncesInput = {
     where: contactsWhereUniqueInput
-    create: XOR<contactsCreateWithoutBounceInput, contactsUncheckedCreateWithoutBounceInput>
+    create: XOR<contactsCreateWithoutBouncesInput, contactsUncheckedCreateWithoutBouncesInput>
   }
 
-  export type contactsUpsertWithoutBounceInput = {
-    update: XOR<contactsUpdateWithoutBounceInput, contactsUncheckedUpdateWithoutBounceInput>
-    create: XOR<contactsCreateWithoutBounceInput, contactsUncheckedCreateWithoutBounceInput>
+  export type contactsUpsertWithoutBouncesInput = {
+    update: XOR<contactsUpdateWithoutBouncesInput, contactsUncheckedUpdateWithoutBouncesInput>
+    create: XOR<contactsCreateWithoutBouncesInput, contactsUncheckedCreateWithoutBouncesInput>
     where?: contactsWhereInput
   }
 
-  export type contactsUpdateToOneWithWhereWithoutBounceInput = {
+  export type contactsUpdateToOneWithWhereWithoutBouncesInput = {
     where?: contactsWhereInput
-    data: XOR<contactsUpdateWithoutBounceInput, contactsUncheckedUpdateWithoutBounceInput>
+    data: XOR<contactsUpdateWithoutBouncesInput, contactsUncheckedUpdateWithoutBouncesInput>
   }
 
-  export type contactsUpdateWithoutBounceInput = {
+  export type contactsUpdateWithoutBouncesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsUpdateOneWithoutContactsNestedInput
-    activity?: activitiesUpdateManyWithoutReceiverNestedInput
-    subscriber?: subscribersUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUpdateManyWithoutContactNestedInput
+    activities?: activitiesUpdateManyWithoutReceiversNestedInput
+    subscribers?: subscribersUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
   }
 
-  export type contactsUncheckedUpdateWithoutBounceInput = {
+  export type contactsUncheckedUpdateWithoutBouncesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUncheckedUpdateManyWithoutReceiverNestedInput
-    subscriber?: subscribersUncheckedUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUncheckedUpdateManyWithoutContactNestedInput
+    activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
   }
 
-  export type contactsCreateWithoutSubscriberInput = {
+  export type contactsCreateWithoutSubscribersInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedOneWithoutContactsInput
-    activity?: activitiesCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesCreateNestedManyWithoutContactInput
+    activities?: activitiesCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsUncheckedCreateWithoutSubscriberInput = {
+  export type contactsUncheckedCreateWithoutSubscribersInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesUncheckedCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesUncheckedCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesUncheckedCreateNestedManyWithoutContactInput
+    activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsCreateOrConnectWithoutSubscriberInput = {
+  export type contactsCreateOrConnectWithoutSubscribersInput = {
     where: contactsWhereUniqueInput
-    create: XOR<contactsCreateWithoutSubscriberInput, contactsUncheckedCreateWithoutSubscriberInput>
+    create: XOR<contactsCreateWithoutSubscribersInput, contactsUncheckedCreateWithoutSubscribersInput>
   }
 
-  export type contactsUpsertWithoutSubscriberInput = {
-    update: XOR<contactsUpdateWithoutSubscriberInput, contactsUncheckedUpdateWithoutSubscriberInput>
-    create: XOR<contactsCreateWithoutSubscriberInput, contactsUncheckedCreateWithoutSubscriberInput>
-    where?: contactsWhereInput
-  }
-
-  export type contactsUpdateToOneWithWhereWithoutSubscriberInput = {
-    where?: contactsWhereInput
-    data: XOR<contactsUpdateWithoutSubscriberInput, contactsUncheckedUpdateWithoutSubscriberInput>
-  }
-
-  export type contactsUpdateWithoutSubscriberInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    first_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsUpdateOneWithoutContactsNestedInput
-    activity?: activitiesUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUpdateManyWithoutContactNestedInput
-  }
-
-  export type contactsUncheckedUpdateWithoutSubscriberInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    first_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUncheckedUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUncheckedUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUncheckedUpdateManyWithoutContactNestedInput
-  }
-
-  export type subscriber_list_contactsCreateWithoutSubscriberListInput = {
-    id?: string
-    tenant_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    contacts?: contactsCreateNestedManyWithoutSubscriberListContactsInput
-  }
-
-  export type subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput = {
-    id?: string
-    tenant_id: string
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    contacts?: contactsUncheckedCreateNestedManyWithoutSubscriberListContactsInput
-  }
-
-  export type subscriber_list_contactsCreateOrConnectWithoutSubscriberListInput = {
-    where: subscriber_list_contactsWhereUniqueInput
-    create: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput>
-  }
-
-  export type subscriber_list_contactsCreateManySubscriberListInputEnvelope = {
-    data: subscriber_list_contactsCreateManySubscriberListInput | subscriber_list_contactsCreateManySubscriberListInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type subscriber_list_contactsUpsertWithWhereUniqueWithoutSubscriberListInput = {
-    where: subscriber_list_contactsWhereUniqueInput
-    update: XOR<subscriber_list_contactsUpdateWithoutSubscriberListInput, subscriber_list_contactsUncheckedUpdateWithoutSubscriberListInput>
-    create: XOR<subscriber_list_contactsCreateWithoutSubscriberListInput, subscriber_list_contactsUncheckedCreateWithoutSubscriberListInput>
-  }
-
-  export type subscriber_list_contactsUpdateWithWhereUniqueWithoutSubscriberListInput = {
-    where: subscriber_list_contactsWhereUniqueInput
-    data: XOR<subscriber_list_contactsUpdateWithoutSubscriberListInput, subscriber_list_contactsUncheckedUpdateWithoutSubscriberListInput>
-  }
-
-  export type subscriber_list_contactsUpdateManyWithWhereWithoutSubscriberListInput = {
-    where: subscriber_list_contactsScalarWhereInput
-    data: XOR<subscriber_list_contactsUpdateManyMutationInput, subscriber_list_contactsUncheckedUpdateManyWithoutSubscriberListInput>
-  }
-
-  export type subscriber_list_contactsScalarWhereInput = {
-    AND?: subscriber_list_contactsScalarWhereInput | subscriber_list_contactsScalarWhereInput[]
-    OR?: subscriber_list_contactsScalarWhereInput[]
-    NOT?: subscriber_list_contactsScalarWhereInput | subscriber_list_contactsScalarWhereInput[]
-    id?: UuidFilter<"subscriber_list_contacts"> | string
-    tenant_id?: UuidFilter<"subscriber_list_contacts"> | string
-    subscriber_list_id?: UuidFilter<"subscriber_list_contacts"> | string
-    created_at?: DateTimeFilter<"subscriber_list_contacts"> | Date | string
-    created_by?: StringFilter<"subscriber_list_contacts"> | string
-    updated_at?: DateTimeNullableFilter<"subscriber_list_contacts"> | Date | string | null
-    updated_by?: StringNullableFilter<"subscriber_list_contacts"> | string | null
-  }
-
-  export type subscriber_listsCreateWithoutSubscriberListContactsInput = {
+  export type subscriber_listsCreateWithoutSubscribersInput = {
     id?: string
     tenant_id: string
     name: string
@@ -22485,7 +20901,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type subscriber_listsUncheckedCreateWithoutSubscriberListContactsInput = {
+  export type subscriber_listsUncheckedCreateWithoutSubscribersInput = {
     id?: string
     tenant_id: string
     name: string
@@ -22496,210 +20912,221 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type subscriber_listsCreateOrConnectWithoutSubscriberListContactsInput = {
+  export type subscriber_listsCreateOrConnectWithoutSubscribersInput = {
     where: subscriber_listsWhereUniqueInput
-    create: XOR<subscriber_listsCreateWithoutSubscriberListContactsInput, subscriber_listsUncheckedCreateWithoutSubscriberListContactsInput>
+    create: XOR<subscriber_listsCreateWithoutSubscribersInput, subscriber_listsUncheckedCreateWithoutSubscribersInput>
   }
 
-  export type contactsCreateWithoutSubscriberListContactsInput = {
+  export type contactsUpsertWithoutSubscribersInput = {
+    update: XOR<contactsUpdateWithoutSubscribersInput, contactsUncheckedUpdateWithoutSubscribersInput>
+    create: XOR<contactsCreateWithoutSubscribersInput, contactsUncheckedCreateWithoutSubscribersInput>
+    where?: contactsWhereInput
+  }
+
+  export type contactsUpdateToOneWithWhereWithoutSubscribersInput = {
+    where?: contactsWhereInput
+    data: XOR<contactsUpdateWithoutSubscribersInput, contactsUncheckedUpdateWithoutSubscribersInput>
+  }
+
+  export type contactsUpdateWithoutSubscribersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    activities?: activitiesUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+  }
+
+  export type contactsUncheckedUpdateWithoutSubscribersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+  }
+
+  export type subscriber_listsUpsertWithoutSubscribersInput = {
+    update: XOR<subscriber_listsUpdateWithoutSubscribersInput, subscriber_listsUncheckedUpdateWithoutSubscribersInput>
+    create: XOR<subscriber_listsCreateWithoutSubscribersInput, subscriber_listsUncheckedCreateWithoutSubscribersInput>
+    where?: subscriber_listsWhereInput
+  }
+
+  export type subscriber_listsUpdateToOneWithWhereWithoutSubscribersInput = {
+    where?: subscriber_listsWhereInput
+    data: XOR<subscriber_listsUpdateWithoutSubscribersInput, subscriber_listsUncheckedUpdateWithoutSubscribersInput>
+  }
+
+  export type subscriber_listsUpdateWithoutSubscribersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type subscriber_listsUncheckedUpdateWithoutSubscribersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type subscribersCreateWithoutSubscriber_listsInput = {
     id?: string
     tenant_id: string
-    email: string
-    first_name?: string | null
-    last_name?: string | null
-    last_activity_at?: Date | string | null
+    status: $Enums.subscriber_status
+    subscribed_at: Date | string
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesCreateNestedManyWithoutContactInput
-    subscriber?: subscribersCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesCreateNestedManyWithoutContactInput
+    contacts: contactsCreateNestedOneWithoutSubscribersInput
   }
 
-  export type contactsUncheckedCreateWithoutSubscriberListContactsInput = {
+  export type subscribersUncheckedCreateWithoutSubscriber_listsInput = {
     id?: string
     tenant_id: string
-    email: string
-    first_name?: string | null
-    last_name?: string | null
-    last_activity_at?: Date | string | null
+    status: $Enums.subscriber_status
+    subscribed_at: Date | string
+    contact_id: string
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesUncheckedCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesUncheckedCreateNestedManyWithoutContactInput
-    subscriber?: subscribersUncheckedCreateNestedManyWithoutContactInput
-    unsubscribe?: unsubscribesUncheckedCreateNestedManyWithoutContactInput
   }
 
-  export type contactsCreateOrConnectWithoutSubscriberListContactsInput = {
-    where: contactsWhereUniqueInput
-    create: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput>
+  export type subscribersCreateOrConnectWithoutSubscriber_listsInput = {
+    where: subscribersWhereUniqueInput
+    create: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput>
   }
 
-  export type contactsCreateManySubscriberListContactsInputEnvelope = {
-    data: contactsCreateManySubscriberListContactsInput | contactsCreateManySubscriberListContactsInput[]
+  export type subscribersCreateManySubscriber_listsInputEnvelope = {
+    data: subscribersCreateManySubscriber_listsInput | subscribersCreateManySubscriber_listsInput[]
     skipDuplicates?: boolean
   }
 
-  export type subscriber_listsUpsertWithoutSubscriberListContactsInput = {
-    update: XOR<subscriber_listsUpdateWithoutSubscriberListContactsInput, subscriber_listsUncheckedUpdateWithoutSubscriberListContactsInput>
-    create: XOR<subscriber_listsCreateWithoutSubscriberListContactsInput, subscriber_listsUncheckedCreateWithoutSubscriberListContactsInput>
-    where?: subscriber_listsWhereInput
+  export type subscribersUpsertWithWhereUniqueWithoutSubscriber_listsInput = {
+    where: subscribersWhereUniqueInput
+    update: XOR<subscribersUpdateWithoutSubscriber_listsInput, subscribersUncheckedUpdateWithoutSubscriber_listsInput>
+    create: XOR<subscribersCreateWithoutSubscriber_listsInput, subscribersUncheckedCreateWithoutSubscriber_listsInput>
   }
 
-  export type subscriber_listsUpdateToOneWithWhereWithoutSubscriberListContactsInput = {
-    where?: subscriber_listsWhereInput
-    data: XOR<subscriber_listsUpdateWithoutSubscriberListContactsInput, subscriber_listsUncheckedUpdateWithoutSubscriberListContactsInput>
+  export type subscribersUpdateWithWhereUniqueWithoutSubscriber_listsInput = {
+    where: subscribersWhereUniqueInput
+    data: XOR<subscribersUpdateWithoutSubscriber_listsInput, subscribersUncheckedUpdateWithoutSubscriber_listsInput>
   }
 
-  export type subscriber_listsUpdateWithoutSubscriberListContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  export type subscribersUpdateManyWithWhereWithoutSubscriber_listsInput = {
+    where: subscribersScalarWhereInput
+    data: XOR<subscribersUpdateManyMutationInput, subscribersUncheckedUpdateManyWithoutSubscriber_listsInput>
   }
 
-  export type subscriber_listsUncheckedUpdateWithoutSubscriberListContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    name?: StringFieldUpdateOperationsInput | string
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type contactsUpsertWithWhereUniqueWithoutSubscriberListContactsInput = {
-    where: contactsWhereUniqueInput
-    update: XOR<contactsUpdateWithoutSubscriberListContactsInput, contactsUncheckedUpdateWithoutSubscriberListContactsInput>
-    create: XOR<contactsCreateWithoutSubscriberListContactsInput, contactsUncheckedCreateWithoutSubscriberListContactsInput>
-  }
-
-  export type contactsUpdateWithWhereUniqueWithoutSubscriberListContactsInput = {
-    where: contactsWhereUniqueInput
-    data: XOR<contactsUpdateWithoutSubscriberListContactsInput, contactsUncheckedUpdateWithoutSubscriberListContactsInput>
-  }
-
-  export type contactsUpdateManyWithWhereWithoutSubscriberListContactsInput = {
-    where: contactsScalarWhereInput
-    data: XOR<contactsUpdateManyMutationInput, contactsUncheckedUpdateManyWithoutSubscriberListContactsInput>
-  }
-
-  export type contactsScalarWhereInput = {
-    AND?: contactsScalarWhereInput | contactsScalarWhereInput[]
-    OR?: contactsScalarWhereInput[]
-    NOT?: contactsScalarWhereInput | contactsScalarWhereInput[]
-    id?: UuidFilter<"contacts"> | string
-    tenant_id?: UuidFilter<"contacts"> | string
-    email?: StringFilter<"contacts"> | string
-    first_name?: StringNullableFilter<"contacts"> | string | null
-    last_name?: StringNullableFilter<"contacts"> | string | null
-    last_activity_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    subscriber_list_contacts_id?: UuidNullableFilter<"contacts"> | string | null
-    created_at?: DateTimeFilter<"contacts"> | Date | string
-    created_by?: StringFilter<"contacts"> | string
-    updated_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    updated_by?: StringNullableFilter<"contacts"> | string | null
-    list_ids?: StringNullableListFilter<"contacts">
-  }
-
-  export type contactsCreateWithoutUnsubscribeInput = {
+  export type contactsCreateWithoutUnsubscribesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsCreateNestedOneWithoutContactsInput
-    activity?: activitiesCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesCreateNestedManyWithoutContactInput
-    subscriber?: subscribersCreateNestedManyWithoutContactInput
+    activities?: activitiesCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsUncheckedCreateWithoutUnsubscribeInput = {
+  export type contactsUncheckedCreateWithoutUnsubscribesInput = {
     id?: string
     tenant_id: string
     email: string
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    subscriber_list_contacts_id?: string | null
+    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-    activity?: activitiesUncheckedCreateNestedManyWithoutReceiverInput
-    bounce?: bouncesUncheckedCreateNestedManyWithoutContactInput
-    subscriber?: subscribersUncheckedCreateNestedManyWithoutContactInput
+    activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
   }
 
-  export type contactsCreateOrConnectWithoutUnsubscribeInput = {
+  export type contactsCreateOrConnectWithoutUnsubscribesInput = {
     where: contactsWhereUniqueInput
-    create: XOR<contactsCreateWithoutUnsubscribeInput, contactsUncheckedCreateWithoutUnsubscribeInput>
+    create: XOR<contactsCreateWithoutUnsubscribesInput, contactsUncheckedCreateWithoutUnsubscribesInput>
   }
 
-  export type contactsUpsertWithoutUnsubscribeInput = {
-    update: XOR<contactsUpdateWithoutUnsubscribeInput, contactsUncheckedUpdateWithoutUnsubscribeInput>
-    create: XOR<contactsCreateWithoutUnsubscribeInput, contactsUncheckedCreateWithoutUnsubscribeInput>
+  export type contactsUpsertWithoutUnsubscribesInput = {
+    update: XOR<contactsUpdateWithoutUnsubscribesInput, contactsUncheckedUpdateWithoutUnsubscribesInput>
+    create: XOR<contactsCreateWithoutUnsubscribesInput, contactsUncheckedCreateWithoutUnsubscribesInput>
     where?: contactsWhereInput
   }
 
-  export type contactsUpdateToOneWithWhereWithoutUnsubscribeInput = {
+  export type contactsUpdateToOneWithWhereWithoutUnsubscribesInput = {
     where?: contactsWhereInput
-    data: XOR<contactsUpdateWithoutUnsubscribeInput, contactsUncheckedUpdateWithoutUnsubscribeInput>
+    data: XOR<contactsUpdateWithoutUnsubscribesInput, contactsUncheckedUpdateWithoutUnsubscribesInput>
   }
 
-  export type contactsUpdateWithoutUnsubscribeInput = {
+  export type contactsUpdateWithoutUnsubscribesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    SubscriberListContacts?: subscriber_list_contactsUpdateOneWithoutContactsNestedInput
-    activity?: activitiesUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUpdateManyWithoutContactNestedInput
+    activities?: activitiesUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUpdateManyWithoutContactsNestedInput
   }
 
-  export type contactsUncheckedUpdateWithoutUnsubscribeInput = {
+  export type contactsUncheckedUpdateWithoutUnsubscribesInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    subscriber_list_contacts_id?: NullableStringFieldUpdateOperationsInput | string | null
+    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUncheckedUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUncheckedUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUncheckedUpdateManyWithoutContactNestedInput
+    activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type templatesCreateWithoutPropertiesInput = {
@@ -22820,7 +21247,7 @@ export namespace Prisma {
     default_value?: JsonFilter<"template_properties">
   }
 
-  export type activitiesCreateManyReceiverInput = {
+  export type activitiesCreateManyReceiversInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -22838,7 +21265,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type bouncesCreateManyContactInput = {
+  export type bouncesCreateManyContactsInput = {
     id?: string
     tenant_id: string
     bounced_at: Date | string
@@ -22850,18 +21277,19 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type subscribersCreateManyContactInput = {
+  export type subscribersCreateManyContactsInput = {
     id?: string
     tenant_id: string
     status: $Enums.subscriber_status
     subscribed_at: Date | string
+    subscriber_list_id: string
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
   }
 
-  export type unsubscribesCreateManyContactInput = {
+  export type unsubscribesCreateManyContactsInput = {
     id?: string
     tenant_id: string
     source: $Enums.unsubscribe_source
@@ -22874,7 +21302,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type activitiesUpdateWithoutReceiverInput = {
+  export type activitiesUpdateWithoutReceiversInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     send_name?: StringFieldUpdateOperationsInput | string
@@ -22889,28 +21317,10 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    campaign?: campaignsUpdateOneWithoutActivityNestedInput
+    campaigns?: campaignsUpdateOneWithoutActivitiesNestedInput
   }
 
-  export type activitiesUncheckedUpdateWithoutReceiverInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    send_name?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    status?: Enumactivity_statusFieldUpdateOperationsInput | $Enums.activity_status
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    last_event_received_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    last_event_type?: Enumevent_typeFieldUpdateOperationsInput | $Enums.event_type
-    opens?: IntFieldUpdateOperationsInput | number
-    clicks?: IntFieldUpdateOperationsInput | number
-    campaign_id?: NullableStringFieldUpdateOperationsInput | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type activitiesUncheckedUpdateManyWithoutReceiverInput = {
+  export type activitiesUncheckedUpdateWithoutReceiversInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     send_name?: StringFieldUpdateOperationsInput | string
@@ -22928,7 +21338,25 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type bouncesUpdateWithoutContactInput = {
+  export type activitiesUncheckedUpdateManyWithoutReceiversInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    send_name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: Enumactivity_statusFieldUpdateOperationsInput | $Enums.activity_status
+    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_event_received_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_event_type?: Enumevent_typeFieldUpdateOperationsInput | $Enums.event_type
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    campaign_id?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type bouncesUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     bounced_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22940,7 +21368,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type bouncesUncheckedUpdateWithoutContactInput = {
+  export type bouncesUncheckedUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     bounced_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22952,7 +21380,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type bouncesUncheckedUpdateManyWithoutContactInput = {
+  export type bouncesUncheckedUpdateManyWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     bounced_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22964,7 +21392,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type subscribersUpdateWithoutContactInput = {
+  export type subscribersUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
@@ -22973,31 +21401,34 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    subscriber_lists?: subscriber_listsUpdateOneRequiredWithoutSubscribersNestedInput
   }
 
-  export type subscribersUncheckedUpdateWithoutContactInput = {
+  export type subscribersUncheckedUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
     subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriber_list_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type subscribersUncheckedUpdateManyWithoutContactInput = {
+  export type subscribersUncheckedUpdateManyWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
     subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscriber_list_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type unsubscribesUpdateWithoutContactInput = {
+  export type unsubscribesUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     source?: Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
@@ -23010,7 +21441,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type unsubscribesUncheckedUpdateWithoutContactInput = {
+  export type unsubscribesUncheckedUpdateWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     source?: Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
@@ -23023,7 +21454,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type unsubscribesUncheckedUpdateManyWithoutContactInput = {
+  export type unsubscribesUncheckedUpdateManyWithoutContactsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     source?: Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
@@ -23036,7 +21467,7 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type activitiesCreateManyCampaignInput = {
+  export type activitiesCreateManyCampaignsInput = {
     id?: string
     tenant_id: string
     send_name: string
@@ -23054,7 +21485,7 @@ export namespace Prisma {
     updated_by?: string | null
   }
 
-  export type activitiesUpdateWithoutCampaignInput = {
+  export type activitiesUpdateWithoutCampaignsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     send_name?: StringFieldUpdateOperationsInput | string
@@ -23069,28 +21500,10 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    receiver?: contactsUpdateOneRequiredWithoutActivityNestedInput
+    receivers?: contactsUpdateOneRequiredWithoutActivitiesNestedInput
   }
 
-  export type activitiesUncheckedUpdateWithoutCampaignInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    send_name?: StringFieldUpdateOperationsInput | string
-    subject?: StringFieldUpdateOperationsInput | string
-    status?: Enumactivity_statusFieldUpdateOperationsInput | $Enums.activity_status
-    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    last_event_received_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    last_event_type?: Enumevent_typeFieldUpdateOperationsInput | $Enums.event_type
-    opens?: IntFieldUpdateOperationsInput | number
-    clicks?: IntFieldUpdateOperationsInput | number
-    contact_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-  }
-
-  export type activitiesUncheckedUpdateManyWithoutCampaignInput = {
+  export type activitiesUncheckedUpdateWithoutCampaignsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
     send_name?: StringFieldUpdateOperationsInput | string
@@ -23108,106 +21521,70 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type subscriber_list_contactsCreateManySubscriberListInput = {
+  export type activitiesUncheckedUpdateManyWithoutCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    send_name?: StringFieldUpdateOperationsInput | string
+    subject?: StringFieldUpdateOperationsInput | string
+    status?: Enumactivity_statusFieldUpdateOperationsInput | $Enums.activity_status
+    sent_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_event_received_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    last_event_type?: Enumevent_typeFieldUpdateOperationsInput | $Enums.event_type
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    contact_id?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type subscribersCreateManySubscriber_listsInput = {
     id?: string
     tenant_id: string
+    status: $Enums.subscriber_status
+    subscribed_at: Date | string
+    contact_id: string
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
     updated_by?: string | null
   }
 
-  export type subscriber_list_contactsUpdateWithoutSubscriberListInput = {
+  export type subscribersUpdateWithoutSubscriber_listsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
+    status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
+    subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contacts?: contactsUpdateManyWithoutSubscriberListContactsNestedInput
+    contacts?: contactsUpdateOneRequiredWithoutSubscribersNestedInput
   }
 
-  export type subscriber_list_contactsUncheckedUpdateWithoutSubscriberListInput = {
+  export type subscribersUncheckedUpdateWithoutSubscriber_listsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    contacts?: contactsUncheckedUpdateManyWithoutSubscriberListContactsNestedInput
-  }
-
-  export type subscriber_list_contactsUncheckedUpdateManyWithoutSubscriberListInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
+    status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
+    subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    contact_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type contactsCreateManySubscriberListContactsInput = {
-    id?: string
-    tenant_id: string
-    email: string
-    first_name?: string | null
-    last_name?: string | null
-    last_activity_at?: Date | string | null
-    created_at: Date | string
-    created_by: string
-    updated_at?: Date | string | null
-    updated_by?: string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
-  }
-
-  export type contactsUpdateWithoutSubscriberListContactsInput = {
+  export type subscribersUncheckedUpdateManyWithoutSubscriber_listsInput = {
     id?: StringFieldUpdateOperationsInput | string
     tenant_id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    first_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: Enumsubscriber_statusFieldUpdateOperationsInput | $Enums.subscriber_status
+    subscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    contact_id?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUpdateManyWithoutContactNestedInput
-  }
-
-  export type contactsUncheckedUpdateWithoutSubscriberListContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    first_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
-    activity?: activitiesUncheckedUpdateManyWithoutReceiverNestedInput
-    bounce?: bouncesUncheckedUpdateManyWithoutContactNestedInput
-    subscriber?: subscribersUncheckedUpdateManyWithoutContactNestedInput
-    unsubscribe?: unsubscribesUncheckedUpdateManyWithoutContactNestedInput
-  }
-
-  export type contactsUncheckedUpdateManyWithoutSubscriberListContactsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    tenant_id?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    first_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_name?: NullableStringFieldUpdateOperationsInput | string | null
-    last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    created_by?: StringFieldUpdateOperationsInput | string
-    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
   }
 
   export type template_propertiesCreateManyTemplatesInput = {

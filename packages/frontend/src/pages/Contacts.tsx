@@ -1,11 +1,11 @@
 import {
   Calendar,
   CreditCard as Edit,
-  Filter,
+  Ellipsis,
+  Funnel,
   List,
   Loader,
   Mail,
-  MoreHorizontal,
   Plus,
   Search,
   UserPlus,
@@ -13,64 +13,39 @@ import {
 } from "lucide-solid";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
-import { useContactsQuery } from "../services/use-contacts-query.js";
+import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createMemo, createSignal } from "solid-js";
-
-interface SubscriberList {
-  id: string;
-  name: string;
-  description: string;
-  contactCount: number;
-  createdAt: string;
-}
+import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
+import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
+import CreateContactModal from "../components/modals/CreateContactModal.js";
+import CreateSubscriberListModal from "../components/modals/CreateSubscriberListModal.js";
+import { useTenantId } from "../hooks/useTenantId.js";
 
 const Contacts = () => {
-  const contactsQuery = useContactsQuery({ tenantId: "0199c2c0-7c5e-761d-8b61-f9384f5126ed" });
+  const tenantId = useTenantId();
 
   const [selectedList, setSelectedList] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
-  const [showAddContact, setShowAddContact] = createSignal(false);
-  const [showAddList, setShowAddList] = createSignal(false);
+  const [showCreateContact, setShowCreateContact] = createSignal(false);
+  const [showCreateList, setShowCreateList] = createSignal(false);
 
-  const subscriberLists: SubscriberList[] = [
-    {
-      id: "all",
-      name: "All Contacts",
-      description: "All contacts in your database",
-      contactCount: 15847,
-      createdAt: "2024-01-01",
-    },
-    {
-      id: "newsletter",
-      name: "Newsletter Subscribers",
-      description: "Users subscribed to weekly newsletter",
-      contactCount: 12456,
-      createdAt: "2024-01-15",
-    },
-    {
-      id: "customers",
-      name: "Customers",
-      description: "Active paying customers",
-      contactCount: 3891,
-      createdAt: "2024-01-10",
-    },
-    {
-      id: "trial-users",
-      name: "Trial Users",
-      description: "Users on free trial",
-      contactCount: 2847,
-      createdAt: "2024-01-20",
-    },
-    {
-      id: "vip",
-      name: "VIP Members",
-      description: "Premium tier customers",
-      contactCount: 456,
-      createdAt: "2024-01-25",
-    },
-  ];
+  const contactsQuery = useContactsQuery({ tenantId });
+  const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
+  const subscribersQuery = useSubscribersQuery({ tenantId, subscriber_list_id: selectedList });
+
+  const subscriberLists = createMemo(() => {
+    return [
+      {
+        id: "all",
+        name: "All Contacts",
+        description: "All contacts",
+        contactCount: contactsQuery.data?.length || 0,
+      },
+      ...(subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name)),
+    ];
+  });
 
   const getStatusBgColor = (status: string): TailwindBgColor => {
     switch (status) {
@@ -100,226 +75,23 @@ const Contacts = () => {
 
   const filteredContacts = createMemo(() =>
     (contactsQuery.data || []).filter(contact => {
-      const matchesList = selectedList() === "all" || contact.listIds.includes(selectedList());
       const matchesSearch =
         contact.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
-      return matchesList && matchesSearch;
+
+      // Filter selected subscribers
+      const isSubscribed =
+        selectedList() === "all" ||
+        (subscribersQuery.data || []).some(
+          subscriber => subscriber.contactId === contact.id && subscriber.status === "Subscribed"
+        );
+
+      const matchesStatus = selectedStatus() === "all" || contact.status === selectedStatus();
+
+      return matchesSearch && isSubscribed && matchesStatus;
     })
   );
-
-  const AddContactModal = () => {
-    const [newContact, setNewContact] = createSignal({
-      email: "",
-      firstName: "",
-      lastName: "",
-      selectedLists: [] as string[],
-    });
-    const [newListName, setNewListName] = createSignal("");
-    const [showNewListInput, setShowNewListInput] = createSignal(false);
-
-    const handleListToggle = (listId: string) => {
-      if (listId === "all") return; // Can't toggle "All Contacts"
-
-      setNewContact(prev => ({
-        ...prev,
-        selectedLists: prev.selectedLists.includes(listId)
-          ? prev.selectedLists.filter(id => id !== listId)
-          : [...prev.selectedLists, listId],
-      }));
-    };
-
-    const handleAddNewList = () => {
-      if (newListName().trim()) {
-        // In a real app, this would create the list via API
-        console.log("Creating new list:", newListName);
-        setNewListName("");
-        setShowNewListInput(false);
-      }
-    };
-
-    return (
-      <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Add New Contact</h3>
-            <button
-              onClick={() => setShowAddContact(false)}
-              class="text-gray-400 hover:text-gray-600"
-            >
-              ×
-            </button>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-              <input
-                type="email"
-                value={newContact().email}
-                onChange={e => setNewContact(prev => ({ ...prev, email: e.target.value }))}
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="contact@example.com"
-              />
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                <input
-                  type="text"
-                  value={newContact().firstName}
-                  onChange={e => setNewContact(prev => ({ ...prev, firstName: e.target.value }))}
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="John"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                <input
-                  type="text"
-                  value={newContact().lastName}
-                  onChange={e => setNewContact(prev => ({ ...prev, lastName: e.target.value }))}
-                  class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Doe"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Subscriber Lists</label>
-              <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
-                {subscriberLists.map(list => (
-                  <div class="flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      id={`list-${list.id}`}
-                      checked={list.id === "all" || newContact().selectedLists.includes(list.id)}
-                      disabled={list.id === "all"}
-                      onChange={() => handleListToggle(list.id)}
-                      class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                    />
-                    <label
-                      for={`list-${list.id}`}
-                      class="text-sm text-gray-700 flex-1"
-                    >
-                      {list.name}
-                      {list.id === "all" && <span class="text-gray-400 ml-1">(automatic)</span>}
-                    </label>
-                  </div>
-                ))}
-              </div>
-
-              <div class="mt-3">
-                {!showNewListInput ? (
-                  <button
-                    onClick={() => setShowNewListInput(true)}
-                    class="text-sm text-blue-600 hover:text-blue-700 flex items-center space-x-1"
-                  >
-                    <Plus class="w-4 h-4" />
-                    <span>Create new list</span>
-                  </button>
-                ) : (
-                  <div class="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={newListName()}
-                      onChange={e => setNewListName(e.target.value)}
-                      placeholder="List name"
-                      class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    />
-                    <button
-                      onClick={handleAddNewList}
-                      class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
-                    >
-                      Add
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowNewListInput(false);
-                        setNewListName("");
-                      }}
-                      class="px-3 py-2 text-gray-600 hover:text-gray-800 text-sm"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-            <button
-              onClick={() => setShowAddContact(false)}
-              class="px-4 py-2 text-gray-600 hover:text-gray-800"
-            >
-              Cancel
-            </button>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Add Contact</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const AddListModal = () => {
-    const [listData, setListData] = createSignal({
-      name: "",
-      description: "",
-    });
-
-    return (
-      <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 w-full max-w-md">
-          <div class="flex items-center justify-between mb-6">
-            <h3 class="text-lg font-semibold text-gray-900">Create New List</h3>
-            <button
-              onClick={() => setShowAddList(false)}
-              class="text-gray-400 hover:text-gray-600"
-            >
-              ×
-            </button>
-          </div>
-
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">List Name</label>
-              <input
-                type="text"
-                value={listData().name}
-                onChange={e => setListData(prev => ({ ...prev, name: e.target.value }))}
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                placeholder="e.g., Product Updates"
-              />
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Description</label>
-              <textarea
-                value={listData().description}
-                onChange={e => setListData(prev => ({ ...prev, description: e.target.value }))}
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                rows={3}
-                placeholder="Brief description of this list..."
-              />
-            </div>
-          </div>
-
-          <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-            <button
-              onClick={() => setShowAddList(false)}
-              class="px-4 py-2 text-gray-600 hover:text-gray-800"
-            >
-              Cancel
-            </button>
-            <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Create List</button>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   return (
     <div class="h-full flex bg-gray-50">
@@ -329,7 +101,7 @@ const Contacts = () => {
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">Subscriber Lists</h2>
             <button
-              onClick={() => setShowAddList(true)}
+              onClick={() => setShowCreateList(true)}
               class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             >
               <Plus class="w-5 h-5" />
@@ -339,7 +111,7 @@ const Contacts = () => {
 
         <div class="flex-1 overflow-y-auto p-4">
           <div class="space-y-2">
-            {subscriberLists.map(list => (
+            {subscriberLists()?.map(list => (
               <div
                 onClick={() => setSelectedList(list.id)}
                 class={`p-4 rounded-lg cursor-pointer transition-colors ${selectedList() === list.id ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50 border border-transparent"}`}
@@ -365,12 +137,12 @@ const Contacts = () => {
           <div class="flex items-center justify-between">
             <div>
               <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                {subscriberLists.find(list => list.id === selectedList())?.name || "Contacts"}
+                {subscriberLists()?.find(list => list.id === selectedList())?.name || "Contacts"}
               </h1>
               <p class="text-gray-600">Manage your contacts and subscriber lists </p>
             </div>
             <button
-              onClick={() => setShowAddContact(true)}
+              onClick={() => setShowCreateContact(true)}
               class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
             >
               <UserPlus class="w-5 h-5" />
@@ -395,16 +167,16 @@ const Contacts = () => {
               </div>
 
               <div class="flex items-center space-x-2">
-                <Filter class="w-5 h-5 text-gray-400" />
+                <Funnel class="w-5 h-5 text-gray-400" />
                 <select
                   value={selectedStatus()}
                   onChange={e => setSelectedStatus(e.target.value)}
                   class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
                   <option value="all">All Status</option>
-                  <option value="subscribed">Subscribed</option>
-                  <option value="unsubscribed">Unsubscribed</option>
-                  <option value="bounced">Bounced</option>
+                  <option value="Subscribed">Subscribed</option>
+                  <option value="Unsubscribed">Unsubscribed</option>
+                  <option value="Bounced">Bounced</option>
                 </select>
               </div>
             </div>
@@ -491,7 +263,7 @@ const Contacts = () => {
                         <td class="py-4 px-6">
                           <div class="flex flex-col space-y-1">
                             {contact.listIds.map(listId => {
-                              const list = subscriberLists.find(l => l.id === listId);
+                              const list = subscriberLists()?.find(l => l.id === listId);
                               return list ? (
                                 <div class="flex items-center justify-between">
                                   <div class="flex items-center space-x-2">
@@ -521,7 +293,7 @@ const Contacts = () => {
                               <Edit class="w-4 h-4" />
                             </button>
                             <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                              <MoreHorizontal class="w-4 h-4" />
+                              <Ellipsis class="w-4 h-4" />
                             </button>
                           </div>
                         </td>
@@ -533,7 +305,7 @@ const Contacts = () => {
             </div>
           )}
 
-          {filteredContacts.length === 0 && (
+          {filteredContacts().length === 0 && (
             <div class="text-center py-12">
               <Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 class="text-lg font-medium text-gray-900 mb-2">No contacts found</h3>
@@ -543,7 +315,7 @@ const Contacts = () => {
                   : "Get started by adding your first contact."}
               </p>
               <button
-                onClick={() => setShowAddContact(true)}
+                onClick={() => setShowCreateContact(true)}
                 class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Add Contact
@@ -554,8 +326,8 @@ const Contacts = () => {
       </div>
 
       {/* Modals */}
-      {showAddContact() && <AddContactModal />}
-      {showAddList() && <AddListModal />}
+      {showCreateContact() && <CreateContactModal onClose={() => setShowCreateContact(false)} />}
+      {showCreateList() && <CreateSubscriberListModal onClose={() => setShowCreateList(false)} />}
     </div>
   );
 };

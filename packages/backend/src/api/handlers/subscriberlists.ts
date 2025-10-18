@@ -1,5 +1,5 @@
 import { Type } from "typebox";
-import { type SubscriberList } from "@mailtura/rpcmodel/lib/models";
+import { type Subscriber, type SubscriberList } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -11,7 +11,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import { mapSubscriberList, unpackOptionalNullable } from "../mapper.js";
+import { mapSubscriber, mapSubscriberList, unpackOptionalNullable } from "../mapper.js";
 import { createError } from "../helpers.js";
 import { CreateSubscriberList, UpdateSubscriberList } from "@mailtura/rpcmodel/lib/models/request-response.js";
 
@@ -36,8 +36,18 @@ export function subscriberListRoutes<
       const tenantId = request.params.tenant_id;
 
       const subscriberLists = await prisma.subscriber_lists.findMany({
+        relationLoadStrategy: "join",
         where: {
           tenant_id: tenantId,
+          subscribers: {
+            every: {
+              tenant_id: tenantId,
+              status: "Subscribed",
+            },
+          },
+        },
+        orderBy: {
+          created_at: "desc",
         },
       });
 
@@ -94,9 +104,16 @@ export function subscriberListRoutes<
         const subscriberListId = request.params.subscriber_list_id;
 
         const subscriberList = await prisma.subscriber_lists.findUnique({
+          relationLoadStrategy: "join",
           where: {
             id: subscriberListId,
             tenant_id: tenantId,
+            subscribers: {
+              every: {
+                tenant_id: tenantId,
+                status: "Subscribed",
+              },
+            },
           },
         });
 
@@ -201,5 +218,51 @@ export function subscriberListRoutes<
         return reply.status(204).send();
       }
     );
+
+    subRouter.route("/subscribers", subscribersRoutes);
   });
+}
+
+function subscribersRoutes<
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+  TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
+  Logger extends FastifyBaseLogger = FastifyBaseLogger,
+>(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  router.get<{
+    Params: { tenant_id: string; subscriber_list_id: string };
+    Reply: Subscriber[];
+  }>(
+    "/",
+    {
+      schema: {
+        params: Type.Object({
+          tenant_id: Type.String({ format: "uuid" }),
+          subscriber_list_id: Type.String({ format: "uuid" }),
+        }),
+        response: {
+          200: Type.Array(Type.Ref("Subscriber")),
+          401: Type.Ref("ErrorResponse"),
+          404: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async request => {
+      const tenantId = request.params.tenant_id;
+      const subscriberListId = request.params.subscriber_list_id;
+
+      const subscribers = await prisma.subscribers.findMany({
+        where: {
+          tenant_id: tenantId,
+          subscriber_list_id: subscriberListId,
+        },
+        orderBy: {
+          created_at: "desc",
+        },
+      });
+
+      return subscribers.map(mapSubscriber);
+    }
+  );
 }

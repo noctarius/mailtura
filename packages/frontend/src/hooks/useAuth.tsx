@@ -1,5 +1,7 @@
-import { AuthState, Permissions, ROLE_PERMISSIONS, Tenant, User } from "../types/auth.js";
+import { AuthState, Permissions, ROLE_PERMISSIONS, User } from "../types/auth.js";
 import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
+import { useTenantQuery } from "../services/tenants/use-tenant-query.js";
+import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
@@ -39,8 +41,12 @@ export const useAuthProvider = () => {
     loading: true,
   });
 
+  const [currentUser, setCurrentUser] = createSignal<User | null>(null);
+  const [tenantId, setTenantId] = createSignal<string | null>(null);
+  const tenantQuery = useTenantQuery({ tenantId });
+
   // Mock data - in real app this would come from API
-  const mockTenants: Tenant[] = [
+  /*const mockTenants: Tenant[] = [
     {
       id: "tenant-1",
       name: "Acme Corporation",
@@ -69,7 +75,7 @@ export const useAuthProvider = () => {
         features: ["campaigns", "templates"],
       },
     },
-  ];
+  ];*/
 
   const mockUsers: User[] = [
     {
@@ -78,7 +84,7 @@ export const useAuthProvider = () => {
       firstName: "John",
       lastName: "Admin",
       role: "tenant_admin",
-      tenantId: "tenant-1",
+      tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def",
       permissions: ROLE_PERMISSIONS.tenant_admin,
       isActive: true,
       createdAt: "2024-01-01",
@@ -98,11 +104,27 @@ export const useAuthProvider = () => {
   ];
 
   createEffect(() => {
+    if (tenantQuery.isLoading || tenantQuery.isError || !tenantQuery.data) return;
+    const tenant = tenantQuery.data;
+    const authData = { user: currentUser(), tenant };
+    localStorage.setItem("emailflow_auth", JSON.stringify(authData));
+
+    setAuthState({
+      isAuthenticated: true,
+      user: currentUser(),
+      tenant: tenant,
+      loading: false,
+    });
+  });
+
+  createEffect(() => {
     // Check for existing session
     const savedAuth = localStorage.getItem("emailflow_auth");
     if (savedAuth) {
       try {
         const { user, tenant } = JSON.parse(savedAuth);
+        setTenantId(tenant?.id);
+        setCurrentUser(user);
         setAuthState({
           isAuthenticated: true,
           user,
@@ -126,20 +148,8 @@ export const useAuthProvider = () => {
       throw new Error("Invalid credentials");
     }
 
-    const tenant = mockTenants.find(t => t.id === user.tenantId);
-    if (!tenant) {
-      throw new Error("Tenant not found");
-    }
-
-    const authData = { user, tenant };
-    localStorage.setItem("emailflow_auth", JSON.stringify(authData));
-
-    setAuthState({
-      isAuthenticated: true,
-      user,
-      tenant,
-      loading: false,
-    });
+    setTenantId(user.tenantId);
+    setCurrentUser(user);
   };
 
   const signUp = async (firstName: string, lastName: string, email: string, _password: string): Promise<void> => {
@@ -156,15 +166,13 @@ export const useAuthProvider = () => {
       createdAt: new Date().toISOString(),
     };
 
-    const tenant = mockTenants.find(t => t.id === newUser.tenantId)!;
-
-    const authData = { user: newUser, tenant };
+    const authData = { user: newUser, tenant: null };
     localStorage.setItem("emailflow_auth", JSON.stringify(authData));
 
     setAuthState({
       isAuthenticated: true,
       user: newUser,
-      tenant,
+      tenant: null,
       loading: false,
     });
   };
@@ -199,25 +207,7 @@ export const useAuthProvider = () => {
 
   const switchTenant = async (tenantId: string): Promise<void> => {
     // In real app, this would validate user access to tenant
-    const tenant = mockTenants.find(t => t.id === tenantId);
-    if (!tenant || !authState().user) {
-      throw new Error("Cannot switch to tenant");
-    }
-
-    const updatedAuthState = {
-      ...authState(),
-      tenant,
-    };
-
-    localStorage.setItem(
-      "emailflow_auth",
-      JSON.stringify({
-        user: authState().user,
-        tenant,
-      })
-    );
-
-    setAuthState(updatedAuthState);
+    setTenantId(tenantId);
   };
 
   const isAuthenticated = createMemo(() => authState().isAuthenticated || false);

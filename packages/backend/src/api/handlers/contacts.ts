@@ -59,18 +59,34 @@ export function contactRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
-      const newContact = await prisma.contacts.create({
-        data: {
-          tenant_id: tenantId,
-          email: request.body.email,
-          first_name: request.body.firstName,
-          last_name: request.body.lastName,
-          created_at: UTC.now().toDate(),
-          created_by: "api",
-        },
-      });
+      await prisma.$transaction(async tx => {
+        const newContact = await tx.contacts.create({
+          data: {
+            tenant_id: tenantId,
+            email: request.body.email,
+            first_name: request.body.firstName,
+            last_name: request.body.lastName,
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
 
-      return reply.status(201).send(mapContact(newContact));
+        for (const listId of request.body.listIds) {
+          await tx.subscribers.create({
+            data: {
+              tenant_id: tenantId,
+              contact_id: newContact.id,
+              status: "Subscribed",
+              subscriber_list_id: listId,
+              subscribed_at: UTC.now().toDate(),
+              created_at: UTC.now().toDate(),
+              created_by: "api",
+            },
+          })
+        }
+
+        return reply.status(201).send(mapContact(newContact));
+      });
     }
   );
 
