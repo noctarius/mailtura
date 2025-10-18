@@ -284,8 +284,6 @@ export interface paths {
                         email: string;
                         firstName?: string;
                         lastName?: string;
-                        /** Format: date-time */
-                        lastActivity?: string;
                         listIds: string[];
                     };
                 };
@@ -1055,7 +1053,6 @@ export interface paths {
                     "application/json": {
                         name: string;
                         description?: string;
-                        contactCount: number;
                     };
                 };
             };
