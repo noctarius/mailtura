@@ -5,10 +5,12 @@ import registerModelSchema, { registerRoutes } from "./api/index.js";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { createRouter } from "./router/index.js";
 import cors from '@fastify/cors'
+import { handlePrismaError } from "./database/index.js";
 
 const app = Fastify()
   .withTypeProvider<TypeBoxTypeProvider>()
   .setErrorHandler(async (error, request, reply) => {
+    // If the error is a validation error, send a 422 error with the validation details
     if (error.validation) {
       return reply.status(422).send({
         message: error.message,
@@ -16,6 +18,10 @@ const app = Fastify()
       });
     }
 
+    // If the error is a Prisma error, handle it now
+    handlePrismaError(error)
+
+    // If any other error, send a generic 500 error
     reply.status(error.statusCode ?? 500).send({ message: error.message });
   });
 
