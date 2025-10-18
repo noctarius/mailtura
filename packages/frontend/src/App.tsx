@@ -14,7 +14,7 @@ const AppLayout: ParentComponent = props => {
   return (
     <>
       <Sidebar />
-      <main class="flex-1 overflow-auto">{props.children}</main>
+      <main class="flex flex-1 flex-col min-h-0 overflow-hidden">{props.children}</main>
     </>
   );
 };
@@ -94,7 +94,7 @@ function AppContent() {
           <SignUp onSwitchToSignIn={() => setAuthView("signin")} />
         )
       ) : (
-        <div class="flex h-screen bg-gray-50">
+        <div class="flex flex-1 min-h-0 h-screen bg-gray-50">
           <Router root={AppLayout}>{routes}</Router>
         </div>
       )}

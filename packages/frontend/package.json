@@ -16,6 +16,8 @@
     "@mailtura/rpcmodel": "*",
     "@solidjs/router": "^0.15.3",
     "@tanstack/solid-query": "^5.90.4",
+    "@tanstack/solid-table": "^8.21.3",
+    "@tanstack/solid-virtual": "^3.13.12",
     "@timepp/murmurhash": "jsr:^0.1.1",
     "clsx": "^2.1.1",
     "echarts": "^6.0.0",

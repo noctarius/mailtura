@@ -792,6 +792,8 @@ __metadata:
     "@mailtura/rpcmodel": "npm:*"
     "@solidjs/router": "npm:^0.15.3"
     "@tanstack/solid-query": "npm:^5.90.4"
+    "@tanstack/solid-table": "npm:^8.21.3"
+    "@tanstack/solid-virtual": "npm:^3.13.12"
     "@timepp/murmurhash": "jsr:^0.1.1"
     autoprefixer: "npm:^10.4.18"
     clsx: "npm:^2.1.1"
@@ -1245,6 +1247,42 @@ __metadata:
   peerDependencies:
     solid-js: ^1.6.0
   checksum: 10c0/fa358ce8233214091d18cc986388566c04e2249ccdc05d016f0b5a945f287dc667c5cf8464c8adfb1eab45e1475e4ce06cc6cbf35e880407f2bc321e6a033266
+  languageName: node
+  linkType: hard
+
+"@tanstack/solid-table@npm:^8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/solid-table@npm:8.21.3"
+  dependencies:
+    "@tanstack/table-core": "npm:8.21.3"
+  peerDependencies:
+    solid-js: ">=1.3"
+  checksum: 10c0/ecb0485d94f9ae0840cc3b4777195876b8a8baf87071641a289d5c4d1c9bbb6c77e755d7d2fdf74c1e97df1dee1289b1aa1f075378f4809585c26b5671a5f5d3
+  languageName: node
+  linkType: hard
+
+"@tanstack/solid-virtual@npm:^3.13.12":
+  version: 3.13.12
+  resolution: "@tanstack/solid-virtual@npm:3.13.12"
+  dependencies:
+    "@tanstack/virtual-core": "npm:3.13.12"
+  peerDependencies:
+    solid-js: ^1.3.0
+  checksum: 10c0/a37c975f97f22be0fcc638f93ea25da62570bd1225c351b499b9b11fbbc1a76dd50da3f77e630de00eb4da1fe684aa12ebf531ba7edd903674f3296a6ed98229
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.21.3":
+  version: 8.21.3
+  resolution: "@tanstack/table-core@npm:8.21.3"
+  checksum: 10c0/40e3560e6d55e07cc047024aa7f83bd47a9323d21920d4adabba8071fd2d21230c48460b26cedf392588f8265b9edc133abb1b0d6d0adf4dae0970032900a8c9
+  languageName: node
+  linkType: hard
+
+"@tanstack/virtual-core@npm:3.13.12":
+  version: 3.13.12
+  resolution: "@tanstack/virtual-core@npm:3.13.12"
+  checksum: 10c0/483f38761b73db05c181c10181f0781c1051be3350ae5c378e65057e5f1fdd6606e06e17dbaad8a5e36c04b208ea1a1344cacd4eca0dcde60f335cf398e4d698
   languageName: node
   linkType: hard
 

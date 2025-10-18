@@ -1,28 +1,16 @@
-import {
-  Calendar,
-  CreditCard as Edit,
-  Ellipsis,
-  Funnel,
-  List,
-  Loader,
-  Mail,
-  Plus,
-  Search,
-  UserPlus,
-  Users,
-} from "lucide-solid";
-import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
-import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
+import { Funnel, List, Loader, Plus, Search, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
-import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
 import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
 import CreateContactModal from "../components/modals/CreateContactModal.js";
 import CreateSubscriberListModal from "../components/modals/CreateSubscriberListModal.js";
 import { useTenantId } from "../hooks/useTenantId.js";
+import { ContactsTable } from "../components/interfaces/ContactsTable.js";
 
 const Contacts = () => {
+  let contactsTable!: HTMLDivElement;
+
   const tenantId = useTenantId();
 
   const [selectedList, setSelectedList] = createSignal("all");
@@ -47,32 +35,6 @@ const Contacts = () => {
     ];
   });
 
-  const getStatusBgColor = (status: string): TailwindBgColor => {
-    switch (status) {
-      case "subscribed":
-        return "bg-green-100";
-      case "unsubscribed":
-        return "bg-gray-100";
-      case "bounced":
-        return "bg-red-100";
-      default:
-        return "bg-gray-100";
-    }
-  };
-
-  const getStatusTextColor = (status: string): TailwindTextColor => {
-    switch (status) {
-      case "subscribed":
-        return "text-green-800";
-      case "unsubscribed":
-        return "text-gray-800";
-      case "bounced":
-        return "text-red-800";
-      default:
-        return "text-gray-800";
-    }
-  };
-
   const filteredContacts = createMemo(() =>
     (contactsQuery.data || []).filter(contact => {
       const matchesSearch =
@@ -94,7 +56,7 @@ const Contacts = () => {
   );
 
   return (
-    <div class="h-full flex bg-gray-50">
+    <div class="h-full flex flex-1 min-h-0 bg-gray-50">
       {/* Lists Sidebar */}
       <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
         <div class="p-6 border-b border-gray-200">
@@ -131,7 +93,7 @@ const Contacts = () => {
       </div>
 
       {/* Main Content */}
-      <div class="flex-1 flex flex-col">
+      <div class="flex flex-1 flex-col min-h-0">
         {/* Header */}
         <div class="bg-white border-b border-gray-200 p-8">
           <div class="flex items-center justify-between">
@@ -188,7 +150,7 @@ const Contacts = () => {
         </div>
 
         {/* Contacts Table */}
-        <div class="flex-1 overflow-auto p-8">
+        <div class="p-8 flex flex-1 flex-col min-h-0">
           {contactsQuery.isLoading ? (
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
               <div class="flex flex-col items-center justify-center space-y-4">
@@ -220,87 +182,16 @@ const Contacts = () => {
               </div>
             </div>
           ) : (
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-              <div class="overflow-x-auto">
-                <table class="w-full">
-                  <thead class="bg-gray-50 border-b border-gray-200">
-                    <tr>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900">Contact</th>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900">Status</th>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900">Lists</th>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900">Subscribed</th>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900 whitespace-nowrap">Last Activity</th>
-                      <th class="text-left py-4 px-6 font-semibold text-gray-900">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-gray-200">
-                    {filteredContacts().map(contact => (
-                      <tr class="hover:bg-gray-50 transition-colors">
-                        <td class="py-4 px-6">
-                          <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                              <span class="text-blue-600 font-medium">
-                                {contact.firstName && contact.lastName
-                                  ? contact.firstName[0].toUpperCase() + contact.lastName[0].toUpperCase()
-                                  : contact.email[0].toUpperCase()}
-                              </span>
-                            </div>
-                            <div>
-                              <div class="font-medium text-gray-900">
-                                {contact.firstName} {contact.lastName}
-                              </div>
-                              <div class="text-sm text-gray-500">{contact.email}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="py-4 px-6">
-                          <TableCellChip
-                            value={contact.status}
-                            bgColor={getStatusBgColor(contact.status)}
-                            textColor={getStatusTextColor(contact.status)}
-                          />
-                        </td>
-                        <td class="py-4 px-6">
-                          <div class="flex flex-col space-y-1">
-                            {contact.listIds.map(listId => {
-                              const list = subscriberLists()?.find(l => l.id === listId);
-                              return list ? (
-                                <div class="flex items-center justify-between">
-                                  <div class="flex items-center space-x-2">
-                                    <List class="w-3 h-3 text-gray-400" />
-                                    <span class="text-sm text-gray-900">{list.name}</span>
-                                  </div>
-                                </div>
-                              ) : null;
-                            })}
-                          </div>
-                        </td>
-                        <td class="py-4 px-6 whitespace-nowrap">
-                          <div class="flex items-center space-x-2">
-                            <Calendar class="w-4 h-4 text-gray-400" />
-                            <span class="text-sm text-gray-900">{contact.lastActivity}</span>
-                          </div>
-                        </td>
-                        <td class="py-4 px-6 whitespace-nowrap">
-                          <span class="text-sm text-gray-600">{contact.lastActivity}</span>
-                        </td>
-                        <td class="py-4 px-6">
-                          <div class="flex items-center space-x-2">
-                            <button class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
-                              <Mail class="w-4 h-4" />
-                            </button>
-                            <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                              <Edit class="w-4 h-4" />
-                            </button>
-                            <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                              <Ellipsis class="w-4 h-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
+              <div
+                ref={contactsTable}
+                class="overflow-auto relative"
+                style={{"scroll-behavior": "smooth" }}
+              >
+                <ContactsTable
+                  data={filteredContacts}
+                  targetElement={contactsTable}
+                />
               </div>
             </div>
           )}
