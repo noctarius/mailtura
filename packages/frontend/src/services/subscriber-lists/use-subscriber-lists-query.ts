@@ -1,6 +1,6 @@
 import { useApi } from "../../hooks/useApi.js";
 import { useQuery } from "@tanstack/solid-query";
-import { subscriberListKey } from "./keys.js";
+import { subscriberListKeys } from "./keys.js";
 
 interface SubscriberListsQueryProps {
   tenantId: () => string | undefined;
@@ -10,7 +10,7 @@ export function useSubscriberListsQuery({ tenantId }: SubscriberListsQueryProps)
   const client = useApi();
 
   return useQuery(() => ({
-    queryKey: subscriberListKey.lists(tenantId()),
+    queryKey: subscriberListKeys.lists(tenantId()),
     queryFn: async () => {
       if (!tenantId()) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/lists/", {

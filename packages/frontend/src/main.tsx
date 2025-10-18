@@ -2,6 +2,17 @@ import { render } from "solid-js/web";
 import "./index.css";
 import App from "./App.js";
 
+// Inject Array::toSort polyfill if not natively available
+if (Array.prototype.toSort === undefined)
+  Object.defineProperty(Array.prototype, "toSort", {
+    value: function () {
+      return this.slice().sort();
+    },
+    enumerable: true,
+    configurable: true,
+    writable: true,
+  });
+
 self.MonacoEnvironment = {
   getWorker(_, label) {
     if (label === "html" || label === "handlebars" || label === "razor")
