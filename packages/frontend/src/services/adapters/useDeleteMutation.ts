@@ -14,7 +14,7 @@ const extractParameters = <Path extends PathsWithDelete>(
   }, {}) as PropertyRequestParameters<Path>;
 };
 
-const createOperation = async <Path extends PathsWithDelete>(
+const deleteOperation = async <Path extends PathsWithDelete>(
   client: ReturnType<typeof useApi>,
   url: Path,
   parameters: RequestParameters<Path>,
@@ -32,7 +32,7 @@ const createOperation = async <Path extends PathsWithDelete>(
   }
 };
 
-export function useCreateMutation<Path extends PathsWithDelete, InvalidationQueryKeys extends QueryKey[]>(
+export function useDeleteMutation<Path extends PathsWithDelete, InvalidationQueryKeys extends QueryKey[]>(
   url: Path,
   parameters: RequestParameters<Path>,
   ...queryKeys: InvalidationQueryKeys
@@ -41,7 +41,7 @@ export function useCreateMutation<Path extends PathsWithDelete, InvalidationQuer
   const client = useApi();
 
   return useMutation<RequestParameters<Path>, ResponseError, RequestBody<Path>>(() => ({
-    mutationFn: body => createOperation(client, url, parameters, body),
+    mutationFn: body => deleteOperation(client, url, parameters, body),
     onSuccess: () => {
       if (queryKeys) for (const queryKey of queryKeys) queryClient.invalidateQueries({ queryKey });
     },

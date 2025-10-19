@@ -14,7 +14,7 @@ const extractParameters = <Path extends PathsWithPut>(
   }, {}) as PropertyRequestParameters<Path>;
 };
 
-const createOperation = async <Path extends PathsWithPut>(
+const updateOperation = async <Path extends PathsWithPut>(
   client: ReturnType<typeof useApi>,
   url: Path,
   parameters: RequestParameters<Path>,
@@ -32,7 +32,7 @@ const createOperation = async <Path extends PathsWithPut>(
   }
 };
 
-export function useCreateMutation<Path extends PathsWithPut, InvalidationQueryKeys extends QueryKey[]>(
+export function useUpdateMutation<Path extends PathsWithPut, InvalidationQueryKeys extends QueryKey[]>(
   url: Path,
   parameters: RequestParameters<Path>,
   ...queryKeys: InvalidationQueryKeys
@@ -41,7 +41,7 @@ export function useCreateMutation<Path extends PathsWithPut, InvalidationQueryKe
   const client = useApi();
 
   return useMutation<RequestParameters<Path>, ResponseError, RequestBody<Path>>(() => ({
-    mutationFn: body => createOperation(client, url, parameters, body),
+    mutationFn: body => updateOperation(client, url, parameters, body),
     onSuccess: () => {
       if (queryKeys) for (const queryKey of queryKeys) queryClient.invalidateQueries({ queryKey });
     },
