@@ -9,7 +9,7 @@ import { useTenantId } from "../hooks/useTenantId.js";
 import { ContactsTable } from "../components/interfaces/ContactsTable.js";
 
 const Contacts = () => {
-  let contactsTable!: HTMLDivElement;
+  const [contactsTable, setContactsTable] = createSignal<HTMLDivElement>();
 
   const tenantId = useTenantId();
 
@@ -181,22 +181,22 @@ const Contacts = () => {
                 </div>
               </div>
             </div>
-          ) : (
+          ) : filteredContacts().length > 0 ? (
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
               <div
-                ref={contactsTable}
+                ref={setContactsTable}
                 class="overflow-auto relative"
-                style={{"scroll-behavior": "smooth" }}
+                style={{ "scroll-behavior": "smooth", "min-height": "100%" }}
               >
-                <ContactsTable
-                  data={filteredContacts}
-                  targetElement={contactsTable}
-                />
+                {contactsTable() && (
+                  <ContactsTable
+                    data={filteredContacts}
+                    target={contactsTable()!}
+                  />
+                )}
               </div>
             </div>
-          )}
-
-          {filteredContacts().length === 0 && (
+          ) : (
             <div class="text-center py-12">
               <Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 class="text-lg font-medium text-gray-900 mb-2">No contacts found</h3>

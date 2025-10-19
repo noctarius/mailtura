@@ -8,12 +8,13 @@ import {
   Table,
 } from "@tanstack/solid-table";
 import { createVirtualizer, VirtualItem, Virtualizer } from "@tanstack/solid-virtual";
-import { createSignal, For, onMount } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
+import { calculateColumnWidths } from "./VirtualizedTable.utils.js";
 
 interface VirtualizedTableProps<Data> {
   data: () => Data[];
-  columnsDefinitions: ColumnDef<Data, any>[];
-  targetElement: HTMLDivElement;
+  columnsDefinitions: () => ColumnDef<Data, any>[];
+  target: HTMLDivElement;
 }
 
 export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
@@ -21,9 +22,38 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
     get data() {
       return props.data();
     },
-    columns: props.columnsDefinitions,
+    columns: props.columnsDefinitions(),
     getSortedRowModel: getSortedRowModel(),
     getCoreRowModel: getCoreRowModel(),
+    enableSorting: true,
+    enableColumnResizing: true,
+    columnResizeMode: "onChange",
+  });
+
+  const observer = new ResizeObserver(entries => {
+    const containerWidth = entries[0].contentRect.width;
+    updateColumnSizingCallback(containerWidth);
+  });
+
+  const updateColumnSizingCallback = (containerWidth: number) => {
+    if (containerWidth <= 0) return;
+
+    const columns = table.getAllColumns();
+    if (columns.length === 0) return;
+
+    table.setColumnSizing(() => calculateColumnWidths<Data>(containerWidth, columns));
+  };
+
+  onMount(() => {
+    observer.observe(props.target);
+    onCleanup(() => observer.disconnect());
+  });
+
+  createEffect(() => {
+    table.setOptions(prev => ({
+      ...prev,
+      data: [...props.data()],
+    }));
   });
 
   return (
@@ -40,30 +70,35 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
         <For each={table.getHeaderGroups()}>
           {headerGroup => (
             <tr
-              id={`header-group-${headerGroup.id}`}
-              style={{ display: "flex", width: "100%" }}
+              id={headerGroup.id}
+              style={{
+                display: "flex",
+                width: "100%",
+              }}
             >
               <For each={headerGroup.headers}>
                 {header => (
                   <th
-                    id={`header-${header.id}`}
+                    id={header.id}
                     class="text-left py-4 px-6 font-semibold text-gray-900 whitespace-nowrap"
                     style={{
                       display: "flex",
-                      width: `${header.getSize()}%`,
+                      width: `${header.getSize()}px`,
                     }}
                   >
                     <div
-                      {...{
-                        class: header.column.getCanSort() ? "cursor-pointer select-none" : "",
-                        onClick: header.column.getToggleSortingHandler(),
-                      }}
+                      class={`content-evenly ${header.column.getCanSort() ? "cursor-pointer select-none" : ""}`}
+                      onClick={() => header.column.getToggleSortingHandler()}
                     >
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                      {{
-                        asc: " 🔼",
-                        desc: " 🔽",
-                      }[header.column.getIsSorted() as string] ?? null}
+                      <span>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </span>
+                      <span class="text-end">
+                        {{
+                          asc: "🔼",
+                          desc: "🔽",
+                        }[header.column.getIsSorted() as string] ?? null}
+                      </span>
                     </div>
                   </th>
                 )}
@@ -73,8 +108,9 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
         </For>
       </thead>
       <TableBody
+        data={props.data}
         table={table}
-        targetElement={props.targetElement}
+        target={props.target}
       />
     </table>
   );
@@ -82,21 +118,20 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
 
 interface TableBodyProps<Data> {
   table: Table<Data>;
-  targetElement: HTMLDivElement;
+  data: () => Data[];
+  target: HTMLDivElement;
 }
 
-function TableBody<Data>({ table, targetElement }: TableBodyProps<Data>) {
-  const { rows } = table.getRowModel();
-
+function TableBody<Data>(props: TableBodyProps<Data>) {
   const [virtualizer, setVirtualizer] = createSignal<Virtualizer<HTMLDivElement, HTMLTableRowElement>>();
 
-  onMount(() => {
-    if (!targetElement) return;
+  createEffect(() => {
+    if (!props.target) return;
 
     const v = createVirtualizer<HTMLDivElement, HTMLTableRowElement>({
-      count: table.getRowModel().rows.length,
+      count: props.data().length,
       estimateSize: () => 100,
-      getScrollElement: () => targetElement,
+      getScrollElement: () => props.target,
       measureElement:
         typeof window !== "undefined" && navigator.userAgent.indexOf("Firefox") === -1
           ? el => el?.getBoundingClientRect().height
@@ -105,7 +140,7 @@ function TableBody<Data>({ table, targetElement }: TableBodyProps<Data>) {
     });
 
     setVirtualizer(v);
-  });
+  }, props.data);
 
   return (
     <tbody
@@ -118,7 +153,7 @@ function TableBody<Data>({ table, targetElement }: TableBodyProps<Data>) {
     >
       <For each={virtualizer()?.getVirtualItems()}>
         {virtualRow => {
-          const row = rows[virtualRow.index] as Row<Data>;
+          const row = props.table.getRowModel().rows[virtualRow.index] as Row<Data>;
           return (
             <TableRow
               row={row}
@@ -141,29 +176,32 @@ interface TableRowProps<Data> {
 function TableRow<Data>({ row, virtualRow, virtualizer }: TableRowProps<Data>) {
   return (
     <tr
-      id={`row-${row.id}`}
-      data-index={virtualRow.index} //needed for dynamic row height measurement
-      ref={node => virtualizer.measureElement(node)} //measure dynamic row height
+      id={row.id}
+      ref={node => {
+        node.dataset.index = `${row.index}`;
+        virtualizer.measureElement(node);
+      }}
       style={{
         display: "flex",
         position: "absolute",
-        transform: `translateY(${virtualRow.start}px)`, //this should always be a `style` as it changes on scroll
+        transform: `translateY(${virtualRow.start}px)`,
         width: "100%",
       }}
     >
       <For each={row.getVisibleCells()}>
-        {cell => (
-          <td
-            id={cell.id}
-            class="py-4 px-6"
-            style={{
-              display: "flex",
-              width: `${cell.column.getSize()}%`,
-            }}
-          >
-            {flexRender(cell.column.columnDef.cell, cell.getContext())}
-          </td>
-        )}
+        {cell => {
+          return (
+            <td
+              id={cell.id}
+              class="py-4 px-6"
+              style={{
+                width: `${cell.column.getSize()}px`,
+              }}
+            >
+              {flexRender(cell.column.columnDef.cell, cell.getContext())}
+            </td>
+          );
+        }}
       </For>
     </tr>
   );

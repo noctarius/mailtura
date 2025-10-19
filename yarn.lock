@@ -795,6 +795,7 @@ __metadata:
     "@tanstack/solid-table": "npm:^8.21.3"
     "@tanstack/solid-virtual": "npm:^3.13.12"
     "@timepp/murmurhash": "jsr:^0.1.1"
+    "@types/lodash.debounce": "npm:^4"
     autoprefixer: "npm:^10.4.18"
     clsx: "npm:^2.1.1"
     echarts: "npm:^6.0.0"
@@ -804,6 +805,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.11"
     eslint-plugin-unused-imports: "npm:^4.2.0"
     globals: "npm:^15.9.0"
+    lodash.debounce: "npm:^4.0.8"
     lucide-solid: "npm:^0.545.0"
     monaco-editor: "npm:^0.54.0"
     openapi-fetch: "npm:^0.14.1"
@@ -1417,6 +1419,22 @@ __metadata:
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
+  languageName: node
+  linkType: hard
+
+"@types/lodash.debounce@npm:^4":
+  version: 4.0.9
+  resolution: "@types/lodash.debounce@npm:4.0.9"
+  dependencies:
+    "@types/lodash": "npm:*"
+  checksum: 10c0/9fbb24e5e52616faf60ba5c82d8c6517f4b86fc6e9ab353b4c56c0760f63d9bf53af3f2d8f6c37efa48090359fb96dba1087d497758511f6c40677002191d042
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
   languageName: node
   linkType: hard
 
@@ -3975,6 +3993,13 @@ __metadata:
   dependencies:
     p-locate: "npm:^5.0.0"
   checksum: 10c0/d3972ab70dfe58ce620e64265f90162d247e87159b6126b01314dd67be43d50e96a50b517bce2d9452a79409c7614054c277b5232377de50416564a77ac7aad3
+  languageName: node
+  linkType: hard
+
+"lodash.debounce@npm:^4.0.8":
+  version: 4.0.8
+  resolution: "lodash.debounce@npm:4.0.8"
+  checksum: 10c0/762998a63e095412b6099b8290903e0a8ddcb353ac6e2e0f2d7e7d03abd4275fe3c689d88960eb90b0dde4f177554d51a690f22a343932ecbc50a5d111849987
   languageName: node
   linkType: hard
 
