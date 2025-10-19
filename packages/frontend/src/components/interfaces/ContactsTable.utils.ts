@@ -3,11 +3,11 @@ import { TailwindTextColor } from "../../helpers/tailwind-text-colors.js";
 
 export function getStatusBgColor(status: string): TailwindBgColor {
   switch (status) {
-    case "subscribed":
+    case "Subscribed":
       return "bg-green-100";
-    case "unsubscribed":
+    case "Unsubscribed":
       return "bg-gray-100";
-    case "bounced":
+    case "Bounced":
       return "bg-red-100";
     default:
       return "bg-gray-100";
@@ -16,11 +16,11 @@ export function getStatusBgColor(status: string): TailwindBgColor {
 
 export function getStatusTextColor(status: string): TailwindTextColor {
   switch (status) {
-    case "subscribed":
+    case "Subscribed":
       return "text-green-800";
-    case "unsubscribed":
+    case "Unsubscribed":
       return "text-gray-800";
-    case "bounced":
+    case "Bounced":
       return "text-red-800";
     default:
       return "text-gray-800";
