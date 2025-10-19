@@ -124,11 +124,12 @@ interface TableBodyProps<Data> {
 
 function TableBody<Data>(props: TableBodyProps<Data>) {
   const [virtualizer, setVirtualizer] = createSignal<Virtualizer<HTMLDivElement, HTMLTableRowElement>>();
+  const [rows, setRows] = createSignal<Row<Data>[]>(props.table.getRowModel().rows);
 
   createEffect(() => {
     if (!props.target) return;
 
-    const v = createVirtualizer<HTMLDivElement, HTMLTableRowElement>({
+    const newVirtualizer = createVirtualizer<HTMLDivElement, HTMLTableRowElement>({
       count: props.data().length,
       estimateSize: () => 100,
       getScrollElement: () => props.target,
@@ -139,7 +140,8 @@ function TableBody<Data>(props: TableBodyProps<Data>) {
       overscan: 5,
     });
 
-    setVirtualizer(v);
+    setVirtualizer(newVirtualizer);
+    setRows(props.table.getRowModel().rows);
   }, props.data);
 
   return (
@@ -153,7 +155,7 @@ function TableBody<Data>(props: TableBodyProps<Data>) {
     >
       <For each={virtualizer()?.getVirtualItems()}>
         {virtualRow => {
-          const row = props.table.getRowModel().rows[virtualRow.index] as Row<Data>;
+          const row = rows()[virtualRow.index] as Row<Data>;
           return (
             <TableRow
               row={row}
