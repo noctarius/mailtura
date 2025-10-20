@@ -1,6 +1,7 @@
 import { HttpMethod, PathsWithMethod } from "openapi-typescript-helpers";
 import { paths } from "../../../generated/api/mailtura.js";
 import { Record } from "typebox";
+import { useMutation } from "@tanstack/solid-query";
 
 type UndefToNever<T> = T extends undefined ? never : T;
 
@@ -72,6 +73,15 @@ export type PropertyRequestParameters<
         ? DeletePathOperation<Paths, Path>
         : never
 >;
+
+export type DeleteMutator<Path extends MethodPaths<Method>, Method extends HttpMethod = HttpMethod> = Omit<
+  ReturnType<typeof useMutation<RequestParameters<Path>, ResponseError, never>>,
+  "mutate"
+> & {
+  mutate: (
+    opts?: Parameters<ReturnType<typeof useMutation<RequestParameters<Path>, ResponseError, never>>["mutate"]>[1]
+  ) => void;
+};
 
 export class ResponseError extends Error {
   code?: number;

@@ -1,6 +1,13 @@
 import { QueryKey, useMutation, useQueryClient } from "@tanstack/solid-query";
 import { useApi } from "../../hooks/useApi.js";
-import { PathsWithDelete, PropertyRequestParameters, RequestBody, RequestParameters, ResponseError } from "./types.js";
+import {
+  DeleteMutator,
+  PathsWithDelete,
+  PropertyRequestParameters,
+  RequestBody,
+  RequestParameters,
+  ResponseError,
+} from "./types.js";
 import { maybeHandleError } from "./errors.js";
 
 const extractParameters = <Path extends PathsWithDelete>(
@@ -36,17 +43,28 @@ export function useDeleteMutation<Path extends PathsWithDelete, InvalidationQuer
   url: Path,
   parameters: RequestParameters<Path>,
   ...queryKeys: InvalidationQueryKeys
-) {
+): DeleteMutator<Path> {
   const queryClient = useQueryClient();
   const client = useApi();
 
-  return useMutation<RequestParameters<Path>, ResponseError, RequestBody<Path>>(() => ({
+  const mutator = useMutation<RequestParameters<Path>, ResponseError, never>(() => ({
     mutationFn: body => deleteOperation(client, url, parameters, body),
     onSuccess: () => {
-      if (queryKeys) for (const queryKey of queryKeys) queryClient.invalidateQueries({ queryKey });
+      if (queryKeys) {
+        for (const queryKey of queryKeys) {
+          queryClient.invalidateQueries({ queryKey: queryKey });
+        }
+      }
     },
     onError: error => {
       console.error(error);
     },
   }));
+
+  return {
+    ...mutator,
+    mutate: (opts?) => {
+      return mutator.mutate(undefined as never, opts);
+    },
+  };
 }

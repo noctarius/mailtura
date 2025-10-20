@@ -20,3 +20,9 @@
 .template-editor-selector-arrow:not(:disabled):active {
     @apply text-blue-300;
 }
+
+.overflow-clip-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

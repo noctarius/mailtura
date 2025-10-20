@@ -82,7 +82,7 @@ export function contactRoutes<
               created_at: UTC.now().toDate(),
               created_by: "api",
             },
-          })
+          });
         }
 
         return reply.status(201).send(mapContact(newContact));
@@ -204,14 +204,23 @@ export function contactRoutes<
           throw createError(404, "Contact not found");
         }
 
-        await prisma.contacts.delete({
-          where: {
-            id: contactId,
-            tenant_id: tenantId,
-          },
-        });
+        await prisma.$transaction(async tx => {
+          await tx.subscribers.deleteMany({
+            where: {
+              contact_id: contactId,
+              tenant_id: tenantId,
+            },
+          });
 
-        return reply.status(204).send();
+          await tx.contacts.delete({
+            where: {
+              id: contactId,
+              tenant_id: tenantId,
+            },
+          });
+
+          return reply.status(204).send();
+        });
       }
     );
   });
