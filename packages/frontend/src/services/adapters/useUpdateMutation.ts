@@ -20,7 +20,7 @@ const updateOperation = async <Path extends PathsWithPut>(
   parameters: RequestParameters<Path>,
   body: RequestBody<Path>
 ) => {
-  const response = await client.POST(url as any, {
+  const response = await client.PUT(url as any, {
     params: {
       path: extractParameters(parameters),
     },

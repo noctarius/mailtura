@@ -16,7 +16,11 @@ export type PathsWithPost = MethodPaths<"post">;
 export type PathsWithPut = MethodPaths<"put">;
 export type PathsWithDelete = MethodPaths<"delete">;
 
-type PathOperation<Paths, Path extends keyof Paths> = Paths[Path] extends { post: infer Post } ? Post : never;
+type PostPathOperation<Paths, Path extends keyof Paths> = Paths[Path] extends { post: infer Post } ? Post : never;
+type PutPathOperation<Paths, Path extends keyof Paths> = Paths[Path] extends { put: infer Put } ? Put : never;
+type DeletePathOperation<Paths, Path extends keyof Paths> = Paths[Path] extends { delete: infer Delete }
+  ? Delete
+  : never;
 
 type OperationRequestBody<Operation> = Operation extends { requestBody: infer RequestBody } ? RequestBody : never;
 
@@ -34,18 +38,40 @@ type TypeRequestBody<Operation> =
   OperationRequestBody<Operation> extends { content: { "application/json": infer Body } } ? Body : never;
 
 export type RequestBody<Path extends MethodPaths<Method>, Method extends HttpMethod = HttpMethod> = TypeRequestBody<
-  PathOperation<Paths, Path>
+  Method extends "post"
+    ? PostPathOperation<Paths, Path>
+    : Method extends "put"
+      ? PutPathOperation<Paths, Path>
+      : Method extends "delete"
+        ? DeletePathOperation<Paths, Path>
+        : never
 >;
 
 export type RequestParameters<
   Path extends MethodPaths<Method>,
   Method extends HttpMethod = HttpMethod,
-> = ReactiveParameters<PathOperation<Paths, Path>>;
+> = ReactiveParameters<
+  Method extends "post"
+    ? PostPathOperation<Paths, Path>
+    : Method extends "put"
+      ? PutPathOperation<Paths, Path>
+      : Method extends "delete"
+        ? DeletePathOperation<Paths, Path>
+        : never
+>;
 
 export type PropertyRequestParameters<
   Path extends MethodPaths<Method>,
   Method extends HttpMethod = HttpMethod,
-> = OperationParameters<PathOperation<Paths, Path>>;
+> = OperationParameters<
+  Method extends "post"
+    ? PostPathOperation<Paths, Path>
+    : Method extends "put"
+      ? PutPathOperation<Paths, Path>
+      : Method extends "delete"
+        ? DeletePathOperation<Paths, Path>
+        : never
+>;
 
 export class ResponseError extends Error {
   code?: number;

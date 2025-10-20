@@ -20,7 +20,7 @@ const deleteOperation = async <Path extends PathsWithDelete>(
   parameters: RequestParameters<Path>,
   body: RequestBody<Path>
 ) => {
-  const response = await client.POST(url as any, {
+  const response = await client.DELETE(url as any, {
     params: {
       path: extractParameters(parameters),
     },
