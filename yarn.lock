@@ -790,6 +790,7 @@ __metadata:
   dependencies:
     "@eslint/js": "portal:"
     "@mailtura/rpcmodel": "npm:*"
+    "@modular-forms/solid": "npm:^0.25.1"
     "@solidjs/router": "npm:^0.15.3"
     "@tanstack/solid-query": "npm:^5.90.4"
     "@tanstack/solid-table": "npm:^8.21.3"
@@ -835,6 +836,17 @@ __metadata:
     typescript-eslint: "portal:"
   languageName: unknown
   linkType: soft
+
+"@modular-forms/solid@npm:^0.25.1":
+  version: 0.25.1
+  resolution: "@modular-forms/solid@npm:0.25.1"
+  dependencies:
+    valibot: "npm:^1.0.0-beta.6"
+  peerDependencies:
+    solid-js: ^1.3.1
+  checksum: 10c0/3667273dbb49b191ab128890e88c38e0ef150b8267d74e8c421badd4385db761f46493a35f51ee1934a6171bb9edd52476e059e1d2f5bbf893dfb5eb8e663ccc
+  languageName: node
+  linkType: hard
 
 "@monaco-editor/loader@npm:^1.4.0":
   version: 1.6.1
@@ -6417,6 +6429,18 @@ __metadata:
   version: 1.0.2
   resolution: "util-deprecate@npm:1.0.2"
   checksum: 10c0/41a5bdd214df2f6c3ecf8622745e4a366c4adced864bc3c833739791aeeeb1838119af7daed4ba36428114b5c67dcda034a79c882e97e43c03e66a4dd7389942
+  languageName: node
+  linkType: hard
+
+"valibot@npm:^1.0.0-beta.6":
+  version: 1.1.0
+  resolution: "valibot@npm:1.1.0"
+  peerDependencies:
+    typescript: ">=5"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/39580b4e4683cc44398fb775e88c03639dbaa7e6f587df416125916cb6307292d45df18f656054e8846093ced13a2d2fdc98659da6dd104d1d20180edcbd99d4
   languageName: node
   linkType: hard
 

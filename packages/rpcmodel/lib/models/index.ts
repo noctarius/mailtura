@@ -38,7 +38,7 @@ export const Contact = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      email: Type.String(),
+      email: Type.String({ format: "email" }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       lastActivity: Type.Optional(Type.String({ format: "date-time" })),
@@ -314,7 +314,7 @@ export const User = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      email: Type.String(),
+      email: Type.String({ format: "email" }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       role: Type.String(),
