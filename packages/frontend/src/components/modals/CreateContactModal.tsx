@@ -8,6 +8,7 @@ import { contactsKeys } from "../../services/contacts/keys.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
 import { createForm, email, required, submit, SubmitHandler } from "@modular-forms/solid";
+import { UiButton } from "../ui/UiButton.js";
 
 type CreateContactModalProps = {
   onClose: () => void;
@@ -247,20 +248,17 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
         </ContactForm>
 
         <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-          <button
+          <UiButton
+            text="Cancel"
+            loading={() => createContact.isPending || createSubscriberList.isPending}
             onClick={onClose}
-            disabled={createContact.isPending || createSubscriberList.isPending}
-            class="px-4 py-2 text-gray-600 hover:text-gray-800"
-          >
-            Cancel
-          </button>
-          <button
+            primary={false}
+          />
+          <UiButton
+            text="Add Contact"
+            loading={() => createContact.isPending || createSubscriberList.isPending}
             onClick={() => submit(newContactForm)}
-            disabled={createContact.isPending || createSubscriberList.isPending}
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            Add Contact
-          </button>
+          />
         </div>
       </div>
     </div>
