@@ -1,7 +1,7 @@
 import { createSignal } from "solid-js";
 import { Plus } from "lucide-solid";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
-import { CreateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateContact, CreateSubscriberList } from "@mailtura/rpcmodel/lib/models/request-response.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { contactsKeys } from "../../services/contacts/keys.js";
@@ -17,10 +17,10 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
-  const [newListName, setNewListName] = createSignal("");
   const [showNewListInput, setShowNewListInput] = createSignal(false);
 
   const [newContactForm, { Form: ContactForm, Field: ContactField }] = createForm<CreateContact>();
+  const [newListForm, { Form: ListForm, Field: ListField }] = createForm<CreateSubscriberList>();
 
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
   const subscriberLists = () => (subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name));
@@ -33,7 +33,7 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
     tenant_id: tenantId,
   });
 
-  const handleSubmit: SubmitHandler<CreateContact> = async (values, event) => {
+  const handleCreateNewContact: SubmitHandler<CreateContact> = async (values, event) => {
     event.stopPropagation();
     if (!values.email || values.email.trim().length === 0) {
       return;
@@ -47,39 +47,44 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
       values.lastName = undefined;
     }
 
-    createContact.mutate(values, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
-        await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-        for (const listId of values.listIds) {
-          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });
-        }
-        onClose();
-      },
-      onError: error => {
-        console.error("Error creating contact:", error);
-      },
+    return new Promise((resolve, reject) => {
+      createContact.mutate(values, {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
+          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
+          for (const listId of values.listIds) {
+            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });
+          }
+          onClose();
+          resolve(undefined);
+        },
+        onError: error => {
+          console.error("Error creating contact:", error);
+          reject(error);
+        },
+      });
     });
   };
 
-  const handleAddNewList = () => {
-    if (newListName().trim()) {
-      createSubscriberList.mutate(
-        {
-          name: newListName(),
+  const handleCreateNewList: SubmitHandler<CreateSubscriberList> = (values, event) => {
+    event.stopPropagation();
+
+    values.name = values.name.trim();
+    if (values.name.length === 0) return false;
+
+    return new Promise((resolve, reject) => {
+      createSubscriberList.mutate(values, {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
+          setShowNewListInput(false);
+          resolve(undefined);
         },
-        {
-          onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-            setShowNewListInput(false);
-            setNewListName("");
-          },
-          onError: error => {
-            console.error("Error creating list:", error);
-          },
-        }
-      );
-    }
+        onError: error => {
+          console.error("Error creating list:", error);
+          reject(error);
+        },
+      });
+    });
   };
 
   return (
@@ -95,7 +100,7 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
           </button>
         </div>
 
-        <ContactForm onSubmit={handleSubmit}>
+        <ContactForm onSubmit={handleCreateNewContact}>
           <div class="space-y-4">
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
@@ -161,16 +166,20 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
                     <ContactField
                       name="listIds"
                       type="string[]"
+                      validate={[required("Please select at least one list.")]}
                     >
                       {(field, props) => (
-                        <input
-                          {...props}
-                          type="checkbox"
-                          id={list.id}
-                          value={list.id}
-                          checked={field.value?.includes(list.id) || false}
-                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
+                        <>
+                          <input
+                            {...props}
+                            type="checkbox"
+                            id={list.id}
+                            value={list.id}
+                            checked={field.value?.includes(list.id) || false}
+                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          {field.error && <div>{field.error}</div>}
+                        </>
                       )}
                     </ContactField>
                     <label
@@ -185,7 +194,7 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
               </div>
 
               <div class="mt-3">
-                {!showNewListInput ? (
+                {!showNewListInput() ? (
                   <button
                     onClick={() => setShowNewListInput(true)}
                     class="text-sm text-blue-600 hover:text-blue-700 flex items-center space-x-1"
@@ -194,32 +203,43 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
                     <span>Create new list</span>
                   </button>
                 ) : (
-                  <div class="flex items-center space-x-2">
-                    <input
-                      type="text"
-                      value={newListName()}
-                      onChange={e => setNewListName(e.target.value)}
-                      placeholder="List name"
-                      class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
-                    />
-                    <button
-                      onClick={handleAddNewList}
-                      disabled={createContact.isPending}
-                      class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
-                    >
-                      Add
-                    </button>
-                    <button
-                      onClick={() => {
-                        setShowNewListInput(false);
-                        setNewListName("");
-                      }}
-                      disabled={createContact.isPending}
-                      class="px-3 py-2 text-gray-600 hover:text-gray-800 text-sm"
-                    >
-                      Cancel
-                    </button>
-                  </div>
+                  <ListForm onSubmit={handleCreateNewList}>
+                    <div class="flex items-center space-x-2">
+                      <ListField
+                        name="name"
+                        validate={[required("Please enter a list name.")]}
+                      >
+                        {(field, props) => (
+                          <>
+                            {" "}
+                            <input
+                              {...props}
+                              type="text"
+                              placeholder="List name"
+                              class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                            />
+                            {field.error && <div>{field.error}</div>}
+                          </>
+                        )}
+                      </ListField>
+                      <button
+                        onClick={() => submit(newListForm)}
+                        disabled={createContact.isPending || createSubscriberList.isPending}
+                        class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
+                      >
+                        Add
+                      </button>
+                      <button
+                        onClick={() => {
+                          setShowNewListInput(false);
+                        }}
+                        disabled={createContact.isPending || createSubscriberList.isPending}
+                        class="px-3 py-2 text-gray-600 hover:text-gray-800 text-sm"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </ListForm>
                 )}
               </div>
             </div>
@@ -229,14 +249,14 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
         <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
           <button
             onClick={onClose}
-            disabled={createContact.isPending}
+            disabled={createContact.isPending || createSubscriberList.isPending}
             class="px-4 py-2 text-gray-600 hover:text-gray-800"
           >
             Cancel
           </button>
           <button
             onClick={() => submit(newContactForm)}
-            disabled={createContact.isPending}
+            disabled={createContact.isPending || createSubscriberList.isPending}
             class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Add Contact
