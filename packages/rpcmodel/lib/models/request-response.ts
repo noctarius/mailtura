@@ -13,7 +13,7 @@ export const CreateContact = //
 export type CreateContact = Static<typeof CreateContact>;
 
 export const UpdateContact = //
-  Type.Partial(Type.Pick(Contact, ["firstName", "lastName"]));
+  Type.Partial(Type.Pick(Contact, ["firstName", "lastName", "listIds"]));
 
 export type UpdateContact = Static<typeof UpdateContact>;
 
