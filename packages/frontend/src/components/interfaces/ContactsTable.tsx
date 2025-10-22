@@ -8,6 +8,7 @@ import { createEffect, createMemo, createSelector, createSignal, onCleanup } fro
 import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
 import DeleteContactModal from "../modals/DeleteContactModal.js";
+import { UiSideDrawer } from "../ui/UiSideDrawer.js";
 
 const contextMenuActions: ContextMenuAction[] = [
   {
@@ -149,35 +150,92 @@ interface ContactsActionsProps {
 
 function ContactsActions(props: ContactsActionsProps) {
   const [ellipsisRef, setEllipsisRef] = createSignal<HTMLButtonElement | undefined>(undefined);
+  const [editOpen, setEditOpen] = createSignal(false);
   const isActive = createSelector(props.activeContextMenu);
+
   return (
-    <div class="flex items-center space-x-2 relative">
-      <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-        <Edit class="w-4 h-4" />
-      </button>
-      <button
-        onClick={e => props.onClick(e, props.item)}
-        class="p-2 text-gray-400 hover:text-gray-600 transition-colors relative"
-      >
-        <Ellipsis
-          ref={setEllipsisRef}
-          class="w-4 h-4"
-        />
-      </button>
-      {isActive(props.item.id) ? (
-        <ContextMenu
-          header={item => <p class="overflow-clip-ellipsis">Email: {item.email}</p>}
-          onClose={() => {
-            if (props.activeContextMenu() === props.item.id) {
-              props.setActiveContextMenu(undefined);
-            }
-          }}
-          target={ellipsisRef}
-          item={props.item}
-          actions={() => contextMenuActions}
-          onAction={props.onContextMenuAction}
-        />
-      ) : null}
-    </div>
+    <>
+      <div class="flex items-center space-x-2 relative">
+        <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+          <Edit
+            onClick={setEditOpen}
+            class="w-4 h-4"
+          />
+        </button>
+        <button
+          onClick={e => props.onClick(e, props.item)}
+          class="p-2 text-gray-400 hover:text-gray-600 transition-colors relative"
+          aria-controls="drawer-example"
+        >
+          <Ellipsis
+            ref={setEllipsisRef}
+            class="w-4 h-4"
+          />
+        </button>
+        {isActive(props.item.id) ? (
+          <ContextMenu
+            header={item => <p class="overflow-clip-ellipsis">Email: {item.email}</p>}
+            onClose={() => {
+              if (props.activeContextMenu() === props.item.id) {
+                props.setActiveContextMenu(undefined);
+              }
+            }}
+            target={ellipsisRef}
+            item={props.item}
+            actions={() => contextMenuActions}
+            onAction={props.onContextMenuAction}
+          />
+        ) : null}
+      </div>
+      {editOpen() && (
+        <UiSideDrawer
+          id={`edit-${props.item.id}`}
+          opened={editOpen}
+          onClose={() => setEditOpen(false)}
+          title="Test Sheet"
+        >
+          <p class="mb-6 text-sm text-gray-500">
+            Supercharge your hiring by taking advantage of our{" "}
+            <a
+              href="#"
+              class="text-blue-600 underline hover:no-underline"
+            >
+              limited-time sale
+            </a>{" "}
+            for Flowbite Docs + Job Board. Unlimited access to over 190K top-ranked candidates and the #1 design job
+            board.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <a
+              href="#"
+              class="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100"
+            >
+              Learn more
+            </a>
+            <a
+              href="#"
+              class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+            >
+              Get access{" "}
+              <svg
+                class="rtl:rotate-180 w-3.5 h-3.5 ms-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+            </a>
+          </div>
+        </UiSideDrawer>
+      )}
+    </>
   );
 }
