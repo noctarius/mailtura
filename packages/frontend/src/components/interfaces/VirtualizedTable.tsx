@@ -8,8 +8,9 @@ import {
   Table,
 } from "@tanstack/solid-table";
 import { createVirtualizer, VirtualItem, Virtualizer } from "@tanstack/solid-virtual";
-import { createEffect, createSignal, For, onCleanup, onMount } from "solid-js";
+import { createEffect, createSignal, For, onMount } from "solid-js";
 import { calculateColumnWidths } from "./VirtualizedTable.utils.js";
+import { makeResizeObserver } from "@solid-primitives/resize-observer";
 
 interface VirtualizedTableProps<Data> {
   data: () => Data[];
@@ -30,7 +31,7 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
     columnResizeMode: "onChange",
   });
 
-  const observer = new ResizeObserver(entries => {
+  const observer = makeResizeObserver(entries => {
     const containerWidth = entries[0].contentRect.width;
     updateColumnSizingCallback(containerWidth);
   });
@@ -46,7 +47,6 @@ export function VirtualizedTable<Data>(props: VirtualizedTableProps<Data>) {
 
   onMount(() => {
     observer.observe(props.target);
-    onCleanup(() => observer.disconnect());
   });
 
   createEffect(() => {

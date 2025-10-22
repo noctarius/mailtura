@@ -15,6 +15,7 @@
   "dependencies": {
     "@mailtura/rpcmodel": "*",
     "@modular-forms/solid": "^0.25.1",
+    "@solid-primitives/resize-observer": "^2.1.3",
     "@solidjs/router": "^0.15.3",
     "@tanstack/solid-query": "^5.90.4",
     "@tanstack/solid-table": "^8.21.3",

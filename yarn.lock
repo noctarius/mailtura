@@ -791,6 +791,7 @@ __metadata:
     "@eslint/js": "portal:"
     "@mailtura/rpcmodel": "npm:*"
     "@modular-forms/solid": "npm:^0.25.1"
+    "@solid-primitives/resize-observer": "npm:^2.1.3"
     "@solidjs/router": "npm:^0.15.3"
     "@tanstack/solid-query": "npm:^5.90.4"
     "@tanstack/solid-table": "npm:^8.21.3"
@@ -1185,7 +1186,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@solid-primitives/resize-observer@npm:^2.0.26":
+"@solid-primitives/resize-observer@npm:^2.0.26, @solid-primitives/resize-observer@npm:^2.1.3":
   version: 2.1.3
   resolution: "@solid-primitives/resize-observer@npm:2.1.3"
   dependencies:
