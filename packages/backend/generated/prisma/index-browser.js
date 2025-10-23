@@ -141,7 +141,6 @@ exports.Prisma.ContactsScalarFieldEnum = {
   first_name: 'first_name',
   last_name: 'last_name',
   last_activity_at: 'last_activity_at',
-  list_ids: 'list_ids',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',

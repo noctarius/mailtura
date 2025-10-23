@@ -3178,7 +3178,6 @@ export namespace Prisma {
     first_name: number
     last_name: number
     last_activity_at: number
-    list_ids: number
     created_at: number
     created_by: number
     updated_at: number
@@ -3220,7 +3219,6 @@ export namespace Prisma {
     first_name?: true
     last_name?: true
     last_activity_at?: true
-    list_ids?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -3307,7 +3305,6 @@ export namespace Prisma {
     first_name: string | null
     last_name: string | null
     last_activity_at: Date | null
-    list_ids: string[]
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -3338,7 +3335,6 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -3357,7 +3353,6 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -3371,7 +3366,6 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -3385,14 +3379,13 @@ export namespace Prisma {
     first_name?: boolean
     last_name?: boolean
     last_activity_at?: boolean
-    list_ids?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
   }
 
-  export type contactsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "email" | "first_name" | "last_name" | "last_activity_at" | "list_ids" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contacts"]>
+  export type contactsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "email" | "first_name" | "last_name" | "last_activity_at" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contacts"]>
   export type contactsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     activities?: boolean | contacts$activitiesArgs<ExtArgs>
     bounces?: boolean | contacts$bouncesArgs<ExtArgs>
@@ -3418,7 +3411,6 @@ export namespace Prisma {
       first_name: string | null
       last_name: string | null
       last_activity_at: Date | null
-      list_ids: string[]
       created_at: Date
       created_by: string
       updated_at: Date | null
@@ -3856,7 +3848,6 @@ export namespace Prisma {
     readonly first_name: FieldRef<"contacts", 'String'>
     readonly last_name: FieldRef<"contacts", 'String'>
     readonly last_activity_at: FieldRef<"contacts", 'DateTime'>
-    readonly list_ids: FieldRef<"contacts", 'String[]'>
     readonly created_at: FieldRef<"contacts", 'DateTime'>
     readonly created_by: FieldRef<"contacts", 'String'>
     readonly updated_at: FieldRef<"contacts", 'DateTime'>
@@ -15865,7 +15856,6 @@ export namespace Prisma {
     first_name: 'first_name',
     last_name: 'last_name',
     last_activity_at: 'last_activity_at',
-    list_ids: 'list_ids',
     created_at: 'created_at',
     created_by: 'created_by',
     updated_at: 'updated_at',
@@ -16333,7 +16323,6 @@ export namespace Prisma {
     first_name?: StringNullableFilter<"contacts"> | string | null
     last_name?: StringNullableFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeFilter<"contacts"> | Date | string
     created_by?: StringFilter<"contacts"> | string
     updated_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
@@ -16351,7 +16340,6 @@ export namespace Prisma {
     first_name?: SortOrderInput | SortOrder
     last_name?: SortOrderInput | SortOrder
     last_activity_at?: SortOrderInput | SortOrder
-    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -16373,7 +16361,6 @@ export namespace Prisma {
     first_name?: StringNullableFilter<"contacts"> | string | null
     last_name?: StringNullableFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
-    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeFilter<"contacts"> | Date | string
     created_by?: StringFilter<"contacts"> | string
     updated_at?: DateTimeNullableFilter<"contacts"> | Date | string | null
@@ -16391,7 +16378,6 @@ export namespace Prisma {
     first_name?: SortOrderInput | SortOrder
     last_name?: SortOrderInput | SortOrder
     last_activity_at?: SortOrderInput | SortOrder
-    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -16411,7 +16397,6 @@ export namespace Prisma {
     first_name?: StringNullableWithAggregatesFilter<"contacts"> | string | null
     last_name?: StringNullableWithAggregatesFilter<"contacts"> | string | null
     last_activity_at?: DateTimeNullableWithAggregatesFilter<"contacts"> | Date | string | null
-    list_ids?: StringNullableListFilter<"contacts">
     created_at?: DateTimeWithAggregatesFilter<"contacts"> | Date | string
     created_by?: StringWithAggregatesFilter<"contacts"> | string
     updated_at?: DateTimeNullableWithAggregatesFilter<"contacts"> | Date | string | null
@@ -17337,7 +17322,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -17355,7 +17339,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -17373,7 +17356,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17391,7 +17373,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17409,7 +17390,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -17423,7 +17403,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17437,7 +17416,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18590,14 +18568,6 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
   export type ActivitiesListRelationFilter = {
     every?: activitiesWhereInput
     some?: activitiesWhereInput
@@ -18650,7 +18620,6 @@ export namespace Prisma {
     first_name?: SortOrder
     last_name?: SortOrder
     last_activity_at?: SortOrder
-    list_ids?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -19125,6 +19094,14 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type unsubscribesTenant_idContact_idCompoundUniqueInput = {
     tenant_id: string
     contact_id: string
@@ -19418,10 +19395,6 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type contactsCreatelist_idsInput = {
-    set: string[]
-  }
-
   export type activitiesCreateNestedManyWithoutReceiversInput = {
     create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
     connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
@@ -19476,11 +19449,6 @@ export namespace Prisma {
     connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
     createMany?: unsubscribesCreateManyContactsInputEnvelope
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
-  }
-
-  export type contactsUpdatelist_idsInput = {
-    set?: string[]
-    push?: string | string[]
   }
 
   export type activitiesUpdateManyWithoutReceiversNestedInput = {
@@ -20610,7 +20578,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20627,7 +20594,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20697,7 +20663,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20714,7 +20679,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20774,7 +20738,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20791,7 +20754,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20824,7 +20786,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20841,7 +20802,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20858,7 +20818,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20875,7 +20834,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -20935,7 +20893,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20952,7 +20909,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21052,7 +21008,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -21069,7 +21024,6 @@ export namespace Prisma {
     first_name?: string | null
     last_name?: string | null
     last_activity_at?: Date | string | null
-    list_ids?: contactsCreatelist_idsInput | string[]
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -21102,7 +21056,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21119,7 +21072,6 @@ export namespace Prisma {
     first_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_name?: NullableStringFieldUpdateOperationsInput | string | null
     last_activity_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    list_ids?: contactsUpdatelist_idsInput | string[]
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null

@@ -29,7 +29,6 @@ model contacts {
   first_name       String?
   last_name        String?
   last_activity_at DateTime?
-  list_ids         String[]  @db.Uuid
   created_at       DateTime
   created_by       String
   updated_at       DateTime?

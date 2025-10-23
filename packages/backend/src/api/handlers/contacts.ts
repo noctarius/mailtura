@@ -40,7 +40,6 @@ export function contactRoutes<
           tenant_id: tenantId,
         },
       });
-
       return contacts.map(mapContact);
     }
   );
@@ -160,17 +159,56 @@ export function contactRoutes<
           throw createError(404, "Contact not found");
         }
 
-        const newContact = await prisma.contacts.update({
-          where: { id: contactId, tenant_id: tenantId },
-          data: {
-            first_name: request.body.firstName,
-            last_name: request.body.lastName,
-            updated_at: UTC.now().toDate(),
-            updated_by: "api",
-          },
-        });
+        const oldMappedContact = mapContact(oldContact);
+        const newListIds = request.body.listIds;
+        const oldListIds = oldMappedContact.listIds;
 
-        return mapContact(newContact);
+        const listsToAdd = newListIds?.filter(listId => !oldListIds.includes(listId)) || [];
+        const listsToRemove = oldListIds.filter(listId => newListIds && !newListIds.includes(listId));
+
+        return prisma.$transaction(async tx => {
+          if (listsToAdd.length > 0) {
+            for (const listId of listsToAdd) {
+              await tx.subscribers.create({
+                data: {
+                  tenant_id: tenantId,
+                  contact_id: contactId,
+                  status: "Subscribed",
+                  subscriber_list_id: listId,
+                  subscribed_at: UTC.now().toDate(),
+                  created_at: UTC.now().toDate(),
+                  created_by: "api",
+                },
+              });
+            }
+          }
+
+          if (listsToRemove.length > 0) {
+            await tx.subscribers.deleteMany({
+              where: {
+                contact_id: contactId,
+                tenant_id: tenantId,
+                AND: listsToRemove.map(listId => {
+                  return {
+                    subscriber_list_id: listId,
+                  };
+                }),
+              },
+            });
+          }
+
+          const newContact = await tx.contacts.update({
+            where: { id: contactId, tenant_id: tenantId },
+            data: {
+              first_name: request.body.firstName,
+              last_name: request.body.lastName,
+              updated_at: UTC.now().toDate(),
+              updated_by: "api",
+            },
+          });
+
+          return mapContact(newContact);
+        });
       }
     );
 

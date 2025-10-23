@@ -58,13 +58,20 @@ export function mapTenant(tenant: TenantEntity): Tenant {
   };
 }
 
-type PotentiallyCountedContact = ContactEntity & { _count?: { bounces?: number; unsubscribes?: number } };
+type PotentiallyCountedContact = ContactEntity & {
+  _count?: { bounces?: number; unsubscribes?: number };
+  subscribers?: any[];
+};
 type CountedContact = PotentiallyCountedContact & { _count: { bounces: number; unsubscribes: number } };
+type SubscriberContact = PotentiallyCountedContact & { subscribers: any[] };
 export function mapContact(contact: PotentiallyCountedContact): Contact {
   const hasCount = (contact: PotentiallyCountedContact): contact is CountedContact =>
     contact._count !== undefined && //
     contact._count.bounces !== undefined &&
     contact._count.unsubscribes !== undefined;
+
+  const hasSubscribers = (contact: PotentiallyCountedContact): contact is SubscriberContact =>
+    contact.subscribers !== undefined;
 
   const status = hasCount(contact)
     ? contact._count.bounces > 0 || contact._count.unsubscribes > 0
@@ -78,7 +85,7 @@ export function mapContact(contact: PotentiallyCountedContact): Contact {
     firstName: contact.first_name ?? undefined,
     lastName: contact.last_name ?? undefined,
     lastActivity: mapDateTime(contact.last_activity_at),
-    listIds: contact.list_ids || [],
+    listIds: hasSubscribers(contact) ? contact.subscribers.map(subscriber => subscriber.subscriber_list_id) : [],
     status: status,
     createdAt: mapDateTime(contact.created_at),
     createdBy: contact.created_by,

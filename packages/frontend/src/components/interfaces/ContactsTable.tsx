@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import TableCellChip from "./TableCellChip.js";
-import { Calendar, Ellipsis, Trash2, UserMinus } from "lucide-solid";
+import { Calendar, Ellipsis, Pen, Trash2, UserMinus } from "lucide-solid";
 import { Contact } from "@mailtura/rpcmodel/lib/models/index.js";
 import { getStatusBgColor, getStatusTextColor } from "./ContactsTable.utils.js";
 import { VirtualizedTable } from "./VirtualizedTable.js";
@@ -70,11 +70,13 @@ export function ContactsTable(props: ContactsTableProps) {
         id: "status",
         header: () => "Status",
         cell: info => (
-          <TableCellChip
-            value={info.row.original.status}
-            bgColor={getStatusBgColor(info.row.original.status)}
-            textColor={getStatusTextColor(info.row.original.status)}
-          />
+          <div class="p-2">
+            <TableCellChip
+              value={info.row.original.status}
+              bgColor={getStatusBgColor(info.row.original.status)}
+              textColor={getStatusTextColor(info.row.original.status)}
+            />
+          </div>
         ),
       },
       {
@@ -85,7 +87,7 @@ export function ContactsTable(props: ContactsTableProps) {
         accessorKey: "lastActivity",
         header: () => "Last Activity",
         cell: info => (
-          <div class="flex items-center space-x-2">
+          <div class="flex items-center space-x-2 p-2">
             <Calendar class="w-4 h-4 text-gray-400" />
             <span class="text-sm text-gray-900">{info.getValue()}</span>
           </div>
@@ -109,7 +111,6 @@ export function ContactsTable(props: ContactsTableProps) {
 
   const handleContextMenuAction = (item: Contact, action: string) => {
     setActiveContextMenu(undefined);
-    console.log("Action:", action, "Item:", item);
     if (action === "delete") {
       setDeleteContact(item);
     }
@@ -166,7 +167,7 @@ function ContactsActions(props: ContactsActionsProps) {
       <div class="flex items-center space-x-2 relative">
         <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
           <Edit
-            onClick={setEditOpen}
+            onClick={() => setEditOpen(true)}
             class="w-4 h-4"
           />
         </button>
@@ -195,19 +196,18 @@ function ContactsActions(props: ContactsActionsProps) {
           />
         ) : null}
       </div>
-      {editOpen() && (
-        <UiSideDrawer
-          id={`edit-${props.item.id}`}
-          opened={editOpen}
+      <UiSideDrawer
+        id={`edit-${props.item.id}`}
+        show={editOpen}
+        onClose={() => setEditOpen(false)}
+        title={`Update contact ${props.item.email}`}
+        titleIcon={Pen}
+      >
+        <ContactEditForm
+          contact={() => props.item}
           onClose={() => setEditOpen(false)}
-          title={`Update contact ${props.item.email}`}
-        >
-          <ContactEditForm
-            contact={() => props.item}
-            onClose={() => setEditOpen(false)}
-          />
-        </UiSideDrawer>
-      )}
+        />
+      </UiSideDrawer>
     </>
   );
 }
@@ -221,7 +221,13 @@ function ContactEditForm(props: ContactEditFormProps) {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
-  const [updateContactForm, { Form: ContactForm, Field: ContactField }] = createForm<UpdateContact>();
+  const [updateContactForm, { Form: ContactForm, Field: ContactField }] = createForm<UpdateContact>({
+    initialValues: {
+      firstName: props.contact().firstName,
+      lastName: props.contact().lastName,
+      listIds: props.contact().listIds,
+    },
+  });
 
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
   const subscriberLists = () => (subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name));
@@ -283,6 +289,7 @@ function ContactEditForm(props: ContactEditFormProps) {
                     <>
                       <input
                         {...props}
+                        value={field.value || ""}
                         type="text"
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="John"
@@ -299,6 +306,7 @@ function ContactEditForm(props: ContactEditFormProps) {
                     <>
                       <input
                         {...props}
+                        value={field.value || ""}
                         type="text"
                         class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         placeholder="Doe"
@@ -321,19 +329,21 @@ function ContactEditForm(props: ContactEditFormProps) {
                     type="string[]"
                     validate={[required("Please select at least one list.")]}
                   >
-                    {(field, props) => (
-                      <>
-                        <input
-                          {...props}
-                          type="checkbox"
-                          id={list.id}
-                          value={list.id}
-                          checked={field.value?.includes(list.id) || false}
-                          class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        {field.error && <div>{field.error}</div>}
-                      </>
-                    )}
+                    {(field, props) => {
+                      return (
+                        <>
+                          <input
+                            {...props}
+                            type="checkbox"
+                            id={list.id}
+                            value={list.id}
+                            checked={field.value?.includes(list.id) || false}
+                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          {field.error && <div>{field.error}</div>}
+                        </>
+                      );
+                    }}
                   </ContactField>
                   <label
                     for={`list-${list.id}`}

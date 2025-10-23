@@ -49,6 +49,14 @@ const prisma = new PrismaClient().$extends({
               unsubscribes: true,
             },
           },
+          subscribers: {
+            select: {
+              subscriber_list_id: true
+            },
+            where: {
+              status: "Subscribed"
+            }
+          }
         };
         return query(args);
       },
