@@ -16,9 +16,9 @@ datasource db {
 model tenants {
   id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
   name       String
-  created_at DateTime
+  created_at DateTime @db.Timestamptz()
   created_by String
-  updated_at DateTime?
+  updated_at DateTime? @db.Timestamptz()
   updated_by String?
 }
 
@@ -28,10 +28,10 @@ model contacts {
   email            String
   first_name       String?
   last_name        String?
-  last_activity_at DateTime?
-  created_at       DateTime
+  last_activity_at DateTime? @db.Timestamptz()
+  created_at       DateTime @db.Timestamptz()
   created_by       String
-  updated_at       DateTime?
+  updated_at       DateTime? @db.Timestamptz()
   updated_by       String?
 
   activities   activities[]
@@ -65,10 +65,10 @@ model campaigns {
   recipients    Int
   sent          Int
   delivered     Int
-  scheduled_for DateTime?
-  created_at    DateTime
+  scheduled_for DateTime? @db.Timestamptz()
+  created_at    DateTime @db.Timestamptz()
   created_by    String
-  updated_at    DateTime?
+  updated_at    DateTime? @db.Timestamptz()
   updated_by    String?
 
   activities activities[]
@@ -101,16 +101,16 @@ model activities {
   send_name              String
   subject                String
   status                 activity_status
-  sent_at                DateTime
-  last_event_received_at DateTime
+  sent_at                DateTime @db.Timestamptz()
+  last_event_received_at DateTime @db.Timestamptz()
   last_event_type        event_type
   opens                  Int
   clicks                 Int
   campaign_id            String?         @db.Uuid
   contact_id             String          @db.Uuid
-  created_at             DateTime
+  created_at             DateTime @db.Timestamptz()
   created_by             String
-  updated_at             DateTime?
+  updated_at             DateTime? @db.Timestamptz()
   updated_by             String?
 
   receivers contacts   @relation(fields: [contact_id], references: [id])
@@ -127,13 +127,13 @@ enum bounce_type {
 model bounces {
   id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id   String      @db.Uuid
-  bounced_at  DateTime
+  bounced_at  DateTime @db.Timestamptz()
   reason      String
   bounce_type bounce_type
   contact_id  String      @db.Uuid
-  created_at  DateTime
+  created_at  DateTime @db.Timestamptz()
   created_by  String
-  updated_at  DateTime?
+  updated_at  DateTime? @db.Timestamptz()
   updated_by  String?
 
   contacts contacts @relation(fields: [contact_id], references: [id])
@@ -152,12 +152,12 @@ model subscribers {
   id                 String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id          String            @db.Uuid
   status             subscriber_status
-  subscribed_at      DateTime
+  subscribed_at      DateTime @db.Timestamptz()
   subscriber_list_id String            @db.Uuid
   contact_id         String            @db.Uuid
-  created_at         DateTime
+  created_at         DateTime @db.Timestamptz()
   created_by         String
-  updated_at         DateTime?
+  updated_at         DateTime? @db.Timestamptz()
   updated_by         String?
 
   contacts         contacts         @relation(fields: [contact_id], references: [id])
@@ -171,9 +171,9 @@ model subscriber_lists {
   tenant_id   String    @db.Uuid
   name        String
   description String?
-  created_at  DateTime
+  created_at  DateTime @db.Timestamptz()
   created_by  String
-  updated_at  DateTime?
+  updated_at  DateTime? @db.Timestamptz()
   updated_by  String?
 
   subscribers subscribers[]
@@ -193,13 +193,13 @@ model unsubscribes {
   id              String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id       String             @db.Uuid
   source          unsubscribe_source
-  unsubscribed_at DateTime
+  unsubscribed_at DateTime @db.Timestamptz()
   global          Boolean
   list_ids        String[]           @db.Uuid
   contact_id      String             @db.Uuid
-  created_at      DateTime
+  created_at      DateTime @db.Timestamptz()
   created_by      String
-  updated_at      DateTime?
+  updated_at      DateTime? @db.Timestamptz()
   updated_by      String?
 
   contacts contacts @relation(fields: [contact_id], references: [id])
@@ -215,11 +215,11 @@ model users {
   last_name     String?
   role          String
   is_active     Boolean
-  last_login_at DateTime?
+  last_login_at DateTime? @db.Timestamptz()
   permissions   String[]
-  created_at    DateTime
+  created_at    DateTime @db.Timestamptz()
   created_by    String
-  updated_at    DateTime?
+  updated_at    DateTime? @db.Timestamptz()
   updated_by    String?
 }
 
@@ -229,12 +229,12 @@ model api_keys {
   name         String
   key          String
   is_active    Boolean
-  last_used_at DateTime?
-  expires_at   DateTime?
+  last_used_at DateTime? @db.Timestamptz()
+  expires_at   DateTime? @db.Timestamptz()
   permissions  String[]
-  created_at   DateTime
+  created_at   DateTime @db.Timestamptz()
   created_by   String
-  updated_at   DateTime?
+  updated_at   DateTime? @db.Timestamptz()
   updated_by   String?
 }
 
@@ -256,8 +256,8 @@ model templates {
   description String?
   content     String
   properties  template_properties[]
-  created_at  DateTime
+  created_at  DateTime @db.Timestamptz()
   created_by  String
-  updated_at  DateTime?
+  updated_at  DateTime? @db.Timestamptz()
   updated_by  String?
 }
