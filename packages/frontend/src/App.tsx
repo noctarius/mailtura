@@ -14,7 +14,7 @@ const AppLayout: ParentComponent = props => {
   return (
     <>
       <Sidebar />
-      <main class="flex-1 overflow-auto">{props.children}</main>
+      <main class="flex flex-1 flex-col min-h-0 overflow-hidden">{props.children}</main>
     </>
   );
 };
@@ -94,11 +94,9 @@ function AppContent() {
           <SignUp onSwitchToSignIn={() => setAuthView("signin")} />
         )
       ) : (
-        <QueryClientProvider client={queryClient}>
-          <div class="flex h-screen bg-gray-50">
-            <Router root={AppLayout}>{routes}</Router>
-          </div>
-        </QueryClientProvider>
+        <div class="flex flex-1 min-h-0 h-screen bg-gray-50">
+          <Router root={AppLayout}>{routes}</Router>
+        </div>
       )}
     </>
   );
@@ -106,11 +104,13 @@ function AppContent() {
 
 function App() {
   return (
-    <AuthProvider>
+    <QueryClientProvider client={queryClient}>
       <ApiProvider>
-        <AppContent />
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
       </ApiProvider>
-    </AuthProvider>
+    </QueryClientProvider>
   );
 }
 export default App;

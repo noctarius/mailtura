@@ -129,6 +129,11 @@ exports.Prisma.TenantsScalarFieldEnum = {
   updated_by: 'updated_by'
 };
 
+exports.Prisma.RelationLoadStrategy = {
+  query: 'query',
+  join: 'join'
+};
+
 exports.Prisma.ContactsScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
@@ -136,12 +141,10 @@ exports.Prisma.ContactsScalarFieldEnum = {
   first_name: 'first_name',
   last_name: 'last_name',
   last_activity_at: 'last_activity_at',
-  subscriber_list_contacts_id: 'subscriber_list_contacts_id',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
-  updated_by: 'updated_by',
-  list_ids: 'list_ids'
+  updated_by: 'updated_by'
 };
 
 exports.Prisma.CampaignsScalarFieldEnum = {
@@ -197,6 +200,7 @@ exports.Prisma.SubscribersScalarFieldEnum = {
   tenant_id: 'tenant_id',
   status: 'status',
   subscribed_at: 'subscribed_at',
+  subscriber_list_id: 'subscriber_list_id',
   contact_id: 'contact_id',
   created_at: 'created_at',
   created_by: 'created_by',
@@ -209,16 +213,6 @@ exports.Prisma.Subscriber_listsScalarFieldEnum = {
   tenant_id: 'tenant_id',
   name: 'name',
   description: 'description',
-  created_at: 'created_at',
-  created_by: 'created_by',
-  updated_at: 'updated_at',
-  updated_by: 'updated_by'
-};
-
-exports.Prisma.Subscriber_list_contactsScalarFieldEnum = {
-  id: 'id',
-  tenant_id: 'tenant_id',
-  subscriber_list_id: 'subscriber_list_id',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -376,7 +370,6 @@ exports.Prisma.ModelName = {
   bounces: 'bounces',
   subscribers: 'subscribers',
   subscriber_lists: 'subscriber_lists',
-  subscriber_list_contacts: 'subscriber_list_contacts',
   unsubscribes: 'unsubscribes',
   users: 'users',
   api_keys: 'api_keys',

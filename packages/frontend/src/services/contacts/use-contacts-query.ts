@@ -1,20 +1,22 @@
 import { useQuery } from "@tanstack/solid-query";
-import { useApi } from "../hooks/useApi.js";
+import { useApi } from "../../hooks/useApi.js";
+import { contactsKeys } from "./keys.js";
 
 interface ContactsQueryProps {
-  tenantId: string;
+  tenantId: () => string | undefined;
 }
 
 export function useContactsQuery({ tenantId }: ContactsQueryProps) {
   const client = useApi();
 
   return useQuery(() => ({
-    queryKey: ["contacts", tenantId],
+    queryKey: contactsKeys.contacts(tenantId()),
     queryFn: async () => {
+      if (!tenantId()) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/contacts/", {
         params: {
           path: {
-            tenant_id: tenantId,
+            tenant_id: tenantId()!,
           },
         },
       });
@@ -25,5 +27,6 @@ export function useContactsQuery({ tenantId }: ContactsQueryProps) {
 
       return response.data;
     },
+    enabled: !!tenantId(),
   }));
 }

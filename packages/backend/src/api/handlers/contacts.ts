@@ -40,7 +40,6 @@ export function contactRoutes<
           tenant_id: tenantId,
         },
       });
-
       return contacts.map(mapContact);
     }
   );
@@ -59,18 +58,34 @@ export function contactRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
-      const newContact = await prisma.contacts.create({
-        data: {
-          tenant_id: tenantId,
-          email: request.body.email,
-          first_name: request.body.firstName,
-          last_name: request.body.lastName,
-          created_at: UTC.now().toDate(),
-          created_by: "api",
-        },
-      });
+      await prisma.$transaction(async tx => {
+        const newContact = await tx.contacts.create({
+          data: {
+            tenant_id: tenantId,
+            email: request.body.email,
+            first_name: request.body.firstName,
+            last_name: request.body.lastName,
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
 
-      return reply.status(201).send(mapContact(newContact));
+        for (const listId of request.body.listIds) {
+          await tx.subscribers.create({
+            data: {
+              tenant_id: tenantId,
+              contact_id: newContact.id,
+              status: "Subscribed",
+              subscriber_list_id: listId,
+              subscribed_at: UTC.now().toDate(),
+              created_at: UTC.now().toDate(),
+              created_by: "api",
+            },
+          });
+        }
+
+        return reply.status(201).send(mapContact(newContact));
+      });
     }
   );
 
@@ -144,17 +159,56 @@ export function contactRoutes<
           throw createError(404, "Contact not found");
         }
 
-        const newContact = await prisma.contacts.update({
-          where: { id: contactId, tenant_id: tenantId },
-          data: {
-            first_name: request.body.firstName,
-            last_name: request.body.lastName,
-            updated_at: UTC.now().toDate(),
-            updated_by: "api",
-          },
-        });
+        const oldMappedContact = mapContact(oldContact);
+        const newListIds = request.body.listIds;
+        const oldListIds = oldMappedContact.listIds;
 
-        return mapContact(newContact);
+        const listsToAdd = newListIds?.filter(listId => !oldListIds.includes(listId)) || [];
+        const listsToRemove = oldListIds.filter(listId => newListIds && !newListIds.includes(listId));
+
+        return prisma.$transaction(async tx => {
+          if (listsToAdd.length > 0) {
+            for (const listId of listsToAdd) {
+              await tx.subscribers.create({
+                data: {
+                  tenant_id: tenantId,
+                  contact_id: contactId,
+                  status: "Subscribed",
+                  subscriber_list_id: listId,
+                  subscribed_at: UTC.now().toDate(),
+                  created_at: UTC.now().toDate(),
+                  created_by: "api",
+                },
+              });
+            }
+          }
+
+          if (listsToRemove.length > 0) {
+            await tx.subscribers.deleteMany({
+              where: {
+                contact_id: contactId,
+                tenant_id: tenantId,
+                AND: listsToRemove.map(listId => {
+                  return {
+                    subscriber_list_id: listId,
+                  };
+                }),
+              },
+            });
+          }
+
+          const newContact = await tx.contacts.update({
+            where: { id: contactId, tenant_id: tenantId },
+            data: {
+              first_name: request.body.firstName,
+              last_name: request.body.lastName,
+              updated_at: UTC.now().toDate(),
+              updated_by: "api",
+            },
+          });
+
+          return mapContact(newContact);
+        });
       }
     );
 
@@ -188,14 +242,23 @@ export function contactRoutes<
           throw createError(404, "Contact not found");
         }
 
-        await prisma.contacts.delete({
-          where: {
-            id: contactId,
-            tenant_id: tenantId,
-          },
-        });
+        await prisma.$transaction(async tx => {
+          await tx.subscribers.deleteMany({
+            where: {
+              contact_id: contactId,
+              tenant_id: tenantId,
+            },
+          });
 
-        return reply.status(204).send();
+          await tx.contacts.delete({
+            where: {
+              id: contactId,
+              tenant_id: tenantId,
+            },
+          });
+
+          return reply.status(204).send();
+        });
       }
     );
   });

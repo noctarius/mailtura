@@ -8,12 +8,12 @@ type Nullable<T extends TSchema> = ReturnType<
 const asNullable = <T extends TSchema>(schema: T): Nullable<T> => Type.Optional(Type.Union([schema, Type.Null()]));
 
 export const CreateContact = //
-  Type.Omit(Contact, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "status", "tenantId"]);
+  Type.Omit(Contact, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "status", "tenantId", "lastActivity"]);
 
 export type CreateContact = Static<typeof CreateContact>;
 
 export const UpdateContact = //
-  Type.Partial(Type.Pick(Contact, ["firstName", "lastName"]));
+  Type.Partial(Type.Pick(Contact, ["firstName", "lastName", "listIds"]));
 
 export type UpdateContact = Static<typeof UpdateContact>;
 
@@ -106,7 +106,7 @@ export const UpdateCampaign = //
 export type UpdateCampaign = Static<typeof UpdateCampaign>;
 
 export const CreateSubscriberList = //
-  Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]);
+  Type.Omit(SubscriberList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "contactCount"]);
 
 export type CreateSubscriberList = Static<typeof CreateSubscriberList>;
 

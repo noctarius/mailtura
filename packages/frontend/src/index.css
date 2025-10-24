@@ -1,6 +1,11 @@
+@import "flowbite/src/themes/default.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@plugin "flowbite/plugin";
+@source "../node_modules/flowbite";
 
 .template-editor-selector-arrow {
     @apply text-blue-600;
@@ -19,4 +24,10 @@
 
 .template-editor-selector-arrow:not(:disabled):active {
     @apply text-blue-300;
+}
+
+.overflow-clip-ellipsis {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

@@ -3,7 +3,7 @@ generator client {
   output          = "../generated/prisma"
   moduleFormat    = "esm"
   runtime         = "bun"
-  previewFeatures = ["postgresqlExtensions"]
+  previewFeatures = ["postgresqlExtensions", "relationJoins"]
 }
 
 datasource db {
@@ -23,24 +23,21 @@ model tenants {
 }
 
 model contacts {
-  id                          String                    @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id                   String                    @db.Uuid
-  SubscriberListContacts      subscriber_list_contacts? @relation(fields: [subscriber_list_contacts_id], references: [id])
-  email                       String
-  first_name                  String?
-  last_name                   String?
-  last_activity_at            DateTime?
-  subscriber_list_contacts_id String?                   @db.Uuid
-  created_at                  DateTime
-  created_by                  String
-  updated_at                  DateTime?
-  updated_by                  String?
+  id               String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id        String    @db.Uuid
+  email            String
+  first_name       String?
+  last_name        String?
+  last_activity_at DateTime?
+  created_at       DateTime
+  created_by       String
+  updated_at       DateTime?
+  updated_by       String?
 
-  list_ids    String[]       @db.Uuid
-  activity    activities[]
-  bounce      bounces[]
-  subscriber  subscribers[]
-  unsubscribe unsubscribes[]
+  activities   activities[]
+  bounces      bounces[]
+  subscribers  subscribers[]
+  unsubscribes unsubscribes[]
 
   @@unique([tenant_id, email])
 }
@@ -74,7 +71,7 @@ model campaigns {
   updated_at    DateTime?
   updated_by    String?
 
-  activity activities[]
+  activities activities[]
 
   @@unique([tenant_id, name])
 }
@@ -101,8 +98,6 @@ enum event_type {
 model activities {
   id                     String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id              String          @db.Uuid
-  receiver               contacts        @relation(fields: [contact_id], references: [id])
-  campaign               campaigns?      @relation(fields: [campaign_id], references: [id])
   send_name              String
   subject                String
   status                 activity_status
@@ -118,6 +113,9 @@ model activities {
   updated_at             DateTime?
   updated_by             String?
 
+  receivers contacts   @relation(fields: [contact_id], references: [id])
+  campaigns campaigns? @relation(fields: [campaign_id], references: [id])
+
   @@index([tenant_id, contact_id, campaign_id])
 }
 
@@ -129,7 +127,6 @@ enum bounce_type {
 model bounces {
   id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id   String      @db.Uuid
-  contact     contacts    @relation(fields: [contact_id], references: [id])
   bounced_at  DateTime
   reason      String
   bounce_type bounce_type
@@ -138,6 +135,8 @@ model bounces {
   created_by  String
   updated_at  DateTime?
   updated_by  String?
+
+  contacts contacts @relation(fields: [contact_id], references: [id])
 
   @@unique([tenant_id, contact_id])
 }
@@ -150,18 +149,21 @@ enum subscriber_status {
 }
 
 model subscribers {
-  id            String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id     String            @db.Uuid
-  contact       contacts          @relation(fields: [contact_id], references: [id])
-  status        subscriber_status
-  subscribed_at DateTime
-  contact_id    String            @db.Uuid
-  created_at    DateTime
-  created_by    String
-  updated_at    DateTime?
-  updated_by    String?
+  id                 String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id          String            @db.Uuid
+  status             subscriber_status
+  subscribed_at      DateTime
+  subscriber_list_id String            @db.Uuid
+  contact_id         String            @db.Uuid
+  created_at         DateTime
+  created_by         String
+  updated_at         DateTime?
+  updated_by         String?
 
-  @@unique([tenant_id, contact_id])
+  contacts         contacts         @relation(fields: [contact_id], references: [id])
+  subscriber_lists subscriber_lists @relation(fields: [subscriber_list_id], references: [id])
+
+  @@unique([tenant_id, contact_id, subscriber_list_id])
 }
 
 model subscriber_lists {
@@ -174,22 +176,9 @@ model subscriber_lists {
   updated_at  DateTime?
   updated_by  String?
 
-  SubscriberListContacts subscriber_list_contacts[]
+  subscribers subscribers[]
 
   @@unique([tenant_id, name])
-}
-
-model subscriber_list_contacts {
-  id                 String           @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id          String           @db.Uuid
-  subscriberList     subscriber_lists @relation(fields: [subscriber_list_id], references: [id])
-  subscriber_list_id String           @db.Uuid
-  created_at         DateTime
-  created_by         String
-  updated_at         DateTime?
-  updated_by         String?
-
-  contacts contacts[]
 }
 
 enum unsubscribe_source {
@@ -203,7 +192,6 @@ enum unsubscribe_source {
 model unsubscribes {
   id              String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
   tenant_id       String             @db.Uuid
-  contact         contacts           @relation(fields: [contact_id], references: [id])
   source          unsubscribe_source
   unsubscribed_at DateTime
   global          Boolean
@@ -213,6 +201,8 @@ model unsubscribes {
   created_by      String
   updated_at      DateTime?
   updated_by      String?
+
+  contacts contacts @relation(fields: [contact_id], references: [id])
 
   @@unique([tenant_id, contact_id])
 }
@@ -249,13 +239,14 @@ model api_keys {
 }
 
 model template_properties {
-  id            String     @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  templates     templates? @relation(fields: [templates_id], references: [id])
-  tenant_id     String     @db.Uuid
-  templates_id  String?    @db.Uuid
+  id            String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id     String  @db.Uuid
+  templates_id  String? @db.Uuid
   name          String
   type          String
   default_value Json
+
+  templates templates? @relation(fields: [templates_id], references: [id])
 }
 
 model templates {

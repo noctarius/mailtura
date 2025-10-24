@@ -1,16 +1,18 @@
-import { useApi } from "../hooks/useApi.js";
+import { useApi } from "../../hooks/useApi.js";
 import { useQuery } from "@tanstack/solid-query";
+import { campaignsKeys } from "./keys.js";
 
 interface CampaignsQueryProps {
-  tenantId: string;
+  tenantId?: string;
 }
 
 export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
   const client = useApi();
 
   return useQuery(() => ({
-    queryKey: ["campaigns", tenantId],
+    queryKey: campaignsKeys.campaigns(tenantId),
     queryFn: async () => {
+      if (!tenantId) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/campaigns/", {
         params: {
           path: {
@@ -25,5 +27,6 @@ export function useCampaignQuery({ tenantId }: CampaignsQueryProps) {
 
       return response.data;
     },
+    enabled: !!tenantId,
   }));
 }
