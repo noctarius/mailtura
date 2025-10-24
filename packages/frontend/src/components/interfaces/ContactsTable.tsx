@@ -9,7 +9,6 @@ import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
 import DeleteContactModal from "../modals/DeleteContactModal.js";
 import { UiSideDrawer } from "../ui/UiSideDrawer.js";
-import { createForm, required, submit, SubmitHandler } from "@modular-forms/solid";
 import { UpdateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
 import { useUpdateMutation } from "../../services/adapters/useUpdateMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
@@ -17,6 +16,8 @@ import { useTenantId } from "../../hooks/useTenantId.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { UiButton } from "../ui/UiButton.js";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
+import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
+import { UiForm } from "../../forms/UiForm.js";
 
 const contextMenuActions: ContextMenuAction[] = [
   {
@@ -165,11 +166,11 @@ function ContactsActions(props: ContactsActionsProps) {
   return (
     <>
       <div class="flex items-center space-x-2 relative">
-        <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-          <Edit
-            onClick={() => setEditOpen(true)}
-            class="w-4 h-4"
-          />
+        <button
+          onClick={() => setEditOpen(true)}
+          class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
+        >
+          <Edit class="w-4 h-4" />
         </button>
         <button
           onClick={e => props.onClick(e, props.item)}
@@ -221,25 +222,49 @@ function ContactEditForm(props: ContactEditFormProps) {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
-  const [updateContactForm, { Form: ContactForm, Field: ContactField }] = createForm<UpdateContact>({
-    initialValues: {
+  const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
+  const subscriberLists = () => (subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name));
+
+  const subscriberListOptions = createMemo(() =>
+    subscriberLists().map(list => {
+      return {
+        label: list.name,
+        value: list.id,
+      };
+    })
+  );
+
+  const updateContactForm = createFormSpec<typeof UpdateContact>(
+    UpdateContact,
+    {
+      firstName: {
+        label: "First Name",
+        type: "text",
+      },
+      lastName: {
+        label: "Last Name",
+        type: "text",
+      },
+      listIds: {
+        label: "Subscription",
+        type: "checkbox",
+        options: subscriberListOptions,
+      },
+    },
+    ["firstName", "lastName", "listIds"],
+    {
       firstName: props.contact().firstName,
       lastName: props.contact().lastName,
       listIds: props.contact().listIds,
-    },
-  });
-
-  const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
-  const subscriberLists = () => (subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name));
+    }
+  );
 
   const updateContact = useUpdateMutation("/api/v1/tenants/{tenant_id}/contacts/{contact_id}/", {
     tenant_id: tenantId,
     contact_id: () => props.contact().id,
   });
 
-  const handleUpdateContact: SubmitHandler<UpdateContact> = async (values, event) => {
-    event.stopPropagation();
-
+  const handleUpdateContact: FormSubmitHandler<UpdateContact> = async values => {
     if (values.firstName && values.firstName.trim().length === 0) {
       values.firstName = undefined;
     }
@@ -269,95 +294,22 @@ function ContactEditForm(props: ContactEditFormProps) {
 
   return (
     <>
-      <ContactForm onSubmit={handleUpdateContact}>
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-            <input
-              disabled
-              value={props.contact().email}
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          <div class="grid grid-cols-1 gap-4">
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
-                <ContactField name="firstName">
-                  {(field, props) => (
-                    <>
-                      <input
-                        {...props}
-                        value={field.value || ""}
-                        type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="John"
-                      />
-                      {field.error && <div>{field.error}</div>}
-                    </>
-                  )}
-                </ContactField>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
-                <ContactField name={"lastName"}>
-                  {(field, props) => (
-                    <>
-                      <input
-                        {...props}
-                        value={field.value || ""}
-                        type="text"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Doe"
-                      />
-                      {field.error && <div>{field.error}</div>}
-                    </>
-                  )}
-                </ContactField>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Subscriber Lists</label>
-            <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
-              {subscriberLists()?.map(list => (
-                <div class="flex items-center space-x-2">
-                  <ContactField
-                    name="listIds"
-                    type="string[]"
-                    validate={[required("Please select at least one list.")]}
-                  >
-                    {(field, props) => {
-                      return (
-                        <>
-                          <input
-                            {...props}
-                            type="checkbox"
-                            id={list.id}
-                            value={list.id}
-                            checked={field.value?.includes(list.id) || false}
-                            class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                          />
-                          {field.error && <div>{field.error}</div>}
-                        </>
-                      );
-                    }}
-                  </ContactField>
-                  <label
-                    for={`list-${list.id}`}
-                    class="text-sm text-gray-700 flex-1"
-                  >
-                    {list.name}
-                    {list.id === "all" && <span class="text-gray-400 ml-1">(automatic)</span>}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+          <input
+            disabled
+            value={props.contact().email}
+            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
         </div>
-      </ContactForm>
+
+        <UiForm
+          form={() => updateContactForm}
+          onSubmit={handleUpdateContact}
+          onCancel={props.onClose}
+        />
+      </div>
 
       <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
         <UiButton
@@ -369,7 +321,7 @@ function ContactEditForm(props: ContactEditFormProps) {
         <UiButton
           text="Update Contact"
           loading={() => updateContact.isPending}
-          onClick={() => submit(updateContactForm)}
+          onClick={updateContactForm.submitForm}
         />
       </div>
     </>
