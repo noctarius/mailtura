@@ -6,8 +6,8 @@
   "private": true,
   "scripts": {
     "build": "tsc",
-    "dev": "NODE_ENV=development tsc-watch --onSuccess \"bun .\"",
-    "dev2": "bun run src/index.ts",
+    "dev": "NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
+    "dev2": "bun --bun run src/index.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"

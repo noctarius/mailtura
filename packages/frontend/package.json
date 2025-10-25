@@ -4,10 +4,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "bunx --bun vite dev",
+    "build": "bunx --bun vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
+    "preview": "bunx --bun vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:openapi": "npx openapi-typescript http://localhost:3000/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
