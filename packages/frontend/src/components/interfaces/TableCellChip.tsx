@@ -21,6 +21,8 @@ const TableCellChip = (props: TableCellChipProps) => {
         "py-1",
         "rounded-full",
         "text-xs font-medium",
+        "mt-1",
+        "mr-1",
         props.bgColor,
         props.textColor
       )}

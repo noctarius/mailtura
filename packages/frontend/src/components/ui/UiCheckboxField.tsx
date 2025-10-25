@@ -14,7 +14,10 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-checkbox-toggle-label ${errorSuccessClass(props)}`}>{props.label()}</span>
+      <span class={`form-checkbox-toggle-label ${errorSuccessClass(props)}`}>
+        {props.label()}
+        {props.required && <span class="text-red-500">*</span>}
+      </span>
       <div class={`form-checkbox-toggle-group ${errorSuccessClass(props)}`}>
         <For each={options()}>
           {option => {

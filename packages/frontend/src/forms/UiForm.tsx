@@ -6,6 +6,7 @@ import UiFormPasswordField from "./UiFormPasswordField.js";
 import UiFormEmailField from "./UiFormEmailField.js";
 import UiFormCheckboxField from "./UiFormCheckboxField.js";
 import UiFormRadioField from "./UiFormRadioField.js";
+import { combineProps } from "@solid-primitives/props";
 
 interface UiFormProps<
   TFieldValues extends FieldValues,
@@ -50,12 +51,15 @@ export function UiForm<
                     {(field, props) => {
                       const spec = () => fieldSpec;
                       const error = () => field.error;
+                      const properties = combineProps(props, {
+                        required: fieldSpec.required,
+                      });
                       return (
                         <>
                           <Switch>
                             <Match when={fieldSpec.type === "text"}>
                               <UiFormTextField
-                                {...props}
+                                {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}
                                 value={field.value as any}
@@ -64,7 +68,7 @@ export function UiForm<
                             </Match>
                             <Match when={fieldSpec.type === "password"}>
                               <UiFormPasswordField
-                                {...props}
+                                {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}
                                 value={field.value as any}
@@ -73,7 +77,7 @@ export function UiForm<
                             </Match>
                             <Match when={fieldSpec.type === "email"}>
                               <UiFormEmailField
-                                {...props}
+                                {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}
                                 value={field.value as any}
@@ -82,7 +86,7 @@ export function UiForm<
                             </Match>
                             <Match when={fieldSpec.type === "checkbox" || fieldSpec.type === "toggle"}>
                               <UiFormCheckboxField
-                                {...props}
+                                {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}
                                 value={field.value as any}
@@ -93,7 +97,7 @@ export function UiForm<
                             </Match>
                             <Match when={fieldSpec.type === "radio"}>
                               <UiFormRadioField
-                                {...props}
+                                {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}
                                 value={field.value as any}

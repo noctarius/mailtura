@@ -1,7 +1,7 @@
 import { JSX } from "solid-js";
 import { validationErrorToHumanMessage } from "../../helpers/error-to-human-message.js";
 import { filterProps } from "@solid-primitives/props";
-import { errorSuccessClass } from "../../forms/index.js";
+import { errorSuccessClass, hasValue } from "../../forms/index.js";
 
 export interface UiInputFieldProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   label: () => string;
@@ -19,7 +19,7 @@ export default function UiInputField(props: UiInputFieldProps) {
         for={id()}
         class={`form-input-label ${errorSuccessClass(props)}`}
       >
-        {props.label()}
+        {props.label()}{props.required && hasValue(props.label()) && <span class="text-red-500">*</span>}
       </label>
       <input
         {...filteredProps}

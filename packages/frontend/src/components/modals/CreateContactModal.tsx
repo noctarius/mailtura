@@ -10,6 +10,7 @@ import { useTenantId } from "../../hooks/useTenantId.js";
 import { UiButton } from "../ui/UiButton.js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { UiForm } from "../../forms/UiForm.js";
+import { UiDialog } from "../ui/UiDialog.js";
 
 type CreateContactModalProps = {
   onClose: () => void;
@@ -129,74 +130,71 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
     });
   };
 
-  return (
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div class="bg-white rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-        <div class="flex items-center justify-between mb-6">
-          <h3 class="text-lg font-semibold text-gray-900">Add New Contact</h3>
-          <button
-            onClick={onClose}
-            class="text-gray-400 hover:text-gray-600"
-          >
-            ×
-          </button>
-        </div>
-
-        <UiForm
-          form={() => newContactForm}
-          onSubmit={handleCreateNewContact}
-          onCancel={onClose}
+  const actions = () => {
+    return (
+      <>
+        <UiButton
+          text="Cancel"
+          loading={() => createContact.isPending || createSubscriberList.isPending}
+          onClick={onClose}
+          primary={false}
         />
-        <div class="mt-3">
-          {!showNewSubscriberListInput() ? (
+        <UiButton
+          text="Add Contact"
+          loading={() => createContact.isPending || createSubscriberList.isPending}
+          onClick={() => newContactForm.submitForm()}
+        />
+      </>
+    );
+  };
+
+  return (
+    <UiDialog
+      title={() => "Add New Contact"}
+      onClose={onClose}
+      actions={actions()}
+    >
+      <UiForm
+        form={() => newContactForm}
+        onSubmit={handleCreateNewContact}
+        onCancel={onClose}
+      />
+      <div class="mt-3">
+        {!showNewSubscriberListInput() ? (
+          <button
+            onClick={() => setShowNewSubscriberListInput(true)}
+            class="text-sm text-blue-600 hover:text-blue-700 flex items-center space-x-1"
+          >
+            <Plus class="w-4 h-4" />
+            <span>Create new list</span>
+          </button>
+        ) : (
+          <div class="flex items-center space-x-2">
+            <UiForm
+              form={() => newSubscriberListForm}
+              onSubmit={handleCreateNewSubscriberList}
+              onCancel={() => setShowNewSubscriberListInput(false)}
+            />
             <button
-              onClick={() => setShowNewSubscriberListInput(true)}
-              class="text-sm text-blue-600 hover:text-blue-700 flex items-center space-x-1"
+              onClick={() => newSubscriberListForm.submitForm()}
+              disabled={createContact.isPending || createSubscriberList.isPending}
+              class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
             >
-              <Plus class="w-4 h-4" />
-              <span>Create new list</span>
+              Add
             </button>
-          ) : (
-            <div class="flex items-center space-x-2">
-              <UiForm
-                form={() => newSubscriberListForm}
-                onSubmit={handleCreateNewSubscriberList}
-                onCancel={() => setShowNewSubscriberListInput(false)}
-              />
-              <button
-                onClick={() => newSubscriberListForm.submitForm()}
-                disabled={createContact.isPending || createSubscriberList.isPending}
-                class="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"
-              >
-                Add
-              </button>
-              <button
-                onClick={() => {
-                  setShowNewSubscriberListInput(false);
-                }}
-                disabled={createContact.isPending || createSubscriberList.isPending}
-                class="px-3 py-2 text-gray-600 hover:text-gray-800 text-sm"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
-        </div>
-        <div class="flex items-center justify-end space-x-3 mt-6 pt-6 border-t border-gray-200">
-          <UiButton
-            text="Cancel"
-            loading={() => createContact.isPending || createSubscriberList.isPending}
-            onClick={onClose}
-            primary={false}
-          />
-          <UiButton
-            text="Add Contact"
-            loading={() => createContact.isPending || createSubscriberList.isPending}
-            onClick={() => newContactForm.submitForm()}
-          />
-        </div>
+            <button
+              onClick={() => {
+                setShowNewSubscriberListInput(false);
+              }}
+              disabled={createContact.isPending || createSubscriberList.isPending}
+              class="px-3 py-2 text-gray-600 hover:text-gray-800 text-sm"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+    </UiDialog>
   );
 };
 

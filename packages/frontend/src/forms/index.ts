@@ -18,12 +18,14 @@ import {
   IsBoolean,
   IsNumber,
   IsObject,
+  IsOptional,
   IsString,
   type Static,
   TProperties,
   type TSchema as TypeboxSchema,
 } from "typebox";
 import typeboxForm from "./typeboxForm.js";
+import { IsRequired } from "typebox/schema";
 
 type Form<TFieldValues extends FieldValues, TResponseData extends ResponseData> = (
   props: Omit<FormProps<TFieldValues, TResponseData>, "of">
@@ -38,10 +40,10 @@ type Field<TFieldValues extends FieldValues, TResponseData extends ResponseData>
 export type FieldSpec = {
   label: string;
   type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea" | "file" | "toggle";
+  required?: boolean;
   placeholder?: string;
   options?: () => { label: string; value: string }[];
   disabled?: boolean;
-  required?: boolean;
   min?: number;
   max?: number;
   step?: number;
@@ -123,6 +125,17 @@ export function createFormSpec<
     throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
   };
 
+  const isRequired = <TFieldPath extends FieldPath<TFieldValues>>(name: TFieldPath): boolean => {
+    if (IsObject(schema)) {
+      const spec = specs[name];
+      const property = schema.properties[name];
+      if (spec.required) return spec.required;
+      if (IsRequired(property)) return true;
+      return !IsOptional(property);
+    }
+    return false;
+  };
+
   const fields = order.map(name => {
     const spec = specs[name];
     const formType = getType(name);
@@ -130,6 +143,7 @@ export function createFormSpec<
       ...spec,
       name,
       formType,
+      required: isRequired(name),
     };
   });
 

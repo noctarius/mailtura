@@ -12,7 +12,10 @@ export default function UiRadioField(props: UiRadioFieldProps) {
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-radio-label ${errorSuccessClass(props)}`}>{props.label()}</span>
+      <span class={`form-radio-label ${errorSuccessClass(props)}`}>
+        {props.label()}
+        {props.required && <span class="text-red-500">*</span>}
+      </span>
       <div class="form-radio-group">
         <For each={options()}>
           {option => {
