@@ -42,7 +42,7 @@ export function UiForm<
             {fieldSpec => {
               return (
                 <div>
-                  <Field name={fieldSpec.name}>
+                  <Field name={fieldSpec.name} type={fieldSpec.formType}>
                     {(field, props) => {
                       const spec = () => fieldSpec;
                       const error = () => field.error;

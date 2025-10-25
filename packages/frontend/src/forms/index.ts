@@ -1,3 +1,4 @@
+import type { FieldPathValue, FieldType } from "@modular-forms/solid";
 import {
   clearError,
   clearResponse,
@@ -5,16 +6,23 @@ import {
   FieldPath,
   FieldProps,
   FieldValues,
-  FormErrors,
   FormProps,
-  type MaybePromise,
   PartialKey,
   PartialValues,
   ResponseData,
   submit,
 } from "@modular-forms/solid";
 import { JSX } from "solid-js";
-import { type Static, type TSchema as TypeboxSchema } from "typebox";
+import {
+  IsArray,
+  IsBoolean,
+  IsNumber,
+  IsObject,
+  IsString,
+  type Static,
+  TProperties,
+  type TSchema as TypeboxSchema,
+} from "typebox";
 import typeboxForm from "./typeboxForm.js";
 
 type Form<TFieldValues extends FieldValues, TResponseData extends ResponseData> = (
@@ -29,7 +37,7 @@ type Field<TFieldValues extends FieldValues, TResponseData extends ResponseData>
 
 export type FieldSpec = {
   label: string;
-  type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea";
+  type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea" | "file";
   placeholder?: string;
   options?: () => { label: string; value: string }[];
   disabled?: boolean;
@@ -46,6 +54,7 @@ export type FieldSpecs<TFieldValues extends FieldValues> = {
 
 export type FormFieldSpec<TFieldValues extends FieldValues, TFieldPath extends FieldPath<TFieldValues>> = FieldSpec & {
   name: TFieldPath;
+  formType: FieldType<FieldPathValue<TFieldValues, TFieldPath>>;
 };
 
 export type FormSubmitHandler<TFieldValues extends FieldValues, TResponseData extends ResponseData = undefined> = (
@@ -64,6 +73,29 @@ export interface FormSpec<
   cancelForm: () => void;
 }
 
+const resolveFieldType = <TFieldValues extends FieldValues, TFieldName extends FieldPath<TFieldValues>>(
+  name: TFieldName,
+  property: TProperties[TFieldName],
+  spec: FieldSpec
+): FieldType<FieldPathValue<TFieldValues, TFieldName>> => {
+  if (IsString(property)) {
+    if (spec.type === "file") {
+      return "file" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
+    }
+    return "string" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
+  }
+  if (IsNumber(property)) {
+    return "number" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
+  }
+  if (IsBoolean(property)) {
+    return "boolean" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
+  }
+  if (IsArray(property)) {
+    return `${resolveFieldType(name, property.items, spec)}[]` as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
+  }
+  throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
+};
+
 export function createFormSpec<
   TSchema extends TypeboxSchema,
   TFieldValues extends FieldValues = Static<TSchema>,
@@ -75,21 +107,29 @@ export function createFormSpec<
   order: TFieldName[] = Object.keys(specs) as TFieldName[],
   initialValues?: PartialValues<TFieldValues>
 ): FormSpec<TFieldValues, TResponseData, TFieldName> {
-  const validator = typeboxForm(schema)
   const [form, { Form, Field }] = createForm<TFieldValues, TResponseData>({
     initialValues,
-    validate: (values: PartialValues<TFieldValues>): MaybePromise<FormErrors<TFieldValues>> => {
-      const result = validator(values as any)
-      console.log(result)
-      return result as any;
-    },
+    validate: typeboxForm(schema),
   });
 
-  const fields = order.map(fieldName => {
-    const spec = specs[fieldName];
+  const getType = <TFieldPath extends FieldPath<TFieldValues>>(
+    name: TFieldPath
+  ): FieldType<FieldPathValue<TFieldValues, TFieldPath>> => {
+    if (IsObject(schema)) {
+      const spec = specs[name];
+      const property = schema.properties[name];
+      return resolveFieldType(name, property, spec);
+    }
+    throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
+  };
+
+  const fields = order.map(name => {
+    const spec = specs[name];
+    const formType = getType(name);
     return {
       ...spec,
-      name: fieldName,
+      name,
+      formType,
     };
   });
 

@@ -1,5 +1,6 @@
 import { For } from "solid-js";
 import { UiInputFieldProps } from "./UiInputField.js";
+import { filterProps } from "@solid-primitives/props";
 
 export interface UiCheckboxFieldProps extends UiInputFieldProps {
   options?: () => { label: string; value: string | number }[];
@@ -10,20 +11,23 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
   const options = () => props.options?.() || [];
   return (
     <>
-      <label class={`block text-sm font-medium text-gray-700 mb-2 ${hasError() ? "text-red-900 " : "text-green-900"}`}>
+      <span class={`block text-sm font-medium text-gray-700 mb-2 ${hasError() ? "text-red-900 " : "text-green-900"}`}>
         {props.label()}
-      </label>
+      </span>
       <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
         <For each={options()}>
           {option => {
-            const value = !Array.isArray(props.value) ? [props.value] : props.value;
+            const value = () => !Array.isArray(props.value) ? [props.value] : props.value;
+            const filteredProps = filterProps(props, key => !["options", "error", "label"].includes(key));
             return (
               <>
                 <div class="flex items-center space-x-2">
                   <input
-                    {...props}
+                    {...filteredProps}
+                    id={`list-${option.value.toString()}`}
                     type="checkbox"
-                    checked={value.includes(option.value)}
+                    value={option.value}
+                    checked={value().includes(option.value)}
                     class={`rounded border-gray-300 text-blue-600 focus:ring-blue-500 ${hasError() ? "text-red-900 " : "text-green-900"}`}
                   />
                   <label
