@@ -5,6 +5,7 @@ import UiFormTextField from "./UiFormTextField.js";
 import UiFormPasswordField from "./UiFormPasswordField.js";
 import UiFormEmailField from "./UiFormEmailField.js";
 import UiFormCheckboxField from "./UiFormCheckboxField.js";
+import UiFormRadioField from "./UiFormRadioField.js";
 
 interface UiFormProps<
   TFieldValues extends FieldValues,
@@ -42,7 +43,10 @@ export function UiForm<
             {fieldSpec => {
               return (
                 <div>
-                  <Field name={fieldSpec.name} type={fieldSpec.formType}>
+                  <Field
+                    name={fieldSpec.name}
+                    type={fieldSpec.formType}
+                  >
                     {(field, props) => {
                       const spec = () => fieldSpec;
                       const error = () => field.error;
@@ -76,8 +80,19 @@ export function UiForm<
                                 error={error}
                               />
                             </Match>
-                            <Match when={fieldSpec.type === "checkbox"}>
+                            <Match when={fieldSpec.type === "checkbox" || fieldSpec.type === "toggle"}>
                               <UiFormCheckboxField
+                                {...props}
+                                label={() => fieldSpec.label}
+                                spec={spec}
+                                value={field.value as any}
+                                options={fieldSpec.options}
+                                error={error}
+                                toggle={() => fieldSpec.type === "toggle"}
+                              />
+                            </Match>
+                            <Match when={fieldSpec.type === "radio"}>
+                              <UiFormRadioField
                                 {...props}
                                 label={() => fieldSpec.label}
                                 spec={spec}

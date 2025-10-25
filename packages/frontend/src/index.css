@@ -1,4 +1,5 @@
 @import "flowbite/src/themes/default.css";
+@import "./ui-components.css";
 
 @tailwind base;
 @tailwind components;

@@ -230,6 +230,7 @@ function ContactEditForm(props: ContactEditFormProps) {
       return {
         label: list.name,
         value: list.id,
+        description: list.description,
       };
     })
   );
