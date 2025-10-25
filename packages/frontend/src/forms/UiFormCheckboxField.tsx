@@ -7,6 +7,7 @@ export interface UiFormCheckboxFieldProps extends UiCheckboxFieldProps {
 }
 
 export default function UiFormCheckboxField(props: UiFormCheckboxFieldProps) {
+  console.log(props)
   const label = () => props.spec().label;
 
   const childProps = combineProps(
