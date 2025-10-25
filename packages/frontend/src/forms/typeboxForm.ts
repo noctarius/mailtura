@@ -3,6 +3,13 @@ import { FieldValues, FormErrors, PartialValues, ValidateForm } from "@modular-f
 import type { Static, TSchema as TypeboxSchema } from "typebox";
 import { Compile } from "typebox/compile";
 
+const transformInstancePath = (instancePath: string) => {
+  if (instancePath.startsWith('/')) {
+    instancePath = instancePath.substring(1);
+  }
+  return instancePath.replace(/\//g, '.');
+}
+
 export default function typeboxForm<TSchema extends TypeboxSchema, TFieldValues extends FieldValues = Static<TSchema>>(
   schema: TSchema
 ): ValidateForm<TFieldValues> {
@@ -14,7 +21,7 @@ export default function typeboxForm<TSchema extends TypeboxSchema, TFieldValues 
     return errors.reduce((result, error) => {
       return {
         ...result,
-        [error.instancePath]: error.message,
+        [transformInstancePath(error.instancePath)]: error.message,
       }
     }, {} as FormErrors<TFieldValues>);
   };

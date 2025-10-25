@@ -1,6 +1,8 @@
 import { For } from "solid-js";
 import { UiInputFieldProps } from "./UiInputField.js";
 import { filterProps } from "@solid-primitives/props";
+import { validationErrorToHumanMessage } from "../../helpers/error-to-human-message.js";
+import { errorSuccessClass } from "../../forms/index.js";
 
 export interface UiCheckboxFieldProps extends UiInputFieldProps {
   options?: () => { label: string; value: string | number; description?: string }[];
@@ -8,14 +10,12 @@ export interface UiCheckboxFieldProps extends UiInputFieldProps {
 }
 
 export default function UiCheckboxField(props: UiCheckboxFieldProps) {
-  const hasError = () => props.error && props.error().length > 0;
+  const hasError = () => (props.value && props.error && props.error().length > 0) || false;
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-checkbox-toggle-label ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}>
-        {props.label()}
-      </span>
-      <div class="form-checkbox-toggle-group">
+      <span class={`form-checkbox-toggle-label ${errorSuccessClass(props)}`}>{props.label()}</span>
+      <div class={`form-checkbox-toggle-group ${errorSuccessClass(props)}`}>
         <For each={options()}>
           {option => {
             const value = () => (!Array.isArray(props.value) ? [props.value] : props.value);
@@ -31,7 +31,7 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
                       type="checkbox"
                       value={option.value}
                       checked={value().includes(option.value)}
-                      class={`${classes} ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}
+                      class={classes}
                     />
                     <div class="form-toggle peer"></div>
                     {renderLabel(option)}
@@ -47,7 +47,7 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
                     type="checkbox"
                     value={option.value}
                     checked={value().includes(option.value)}
-                    class={`${classes} ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}
+                    class={`${classes} ${errorSuccessClass(props)}`}
                   />
                   {renderLabel(option)}
                 </div>
@@ -55,8 +55,10 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
             );
           }}
         </For>
-        {hasError() && <p class="mt-2 text-sm form-element-has-error">{props.error?.()}</p>}
       </div>
+      {hasError() && (
+        <p class="mt-2 text-sm form-element-has-error">{validationErrorToHumanMessage(props.error?.() || "")}</p>
+      )}
     </>
   );
 }

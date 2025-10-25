@@ -1,6 +1,9 @@
 import type { Static } from "typebox";
 import { Type } from "typebox";
 
+const email =
+  "^[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$";
+
 export const ErrorResponse = //
   Type.Object(
     {
@@ -38,11 +41,14 @@ export const Contact = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      email: Type.String({ format: "email" }),
+      email: Type.String({
+        format: "email",
+        pattern: email,
+      }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       lastActivity: Type.Optional(Type.String({ format: "date-time" })),
-      listIds: Type.Array(Type.String({ format: "uuid" })),
+      listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
       status: Type.String(),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),

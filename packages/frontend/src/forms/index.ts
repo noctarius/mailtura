@@ -146,3 +146,24 @@ export function createFormSpec<
     },
   };
 }
+
+export function hasValue(value: string | string[] | number | undefined): boolean {
+  if (value === undefined) return false;
+  if (Array.isArray(value)) return value.length > 0;
+  if (typeof value === "string") return value.trim().length > 0;
+  return true;
+}
+
+export function hasError(error?: () => string): boolean {
+  if (error) return !!error();
+  return false;
+}
+
+export function errorSuccessClass(props: {
+  value?: string | string[] | number | undefined;
+  error?: () => string;
+}): string {
+  if (!hasValue(props.value)) return "";
+  if (hasError(props.error)) return "text-red-500";
+  return "text-green-500";
+}
