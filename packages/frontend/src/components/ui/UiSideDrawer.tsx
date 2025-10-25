@@ -27,7 +27,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
           backdrop: true,
           onShow: props.onShow || (() => undefined),
           onHide: props.onClose || (() => undefined),
-          backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
+          backdropClasses: "side-drawer-bg",
         })
       );
     }
@@ -51,14 +51,13 @@ export function UiSideDrawer(props: EditDrawerProps) {
           <div
             id={props.id}
             ref={setDrawerElement}
-            class="fixed z-50 h-screen overflow-y-auto bg-white p-8 top-0"
+            class="side-drawer-container"
             style={{ width: "600px" }}
             tabIndex="-1"
             aria-labelledby="drawer-label"
           >
             <h5
-              id="drawer-label"
-              class="inline-flex items-center mb-10 text-base font-semibold text-gray-500"
+              class="side-drawer-label"
             >
               {props.titleIcon && <props.titleIcon class="w-4 h-4 mr-2" />}
               {props.title}
@@ -67,7 +66,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
               type="button"
               onClick={() => drawer()?.hide()}
               aria-controls="drawer-example"
-              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center"
+              class="side-drawer-close-btn"
             >
               <X />
               <span class="sr-only">Close menu</span>

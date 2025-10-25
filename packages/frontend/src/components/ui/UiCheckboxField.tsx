@@ -3,7 +3,8 @@ import { UiInputFieldProps } from "./UiInputField.js";
 import { filterProps } from "@solid-primitives/props";
 
 export interface UiCheckboxFieldProps extends UiInputFieldProps {
-  options?: () => { label: string; value: string | number }[];
+  options?: () => { label: string; value: string | number; description?: string }[];
+  toggle?: () => boolean;
 }
 
 export default function UiCheckboxField(props: UiCheckboxFieldProps) {
@@ -11,15 +12,33 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`block text-sm font-medium text-gray-700 mb-2 ${hasError() ? "text-red-900 " : "text-green-900"}`}>
+      <span class={`form-checkbox-toggle-label ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}>
         {props.label()}
       </span>
-      <div class="space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3">
+      <div class="form-checkbox-toggle-group">
         <For each={options()}>
           {option => {
-            const value = () => !Array.isArray(props.value) ? [props.value] : props.value;
+            const value = () => (!Array.isArray(props.value) ? [props.value] : props.value);
             const filteredProps = filterProps(props, key => !["options", "error", "label"].includes(key));
-            return (
+            const classes = props.toggle && props.toggle() ? "sr-only peer" : "form-checkbox";
+            return props.toggle && props.toggle() ? (
+              <>
+                <div class="flex items-center space-x-2">
+                  <label class="inline-flex items-center cursor-pointer">
+                    <input
+                      {...filteredProps}
+                      id={`list-${option.value.toString()}`}
+                      type="checkbox"
+                      value={option.value}
+                      checked={value().includes(option.value)}
+                      class={`${classes} ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}
+                    />
+                    <div class="form-toggle peer"></div>
+                    {renderLabel(option)}
+                  </label>
+                </div>
+              </>
+            ) : (
               <>
                 <div class="flex items-center space-x-2">
                   <input
@@ -28,22 +47,44 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
                     type="checkbox"
                     value={option.value}
                     checked={value().includes(option.value)}
-                    class={`rounded border-gray-300 text-blue-600 focus:ring-blue-500 ${hasError() ? "text-red-900 " : "text-green-900"}`}
+                    class={`${classes} ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}
                   />
-                  <label
-                    for={`list-${option.value}`}
-                    class="text-sm text-gray-700 flex-1"
-                  >
-                    {option.label}
-                    {option.value === "all" && <span class="text-gray-400 ml-1">(automatic)</span>}
-                  </label>
+                  {renderLabel(option)}
                 </div>
               </>
             );
           }}
         </For>
-        {hasError() && <p class="mt-2 text-sm text-red-600">{props.error?.()}</p>}
+        {hasError() && <p class="mt-2 text-sm form-element-has-error">{props.error?.()}</p>}
       </div>
     </>
+  );
+}
+
+function renderLabel(option: { label: string; value: string | number; description?: string }) {
+  return option.description ? (
+    <div class="ms-2 text-sm">
+      <label
+        for={`list-${option.value}`}
+        class="form-checkbox-toggle-item-label"
+      >
+        {option.label}
+        {option.value === "all" && <span class="text-gray-400 ml-1">(automatic)</span>}
+      </label>
+      <p
+        id={`list-desc-${option.value}`}
+        class="form-checkbox-toggle-item-description"
+      >
+        {option.description}
+      </p>
+    </div>
+  ) : (
+    <label
+      for={`list-${option.value}`}
+      class="ms-2 form-checkbox-toggle-item-label"
+    >
+      {option.label}
+      {option.value === "all" && <span class="text-gray-400 ml-1">(automatic)</span>}
+    </label>
   );
 }

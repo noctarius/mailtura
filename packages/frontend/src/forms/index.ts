@@ -37,7 +37,7 @@ type Field<TFieldValues extends FieldValues, TResponseData extends ResponseData>
 
 export type FieldSpec = {
   label: string;
-  type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea" | "file";
+  type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea" | "file" | "toggle";
   placeholder?: string;
   options?: () => { label: string; value: string }[];
   disabled?: boolean;

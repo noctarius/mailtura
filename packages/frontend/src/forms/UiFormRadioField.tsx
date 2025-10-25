@@ -1,12 +1,12 @@
+import UiRadioField, { UiRadioFieldProps } from "../components/ui/UiRadioField.js";
 import { combineProps, filterProps } from "@solid-primitives/props";
-import UiCheckboxField, { UiCheckboxFieldProps } from "../components/ui/UiCheckboxField.js";
 import { FieldSpec } from "./index.js";
 
-export interface UiFormCheckboxFieldProps extends UiCheckboxFieldProps {
+export interface UiFormRadioFieldProps extends UiRadioFieldProps {
   spec: () => FieldSpec;
 }
 
-export default function UiFormCheckboxField(props: UiFormCheckboxFieldProps) {
+export default function UiFormRadioField(props: UiFormRadioFieldProps) {
   const label = () => props.spec().label;
 
   const childProps = combineProps(
@@ -16,5 +16,5 @@ export default function UiFormCheckboxField(props: UiFormCheckboxFieldProps) {
     }
   );
 
-  return UiCheckboxField(childProps);
+  return UiRadioField(childProps);
 }

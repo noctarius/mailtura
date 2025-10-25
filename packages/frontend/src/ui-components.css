@@ -1,0 +1,83 @@
+.side-drawer-bg {
+    @apply bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40
+}
+
+.side-drawer-container {
+    @apply fixed z-50 h-screen overflow-y-auto bg-white p-8 top-0
+}
+
+.side-drawer-close-btn {
+    @apply text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center
+}
+
+.side-drawer-label {
+    @apply inline-flex items-center mb-10 text-base font-semibold text-gray-500
+}
+
+.form-element-has-error {
+    @apply border-red-900 text-red-900
+}
+
+.form-element-has-success {
+    @apply border-green-900 text-green-900
+}
+
+.form-checkbox {
+    @apply rounded border-gray-300 text-blue-600 focus:ring-blue-500
+}
+
+.form-checkbox-item-label {
+    @apply font-medium text-gray-900
+}
+
+.form-checkbox-toggle-group {
+    @apply space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3
+}
+
+.form-checkbox-toggle-label {
+    @apply block text-sm font-medium text-gray-700 mb-2
+}
+
+.form-toggle {
+    @apply relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600
+}
+
+.form-checkbox-toggle-item-label {
+    @apply font-medium text-gray-900
+}
+
+.form-checkbox-toggle-item-description {
+    @apply text-xs font-normal text-gray-500
+}
+
+.form-radio-label {
+    @apply block text-sm font-medium text-gray-700 mb-2
+}
+
+.form-radio-group {
+    @apply space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3
+}
+
+.form-radio-item {
+    @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2
+}
+
+.form-radio-item-label {
+    @apply font-medium text-gray-900
+}
+
+.form-radio-item-description {
+    @apply text-xs font-normal text-gray-500
+}
+
+.form-input {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent
+}
+
+.form-input-label {
+    @apply block text-sm font-medium text-gray-700 mb-2
+}
+
+.form-input-description {
+    @apply mt-2 text-xs text-gray-500 dark:text-gray-400
+}
