@@ -42,7 +42,7 @@ export const Contact = //
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       lastActivity: Type.Optional(Type.String({ format: "date-time" })),
-      listIds: Type.Array(Type.String({ format: "uuid" })),
+      listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
       status: Type.String(),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),

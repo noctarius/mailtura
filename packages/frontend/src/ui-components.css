@@ -1,5 +1,5 @@
 .side-drawer-bg {
-    @apply bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40
+    @apply bg-gray-900/50 fixed inset-0 z-40
 }
 
 .side-drawer-container {
@@ -79,5 +79,17 @@
 }
 
 .form-input-description {
-    @apply mt-2 text-xs text-gray-500 dark:text-gray-400
+    @apply mt-2 text-xs text-gray-500
+}
+
+.ui-btn {
+    @apply text-center hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none focus:ring-blue-300
+}
+
+.ui-btn-primary {
+    @apply text-white bg-blue-700
+}
+
+.ui-btn-secondary {
+    @apply text-blue-700 hover:text-white border border-blue-700
 }

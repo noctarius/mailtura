@@ -1,6 +1,7 @@
 import { For } from "solid-js";
 import { UiInputFieldProps } from "./UiInputField.js";
 import { filterProps } from "@solid-primitives/props";
+import { validationErrorToHumanMessage } from "../../helpers/error-to-human-message.js";
 
 export interface UiCheckboxFieldProps extends UiInputFieldProps {
   options?: () => { label: string; value: string | number; description?: string }[];
@@ -55,8 +56,10 @@ export default function UiCheckboxField(props: UiCheckboxFieldProps) {
             );
           }}
         </For>
-        {hasError() && <p class="mt-2 text-sm form-element-has-error">{props.error?.()}</p>}
       </div>
+      {hasError() && (
+        <p class="mt-2 text-sm form-element-has-error">{validationErrorToHumanMessage(props.error?.() || "")}</p>
+      )}
     </>
   );
 }
