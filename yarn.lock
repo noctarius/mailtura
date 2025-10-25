@@ -792,6 +792,7 @@ __metadata:
     "@mailtura/rpcmodel": "npm:*"
     "@modular-forms/solid": "npm:^0.25.1"
     "@solid-primitives/destructure": "npm:^0.2.2"
+    "@solid-primitives/props": "npm:^3.2.2"
     "@solid-primitives/resize-observer": "npm:^2.1.3"
     "@solidjs/router": "npm:^0.15.3"
     "@tanstack/solid-query": "npm:^5.90.4"
@@ -1226,6 +1227,17 @@ __metadata:
   peerDependencies:
     solid-js: ^1.6.12
   checksum: 10c0/41240f5e48332b9205d9da9db8a948bfa813515109a10c2a81eb48fa5faaff02d7c9d46302c1a836dc1a948d331add42ab98a402d6bb48072dceb4565d87ab10
+  languageName: node
+  linkType: hard
+
+"@solid-primitives/props@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "@solid-primitives/props@npm:3.2.2"
+  dependencies:
+    "@solid-primitives/utils": "npm:^6.3.2"
+  peerDependencies:
+    solid-js: ^1.6.12
+  checksum: 10c0/711e6ef1a5721165e9d7c8443aa499aafd2a9c4f128132e72386022a4808646cd73c813dbb9acb9980dd20c1c621d8993d919e6157f4484a2029f672247044d7
   languageName: node
   linkType: hard
 

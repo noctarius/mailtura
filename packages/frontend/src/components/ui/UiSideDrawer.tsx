@@ -51,7 +51,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
           <div
             id={props.id}
             ref={setDrawerElement}
-            class="fixed z-50 h-screen overflow-y-auto bg-white p-8"
+            class="fixed z-50 h-screen overflow-y-auto bg-white p-8 top-0"
             style={{ width: "600px" }}
             tabIndex="-1"
             aria-labelledby="drawer-label"

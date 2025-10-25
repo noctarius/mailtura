@@ -16,6 +16,7 @@
     "@mailtura/rpcmodel": "*",
     "@modular-forms/solid": "^0.25.1",
     "@solid-primitives/destructure": "^0.2.2",
+    "@solid-primitives/props": "^3.2.2",
     "@solid-primitives/resize-observer": "^2.1.3",
     "@solidjs/router": "^0.15.3",
     "@tanstack/solid-query": "^5.90.4",
