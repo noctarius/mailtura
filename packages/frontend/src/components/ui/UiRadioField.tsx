@@ -2,19 +2,17 @@ import { For } from "solid-js";
 import { UiInputFieldProps } from "./UiInputField.js";
 import { filterProps } from "@solid-primitives/props";
 import { validationErrorToHumanMessage } from "../../helpers/error-to-human-message.js";
+import { errorSuccessClass, hasError } from "../../forms/index.js";
 
 export interface UiRadioFieldProps extends UiInputFieldProps {
   options?: () => { label: string; value: string | number; description?: string }[];
 }
 
 export default function UiRadioField(props: UiRadioFieldProps) {
-  const hasError = () => props.error && props.error().length > 0;
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-radio-label ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}>
-        {props.label()}
-      </span>
+      <span class={`form-radio-label ${errorSuccessClass(props)}`}>{props.label()}</span>
       <div class="form-radio-group">
         <For each={options()}>
           {option => {
@@ -29,7 +27,7 @@ export default function UiRadioField(props: UiRadioFieldProps) {
                     type="radio"
                     value={option.value}
                     checked={value().includes(option.value)}
-                    class={`form-radio-item ${hasError() ? "form-element-has-error" : "form-element-has-success"}`}
+                    class={`form-radio-item ${errorSuccessClass(props)}`}
                   />
                   {option.description ? (
                     <div class="ms-2 text-sm">
@@ -59,7 +57,7 @@ export default function UiRadioField(props: UiRadioFieldProps) {
             );
           }}
         </For>
-        {hasError() && (
+        {hasError(props.error) && (
           <p class="mt-2 text-sm form-element-has-error">{validationErrorToHumanMessage(props.error?.() || "")}</p>
         )}
       </div>

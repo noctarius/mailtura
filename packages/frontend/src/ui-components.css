@@ -15,15 +15,19 @@
 }
 
 .form-element-has-error {
-    @apply border-red-900 text-red-900
+    @apply border-red-600 text-red-600 !important
 }
 
 .form-element-has-success {
-    @apply border-green-900 text-green-900
+    @apply border-green-600 text-green-600 !important
 }
 
 .form-checkbox {
     @apply rounded border-gray-300 text-blue-600 focus:ring-blue-500
+}
+
+.form-checkbox + .form-element-has-error {
+    @apply bg-red-50
 }
 
 .form-checkbox-item-label {
@@ -32,6 +36,10 @@
 
 .form-checkbox-toggle-group {
     @apply space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3
+}
+
+.form-checkbox-toggle-group.form-element-has-error {
+    @apply bg-red-50
 }
 
 .form-checkbox-toggle-label {
@@ -58,6 +66,10 @@
     @apply space-y-2 max-h-40 overflow-y-auto border border-gray-200 rounded-lg p-3
 }
 
+.form-radio-group.form-element-has-error {
+    @apply bg-red-50
+}
+
 .form-radio-item {
     @apply w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 focus:ring-2
 }
@@ -72,6 +84,10 @@
 
 .form-input {
     @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent
+}
+
+.form-input.form-element-has-error {
+    @apply bg-red-50
 }
 
 .form-input-label {
