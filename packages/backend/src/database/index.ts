@@ -7,8 +7,10 @@ import {
   type campaign_status,
   type campaign_type,
   type campaigns,
+  type contact_imports,
   type contacts,
   type event_type,
+  type files,
   Prisma,
   PrismaClient,
   type subscriber_lists,
@@ -51,12 +53,12 @@ const prisma = new PrismaClient().$extends({
           },
           subscribers: {
             select: {
-              subscriber_list_id: true
+              subscriber_list_id: true,
             },
             where: {
-              status: "Subscribed"
-            }
-          }
+              status: "Subscribed",
+            },
+          },
         };
         return query(args);
       },
@@ -126,5 +128,7 @@ export type UnsubscribeEntity = unsubscribes;
 export type UserEntity = users;
 export type ApiKeyEntity = api_keys;
 export type TemplateEntity = templates & { properties: template_properties[] };
+export type ContactImportEntity = contact_imports;
+export type FileEntity = files;
 
 export default prisma;

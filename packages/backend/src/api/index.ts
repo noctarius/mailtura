@@ -9,6 +9,7 @@ import {
   CampaignStatus,
   CampaignType,
   Contact,
+  ContactImport,
   EmailMetricsChartData,
   ErrorResponse,
   EventType,
@@ -55,6 +56,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(PerformanceMetricsChartData);
   app.addSchema(User);
   app.addSchema(ApiKey);
+  app.addSchema(ContactImport);
 }
 
 export function registerRoutes<

@@ -435,3 +435,26 @@ export const PerformanceMetricsChartData = //
   );
 
 export type PerformanceMetricsChartData = Static<typeof PerformanceMetricsChartData>;
+
+export const ContactImport = //
+  Type.Object(
+    {
+      id: Type.String({ format: "uuid" }),
+      name: Type.Optional(Type.String()),
+      filename: Type.String(),
+      status: Type.Number({ minimum: 0, maximum: 1 }),
+      records: Type.Integer({ minimum: 0 }),
+      finished: Type.Boolean(),
+      createdAt: Type.String({ format: "date-time" }),
+      createdBy: Type.String(),
+      updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+      updatedBy: Type.Optional(Type.String()),
+    },
+    {
+      $id: "ContactImport",
+      description: "A contact import in the system",
+      additionalProperties: false,
+    }
+  );
+
+export type ContactImport = Static<typeof ContactImport>;

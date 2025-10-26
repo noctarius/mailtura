@@ -6,8 +6,10 @@ import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import { createRouter } from "./router/index.js";
 import cors from '@fastify/cors'
 import { handlePrismaError } from "./database/index.js";
+import Multipart from "@fastify/multipart"
 
 const app = Fastify()
+  .register(Multipart)
   .withTypeProvider<TypeBoxTypeProvider>()
   .setErrorHandler(async (error, request, reply) => {
     // If the error is a validation error, send a 422 error with the validation details

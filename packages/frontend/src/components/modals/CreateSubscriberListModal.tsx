@@ -56,7 +56,7 @@ const CreateSubscriberListModal = ({ onClose }: CreateListModalProps) => {
 
   const actions = () => {
     return (
-      <>
+      <div class="flex justify-end w-full">
         <button
           onClick={onClose}
           disabled={createSubscriberList.isPending}
@@ -71,7 +71,7 @@ const CreateSubscriberListModal = ({ onClose }: CreateListModalProps) => {
         >
           Create List
         </button>
-      </>
+      </div>
     );
   };
 

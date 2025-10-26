@@ -10,15 +10,16 @@ export interface UiCheckboxFieldProps extends UiInputFieldProps {
 }
 
 export default function UiCheckboxField(props: UiCheckboxFieldProps) {
+  const initialValue = props.value;
   const hasError = () => (props.value && props.error && props.error().length > 0) || false;
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-checkbox-toggle-label ${errorSuccessClass(props)}`}>
+      <span class={`form-checkbox-toggle-label ${errorSuccessClass(props, initialValue)}`}>
         {props.label()}
         {props.required && <span class="text-red-500">*</span>}
       </span>
-      <div class={`form-checkbox-toggle-group ${errorSuccessClass(props)}`}>
+      <div class={`form-checkbox-toggle-group ${errorSuccessClass(props, initialValue)}`}>
         <For each={options()}>
           {option => {
             const value = () => (!Array.isArray(props.value) ? [props.value] : props.value);

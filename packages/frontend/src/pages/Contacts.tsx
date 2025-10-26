@@ -1,4 +1,4 @@
-import { Funnel, List, Loader, Plus, Search, UserPlus, Users } from "lucide-solid";
+import { Funnel, List, Loader, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
 import { createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
@@ -7,6 +7,7 @@ import CreateContactModal from "../components/modals/CreateContactModal.js";
 import CreateSubscriberListModal from "../components/modals/CreateSubscriberListModal.js";
 import { useTenantId } from "../hooks/useTenantId.js";
 import { ContactsTable } from "../components/interfaces/ContactsTable.js";
+import { ImportContactsModal } from "../components/modals/ImportContactsModal.js";
 
 const Contacts = () => {
   const [contactsTable, setContactsTable] = createSignal<HTMLDivElement>();
@@ -17,7 +18,8 @@ const Contacts = () => {
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [showCreateContact, setShowCreateContact] = createSignal(false);
-  const [showCreateList, setShowCreateList] = createSignal(false);
+  const [showCreateSubscriberList, setShowCreateSubscriberList] = createSignal(false);
+  const [showImportContacts, setShowImportContacts] = createSignal(false);
 
   const contactsQuery = useContactsQuery({ tenantId });
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
@@ -63,7 +65,7 @@ const Contacts = () => {
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">Subscriber Lists</h2>
             <button
-              onClick={() => setShowCreateList(true)}
+              onClick={() => setShowCreateSubscriberList(true)}
               class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
             >
               <Plus class="w-5 h-5" />
@@ -103,13 +105,22 @@ const Contacts = () => {
               </h1>
               <p class="text-gray-600">Manage your contacts and subscriber lists </p>
             </div>
-            <button
-              onClick={() => setShowCreateContact(true)}
-              class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-            >
-              <UserPlus class="w-5 h-5" />
-              <span>Add Contact</span>
-            </button>
+            <div class="flex items-end space-x-4">
+              <button
+                onClick={() => setShowImportContacts(true)}
+                class="bg-gray-100 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors flex items-center space-x-2"
+              >
+                <Upload class="w-5 h-5" />
+                <span>Import CSV</span>
+              </button>
+              <button
+                onClick={() => setShowCreateContact(true)}
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
+                <UserPlus class="w-5 h-5" />
+                <span>Add Contact</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -218,7 +229,13 @@ const Contacts = () => {
 
       {/* Modals */}
       {showCreateContact() && <CreateContactModal onClose={() => setShowCreateContact(false)} />}
-      {showCreateList() && <CreateSubscriberListModal onClose={() => setShowCreateList(false)} />}
+      {showCreateSubscriberList() && <CreateSubscriberListModal onClose={() => setShowCreateSubscriberList(false)} />}
+      {showImportContacts() && (
+        <ImportContactsModal
+          onClose={() => setShowImportContacts(false)}
+          onImportContacts={importData => console.log("Importing contacts...", importData)}
+        />
+      )}
     </div>
   );
 };

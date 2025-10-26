@@ -1,7 +1,8 @@
-import { createEffect, createSignal, JSX } from "solid-js";
+import { createEffect, createSignal, JSX, onCleanup, onMount } from "solid-js";
 import { Portal } from "solid-js/web";
 import { Drawer } from "flowbite";
 import { LucideProps, X } from "lucide-solid";
+import { disableSwipe, enableSwipe } from "../../helpers/swipe-actions.js";
 
 type EditDrawerProps = {
   id: string;
@@ -44,6 +45,13 @@ export function UiSideDrawer(props: EditDrawerProps) {
     }
   });
 
+  onMount(() => {
+    disableSwipe();
+    onCleanup(() => {
+      enableSwipe();
+    });
+  });
+
   return (
     <>
       {props.show() ? (
@@ -56,9 +64,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
             tabIndex="-1"
             aria-labelledby="drawer-label"
           >
-            <h5
-              class="side-drawer-label"
-            >
+            <h5 class="side-drawer-label">
               {props.titleIcon && <props.titleIcon class="w-4 h-4 mr-2" />}
               {props.title}
             </h5>

@@ -50,7 +50,6 @@ const DeleteContactModal = (props: DeleteContactModalProps) => {
   const actions = () => {
     return (
       <>
-        {" "}
         <button
           onClick={props.onClose}
           disabled={deleteContact.isPending}

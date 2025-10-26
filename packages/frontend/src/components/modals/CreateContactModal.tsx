@@ -132,7 +132,7 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
 
   const actions = () => {
     return (
-      <>
+      <div class="flex justify-end w-full">
         <UiButton
           text="Cancel"
           loading={() => createContact.isPending || createSubscriberList.isPending}
@@ -144,13 +144,14 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
           loading={() => createContact.isPending || createSubscriberList.isPending}
           onClick={() => newContactForm.submitForm()}
         />
-      </>
+      </div>
     );
   };
 
   return (
     <UiDialog
       title={() => "Add New Contact"}
+      subTitle={() => "New contacts will be added to the default list."}
       onClose={onClose}
       actions={actions()}
     >
