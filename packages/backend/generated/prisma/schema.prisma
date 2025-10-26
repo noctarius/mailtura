@@ -270,6 +270,18 @@ model contact_imports {
   status     Float
   records    Int
   finished   Boolean
+  parameters Json      @db.JsonB
+  created_at DateTime  @db.Timestamptz()
+  created_by String
+  updated_at DateTime? @db.Timestamptz()
+  updated_by String?
+}
+
+model files {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String    @db.Uuid
+  name       String
+  data       Bytes     @db.ByteA
   created_at DateTime  @db.Timestamptz()
   created_by String
   updated_at DateTime? @db.Timestamptz()

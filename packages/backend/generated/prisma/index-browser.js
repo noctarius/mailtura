@@ -293,6 +293,18 @@ exports.Prisma.Contact_importsScalarFieldEnum = {
   status: 'status',
   records: 'records',
   finished: 'finished',
+  parameters: 'parameters',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.FilesScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  data: 'data',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -389,7 +401,8 @@ exports.Prisma.ModelName = {
   api_keys: 'api_keys',
   template_properties: 'template_properties',
   templates: 'templates',
-  contact_imports: 'contact_imports'
+  contact_imports: 'contact_imports',
+  files: 'files'
 };
 
 /**

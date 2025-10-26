@@ -78,6 +78,11 @@ export type templates = $Result.DefaultSelection<Prisma.$templatesPayload>
  * 
  */
 export type contact_imports = $Result.DefaultSelection<Prisma.$contact_importsPayload>
+/**
+ * Model files
+ * 
+ */
+export type files = $Result.DefaultSelection<Prisma.$filesPayload>
 
 /**
  * Enums
@@ -433,6 +438,16 @@ export class PrismaClient<
     * ```
     */
   get contact_imports(): Prisma.contact_importsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.files`: Exposes CRUD operations for the **files** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Files
+    * const files = await prisma.files.findMany()
+    * ```
+    */
+  get files(): Prisma.filesDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -885,7 +900,8 @@ export namespace Prisma {
     api_keys: 'api_keys',
     template_properties: 'template_properties',
     templates: 'templates',
-    contact_imports: 'contact_imports'
+    contact_imports: 'contact_imports',
+    files: 'files'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -904,7 +920,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports"
+      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1870,6 +1886,80 @@ export namespace Prisma {
           }
         }
       }
+      files: {
+        payload: Prisma.$filesPayload<ExtArgs>
+        fields: Prisma.filesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.filesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.filesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          findFirst: {
+            args: Prisma.filesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.filesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          findMany: {
+            args: Prisma.filesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>[]
+          }
+          create: {
+            args: Prisma.filesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          createMany: {
+            args: Prisma.filesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.filesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>[]
+          }
+          delete: {
+            args: Prisma.filesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          update: {
+            args: Prisma.filesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          deleteMany: {
+            args: Prisma.filesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.filesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.filesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>[]
+          }
+          upsert: {
+            args: Prisma.filesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$filesPayload>
+          }
+          aggregate: {
+            args: Prisma.FilesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFiles>
+          }
+          groupBy: {
+            args: Prisma.filesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FilesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.filesCountArgs<ExtArgs>
+            result: $Utils.Optional<FilesCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1979,6 +2069,7 @@ export namespace Prisma {
     template_properties?: template_propertiesOmit
     templates?: templatesOmit
     contact_imports?: contact_importsOmit
+    files?: filesOmit
   }
 
   /* Types for Logging */
@@ -15964,6 +16055,7 @@ export namespace Prisma {
     status: number
     records: number
     finished: number
+    parameters: number
     created_at: number
     created_by: number
     updated_at: number
@@ -16018,6 +16110,7 @@ export namespace Prisma {
     status?: true
     records?: true
     finished?: true
+    parameters?: true
     created_at?: true
     created_by?: true
     updated_at?: true
@@ -16119,6 +16212,7 @@ export namespace Prisma {
     status: number
     records: number
     finished: boolean
+    parameters: JsonValue
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -16152,6 +16246,7 @@ export namespace Prisma {
     status?: boolean
     records?: boolean
     finished?: boolean
+    parameters?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -16166,6 +16261,7 @@ export namespace Prisma {
     status?: boolean
     records?: boolean
     finished?: boolean
+    parameters?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -16180,6 +16276,7 @@ export namespace Prisma {
     status?: boolean
     records?: boolean
     finished?: boolean
+    parameters?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
@@ -16194,13 +16291,14 @@ export namespace Prisma {
     status?: boolean
     records?: boolean
     finished?: boolean
+    parameters?: boolean
     created_at?: boolean
     created_by?: boolean
     updated_at?: boolean
     updated_by?: boolean
   }
 
-  export type contact_importsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "filename" | "status" | "records" | "finished" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contact_imports"]>
+  export type contact_importsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "filename" | "status" | "records" | "finished" | "parameters" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contact_imports"]>
 
   export type $contact_importsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "contact_imports"
@@ -16213,6 +16311,7 @@ export namespace Prisma {
       status: number
       records: number
       finished: boolean
+      parameters: Prisma.JsonValue
       created_at: Date
       created_by: string
       updated_at: Date | null
@@ -16647,6 +16746,7 @@ export namespace Prisma {
     readonly status: FieldRef<"contact_imports", 'Float'>
     readonly records: FieldRef<"contact_imports", 'Int'>
     readonly finished: FieldRef<"contact_imports", 'Boolean'>
+    readonly parameters: FieldRef<"contact_imports", 'Json'>
     readonly created_at: FieldRef<"contact_imports", 'DateTime'>
     readonly created_by: FieldRef<"contact_imports", 'String'>
     readonly updated_at: FieldRef<"contact_imports", 'DateTime'>
@@ -17027,6 +17127,1049 @@ export namespace Prisma {
 
 
   /**
+   * Model files
+   */
+
+  export type AggregateFiles = {
+    _count: FilesCountAggregateOutputType | null
+    _min: FilesMinAggregateOutputType | null
+    _max: FilesMaxAggregateOutputType | null
+  }
+
+  export type FilesMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    data: Uint8Array | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type FilesMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    data: Uint8Array | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type FilesCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    name: number
+    data: number
+    created_at: number
+    created_by: number
+    updated_at: number
+    updated_by: number
+    _all: number
+  }
+
+
+  export type FilesMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    data?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type FilesMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    data?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type FilesCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    data?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+    _all?: true
+  }
+
+  export type FilesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which files to aggregate.
+     */
+    where?: filesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of files to fetch.
+     */
+    orderBy?: filesOrderByWithRelationInput | filesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: filesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` files from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` files.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned files
+    **/
+    _count?: true | FilesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FilesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FilesMaxAggregateInputType
+  }
+
+  export type GetFilesAggregateType<T extends FilesAggregateArgs> = {
+        [P in keyof T & keyof AggregateFiles]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFiles[P]>
+      : GetScalarType<T[P], AggregateFiles[P]>
+  }
+
+
+
+
+  export type filesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: filesWhereInput
+    orderBy?: filesOrderByWithAggregationInput | filesOrderByWithAggregationInput[]
+    by: FilesScalarFieldEnum[] | FilesScalarFieldEnum
+    having?: filesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FilesCountAggregateInputType | true
+    _min?: FilesMinAggregateInputType
+    _max?: FilesMaxAggregateInputType
+  }
+
+  export type FilesGroupByOutputType = {
+    id: string
+    tenant_id: string
+    name: string
+    data: Uint8Array
+    created_at: Date
+    created_by: string
+    updated_at: Date | null
+    updated_by: string | null
+    _count: FilesCountAggregateOutputType | null
+    _min: FilesMinAggregateOutputType | null
+    _max: FilesMaxAggregateOutputType | null
+  }
+
+  type GetFilesGroupByPayload<T extends filesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FilesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FilesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FilesGroupByOutputType[P]>
+            : GetScalarType<T[P], FilesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type filesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    data?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["files"]>
+
+  export type filesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    data?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["files"]>
+
+  export type filesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    data?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["files"]>
+
+  export type filesSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    data?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }
+
+  export type filesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "data" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["files"]>
+
+  export type $filesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "files"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      name: string
+      data: Uint8Array
+      created_at: Date
+      created_by: string
+      updated_at: Date | null
+      updated_by: string | null
+    }, ExtArgs["result"]["files"]>
+    composites: {}
+  }
+
+  type filesGetPayload<S extends boolean | null | undefined | filesDefaultArgs> = $Result.GetResult<Prisma.$filesPayload, S>
+
+  type filesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<filesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: FilesCountAggregateInputType | true
+    }
+
+  export interface filesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['files'], meta: { name: 'files' } }
+    /**
+     * Find zero or one Files that matches the filter.
+     * @param {filesFindUniqueArgs} args - Arguments to find a Files
+     * @example
+     * // Get one Files
+     * const files = await prisma.files.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends filesFindUniqueArgs>(args: SelectSubset<T, filesFindUniqueArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Files that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {filesFindUniqueOrThrowArgs} args - Arguments to find a Files
+     * @example
+     * // Get one Files
+     * const files = await prisma.files.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends filesFindUniqueOrThrowArgs>(args: SelectSubset<T, filesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Files that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesFindFirstArgs} args - Arguments to find a Files
+     * @example
+     * // Get one Files
+     * const files = await prisma.files.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends filesFindFirstArgs>(args?: SelectSubset<T, filesFindFirstArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Files that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesFindFirstOrThrowArgs} args - Arguments to find a Files
+     * @example
+     * // Get one Files
+     * const files = await prisma.files.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends filesFindFirstOrThrowArgs>(args?: SelectSubset<T, filesFindFirstOrThrowArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Files that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Files
+     * const files = await prisma.files.findMany()
+     * 
+     * // Get first 10 Files
+     * const files = await prisma.files.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const filesWithIdOnly = await prisma.files.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends filesFindManyArgs>(args?: SelectSubset<T, filesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Files.
+     * @param {filesCreateArgs} args - Arguments to create a Files.
+     * @example
+     * // Create one Files
+     * const Files = await prisma.files.create({
+     *   data: {
+     *     // ... data to create a Files
+     *   }
+     * })
+     * 
+     */
+    create<T extends filesCreateArgs>(args: SelectSubset<T, filesCreateArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Files.
+     * @param {filesCreateManyArgs} args - Arguments to create many Files.
+     * @example
+     * // Create many Files
+     * const files = await prisma.files.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends filesCreateManyArgs>(args?: SelectSubset<T, filesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Files and returns the data saved in the database.
+     * @param {filesCreateManyAndReturnArgs} args - Arguments to create many Files.
+     * @example
+     * // Create many Files
+     * const files = await prisma.files.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Files and only return the `id`
+     * const filesWithIdOnly = await prisma.files.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends filesCreateManyAndReturnArgs>(args?: SelectSubset<T, filesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Files.
+     * @param {filesDeleteArgs} args - Arguments to delete one Files.
+     * @example
+     * // Delete one Files
+     * const Files = await prisma.files.delete({
+     *   where: {
+     *     // ... filter to delete one Files
+     *   }
+     * })
+     * 
+     */
+    delete<T extends filesDeleteArgs>(args: SelectSubset<T, filesDeleteArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Files.
+     * @param {filesUpdateArgs} args - Arguments to update one Files.
+     * @example
+     * // Update one Files
+     * const files = await prisma.files.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends filesUpdateArgs>(args: SelectSubset<T, filesUpdateArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Files.
+     * @param {filesDeleteManyArgs} args - Arguments to filter Files to delete.
+     * @example
+     * // Delete a few Files
+     * const { count } = await prisma.files.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends filesDeleteManyArgs>(args?: SelectSubset<T, filesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Files.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Files
+     * const files = await prisma.files.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends filesUpdateManyArgs>(args: SelectSubset<T, filesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Files and returns the data updated in the database.
+     * @param {filesUpdateManyAndReturnArgs} args - Arguments to update many Files.
+     * @example
+     * // Update many Files
+     * const files = await prisma.files.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Files and only return the `id`
+     * const filesWithIdOnly = await prisma.files.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends filesUpdateManyAndReturnArgs>(args: SelectSubset<T, filesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Files.
+     * @param {filesUpsertArgs} args - Arguments to update or create a Files.
+     * @example
+     * // Update or create a Files
+     * const files = await prisma.files.upsert({
+     *   create: {
+     *     // ... data to create a Files
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Files we want to update
+     *   }
+     * })
+     */
+    upsert<T extends filesUpsertArgs>(args: SelectSubset<T, filesUpsertArgs<ExtArgs>>): Prisma__filesClient<$Result.GetResult<Prisma.$filesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Files.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesCountArgs} args - Arguments to filter Files to count.
+     * @example
+     * // Count the number of Files
+     * const count = await prisma.files.count({
+     *   where: {
+     *     // ... the filter for the Files we want to count
+     *   }
+     * })
+    **/
+    count<T extends filesCountArgs>(
+      args?: Subset<T, filesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FilesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Files.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FilesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FilesAggregateArgs>(args: Subset<T, FilesAggregateArgs>): Prisma.PrismaPromise<GetFilesAggregateType<T>>
+
+    /**
+     * Group by Files.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {filesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends filesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: filesGroupByArgs['orderBy'] }
+        : { orderBy?: filesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, filesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFilesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the files model
+   */
+  readonly fields: filesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for files.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__filesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the files model
+   */
+  interface filesFieldRefs {
+    readonly id: FieldRef<"files", 'String'>
+    readonly tenant_id: FieldRef<"files", 'String'>
+    readonly name: FieldRef<"files", 'String'>
+    readonly data: FieldRef<"files", 'Bytes'>
+    readonly created_at: FieldRef<"files", 'DateTime'>
+    readonly created_by: FieldRef<"files", 'String'>
+    readonly updated_at: FieldRef<"files", 'DateTime'>
+    readonly updated_by: FieldRef<"files", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * files findUnique
+   */
+  export type filesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter, which files to fetch.
+     */
+    where: filesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files findUniqueOrThrow
+   */
+  export type filesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter, which files to fetch.
+     */
+    where: filesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files findFirst
+   */
+  export type filesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter, which files to fetch.
+     */
+    where?: filesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of files to fetch.
+     */
+    orderBy?: filesOrderByWithRelationInput | filesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for files.
+     */
+    cursor?: filesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` files from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` files.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of files.
+     */
+    distinct?: FilesScalarFieldEnum | FilesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files findFirstOrThrow
+   */
+  export type filesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter, which files to fetch.
+     */
+    where?: filesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of files to fetch.
+     */
+    orderBy?: filesOrderByWithRelationInput | filesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for files.
+     */
+    cursor?: filesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` files from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` files.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of files.
+     */
+    distinct?: FilesScalarFieldEnum | FilesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files findMany
+   */
+  export type filesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter, which files to fetch.
+     */
+    where?: filesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of files to fetch.
+     */
+    orderBy?: filesOrderByWithRelationInput | filesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing files.
+     */
+    cursor?: filesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` files from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` files.
+     */
+    skip?: number
+    distinct?: FilesScalarFieldEnum | FilesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files create
+   */
+  export type filesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * The data needed to create a files.
+     */
+    data: XOR<filesCreateInput, filesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files createMany
+   */
+  export type filesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many files.
+     */
+    data: filesCreateManyInput | filesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * files createManyAndReturn
+   */
+  export type filesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * The data used to create many files.
+     */
+    data: filesCreateManyInput | filesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * files update
+   */
+  export type filesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * The data needed to update a files.
+     */
+    data: XOR<filesUpdateInput, filesUncheckedUpdateInput>
+    /**
+     * Choose, which files to update.
+     */
+    where: filesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files updateMany
+   */
+  export type filesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update files.
+     */
+    data: XOR<filesUpdateManyMutationInput, filesUncheckedUpdateManyInput>
+    /**
+     * Filter which files to update
+     */
+    where?: filesWhereInput
+    /**
+     * Limit how many files to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * files updateManyAndReturn
+   */
+  export type filesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * The data used to update files.
+     */
+    data: XOR<filesUpdateManyMutationInput, filesUncheckedUpdateManyInput>
+    /**
+     * Filter which files to update
+     */
+    where?: filesWhereInput
+    /**
+     * Limit how many files to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * files upsert
+   */
+  export type filesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * The filter to search for the files to update in case it exists.
+     */
+    where: filesWhereUniqueInput
+    /**
+     * In case the files found by the `where` argument doesn't exist, create a new files with this data.
+     */
+    create: XOR<filesCreateInput, filesUncheckedCreateInput>
+    /**
+     * In case the files was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<filesUpdateInput, filesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files delete
+   */
+  export type filesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+    /**
+     * Filter which files to delete.
+     */
+    where: filesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * files deleteMany
+   */
+  export type filesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which files to delete
+     */
+    where?: filesWhereInput
+    /**
+     * Limit how many files to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * files without action
+   */
+  export type filesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the files
+     */
+    select?: filesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the files
+     */
+    omit?: filesOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -17252,6 +18395,7 @@ export namespace Prisma {
     status: 'status',
     records: 'records',
     finished: 'finished',
+    parameters: 'parameters',
     created_at: 'created_at',
     created_by: 'created_by',
     updated_at: 'updated_at',
@@ -17259,6 +18403,20 @@ export namespace Prisma {
   };
 
   export type Contact_importsScalarFieldEnum = (typeof Contact_importsScalarFieldEnum)[keyof typeof Contact_importsScalarFieldEnum]
+
+
+  export const FilesScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    name: 'name',
+    data: 'data',
+    created_at: 'created_at',
+    created_by: 'created_by',
+    updated_at: 'updated_at',
+    updated_by: 'updated_by'
+  };
+
+  export type FilesScalarFieldEnum = (typeof FilesScalarFieldEnum)[keyof typeof FilesScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17478,6 +18636,20 @@ export namespace Prisma {
    * Reference to a field of type 'Float[]'
    */
   export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes'
+   */
+  export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes'>
+    
+
+
+  /**
+   * Reference to a field of type 'Bytes[]'
+   */
+  export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
     
   /**
    * Deep Input Types
@@ -18491,6 +19663,7 @@ export namespace Prisma {
     status?: FloatFilter<"contact_imports"> | number
     records?: IntFilter<"contact_imports"> | number
     finished?: BoolFilter<"contact_imports"> | boolean
+    parameters?: JsonFilter<"contact_imports">
     created_at?: DateTimeFilter<"contact_imports"> | Date | string
     created_by?: StringFilter<"contact_imports"> | string
     updated_at?: DateTimeNullableFilter<"contact_imports"> | Date | string | null
@@ -18505,6 +19678,7 @@ export namespace Prisma {
     status?: SortOrder
     records?: SortOrder
     finished?: SortOrder
+    parameters?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -18522,6 +19696,7 @@ export namespace Prisma {
     status?: FloatFilter<"contact_imports"> | number
     records?: IntFilter<"contact_imports"> | number
     finished?: BoolFilter<"contact_imports"> | boolean
+    parameters?: JsonFilter<"contact_imports">
     created_at?: DateTimeFilter<"contact_imports"> | Date | string
     created_by?: StringFilter<"contact_imports"> | string
     updated_at?: DateTimeNullableFilter<"contact_imports"> | Date | string | null
@@ -18536,6 +19711,7 @@ export namespace Prisma {
     status?: SortOrder
     records?: SortOrder
     finished?: SortOrder
+    parameters?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrderInput | SortOrder
@@ -18558,10 +19734,78 @@ export namespace Prisma {
     status?: FloatWithAggregatesFilter<"contact_imports"> | number
     records?: IntWithAggregatesFilter<"contact_imports"> | number
     finished?: BoolWithAggregatesFilter<"contact_imports"> | boolean
+    parameters?: JsonWithAggregatesFilter<"contact_imports">
     created_at?: DateTimeWithAggregatesFilter<"contact_imports"> | Date | string
     created_by?: StringWithAggregatesFilter<"contact_imports"> | string
     updated_at?: DateTimeNullableWithAggregatesFilter<"contact_imports"> | Date | string | null
     updated_by?: StringNullableWithAggregatesFilter<"contact_imports"> | string | null
+  }
+
+  export type filesWhereInput = {
+    AND?: filesWhereInput | filesWhereInput[]
+    OR?: filesWhereInput[]
+    NOT?: filesWhereInput | filesWhereInput[]
+    id?: UuidFilter<"files"> | string
+    tenant_id?: UuidFilter<"files"> | string
+    name?: StringFilter<"files"> | string
+    data?: BytesFilter<"files"> | Uint8Array
+    created_at?: DateTimeFilter<"files"> | Date | string
+    created_by?: StringFilter<"files"> | string
+    updated_at?: DateTimeNullableFilter<"files"> | Date | string | null
+    updated_by?: StringNullableFilter<"files"> | string | null
+  }
+
+  export type filesOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+  }
+
+  export type filesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: filesWhereInput | filesWhereInput[]
+    OR?: filesWhereInput[]
+    NOT?: filesWhereInput | filesWhereInput[]
+    tenant_id?: UuidFilter<"files"> | string
+    name?: StringFilter<"files"> | string
+    data?: BytesFilter<"files"> | Uint8Array
+    created_at?: DateTimeFilter<"files"> | Date | string
+    created_by?: StringFilter<"files"> | string
+    updated_at?: DateTimeNullableFilter<"files"> | Date | string | null
+    updated_by?: StringNullableFilter<"files"> | string | null
+  }, "id">
+
+  export type filesOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    _count?: filesCountOrderByAggregateInput
+    _max?: filesMaxOrderByAggregateInput
+    _min?: filesMinOrderByAggregateInput
+  }
+
+  export type filesScalarWhereWithAggregatesInput = {
+    AND?: filesScalarWhereWithAggregatesInput | filesScalarWhereWithAggregatesInput[]
+    OR?: filesScalarWhereWithAggregatesInput[]
+    NOT?: filesScalarWhereWithAggregatesInput | filesScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"files"> | string
+    tenant_id?: UuidWithAggregatesFilter<"files"> | string
+    name?: StringWithAggregatesFilter<"files"> | string
+    data?: BytesWithAggregatesFilter<"files"> | Uint8Array
+    created_at?: DateTimeWithAggregatesFilter<"files"> | Date | string
+    created_by?: StringWithAggregatesFilter<"files"> | string
+    updated_at?: DateTimeNullableWithAggregatesFilter<"files"> | Date | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"files"> | string | null
   }
 
   export type tenantsCreateInput = {
@@ -19713,6 +20957,7 @@ export namespace Prisma {
     status: number
     records: number
     finished: boolean
+    parameters: JsonNullValueInput | InputJsonValue
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -19727,6 +20972,7 @@ export namespace Prisma {
     status: number
     records: number
     finished: boolean
+    parameters: JsonNullValueInput | InputJsonValue
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -19741,6 +20987,7 @@ export namespace Prisma {
     status?: FloatFieldUpdateOperationsInput | number
     records?: IntFieldUpdateOperationsInput | number
     finished?: BoolFieldUpdateOperationsInput | boolean
+    parameters?: JsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19755,6 +21002,7 @@ export namespace Prisma {
     status?: FloatFieldUpdateOperationsInput | number
     records?: IntFieldUpdateOperationsInput | number
     finished?: BoolFieldUpdateOperationsInput | boolean
+    parameters?: JsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19769,6 +21017,7 @@ export namespace Prisma {
     status: number
     records: number
     finished: boolean
+    parameters: JsonNullValueInput | InputJsonValue
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -19783,6 +21032,7 @@ export namespace Prisma {
     status?: FloatFieldUpdateOperationsInput | number
     records?: IntFieldUpdateOperationsInput | number
     finished?: BoolFieldUpdateOperationsInput | boolean
+    parameters?: JsonNullValueInput | InputJsonValue
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -19797,6 +21047,84 @@ export namespace Prisma {
     status?: FloatFieldUpdateOperationsInput | number
     records?: IntFieldUpdateOperationsInput | number
     finished?: BoolFieldUpdateOperationsInput | boolean
+    parameters?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type filesCreateInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    data: Uint8Array
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type filesUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    data: Uint8Array
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type filesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type filesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type filesCreateManyInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    data: Uint8Array
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type filesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type filesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    data?: BytesFieldUpdateOperationsInput | Uint8Array
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -20808,6 +22136,7 @@ export namespace Prisma {
     status?: SortOrder
     records?: SortOrder
     finished?: SortOrder
+    parameters?: SortOrder
     created_at?: SortOrder
     created_by?: SortOrder
     updated_at?: SortOrder
@@ -20866,6 +22195,56 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type BytesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel>
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Uint8Array
+  }
+
+  export type filesCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type filesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type filesMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    data?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type BytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel>
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Uint8Array
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -21355,6 +22734,10 @@ export namespace Prisma {
     divide?: number
   }
 
+  export type BytesFieldUpdateOperationsInput = {
+    set?: Uint8Array
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21735,6 +23118,23 @@ export namespace Prisma {
     _sum?: NestedFloatFilter<$PrismaModel>
     _min?: NestedFloatFilter<$PrismaModel>
     _max?: NestedFloatFilter<$PrismaModel>
+  }
+
+  export type NestedBytesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel>
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesFilter<$PrismaModel> | Uint8Array
+  }
+
+  export type NestedBytesWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Uint8Array | BytesFieldRefInput<$PrismaModel>
+    in?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    notIn?: Uint8Array[] | ListBytesFieldRefInput<$PrismaModel>
+    not?: NestedBytesWithAggregatesFilter<$PrismaModel> | Uint8Array
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBytesFilter<$PrismaModel>
+    _max?: NestedBytesFilter<$PrismaModel>
   }
 
   export type activitiesCreateWithoutReceiversInput = {
