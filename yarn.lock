@@ -509,6 +509,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fastify/busboy@npm:^3.0.0":
+  version: 3.2.0
+  resolution: "@fastify/busboy@npm:3.2.0"
+  checksum: 10c0/3e4fb00a27e3149d1c68de8ff14007d2bbcbbc171a9d050d0a8772e836727329d4d3f130995ebaa19cf537d5d2f5ce2a88000366e6192e751457bfcc2125f351
+  languageName: node
+  linkType: hard
+
 "@fastify/cors@npm:^11.1.0":
   version: 11.1.0
   resolution: "@fastify/cors@npm:11.1.0"
@@ -516,6 +523,13 @@ __metadata:
     fastify-plugin: "npm:^5.0.0"
     toad-cache: "npm:^3.7.0"
   checksum: 10c0/3e6051c94a6e35fc7029ab9b31f3baed3e370072605a18a53d7d2e28975a74480d522f049b3f23229881ea483b4146ffe3cd3e90894c9c12ae09eaba6250dfc6
+  languageName: node
+  linkType: hard
+
+"@fastify/deepmerge@npm:^3.0.0":
+  version: 3.1.0
+  resolution: "@fastify/deepmerge@npm:3.1.0"
+  checksum: 10c0/57eda9079e9ed6d137f966e8b0d08f219cbca6e79706a1be76fe10ba2b8fd87c33846f1c653299b09a2e8260ffba8c8fc708f9b40b54243648d6821061999c9b
   languageName: node
   linkType: hard
 
@@ -548,6 +562,19 @@ __metadata:
   dependencies:
     dequal: "npm:^2.0.3"
   checksum: 10c0/dfa884a8f62d53f71de273fdcd0e501b213367767a7d8c522ae87ba6fb571b3eea85175d6e019036d7c0c5419be60305abe54899b9459f76ed5333358699efcb
+  languageName: node
+  linkType: hard
+
+"@fastify/multipart@npm:^9.3.0":
+  version: 9.3.0
+  resolution: "@fastify/multipart@npm:9.3.0"
+  dependencies:
+    "@fastify/busboy": "npm:^3.0.0"
+    "@fastify/deepmerge": "npm:^3.0.0"
+    "@fastify/error": "npm:^4.0.0"
+    fastify-plugin: "npm:^5.0.0"
+    secure-json-parse: "npm:^4.0.0"
+  checksum: 10c0/b0810132d16be460cd519671c2273817919a6021cc11ec3da842052e26e3e83c544698c0baa280a6ae543782888df6725698680d99c5a85562191bd7582ca4e1
   languageName: node
   linkType: hard
 
@@ -750,6 +777,7 @@ __metadata:
   dependencies:
     "@eslint/js": "portal:"
     "@fastify/cors": "npm:^11.1.0"
+    "@fastify/multipart": "npm:^9.3.0"
     "@fastify/swagger": "npm:^9.5.2"
     "@fastify/swagger-ui": "npm:^5.2.3"
     "@fastify/type-provider-typebox": "npm:^6.0.0"

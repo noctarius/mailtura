@@ -48,6 +48,7 @@ export interface paths {
                 path?: never;
                 cookie?: never;
             };
+            /** @description A create tenant request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -138,6 +139,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update tenant request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -278,9 +280,11 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create contact request */
             requestBody: {
                 content: {
                     "application/json": {
+                        /** Format: email */
                         email: string;
                         firstName?: string;
                         lastName?: string;
@@ -373,11 +377,13 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update contact request */
             requestBody?: {
                 content: {
                     "application/json": {
                         firstName?: string;
                         lastName?: string;
+                        listIds?: string[];
                     };
                 };
             };
@@ -465,6 +471,150 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/contacts/imports/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ContactImport"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            /** @description An import contacts request */
+            requestBody: {
+                content: {
+                    "application/json": {
+                        mapping: {
+                            source: string;
+                            target: string;
+                        }[];
+                        skipFirstRow: boolean;
+                        listIds: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description A contact import in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ContactImport"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/contacts/imports/{import_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    import_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A contact import in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ContactImport"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/templates/": {
         parameters: {
             query?: never;
@@ -513,6 +663,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create template request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -613,6 +764,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update template request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -723,6 +875,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A preview template request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -808,6 +961,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create campaign request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -907,6 +1061,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update campaign request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1048,6 +1203,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create subscriber list request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -1141,6 +1297,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update subscriber list request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1339,9 +1496,11 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create user request */
             requestBody: {
                 content: {
                     "application/json": {
+                        /** Format: email */
                         email: string;
                         firstName?: string;
                         lastName?: string;
@@ -1435,9 +1594,11 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update user request */
             requestBody?: {
                 content: {
                     "application/json": {
+                        /** Format: email */
                         email?: string;
                         firstName?: string;
                         lastName?: string;
@@ -1579,6 +1740,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description A create API key request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -1675,6 +1837,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
+            /** @description An update API key request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1794,6 +1957,7 @@ export interface components {
         Contact: {
             /** Format: uuid */
             id: string;
+            /** Format: email */
             email: string;
             firstName?: string;
             lastName?: string;
@@ -1868,6 +2032,7 @@ export interface components {
             contact: {
                 /** Format: uuid */
                 id: string;
+                /** Format: email */
                 email: string;
                 firstName?: string;
                 lastName?: string;
@@ -1952,6 +2117,7 @@ export interface components {
             contact: {
                 /** Format: uuid */
                 id: string;
+                /** Format: email */
                 email: string;
                 firstName?: string;
                 lastName?: string;
@@ -2035,6 +2201,7 @@ export interface components {
             contact: {
                 /** Format: uuid */
                 id: string;
+                /** Format: email */
                 email: string;
                 firstName?: string;
                 lastName?: string;
@@ -2112,6 +2279,7 @@ export interface components {
         User: {
             /** Format: uuid */
             id: string;
+            /** Format: email */
             email: string;
             firstName?: string;
             lastName?: string;
@@ -2139,6 +2307,22 @@ export interface components {
             /** Format: date-time */
             expiresAt?: string;
             permissions: string[];
+            /** Format: date-time */
+            createdAt: string;
+            createdBy: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        };
+        /** @description A contact import in the system */
+        ContactImport: {
+            /** Format: uuid */
+            id: string;
+            name?: string;
+            filename: string;
+            status: number;
+            records: number;
+            finished: boolean;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;

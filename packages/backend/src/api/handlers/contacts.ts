@@ -1,5 +1,5 @@
 import { Type } from "typebox";
-import { Contact } from "@mailtura/rpcmodel/lib/models";
+import { Contact, ContactImport } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -11,9 +11,9 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import { mapContact } from "../mapper.js";
+import { mapContact, mapContactImport } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateContact, UpdateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateContact, ImportContacts, UpdateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -262,4 +262,127 @@ export function contactRoutes<
       }
     );
   });
+
+  router.route("/imports", contactImportRoutes);
+}
+
+export function contactImportRoutes<
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+  TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
+  Logger extends FastifyBaseLogger = FastifyBaseLogger,
+>(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  router.get<{ Params: { tenant_id: string }; Reply: ContactImport[]; Querystring: { all: boolean | unknown } }>(
+    "/",
+    {
+      schema: {
+        response: {
+          200: Type.Array(Type.Ref("ContactImport")),
+          401: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async (request, reply) => {
+      const tenantId = request.params.tenant_id;
+      const all = request.query.all || false;
+
+      const imports = await prisma.contact_imports.findMany({
+        where: {
+          tenant_id: tenantId,
+          ...(all ? {} : { finished: true }),
+        },
+      });
+
+      return reply.status(200).send(imports.map(mapContactImport));
+    }
+  );
+
+  router.post<{ Params: { tenant_id: string }; Body: ImportContacts; Response: ContactImport }>(
+    "/",
+    {
+      schema: {
+        body: ImportContacts,
+        response: {
+          200: Type.Ref("ContactImport"),
+          401: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async (request, reply) => {
+      const tenantId = request.params.tenant_id;
+
+      const file = await request.file();
+      if (!file) {
+        throw createError(400, "No file provided");
+      }
+
+      const data = await file.toBuffer();
+      const body = request.body;
+
+      return prisma.$transaction(async tx => {
+        const newFile = await tx.files.create({
+          data: {
+            tenant_id: tenantId,
+            name: file.filename,
+            data: data,
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
+
+        return mapContactImport(
+          await tx.contact_imports.create({
+            data: {
+              tenant_id: tenantId,
+              status: 0,
+              records: 0,
+              finished: false,
+              filename: file.filename,
+              parameters: {
+                ...body,
+                file_id: newFile.id,
+              },
+              created_at: UTC.now().toDate(),
+              created_by: "api",
+            },
+          })
+        );
+      });
+    }
+  );
+
+  router.get<{ Params: { tenant_id: string; import_id: string }; Response: ContactImport }>(
+    "/:import_id",
+    {
+      schema: {
+        params: Type.Object({
+          tenant_id: Type.String({ format: "uuid" }),
+          import_id: Type.String({ format: "uuid" }),
+        }),
+        response: {
+          200: Type.Ref("ContactImport"),
+          401: Type.Ref("ErrorResponse"),
+          404: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async (request, reply) => {
+      const tenantId = request.params.tenant_id;
+      const importId = request.params.import_id;
+
+      const contactImport = await prisma.contact_imports.findUnique({
+        where: {
+          id: importId,
+          tenant_id: tenantId,
+        },
+      });
+
+      if (!contactImport) {
+        throw createError(404, "Contact import not found");
+      }
+
+      return mapContactImport(contactImport);
+    }
+  );
 }

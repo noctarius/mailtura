@@ -3,6 +3,7 @@ import type {
   ApiKeyEntity,
   CampaignEntity,
   ContactEntity,
+  ContactImportEntity,
   SubscriberEntity,
   SubscriberListEntity,
   TemplateEntity,
@@ -13,6 +14,7 @@ import {
   type ApiKey,
   type Campaign,
   Contact,
+  type ContactImport,
   type Subscriber,
   type SubscriberList,
   type Template,
@@ -198,5 +200,20 @@ export function mapApiKey(apiKey: ApiKeyEntity): ApiKey {
     createdBy: apiKey.created_by,
     updatedAt: mapDateTime(apiKey.updated_at),
     updatedBy: apiKey.updated_by ?? undefined,
+  };
+}
+
+export function mapContactImport(contactImport: ContactImportEntity): ContactImport {
+  return {
+    id: contactImport.id,
+    name: contactImport.name ?? undefined,
+    filename: contactImport.filename,
+    status: contactImport.status,
+    records: contactImport.records,
+    finished: contactImport.finished,
+    createdAt: mapDateTime(contactImport.created_at),
+    createdBy: contactImport.created_by,
+    updatedAt: mapDateTime(contactImport.updated_at),
+    updatedBy: contactImport.updated_by ?? undefined,
   };
 }
