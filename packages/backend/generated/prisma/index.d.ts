@@ -73,6 +73,11 @@ export type template_properties = $Result.DefaultSelection<Prisma.$template_prop
  * 
  */
 export type templates = $Result.DefaultSelection<Prisma.$templatesPayload>
+/**
+ * Model contact_imports
+ * 
+ */
+export type contact_imports = $Result.DefaultSelection<Prisma.$contact_importsPayload>
 
 /**
  * Enums
@@ -418,6 +423,16 @@ export class PrismaClient<
     * ```
     */
   get templates(): Prisma.templatesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.contact_imports`: Exposes CRUD operations for the **contact_imports** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Contact_imports
+    * const contact_imports = await prisma.contact_imports.findMany()
+    * ```
+    */
+  get contact_imports(): Prisma.contact_importsDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -869,7 +884,8 @@ export namespace Prisma {
     users: 'users',
     api_keys: 'api_keys',
     template_properties: 'template_properties',
-    templates: 'templates'
+    templates: 'templates',
+    contact_imports: 'contact_imports'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -888,7 +904,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates"
+      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1780,6 +1796,80 @@ export namespace Prisma {
           }
         }
       }
+      contact_imports: {
+        payload: Prisma.$contact_importsPayload<ExtArgs>
+        fields: Prisma.contact_importsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.contact_importsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.contact_importsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          findFirst: {
+            args: Prisma.contact_importsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.contact_importsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          findMany: {
+            args: Prisma.contact_importsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>[]
+          }
+          create: {
+            args: Prisma.contact_importsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          createMany: {
+            args: Prisma.contact_importsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.contact_importsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>[]
+          }
+          delete: {
+            args: Prisma.contact_importsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          update: {
+            args: Prisma.contact_importsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          deleteMany: {
+            args: Prisma.contact_importsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.contact_importsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.contact_importsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>[]
+          }
+          upsert: {
+            args: Prisma.contact_importsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$contact_importsPayload>
+          }
+          aggregate: {
+            args: Prisma.Contact_importsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateContact_imports>
+          }
+          groupBy: {
+            args: Prisma.contact_importsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Contact_importsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.contact_importsCountArgs<ExtArgs>
+            result: $Utils.Optional<Contact_importsCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1888,6 +1978,7 @@ export namespace Prisma {
     api_keys?: api_keysOmit
     template_properties?: template_propertiesOmit
     templates?: templatesOmit
+    contact_imports?: contact_importsOmit
   }
 
   /* Types for Logging */
@@ -15816,6 +15907,1126 @@ export namespace Prisma {
 
 
   /**
+   * Model contact_imports
+   */
+
+  export type AggregateContact_imports = {
+    _count: Contact_importsCountAggregateOutputType | null
+    _avg: Contact_importsAvgAggregateOutputType | null
+    _sum: Contact_importsSumAggregateOutputType | null
+    _min: Contact_importsMinAggregateOutputType | null
+    _max: Contact_importsMaxAggregateOutputType | null
+  }
+
+  export type Contact_importsAvgAggregateOutputType = {
+    status: number | null
+    records: number | null
+  }
+
+  export type Contact_importsSumAggregateOutputType = {
+    status: number | null
+    records: number | null
+  }
+
+  export type Contact_importsMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    filename: string | null
+    status: number | null
+    records: number | null
+    finished: boolean | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Contact_importsMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    filename: string | null
+    status: number | null
+    records: number | null
+    finished: boolean | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Contact_importsCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    name: number
+    filename: number
+    status: number
+    records: number
+    finished: number
+    created_at: number
+    created_by: number
+    updated_at: number
+    updated_by: number
+    _all: number
+  }
+
+
+  export type Contact_importsAvgAggregateInputType = {
+    status?: true
+    records?: true
+  }
+
+  export type Contact_importsSumAggregateInputType = {
+    status?: true
+    records?: true
+  }
+
+  export type Contact_importsMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    filename?: true
+    status?: true
+    records?: true
+    finished?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Contact_importsMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    filename?: true
+    status?: true
+    records?: true
+    finished?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Contact_importsCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    filename?: true
+    status?: true
+    records?: true
+    finished?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+    _all?: true
+  }
+
+  export type Contact_importsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which contact_imports to aggregate.
+     */
+    where?: contact_importsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contact_imports to fetch.
+     */
+    orderBy?: contact_importsOrderByWithRelationInput | contact_importsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: contact_importsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contact_imports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contact_imports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned contact_imports
+    **/
+    _count?: true | Contact_importsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Contact_importsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Contact_importsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Contact_importsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Contact_importsMaxAggregateInputType
+  }
+
+  export type GetContact_importsAggregateType<T extends Contact_importsAggregateArgs> = {
+        [P in keyof T & keyof AggregateContact_imports]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateContact_imports[P]>
+      : GetScalarType<T[P], AggregateContact_imports[P]>
+  }
+
+
+
+
+  export type contact_importsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: contact_importsWhereInput
+    orderBy?: contact_importsOrderByWithAggregationInput | contact_importsOrderByWithAggregationInput[]
+    by: Contact_importsScalarFieldEnum[] | Contact_importsScalarFieldEnum
+    having?: contact_importsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Contact_importsCountAggregateInputType | true
+    _avg?: Contact_importsAvgAggregateInputType
+    _sum?: Contact_importsSumAggregateInputType
+    _min?: Contact_importsMinAggregateInputType
+    _max?: Contact_importsMaxAggregateInputType
+  }
+
+  export type Contact_importsGroupByOutputType = {
+    id: string
+    tenant_id: string
+    name: string | null
+    filename: string
+    status: number
+    records: number
+    finished: boolean
+    created_at: Date
+    created_by: string
+    updated_at: Date | null
+    updated_by: string | null
+    _count: Contact_importsCountAggregateOutputType | null
+    _avg: Contact_importsAvgAggregateOutputType | null
+    _sum: Contact_importsSumAggregateOutputType | null
+    _min: Contact_importsMinAggregateOutputType | null
+    _max: Contact_importsMaxAggregateOutputType | null
+  }
+
+  type GetContact_importsGroupByPayload<T extends contact_importsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Contact_importsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Contact_importsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Contact_importsGroupByOutputType[P]>
+            : GetScalarType<T[P], Contact_importsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type contact_importsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    filename?: boolean
+    status?: boolean
+    records?: boolean
+    finished?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["contact_imports"]>
+
+  export type contact_importsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    filename?: boolean
+    status?: boolean
+    records?: boolean
+    finished?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["contact_imports"]>
+
+  export type contact_importsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    filename?: boolean
+    status?: boolean
+    records?: boolean
+    finished?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["contact_imports"]>
+
+  export type contact_importsSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    filename?: boolean
+    status?: boolean
+    records?: boolean
+    finished?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }
+
+  export type contact_importsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "filename" | "status" | "records" | "finished" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contact_imports"]>
+
+  export type $contact_importsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "contact_imports"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      name: string | null
+      filename: string
+      status: number
+      records: number
+      finished: boolean
+      created_at: Date
+      created_by: string
+      updated_at: Date | null
+      updated_by: string | null
+    }, ExtArgs["result"]["contact_imports"]>
+    composites: {}
+  }
+
+  type contact_importsGetPayload<S extends boolean | null | undefined | contact_importsDefaultArgs> = $Result.GetResult<Prisma.$contact_importsPayload, S>
+
+  type contact_importsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<contact_importsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: Contact_importsCountAggregateInputType | true
+    }
+
+  export interface contact_importsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['contact_imports'], meta: { name: 'contact_imports' } }
+    /**
+     * Find zero or one Contact_imports that matches the filter.
+     * @param {contact_importsFindUniqueArgs} args - Arguments to find a Contact_imports
+     * @example
+     * // Get one Contact_imports
+     * const contact_imports = await prisma.contact_imports.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends contact_importsFindUniqueArgs>(args: SelectSubset<T, contact_importsFindUniqueArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Contact_imports that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {contact_importsFindUniqueOrThrowArgs} args - Arguments to find a Contact_imports
+     * @example
+     * // Get one Contact_imports
+     * const contact_imports = await prisma.contact_imports.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends contact_importsFindUniqueOrThrowArgs>(args: SelectSubset<T, contact_importsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contact_imports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsFindFirstArgs} args - Arguments to find a Contact_imports
+     * @example
+     * // Get one Contact_imports
+     * const contact_imports = await prisma.contact_imports.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends contact_importsFindFirstArgs>(args?: SelectSubset<T, contact_importsFindFirstArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Contact_imports that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsFindFirstOrThrowArgs} args - Arguments to find a Contact_imports
+     * @example
+     * // Get one Contact_imports
+     * const contact_imports = await prisma.contact_imports.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends contact_importsFindFirstOrThrowArgs>(args?: SelectSubset<T, contact_importsFindFirstOrThrowArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Contact_imports that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Contact_imports
+     * const contact_imports = await prisma.contact_imports.findMany()
+     * 
+     * // Get first 10 Contact_imports
+     * const contact_imports = await prisma.contact_imports.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const contact_importsWithIdOnly = await prisma.contact_imports.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends contact_importsFindManyArgs>(args?: SelectSubset<T, contact_importsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Contact_imports.
+     * @param {contact_importsCreateArgs} args - Arguments to create a Contact_imports.
+     * @example
+     * // Create one Contact_imports
+     * const Contact_imports = await prisma.contact_imports.create({
+     *   data: {
+     *     // ... data to create a Contact_imports
+     *   }
+     * })
+     * 
+     */
+    create<T extends contact_importsCreateArgs>(args: SelectSubset<T, contact_importsCreateArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Contact_imports.
+     * @param {contact_importsCreateManyArgs} args - Arguments to create many Contact_imports.
+     * @example
+     * // Create many Contact_imports
+     * const contact_imports = await prisma.contact_imports.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends contact_importsCreateManyArgs>(args?: SelectSubset<T, contact_importsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Contact_imports and returns the data saved in the database.
+     * @param {contact_importsCreateManyAndReturnArgs} args - Arguments to create many Contact_imports.
+     * @example
+     * // Create many Contact_imports
+     * const contact_imports = await prisma.contact_imports.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Contact_imports and only return the `id`
+     * const contact_importsWithIdOnly = await prisma.contact_imports.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends contact_importsCreateManyAndReturnArgs>(args?: SelectSubset<T, contact_importsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Contact_imports.
+     * @param {contact_importsDeleteArgs} args - Arguments to delete one Contact_imports.
+     * @example
+     * // Delete one Contact_imports
+     * const Contact_imports = await prisma.contact_imports.delete({
+     *   where: {
+     *     // ... filter to delete one Contact_imports
+     *   }
+     * })
+     * 
+     */
+    delete<T extends contact_importsDeleteArgs>(args: SelectSubset<T, contact_importsDeleteArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Contact_imports.
+     * @param {contact_importsUpdateArgs} args - Arguments to update one Contact_imports.
+     * @example
+     * // Update one Contact_imports
+     * const contact_imports = await prisma.contact_imports.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends contact_importsUpdateArgs>(args: SelectSubset<T, contact_importsUpdateArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Contact_imports.
+     * @param {contact_importsDeleteManyArgs} args - Arguments to filter Contact_imports to delete.
+     * @example
+     * // Delete a few Contact_imports
+     * const { count } = await prisma.contact_imports.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends contact_importsDeleteManyArgs>(args?: SelectSubset<T, contact_importsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contact_imports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Contact_imports
+     * const contact_imports = await prisma.contact_imports.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends contact_importsUpdateManyArgs>(args: SelectSubset<T, contact_importsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Contact_imports and returns the data updated in the database.
+     * @param {contact_importsUpdateManyAndReturnArgs} args - Arguments to update many Contact_imports.
+     * @example
+     * // Update many Contact_imports
+     * const contact_imports = await prisma.contact_imports.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Contact_imports and only return the `id`
+     * const contact_importsWithIdOnly = await prisma.contact_imports.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends contact_importsUpdateManyAndReturnArgs>(args: SelectSubset<T, contact_importsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Contact_imports.
+     * @param {contact_importsUpsertArgs} args - Arguments to update or create a Contact_imports.
+     * @example
+     * // Update or create a Contact_imports
+     * const contact_imports = await prisma.contact_imports.upsert({
+     *   create: {
+     *     // ... data to create a Contact_imports
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Contact_imports we want to update
+     *   }
+     * })
+     */
+    upsert<T extends contact_importsUpsertArgs>(args: SelectSubset<T, contact_importsUpsertArgs<ExtArgs>>): Prisma__contact_importsClient<$Result.GetResult<Prisma.$contact_importsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Contact_imports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsCountArgs} args - Arguments to filter Contact_imports to count.
+     * @example
+     * // Count the number of Contact_imports
+     * const count = await prisma.contact_imports.count({
+     *   where: {
+     *     // ... the filter for the Contact_imports we want to count
+     *   }
+     * })
+    **/
+    count<T extends contact_importsCountArgs>(
+      args?: Subset<T, contact_importsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Contact_importsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Contact_imports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Contact_importsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Contact_importsAggregateArgs>(args: Subset<T, Contact_importsAggregateArgs>): Prisma.PrismaPromise<GetContact_importsAggregateType<T>>
+
+    /**
+     * Group by Contact_imports.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {contact_importsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends contact_importsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: contact_importsGroupByArgs['orderBy'] }
+        : { orderBy?: contact_importsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, contact_importsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetContact_importsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the contact_imports model
+   */
+  readonly fields: contact_importsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for contact_imports.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__contact_importsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the contact_imports model
+   */
+  interface contact_importsFieldRefs {
+    readonly id: FieldRef<"contact_imports", 'String'>
+    readonly tenant_id: FieldRef<"contact_imports", 'String'>
+    readonly name: FieldRef<"contact_imports", 'String'>
+    readonly filename: FieldRef<"contact_imports", 'String'>
+    readonly status: FieldRef<"contact_imports", 'Float'>
+    readonly records: FieldRef<"contact_imports", 'Int'>
+    readonly finished: FieldRef<"contact_imports", 'Boolean'>
+    readonly created_at: FieldRef<"contact_imports", 'DateTime'>
+    readonly created_by: FieldRef<"contact_imports", 'String'>
+    readonly updated_at: FieldRef<"contact_imports", 'DateTime'>
+    readonly updated_by: FieldRef<"contact_imports", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * contact_imports findUnique
+   */
+  export type contact_importsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter, which contact_imports to fetch.
+     */
+    where: contact_importsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports findUniqueOrThrow
+   */
+  export type contact_importsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter, which contact_imports to fetch.
+     */
+    where: contact_importsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports findFirst
+   */
+  export type contact_importsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter, which contact_imports to fetch.
+     */
+    where?: contact_importsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contact_imports to fetch.
+     */
+    orderBy?: contact_importsOrderByWithRelationInput | contact_importsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for contact_imports.
+     */
+    cursor?: contact_importsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contact_imports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contact_imports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of contact_imports.
+     */
+    distinct?: Contact_importsScalarFieldEnum | Contact_importsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports findFirstOrThrow
+   */
+  export type contact_importsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter, which contact_imports to fetch.
+     */
+    where?: contact_importsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contact_imports to fetch.
+     */
+    orderBy?: contact_importsOrderByWithRelationInput | contact_importsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for contact_imports.
+     */
+    cursor?: contact_importsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contact_imports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contact_imports.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of contact_imports.
+     */
+    distinct?: Contact_importsScalarFieldEnum | Contact_importsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports findMany
+   */
+  export type contact_importsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter, which contact_imports to fetch.
+     */
+    where?: contact_importsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of contact_imports to fetch.
+     */
+    orderBy?: contact_importsOrderByWithRelationInput | contact_importsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing contact_imports.
+     */
+    cursor?: contact_importsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` contact_imports from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` contact_imports.
+     */
+    skip?: number
+    distinct?: Contact_importsScalarFieldEnum | Contact_importsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports create
+   */
+  export type contact_importsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a contact_imports.
+     */
+    data: XOR<contact_importsCreateInput, contact_importsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports createMany
+   */
+  export type contact_importsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many contact_imports.
+     */
+    data: contact_importsCreateManyInput | contact_importsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * contact_imports createManyAndReturn
+   */
+  export type contact_importsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * The data used to create many contact_imports.
+     */
+    data: contact_importsCreateManyInput | contact_importsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * contact_imports update
+   */
+  export type contact_importsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a contact_imports.
+     */
+    data: XOR<contact_importsUpdateInput, contact_importsUncheckedUpdateInput>
+    /**
+     * Choose, which contact_imports to update.
+     */
+    where: contact_importsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports updateMany
+   */
+  export type contact_importsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update contact_imports.
+     */
+    data: XOR<contact_importsUpdateManyMutationInput, contact_importsUncheckedUpdateManyInput>
+    /**
+     * Filter which contact_imports to update
+     */
+    where?: contact_importsWhereInput
+    /**
+     * Limit how many contact_imports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * contact_imports updateManyAndReturn
+   */
+  export type contact_importsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * The data used to update contact_imports.
+     */
+    data: XOR<contact_importsUpdateManyMutationInput, contact_importsUncheckedUpdateManyInput>
+    /**
+     * Filter which contact_imports to update
+     */
+    where?: contact_importsWhereInput
+    /**
+     * Limit how many contact_imports to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * contact_imports upsert
+   */
+  export type contact_importsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the contact_imports to update in case it exists.
+     */
+    where: contact_importsWhereUniqueInput
+    /**
+     * In case the contact_imports found by the `where` argument doesn't exist, create a new contact_imports with this data.
+     */
+    create: XOR<contact_importsCreateInput, contact_importsUncheckedCreateInput>
+    /**
+     * In case the contact_imports was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<contact_importsUpdateInput, contact_importsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports delete
+   */
+  export type contact_importsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+    /**
+     * Filter which contact_imports to delete.
+     */
+    where: contact_importsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * contact_imports deleteMany
+   */
+  export type contact_importsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which contact_imports to delete
+     */
+    where?: contact_importsWhereInput
+    /**
+     * Limit how many contact_imports to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * contact_imports without action
+   */
+  export type contact_importsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the contact_imports
+     */
+    select?: contact_importsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the contact_imports
+     */
+    omit?: contact_importsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16031,6 +17242,23 @@ export namespace Prisma {
   };
 
   export type TemplatesScalarFieldEnum = (typeof TemplatesScalarFieldEnum)[keyof typeof TemplatesScalarFieldEnum]
+
+
+  export const Contact_importsScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    name: 'name',
+    filename: 'filename',
+    status: 'status',
+    records: 'records',
+    finished: 'finished',
+    created_at: 'created_at',
+    created_by: 'created_by',
+    updated_at: 'updated_at',
+    updated_by: 'updated_by'
+  };
+
+  export type Contact_importsScalarFieldEnum = (typeof Contact_importsScalarFieldEnum)[keyof typeof Contact_importsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -17252,6 +18480,90 @@ export namespace Prisma {
     updated_by?: StringNullableWithAggregatesFilter<"templates"> | string | null
   }
 
+  export type contact_importsWhereInput = {
+    AND?: contact_importsWhereInput | contact_importsWhereInput[]
+    OR?: contact_importsWhereInput[]
+    NOT?: contact_importsWhereInput | contact_importsWhereInput[]
+    id?: UuidFilter<"contact_imports"> | string
+    tenant_id?: UuidFilter<"contact_imports"> | string
+    name?: StringNullableFilter<"contact_imports"> | string | null
+    filename?: StringFilter<"contact_imports"> | string
+    status?: FloatFilter<"contact_imports"> | number
+    records?: IntFilter<"contact_imports"> | number
+    finished?: BoolFilter<"contact_imports"> | boolean
+    created_at?: DateTimeFilter<"contact_imports"> | Date | string
+    created_by?: StringFilter<"contact_imports"> | string
+    updated_at?: DateTimeNullableFilter<"contact_imports"> | Date | string | null
+    updated_by?: StringNullableFilter<"contact_imports"> | string | null
+  }
+
+  export type contact_importsOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    filename?: SortOrder
+    status?: SortOrder
+    records?: SortOrder
+    finished?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+  }
+
+  export type contact_importsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: contact_importsWhereInput | contact_importsWhereInput[]
+    OR?: contact_importsWhereInput[]
+    NOT?: contact_importsWhereInput | contact_importsWhereInput[]
+    tenant_id?: UuidFilter<"contact_imports"> | string
+    name?: StringNullableFilter<"contact_imports"> | string | null
+    filename?: StringFilter<"contact_imports"> | string
+    status?: FloatFilter<"contact_imports"> | number
+    records?: IntFilter<"contact_imports"> | number
+    finished?: BoolFilter<"contact_imports"> | boolean
+    created_at?: DateTimeFilter<"contact_imports"> | Date | string
+    created_by?: StringFilter<"contact_imports"> | string
+    updated_at?: DateTimeNullableFilter<"contact_imports"> | Date | string | null
+    updated_by?: StringNullableFilter<"contact_imports"> | string | null
+  }, "id">
+
+  export type contact_importsOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrderInput | SortOrder
+    filename?: SortOrder
+    status?: SortOrder
+    records?: SortOrder
+    finished?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    _count?: contact_importsCountOrderByAggregateInput
+    _avg?: contact_importsAvgOrderByAggregateInput
+    _max?: contact_importsMaxOrderByAggregateInput
+    _min?: contact_importsMinOrderByAggregateInput
+    _sum?: contact_importsSumOrderByAggregateInput
+  }
+
+  export type contact_importsScalarWhereWithAggregatesInput = {
+    AND?: contact_importsScalarWhereWithAggregatesInput | contact_importsScalarWhereWithAggregatesInput[]
+    OR?: contact_importsScalarWhereWithAggregatesInput[]
+    NOT?: contact_importsScalarWhereWithAggregatesInput | contact_importsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"contact_imports"> | string
+    tenant_id?: UuidWithAggregatesFilter<"contact_imports"> | string
+    name?: StringNullableWithAggregatesFilter<"contact_imports"> | string | null
+    filename?: StringWithAggregatesFilter<"contact_imports"> | string
+    status?: FloatWithAggregatesFilter<"contact_imports"> | number
+    records?: IntWithAggregatesFilter<"contact_imports"> | number
+    finished?: BoolWithAggregatesFilter<"contact_imports"> | boolean
+    created_at?: DateTimeWithAggregatesFilter<"contact_imports"> | Date | string
+    created_by?: StringWithAggregatesFilter<"contact_imports"> | string
+    updated_at?: DateTimeNullableWithAggregatesFilter<"contact_imports"> | Date | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"contact_imports"> | string | null
+  }
+
   export type tenantsCreateInput = {
     id?: string
     name: string
@@ -18393,6 +19705,104 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type contact_importsCreateInput = {
+    id?: string
+    tenant_id: string
+    name?: string | null
+    filename: string
+    status: number
+    records: number
+    finished: boolean
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type contact_importsUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    name?: string | null
+    filename: string
+    status: number
+    records: number
+    finished: boolean
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type contact_importsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    status?: FloatFieldUpdateOperationsInput | number
+    records?: IntFieldUpdateOperationsInput | number
+    finished?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contact_importsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    status?: FloatFieldUpdateOperationsInput | number
+    records?: IntFieldUpdateOperationsInput | number
+    finished?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contact_importsCreateManyInput = {
+    id?: string
+    tenant_id: string
+    name?: string | null
+    filename: string
+    status: number
+    records: number
+    finished: boolean
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type contact_importsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    status?: FloatFieldUpdateOperationsInput | number
+    records?: IntFieldUpdateOperationsInput | number
+    finished?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type contact_importsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    filename?: StringFieldUpdateOperationsInput | string
+    status?: FloatFieldUpdateOperationsInput | number
+    records?: IntFieldUpdateOperationsInput | number
+    finished?: BoolFieldUpdateOperationsInput | boolean
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -19379,6 +20789,85 @@ export namespace Prisma {
     updated_by?: SortOrder
   }
 
+  export type FloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type contact_importsCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    filename?: SortOrder
+    status?: SortOrder
+    records?: SortOrder
+    finished?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type contact_importsAvgOrderByAggregateInput = {
+    status?: SortOrder
+    records?: SortOrder
+  }
+
+  export type contact_importsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    filename?: SortOrder
+    status?: SortOrder
+    records?: SortOrder
+    finished?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type contact_importsMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    filename?: SortOrder
+    status?: SortOrder
+    records?: SortOrder
+    finished?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type contact_importsSumOrderByAggregateInput = {
+    status?: SortOrder
+    records?: SortOrder
+  }
+
+  export type FloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -19858,6 +21347,14 @@ export namespace Prisma {
     deleteMany?: template_propertiesScalarWhereInput | template_propertiesScalarWhereInput[]
   }
 
+  export type FloatFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20222,6 +21719,22 @@ export namespace Prisma {
     gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
     not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedFloatFilter<$PrismaModel>
+    _min?: NestedFloatFilter<$PrismaModel>
+    _max?: NestedFloatFilter<$PrismaModel>
   }
 
   export type activitiesCreateWithoutReceiversInput = {
