@@ -10,6 +10,7 @@ export interface UiInputFieldProps extends JSX.InputHTMLAttributes<HTMLInputElem
 }
 
 export default function UiInputField(props: UiInputFieldProps) {
+  const initialValue = props.value;
   const hasError = () => (props.value && props.error && props.error().length > 0) || false;
   const id = () => `id-${props.id || props.name || window.crypto.randomUUID()}`;
   const filteredProps = filterProps(props, key => !["options", "error", "label"].includes(key));
@@ -17,14 +18,14 @@ export default function UiInputField(props: UiInputFieldProps) {
     <>
       <label
         for={id()}
-        class={`form-input-label ${errorSuccessClass(props)}`}
+        class={`form-input-label ${errorSuccessClass(props, initialValue)}`}
       >
-        {props.label()}{props.required && hasValue(props.label()) && <span class="text-red-500">*</span>}
+        {props.label()}{props.required && hasValue(props.label(), initialValue) && <span class="text-red-500">*</span>}
       </label>
       <input
         {...filteredProps}
         id={id()}
-        class={`form-input ${errorSuccessClass(props)}`}
+        class={`form-input ${errorSuccessClass(props, initialValue)}`}
       />
       {props.description && (
         <p

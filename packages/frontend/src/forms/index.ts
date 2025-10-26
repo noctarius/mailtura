@@ -26,6 +26,7 @@ import {
 } from "typebox";
 import typeboxForm from "./typeboxForm.js";
 import { IsRequired } from "typebox/schema";
+import { isEqual } from "lodash";
 
 type Form<TFieldValues extends FieldValues, TResponseData extends ResponseData> = (
   props: Omit<FormProps<TFieldValues, TResponseData>, "of">
@@ -161,10 +162,15 @@ export function createFormSpec<
   };
 }
 
-export function hasValue(value: string | string[] | number | undefined): boolean {
+export function hasValue<T extends string | string[] | number | undefined>(value: T, initialValue?: T): boolean {
   if (value === undefined) return false;
-  if (Array.isArray(value)) return value.length > 0;
-  if (typeof value === "string") return value.trim().length > 0;
+  if (Array.isArray(value)) {
+    if (value.length === 0) return false;
+  }
+  if (initialValue && isEqual(value, initialValue)) return false;
+  if (typeof value === "string") {
+    return value.trim().length > 0;
+  }
   return true;
 }
 
@@ -176,8 +182,8 @@ export function hasError(error?: () => string): boolean {
 export function errorSuccessClass(props: {
   value?: string | string[] | number | undefined;
   error?: () => string;
-}): string {
-  if (!hasValue(props.value)) return "";
+}, initialValue?: any): string {
+  if (!hasValue(props.value, initialValue)) return "";
   if (hasError(props.error)) return "text-red-500";
   return "text-green-500";
 }

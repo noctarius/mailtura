@@ -9,10 +9,11 @@ export interface UiRadioFieldProps extends UiInputFieldProps {
 }
 
 export default function UiRadioField(props: UiRadioFieldProps) {
+  const initialValue = props.value;
   const options = () => props.options?.() || [];
   return (
     <>
-      <span class={`form-radio-label ${errorSuccessClass(props)}`}>
+      <span class={`form-radio-label ${errorSuccessClass(props, initialValue)}`}>
         {props.label()}
         {props.required && <span class="text-red-500">*</span>}
       </span>
@@ -30,7 +31,7 @@ export default function UiRadioField(props: UiRadioFieldProps) {
                     type="radio"
                     value={option.value}
                     checked={value().includes(option.value)}
-                    class={`form-radio-item ${errorSuccessClass(props)}`}
+                    class={`form-radio-item ${errorSuccessClass(props, initialValue)}`}
                   />
                   {option.description ? (
                     <div class="ms-2 text-sm">

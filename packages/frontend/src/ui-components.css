@@ -15,7 +15,7 @@
 }
 
 .dialog-close-btn {
-    @apply right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute flex items-center justify-center
+    @apply right-0 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex items-center justify-center
 }
 
 .form-element-has-error {
