@@ -1,12 +1,14 @@
 import Fastify from "fastify";
-import swagger from "@fastify/swagger";
-import swaggerUi from "@fastify/swagger-ui";
-import registerModelSchema, { registerRoutes } from "./api/index.js";
+import cors from "@fastify/cors";
+import Swagger from "@fastify/swagger";
+import Multipart from "@fastify/multipart";
+import SwaggerUi from "@fastify/swagger-ui";
+import Static from "@fastify/static";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import registerModelSchema, { registerRoutes } from "./api/index.js";
 import { createRouter } from "./router/index.js";
-import cors from '@fastify/cors'
 import { handlePrismaError } from "./database/index.js";
-import Multipart from "@fastify/multipart"
+import * as path from "node:path";
 
 const app = Fastify()
   .register(Multipart)
@@ -21,7 +23,7 @@ const app = Fastify()
     }
 
     // If the error is a Prisma error, handle it now
-    handlePrismaError(error)
+    handlePrismaError(error);
 
     // If any other error, send a generic 500 error
     reply.status(error.statusCode ?? 500).send({ message: error.message });
@@ -36,11 +38,11 @@ await app.register(cors, {
   allowedHeaders: ["Content-Type", "Authorization"],
 });
 
-await app.register(swagger, {
+await app.register(Swagger, {
   refResolver: {
-    buildLocalReference: (ref) => {
+    buildLocalReference: ref => {
       return ref["$id"] as string;
-    }
+    },
   },
   openapi: {
     openapi: "3.0.0",
@@ -72,11 +74,19 @@ await app.register(swagger, {
   },
 });
 
-await app.register(swaggerUi, {
+await app.register(SwaggerUi, {
   routePrefix: "/docs",
   uiConfig: {
     docExpansion: "full",
     deepLinking: false,
+  },
+});
+
+app.register(Static, {
+  root: path.join(__dirname, "public"),
+  prefix: "/dashboard/",
+  constraints: {
+    host: "example.com",
   },
 });
 
