@@ -1,4 +1,4 @@
-import * as murmurhash from "@timepp/murmurhash";
+import * as murmurhash from "@jsr/timepp__murmurhash";
 
 export const templateKeys = {
   templates: (tenantId: string) => ["templates", tenantId] as const,
