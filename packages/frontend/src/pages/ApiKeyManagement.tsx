@@ -16,13 +16,16 @@ import { API_PERMISSION_DESCRIPTIONS, ApiKey, ApiPermission } from "../types/aut
 import { useAuth } from "../hooks/useAuth.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createSignal } from "solid-js";
+import { useTenantId } from "../hooks/useTenantId.js";
 
 const ApiKeyManagement = () => {
-  const { tenant, hasPermission } = useAuth();
+  const { hasPermission } = useAuth();
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [showCreateModal, setShowCreateModal] = createSignal(false);
   const [visibleKeys, setVisibleKeys] = createSignal<Set<string>>(new Set());
+
+  const tenantId = useTenantId();
 
   // Mock data - in real app this would come from API
   const apiKeys: ApiKey[] = [
@@ -30,7 +33,7 @@ const ApiKeyManagement = () => {
       id: "key-1",
       name: "Production API Key",
       key: "sk-live-1234567890abcdef1234567890abcdef12345678",
-      tenantId: tenant?.id || "",
+      tenantId: tenantId() || "",
       permissions: ["send_emails", "manage_campaigns_api", "view_analytics_api"],
       isActive: true,
       createdAt: "2024-01-15T10:30:00Z",
@@ -41,7 +44,7 @@ const ApiKeyManagement = () => {
       id: "key-2",
       name: "Development API Key",
       key: "sk-test-abcdef1234567890abcdef1234567890abcdef12",
-      tenantId: tenant?.id || "",
+      tenantId: tenantId() || "",
       permissions: ["send_emails", "manage_contacts_api"],
       isActive: true,
       createdAt: "2024-01-20T09:15:00Z",
@@ -52,7 +55,7 @@ const ApiKeyManagement = () => {
       id: "key-3",
       name: "Analytics Only Key",
       key: "sk-live-fedcba0987654321fedcba0987654321fedcba09",
-      tenantId: tenant?.id || "",
+      tenantId: tenantId() || "",
       permissions: ["view_analytics_api"],
       isActive: false,
       createdAt: "2024-01-10T14:20:00Z",

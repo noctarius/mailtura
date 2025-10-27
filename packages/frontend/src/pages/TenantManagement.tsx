@@ -1,6 +1,20 @@
-import { Tenant } from "../types/auth";
 import { Building2, Edit, Eye, Filter, MoreHorizontal, Plus, Search, Settings, Users } from "lucide-solid";
 import { createSignal } from "solid-js";
+import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
+
+interface Tentant0 extends Tenant {
+  domain: string;
+  isActive: boolean;
+  userCount: number;
+  settings: {
+    maxUsers: number;
+    features: string[];
+    customBranding?: {
+      companyName: string;
+      primaryColor: string;
+    };
+  };
+}
 
 const TenantManagement = () => {
   const [searchTerm, setSearchTerm] = createSignal("");
@@ -8,13 +22,14 @@ const TenantManagement = () => {
   const [_showCreateModal, setShowCreateModal] = createSignal(false);
 
   // Mock data - in real app this would come from API
-  const tenants: Tenant[] = [
+  const tenants: Tentant0[] = [
     {
       id: "tenant-1",
       name: "Acme Corporation",
       domain: "acme.com",
       isActive: true,
       createdAt: "2024-01-01",
+      createdBy: "api",
       userCount: 15,
       settings: {
         maxUsers: 50,
@@ -31,6 +46,7 @@ const TenantManagement = () => {
       domain: "techstart.io",
       isActive: true,
       createdAt: "2024-01-15",
+      createdBy: "api",
       userCount: 8,
       settings: {
         maxUsers: 25,
@@ -43,6 +59,7 @@ const TenantManagement = () => {
       domain: "global-ent.com",
       isActive: false,
       createdAt: "2024-01-20",
+      createdBy: "api",
       userCount: 3,
       settings: {
         maxUsers: 100,
