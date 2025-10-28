@@ -32,11 +32,22 @@ export default defineConfig({
         assetFileNames: "assets/[name]-[hash][extname]",
         manualChunks(id) {
           if (id.includes("node_modules")) {
+            // Ensure worker not being bundled
+            if (id.includes("monaco-editor") && id.includes("worker"))
+              return undefined;
+
             if (id.includes("moment")) return "vendor-moment";
             if (id.includes("lucide-solid")) return "vendor-lucide";
             if (id.includes("echarts")) return "vendor-echarts";
-            if (id.includes("monaco-editor") && id.includes("worker"))
-              return undefined;
+            if (id.includes("lodash")) return "vendor-lodash";
+            if (id.includes("tanstack")) return "vendor-tanstack";
+            if (id.includes("monaco-editor") && id.includes("base")) return "vendor-monaco-base";
+            if (id.includes("monaco-editor") && id.includes("editor")) {
+              if (id.includes("browser")) return "vendor-monaco-editor-browser";
+              return "vendor-monaco-editor";
+            }
+            if (id.includes("monaco-editor") && id.includes("platform")) return "vendor-monaco-platform";
+            if (id.includes("monaco-editor") && id.includes("language")) return "vendor-monaco-language";
             return "vendor";
           }
 
