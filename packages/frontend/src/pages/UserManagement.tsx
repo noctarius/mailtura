@@ -169,7 +169,7 @@ const UserManagement = () => {
       lastName: "",
       email: "",
       role: "user" as UserRole,
-      tenantId: currentUser?.role === "super_admin" ? "" : currentUser?.tenantId || "",
+      tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
       isActive: true,
       sendInvitation: true,
     });
@@ -194,7 +194,7 @@ const UserManagement = () => {
         newErrors.email = "This email address is already in use";
       }
 
-      if (currentUser?.role === "super_admin" && !userData().tenantId) {
+      if (currentUser()?.role === "super_admin" && !userData().tenantId) {
         newErrors.tenantId = "Please select a tenant";
       }
 
@@ -213,7 +213,7 @@ const UserManagement = () => {
         lastName: "",
         email: "",
         role: "user",
-        tenantId: currentUser?.role === "super_admin" ? "" : currentUser?.tenantId || "",
+        tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
         isActive: true,
         sendInvitation: true,
       });
@@ -221,9 +221,9 @@ const UserManagement = () => {
     };
 
     const getAvailableRoles = (): UserRole[] => {
-      if (currentUser?.role === "super_admin") {
+      if (currentUser()?.role === "super_admin") {
         return ["super_admin", "tenant_admin", "user", "viewer"];
-      } else if (currentUser?.role === "tenant_admin") {
+      } else if (currentUser()?.role === "tenant_admin") {
         return ["tenant_admin", "user", "viewer"];
       }
       return ["user", "viewer"];
@@ -318,7 +318,7 @@ const UserManagement = () => {
                 <h4 class="text-md font-medium text-gray-900 mb-4">Account Settings</h4>
 
                 {/* Tenant Selection (only for super admins) */}
-                {currentUser?.role === "super_admin" && (
+                {currentUser()?.role === "super_admin" && (
                   <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Tenant *</label>
                     <select

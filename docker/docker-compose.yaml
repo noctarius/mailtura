@@ -1,0 +1,74 @@
+name: mailtura
+
+services:
+  mailtura:
+    container_name: mailtura
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      - 'DATABASE_URL=postgres://mailtura:mailtura@postgresql:5432/postgres'
+
+  postgresql:
+    container_name: postgres
+    image: postgres:18.0-alpine
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: mailtura
+      POSTGRES_PASSWORD: mailtura
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "postgres", "-d", "postgres"]
+      interval: 30s
+      timeout: 60s
+      retries: 5
+      start_period: 80s
+
+  temporal:
+    container_name: temporal
+    image: temporalio/auto-setup:1.29.0
+    ports:
+      - '7233:7233'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+    environment:
+      - 'DB=postgres12'
+      - 'DB_PORT=5432'
+      - 'POSTGRES_USER=mailtura'
+      - 'POSTGRES_PWD=mailtura'
+      - 'POSTGRES_SEEDS=postgresql'
+      - 'TEMPORAL_CLI_ADDRESS=temporal:7233'
+      - 'TEMPORAL_ADDRESS=temporal:7233'
+
+  temporal-admin-tools:
+    container_name: temporal-admin-tools
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CLI_ADDRESS=temporal:7233
+    image: temporalio/admin-tools:1.29
+    stdin_open: true
+    tty: true
+
+  temporal-ui:
+    container_name: temporal-ui
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=temporal:7233
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    image: temporalio/ui:2.42.1
+    ports:
+      - '8080:8080'
+
+volumes:
+  postgres-data:

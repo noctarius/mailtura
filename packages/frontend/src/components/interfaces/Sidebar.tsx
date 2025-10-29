@@ -4,6 +4,36 @@ import { useAuth } from "../../hooks/useAuth.tsx";
 import { createMemo } from "solid-js";
 import { useLocation } from "@solidjs/router";
 
+const navItems: NavigationItem[] = [
+  { id: "dashboard", label: "Dashboard", icon: ChartColumn },
+  { id: "campaigns", label: "Campaigns", icon: Send },
+  { id: "template-editor", label: "Templates", icon: FileText },
+  { id: "contacts", label: "Contacts", icon: Users },
+  { id: "activity", label: "Activity", icon: Activity },
+  { id: "analytics", label: "Analytics", icon: TrendingUp },
+  {
+    id: "settings",
+    label: "Settings",
+    icon: Settings,
+    subitems: [
+      { id: "account", label: "Account" },
+      { id: "api-key-management", label: "API Key Management" },
+      { id: "integrations", label: "Integrations" },
+      { id: "tenant-management", label: "Tenant Management", permissions: ["manage::tenants"] },
+    ],
+  },
+  {
+    id: "suppression",
+    label: "Suppressions",
+    icon: Shield,
+    subitems: [
+      { id: "global-unsubscribes", label: "Global Unsubscribes" },
+      { id: "list-unsubscribes", label: "List Unsubscribes" },
+      { id: "bounces", label: "Bounces" },
+    ],
+  },
+];
+
 const Sidebar = () => {
   const auth = useAuth();
   const user = createMemo(() => auth.user());
@@ -13,36 +43,6 @@ const Sidebar = () => {
     const path = location.pathname.endsWith("/") ? location.pathname.slice(0, -1) : location.pathname;
     return path.split("/").pop();
   }, [location]);
-
-  const navItems: NavigationItem[] = [
-    { id: "dashboard", label: "Dashboard", icon: ChartColumn },
-    { id: "campaigns", label: "Campaigns", icon: Send },
-    { id: "template-editor", label: "Templates", icon: FileText },
-    { id: "contacts", label: "Contacts", icon: Users },
-    { id: "activity", label: "Activity", icon: Activity },
-    { id: "analytics", label: "Analytics", icon: TrendingUp },
-    {
-      id: "settings",
-      label: "Settings",
-      icon: Settings,
-      subitems: [
-        { id: "account", label: "Account" },
-        { id: "api-key-management", label: "API Key Management" },
-        { id: "integrations", label: "Integrations" },
-        { id: "tenant-management", label: "Tenant Management", permissions: ["manage::tenants"] },
-      ],
-    },
-    {
-      id: "suppression",
-      label: "Suppressions",
-      icon: Shield,
-      subitems: [
-        { id: "global-unsubscribes", label: "Global Unsubscribes" },
-        { id: "list-unsubscribes", label: "List Unsubscribes" },
-        { id: "bounces", label: "Bounces" },
-      ],
-    },
-  ];
 
   return (
     <div class="w-64 bg-slate-900 text-white flex flex-col">
@@ -55,7 +55,7 @@ const Sidebar = () => {
         </div>
       </div>
 
-      <nav class="flex-1 p-4">
+      <nav class="flex-1 p-4 overflow-y-auto">
         <ul class="space-y-2">
           {navItems.map(item => {
             return (

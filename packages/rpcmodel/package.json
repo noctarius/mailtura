@@ -11,12 +11,12 @@
   },
   "dependencies": {
     "moment-timezone": "^0.6.0",
-    "typebox": "portal:"
+    "typebox": "catalog:"
   },
   "devDependencies": {
-    "@eslint/js": "portal:",
-    "eslint": "portal:",
-    "typescript": "portal:",
-    "typescript-eslint": "portal:"
+    "@eslint/js": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:"
   }
 }

@@ -3,14 +3,23 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": ["packages/*"],
+    "catalog": {
+      "typescript": "5.9.3",
+      "typescript-eslint": "^8.45.0",
+      "@eslint/js": "^9.9.1",
+      "eslint": "^9.9.1",
+      "prettier": "^3.6.2",
+      "eslint-config-prettier": "^10.1.8",
+      "typebox": "^1.0.30"
+    }
+  },
   "scripts": {
-    "build": "yarn workspaces -p run build",
-    "lint": "yarn workspaces run lint",
-    "typecheck": "yarn workspaces run typecheck",
-    "test": "yarn workspaces run test"
+    "build": "bun run --workspaces build",
+    "lint": "bun run --workspaces lint",
+    "typecheck": "bun run --workspaces typecheck",
+    "test": "bun run --workspaces test"
   },
   "resolutions": {
     "typescript": "5.9.3",
