@@ -82,14 +82,15 @@ await app.register(SwaggerUi, {
   },
 });
 
+const currentPath = import.meta.dir
+console.info(`Mounting ${path.join(currentPath, "public")} as /dashboard`)
 app.register(Static, {
-  root: path.join(__dirname, "public"),
+  root: path.join(currentPath, "public"),
   prefix: "/dashboard/",
-  constraints: {
-    host: "example.com",
-  },
+  index: "index.html",
 });
 
 createRouter(app).route("/api/v1", registerRoutes);
 
-await app.listen({ port: 3000 });
+console.info("Starting server at :3000...");
+await app.listen({ host: '0.0.0.0', port: 3000 });

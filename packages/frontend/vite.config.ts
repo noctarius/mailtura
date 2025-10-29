@@ -7,7 +7,10 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const monacoEditorDirectory = pathResolve(__dirname, "../../node_modules/monaco-editor");
 
+const baseUrl = process.env.DASHBOARD_BASE_URL;
+
 export default defineConfig({
+  base: baseUrl,
   plugins: [solidPlugin()],
   optimizeDeps: {
     exclude: ["lucide-solid"],
@@ -24,6 +27,7 @@ export default defineConfig({
     platform: "browser",
   },
   build: {
+    manifest: true,
     sourcemap: true,
     rollupOptions: {
       output: {
@@ -41,13 +45,8 @@ export default defineConfig({
             if (id.includes("echarts")) return "vendor-echarts";
             if (id.includes("lodash")) return "vendor-lodash";
             if (id.includes("tanstack")) return "vendor-tanstack";
-            if (id.includes("monaco-editor") && id.includes("base")) return "vendor-monaco-base";
-            if (id.includes("monaco-editor") && id.includes("editor")) {
-              if (id.includes("browser")) return "vendor-monaco-editor-browser";
-              return "vendor-monaco-editor";
-            }
-            if (id.includes("monaco-editor") && id.includes("platform")) return "vendor-monaco-platform";
-            if (id.includes("monaco-editor") && id.includes("language")) return "vendor-monaco-language";
+            if (id.includes("monaco-editor")) return "vendor-monaco";
+            if (id.includes("state-local")) return "vendor-state-local";
             return "vendor";
           }
 
