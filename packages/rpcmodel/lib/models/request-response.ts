@@ -1,5 +1,5 @@
 import { type Static, type TSchema, Type } from "typebox";
-import { ApiKey, Campaign, Contact, SubscriberList, Template, Tenant, User } from "./index.js";
+import { ApiKey, Campaign, Contact, ContactImport, SubscriberList, Template, Tenant, User } from "./index.js";
 
 type Nullable<T extends TSchema> = ReturnType<
   typeof Type.Optional<ReturnType<typeof Type.Union<[T, ReturnType<typeof Type.Null>]>>>
@@ -24,6 +24,23 @@ export const UpdateContact = //
   });
 
 export type UpdateContact = Static<typeof UpdateContact>;
+
+export const CreateContactBatch = //
+  Type.Object({
+    contacts: Type.Array(CreateContact),
+    upsert: Type.Boolean(),
+  });
+
+export type CreateContactBatch = Static<typeof CreateContactBatch>;
+
+export const CreateContactBatchResponse = Type.Object({
+  items: Type.Integer(),
+  added: Type.Array(Contact),
+  updated: Type.Array(Contact),
+  skipped: Type.Array(Contact),
+});
+
+export type CreateContactBatchResponse = Static<typeof CreateContactBatchResponse>;
 
 export const CreateTemplate = //
   Type.Intersect(
@@ -236,13 +253,7 @@ export type UpdateApiKey = Static<typeof UpdateApiKey>;
 export const ImportContacts = //
   Type.Object(
     {
-      mapping: Type.Array(
-        Type.Object({
-          source: Type.String(),
-          target: Type.String(),
-        })
-      ),
-      skipFirstRow: Type.Boolean(),
+      mapping: Type.Record(Type.String(), Type.String()),
       listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
     },
     {
@@ -253,3 +264,24 @@ export const ImportContacts = //
   );
 
 export type ImportContacts = Static<typeof ImportContacts>;
+
+export const UpdateContactImport = //
+  Type.Partial(
+    Type.Omit(ContactImport, [
+      "id",
+      "name",
+      "filename",
+      "parameters",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+    ]),
+    {
+      $id: "UpdateContactImport",
+      description: "An update contact import request",
+      additionalProperties: false,
+    }
+  );
+
+export type UpdateContactImport = Static<typeof UpdateContactImport>;

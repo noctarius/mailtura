@@ -47,7 +47,6 @@ export const Contact = //
       }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
-      lastActivity: Type.Optional(Type.String({ format: "date-time" })),
       listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
       status: Type.String(),
       createdAt: Type.String({ format: "date-time" }),
@@ -445,6 +444,7 @@ export const ContactImport = //
       status: Type.Number({ minimum: 0, maximum: 1 }),
       records: Type.Integer({ minimum: 0 }),
       finished: Type.Boolean(),
+      parameters: Type.Any(),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),
@@ -458,3 +458,21 @@ export const ContactImport = //
   );
 
 export type ContactImport = Static<typeof ContactImport>;
+
+export const File = Type.Object(
+  {
+    id: Type.String({ format: "uuid" }),
+    name: Type.String(),
+    createdAt: Type.String({ format: "date-time" }),
+    createdBy: Type.String(),
+    updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+    updatedBy: Type.Optional(Type.String()),
+  },
+  {
+    $id: "File",
+    description: "A contact import in the system",
+    additionalProperties: false,
+  }
+);
+
+export type File = Static<typeof File>;
