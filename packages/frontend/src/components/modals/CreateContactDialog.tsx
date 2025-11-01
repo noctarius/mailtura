@@ -11,12 +11,13 @@ import { UiButton } from "../ui/UiButton.js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { UiForm } from "../../forms/UiForm.js";
 import { UiDialog } from "../ui/UiDialog.js";
+import { toast } from "solid-toast";
 
-type CreateContactModalProps = {
+type CreateContactDialogProps = {
   onClose: () => void;
 };
 
-const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
+const CreateContactDialog = ({ onClose }: CreateContactDialogProps) => {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
@@ -101,10 +102,11 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
             await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });
           }
           onClose();
+          toast.success("Contact added successfully!");
           resolve(undefined);
         },
         onError: error => {
-          console.error("Error creating contact:", error);
+          toast.error(`Error creating contact: ${error}`);
           reject(error);
         },
       });
@@ -120,10 +122,11 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
         onSuccess: async () => {
           await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
           setShowNewSubscriberListInput(false);
+          toast.success("Subscriber list created successfully!");
           resolve(undefined);
         },
         onError: error => {
-          console.error("Error creating list:", error);
+          toast.error(`Error creating list: ${error}`);
           reject(error);
         },
       });
@@ -199,4 +202,4 @@ const CreateContactModal = ({ onClose }: CreateContactModalProps) => {
   );
 };
 
-export default CreateContactModal;
+export default CreateContactDialog;

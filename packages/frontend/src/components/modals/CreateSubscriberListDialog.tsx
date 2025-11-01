@@ -6,12 +6,13 @@ import { useQueryClient } from "@tanstack/solid-query";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { UiForm } from "../../forms/UiForm.js";
 import { UiDialog } from "../ui/UiDialog.js";
+import { toast } from "solid-toast";
 
-interface CreateListModalProps {
+interface CreateListDialogProps {
   onClose: () => void;
 }
 
-const CreateSubscriberListModal = ({ onClose }: CreateListModalProps) => {
+const CreateSubscriberListDialog = ({ onClose }: CreateListModalCreateListDialogPropsProps) => {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
@@ -44,10 +45,11 @@ const CreateSubscriberListModal = ({ onClose }: CreateListModalProps) => {
         onSuccess: async () => {
           await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
           onClose();
+          toast.success("Subscriber list created successfully!");
           resolve(undefined);
         },
         onError: error => {
-          console.error("Error creating list:", error);
+          toast.error(`Error creating list: ${error}`);
           reject(error);
         },
       });
@@ -90,4 +92,4 @@ const CreateSubscriberListModal = ({ onClose }: CreateListModalProps) => {
   );
 };
 
-export default CreateSubscriberListModal;
+export default CreateSubscriberListDialog;

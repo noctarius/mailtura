@@ -32,3 +32,10 @@
     white-space: nowrap;
     overflow: hidden;
 }
+
+.full-row-checkbox {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

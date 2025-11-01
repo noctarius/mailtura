@@ -519,16 +519,19 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An import contacts request */
             requestBody: {
                 content: {
-                    "application/json": {
-                        mapping: {
-                            source: string;
-                            target: string;
-                        }[];
-                        skipFirstRow: boolean;
-                        listIds: string[];
+                    "multipart/form-data": {
+                        /** Format: binary */
+                        file: string;
+                        /** @description An import contacts request */
+                        parameters: {
+                            mapping: {
+                                [key: string]: string;
+                            };
+                            skipFirstRow: boolean;
+                            listIds: string[];
+                        };
                     };
                 };
             };

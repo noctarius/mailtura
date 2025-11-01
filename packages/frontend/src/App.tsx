@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
 import SignIn from "./pages/SignIn.js";
+import { Toaster } from "solid-toast";
 
 const queryClient = new QueryClient();
 
@@ -80,6 +81,7 @@ function AppContent() {
 
   return (
     <>
+      <Toaster />
       {auth.isLoading() ? (
         <div class="min-h-screen bg-gray-50 flex items-center justify-center">
           <div class="text-center">

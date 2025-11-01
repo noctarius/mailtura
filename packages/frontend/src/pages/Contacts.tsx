@@ -1,13 +1,14 @@
-import { Funnel, List, Loader, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
+import { Funnel, List, Loader, Minus, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
 import { createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
 import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
-import CreateContactModal from "../components/modals/CreateContactModal.js";
-import CreateSubscriberListModal from "../components/modals/CreateSubscriberListModal.js";
+import CreateContactDialog from "../components/modals/CreateContactDialog.js";
+import CreateSubscriberListDialog from "../components/modals/CreateSubscriberListDialog.js";
 import { useTenantId } from "../hooks/useTenantId.js";
 import { ContactsTable } from "../components/interfaces/ContactsTable.js";
-import { ImportContactsModal } from "../components/modals/ImportContactsModal.js";
+import { ImportContactsDialog } from "../components/modals/ImportContactsDialog.js";
+import { DeleteSubscriberListDialog } from "../components/modals/DeleteSubscriberListDialog.js";
 
 const Contacts = () => {
   const [contactsTable, setContactsTable] = createSignal<HTMLDivElement>();
@@ -20,6 +21,9 @@ const Contacts = () => {
   const [showCreateContact, setShowCreateContact] = createSignal(false);
   const [showCreateSubscriberList, setShowCreateSubscriberList] = createSignal(false);
   const [showImportContacts, setShowImportContacts] = createSignal(false);
+  const [listRemovalActive, setListRemovalActive] = createSignal(false);
+  const [deleteSubscriberList, setDeleteSubscriberList] = createSignal<string | undefined>(undefined);
+  const [showListRemovalConfirmation, setShowListRemovalConfirmation] = createSignal(false);
 
   const contactsQuery = useContactsQuery({ tenantId });
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
@@ -57,6 +61,17 @@ const Contacts = () => {
     })
   );
 
+  const handleListRemovalClick = (event: Event, subscriberListId: string) => {
+    event.stopPropagation();
+    if (listRemovalActive()) {
+      if (subscriberListId === "all") return;
+      setDeleteSubscriberList(subscriberListId);
+      setShowListRemovalConfirmation(true);
+    } else {
+      setSelectedList(subscriberListId);
+    }
+  };
+
   return (
     <div class="h-full flex flex-1 min-h-0 bg-gray-50">
       {/* Lists Sidebar */}
@@ -64,12 +79,21 @@ const Contacts = () => {
         <div class="p-6 border-b border-gray-200">
           <div class="flex items-center justify-between mb-4">
             <h2 class="text-xl font-semibold text-gray-900">Subscriber Lists</h2>
-            <button
-              onClick={() => setShowCreateSubscriberList(true)}
-              class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-            >
-              <Plus class="w-5 h-5" />
-            </button>
+            <div class="flex items-end space-x-1">
+              <button
+                onClick={() => setListRemovalActive(!listRemovalActive())}
+                class="p-2 text-blue-600 hover:bg-blue-50 disabled:text-gray-600 disabled:hover:bg-white rounded-lg transition-colors"
+              >
+                <Minus class="w-5 h-5" />
+              </button>
+              <button
+                disabled={listRemovalActive()}
+                onClick={() => setShowCreateSubscriberList(true)}
+                class="p-2 text-blue-600 hover:bg-blue-50 disabled:text-gray-600 disabled:hover:bg-white rounded-lg transition-colors"
+              >
+                <Plus class="w-5 h-5" />
+              </button>
+            </div>
           </div>
         </div>
 
@@ -77,12 +101,16 @@ const Contacts = () => {
           <div class="space-y-2">
             {subscriberLists()?.map(list => (
               <div
-                onClick={() => setSelectedList(list.id)}
-                class={`p-4 rounded-lg cursor-pointer transition-colors ${selectedList() === list.id ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50 border border-transparent"}`}
+                onClick={(event: Event) => handleListRemovalClick(event, list.id)}
+                class={`p-4 rounded-lg cursor-pointer transition-colors full-row-checkbox ${!listRemovalActive() && selectedList() === list.id ? "bg-blue-50 border border-blue-200" : "hover:bg-gray-50 border border-transparent"}`}
               >
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center space-x-2">
-                    <List class="w-4 h-4 text-gray-400" />
+                    {listRemovalActive() && list.id !== "all" ? (
+                      <Minus class="w-4 h-4" />
+                    ) : (
+                      <List class="w-4 h-4 text-gray-400" />
+                    )}
                     <span class="font-medium text-gray-900">{list.name}</span>
                   </div>
                   <span class="text-sm font-medium text-gray-600">{list.contactCount.toLocaleString()}</span>
@@ -228,12 +256,13 @@ const Contacts = () => {
       </div>
 
       {/* Modals */}
-      {showCreateContact() && <CreateContactModal onClose={() => setShowCreateContact(false)} />}
-      {showCreateSubscriberList() && <CreateSubscriberListModal onClose={() => setShowCreateSubscriberList(false)} />}
-      {showImportContacts() && (
-        <ImportContactsModal
-          onClose={() => setShowImportContacts(false)}
-          onImportContacts={importData => console.log("Importing contacts...", importData)}
+      {showCreateContact() && <CreateContactDialog onClose={() => setShowCreateContact(false)} />}
+      {showCreateSubscriberList() && <CreateSubscriberListDialog onClose={() => setShowCreateSubscriberList(false)} />}
+      {showImportContacts() && <ImportContactsDialog onClose={() => setShowImportContacts(false)} />}
+      {showListRemovalConfirmation() && (
+        <DeleteSubscriberListDialog
+          subscriberListId={deleteSubscriberList}
+          onClose={() => setShowListRemovalConfirmation(false)}
         />
       )}
     </div>
