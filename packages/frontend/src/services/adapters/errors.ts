@@ -17,7 +17,12 @@ export function maybeHandleError<T extends Record<string | number, any>, Options
   if (response.error) {
     const status = response.response.status;
     const data = response.data;
-    throw new ResponseError(data ? data : response.error, status);
+    const message = response.error
+      ? "message" in response.error
+        ? (response.error as any).message
+        : response.error
+      : "Unknown error";
+    throw new ResponseError(data ? data : message, status);
   }
 
   if (response.response.status <= 200 && response.response.status >= 299) {

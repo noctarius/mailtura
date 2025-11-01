@@ -13,7 +13,18 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapContact, mapContactImport } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateContact, ImportContacts, UpdateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import {
+  CreateContact,
+  CreateContactBatch,
+  CreateContactBatchResponse,
+  ImportContacts,
+  UpdateContact,
+  UpdateContactImport,
+} from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { getTaskManager } from "../../tasks/index.js";
+import type { MultipartFile } from "@fastify/multipart";
+import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
+import type { ContactImportParameters } from "@mailtura/rpcmodel/lib/tasks/index.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -86,6 +97,101 @@ export function contactRoutes<
 
         return reply.status(201).send(mapContact(newContact));
       });
+    }
+  );
+
+  router.post<{ Params: { tenant_id: string }; Body: CreateContactBatch; Reply: CreateContactBatchResponse }>(
+    "/bulk/",
+    {
+      schema: {
+        body: CreateContactBatch,
+        response: {
+          201: CreateContactBatchResponse,
+          401: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async (request, reply) => {
+      const tenantId = request.params.tenant_id;
+
+      const response = await prisma.$transaction(async tx => {
+        const response: CreateContactBatchResponse = {
+          items: request.body.contacts.length,
+          added: [],
+          updated: [],
+          skipped: [],
+        };
+
+        for (const contact of request.body.contacts) {
+          const oldContact = await tx.contacts.findUnique({
+            where: {
+              tenant_id_email: {
+                email: contact.email,
+                tenant_id: tenantId,
+              },
+            },
+          });
+
+          // If already existing and requested to not update, skip the contact
+          if (oldContact && !request.body.upsert) {
+            response.skipped.push(mapContact(oldContact));
+            continue;
+          }
+
+          const newContact = await tx.contacts.upsert({
+            where: {
+              tenant_id_email: {
+                email: contact.email,
+                tenant_id: tenantId,
+              },
+            },
+            create: {
+              tenant_id: tenantId,
+              email: contact.email,
+              first_name: contact.firstName,
+              last_name: contact.lastName,
+              created_at: UTC.now().toDate(),
+              created_by: "api",
+            },
+            update: {
+              first_name: contact.firstName ?? oldContact?.first_name,
+              last_name: contact.lastName ?? oldContact?.last_name,
+              updated_at: UTC.now().toDate(),
+              updated_by: "api",
+            },
+          });
+
+          for (const listId of contact.listIds) {
+            await tx.subscribers.upsert({
+              where: {
+                tenant_id_contact_id_subscriber_list_id: {
+                  tenant_id: tenantId,
+                  contact_id: newContact.id,
+                  subscriber_list_id: listId,
+                },
+              },
+              create: {
+                tenant_id: tenantId,
+                contact_id: newContact.id,
+                status: "Subscribed",
+                subscriber_list_id: listId,
+                subscribed_at: UTC.now().toDate(),
+                created_at: UTC.now().toDate(),
+                created_by: "api",
+              },
+              update: {
+                updated_at: UTC.now().toDate(),
+                updated_by: "api",
+              },
+            });
+          }
+
+          if (oldContact) response.updated.push(mapContact(newContact));
+          else response.added.push(mapContact(newContact));
+        }
+        return response;
+      });
+      return reply.status(201).send(response);
     }
   );
 
@@ -298,11 +404,20 @@ export function contactImportRoutes<
     }
   );
 
-  router.post<{ Params: { tenant_id: string }; Body: ImportContacts; Response: ContactImport }>(
+  router.post<{
+    Params: { tenant_id: string };
+    Body: { file: MultipartFile; parameters: ImportContacts };
+    Response: ContactImport;
+  }>(
     "/",
     {
+      validatorCompiler: () => () => true,
       schema: {
-        body: ImportContacts,
+        consumes: ["multipart/form-data"],
+        body: Type.Object({
+          file: Type.String({ format: "binary" }),
+          parameters: ImportContacts,
+        }),
         response: {
           200: Type.Ref("ContactImport"),
           401: Type.Ref("ErrorResponse"),
@@ -312,48 +427,61 @@ export function contactImportRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
-      const file = await request.file();
+      // Extract the multipart properties into the request body
+      parseMultipartFieldsToBody(request);
+
+      console.log("Received body: ", request.body);
+      const file = request.body.file;
       if (!file) {
         throw createError(400, "No file provided");
       }
-
       const data = await file.toBuffer();
-      const body = request.body;
+
+      const mapping = Object.keys(request.body.parameters.mapping).map((key): [target: string, source: string] => {
+        return [request.body.parameters.mapping[key]!, key];
+      });
 
       return prisma.$transaction(async tx => {
         const newFile = await tx.files.create({
           data: {
             tenant_id: tenantId,
             name: file.filename,
-            data: data,
+            data: Uint8Array.from(data),
             created_at: UTC.now().toDate(),
             created_by: "api",
           },
         });
 
-        return mapContactImport(
-          await tx.contact_imports.create({
-            data: {
-              tenant_id: tenantId,
-              status: 0,
-              records: 0,
-              finished: false,
-              filename: file.filename,
-              parameters: {
-                ...body,
-                file_id: newFile.id,
-              },
-              created_at: UTC.now().toDate(),
-              created_by: "api",
-            },
-          })
-        );
+        const parameters: ContactImportParameters = {
+          file_id: newFile.id,
+          list_ids: request.body.parameters.listIds,
+          mapping,
+        };
+
+        const contactImport = await tx.contact_imports.create({
+          data: {
+            tenant_id: tenantId,
+            status: 0,
+            records: 0,
+            finished: false,
+            filename: newFile.name,
+            parameters,
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
+
+        const taskManager = getTaskManager();
+        const handle = await taskManager.createImportContactsJob(tenantId, contactImport.id);
+        console.log("Created import contacts job", handle);
+
+        return reply.status(201).send(mapContactImport(contactImport));
       });
     }
   );
 
   router.get<{ Params: { tenant_id: string; import_id: string }; Response: ContactImport }>(
-    "/:import_id",
+    "/:import_id/",
     {
       schema: {
         params: Type.Object({
@@ -382,7 +510,58 @@ export function contactImportRoutes<
         throw createError(404, "Contact import not found");
       }
 
-      return mapContactImport(contactImport);
+      return reply.send(mapContactImport(contactImport));
+    }
+  );
+
+  router.put<{
+    Params: { tenant_id: string; import_id: string };
+    Body: UpdateContactImport;
+    Response: ContactImport;
+  }>(
+    "/:import_id/",
+    {
+      schema: {
+        params: Type.Object({
+          tenant_id: Type.String({ format: "uuid" }),
+          import_id: Type.String({ format: "uuid" }),
+        }),
+        body: UpdateContactImport,
+        response: {
+          200: Type.Ref("ContactImport"),
+          401: Type.Ref("ErrorResponse"),
+          404: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async (request, reply) => {
+      const tenantId = request.params.tenant_id;
+      const importId = request.params.import_id;
+
+      const oldContactImport = await prisma.contact_imports.findUnique({
+        where: {
+          id: importId,
+          tenant_id: tenantId,
+        },
+      });
+
+      if (!oldContactImport) {
+        throw createError(404, "Contact import not found");
+      }
+
+      const newContactImport = await prisma.contact_imports.update({
+        where: {
+          id: importId,
+          tenant_id: tenantId,
+        },
+        data: {
+          status: request.body.status,
+          records: request.body.records,
+          finished: request.body.finished,
+        },
+      });
+
+      return reply.send(mapContactImport(newContactImport));
     }
   );
 }

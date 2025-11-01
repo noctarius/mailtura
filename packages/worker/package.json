@@ -1,0 +1,46 @@
+{
+  "name": "@mailtura/temporal-worker",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "src/index.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "NODE_ENV=development tsc-watch --onSuccess \"vite-node src/index.ts\"",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@mailtura/rpcmodel": "*",
+    "@temporalio/worker": "catalog:",
+    "@temporalio/workflow": "catalog:",
+    "mjml": "^4.16.1",
+    "mustache": "^4.2.0",
+    "node-html-parser": "^7.0.1",
+    "nodemailer": "^7.0.6",
+    "papaparse": "catalog:",
+    "sanitize-html": "^2.17.0",
+    "typebox": "catalog:"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@types/express": "^5.0.3",
+    "@types/mjml": "^4.7.4",
+    "@types/mustache": "^4.2.6",
+    "@types/node": "^24.9.2",
+    "@types/sanitize-html": "^2.16.0",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-sql-cst": "^0.13.0",
+    "tsc-watch": "^7.2.0",
+    "tsx": "^4.20.6",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vite-node": "^3.2.4"
+  },
+  "trustedDependencies": [
+    "@nestjs/core"
+  ]
+}

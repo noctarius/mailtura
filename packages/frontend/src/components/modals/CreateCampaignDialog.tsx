@@ -23,7 +23,7 @@ interface CampaignData {
   timezone: string;
 }
 
-const CreateCampaignModal = (props: CreateCampaignModalProps) => {
+const CreateCampaignDialog = (props: CreateCampaignModalProps) => {
   const [currentStep, setCurrentStep] = createSignal(1);
   const [campaignData, setCampaignData] = createSignal<CampaignData>({
     name: "",
@@ -491,4 +491,4 @@ const CreateCampaignModal = (props: CreateCampaignModalProps) => {
   );
 };
 
-export default CreateCampaignModal;
+export default CreateCampaignDialog;

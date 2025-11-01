@@ -13,6 +13,7 @@ import {
   EmailMetricsChartData,
   ErrorResponse,
   EventType,
+  File,
   PerformanceMetricsChartData,
   Subscriber,
   SubscriberList,
@@ -57,6 +58,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(User);
   app.addSchema(ApiKey);
   app.addSchema(ContactImport);
+  app.addSchema(File);
 }
 
 export function registerRoutes<

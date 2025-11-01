@@ -6,8 +6,7 @@
   "private": true,
   "scripts": {
     "build": "bunx prisma generate && bun build.ts",
-    "dev": "NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
-    "dev2": "bun --bun run src/index.ts",
+    "dev": "TEMPORAL_ADDRESS=localhost:7233 TEMPORAL_TASK_QUEUE=mailtura NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -21,6 +20,7 @@
     "@fastify/type-provider-typebox": "^6.0.0",
     "@mailtura/rpcmodel": "*",
     "@prisma/client": "^6.16.3",
+    "@temporalio/client": "catalog:",
     "fastify": "^5.6.1",
     "fastify-plugin": "^5.1.0",
     "fastify-type-provider-zod": "^6.0.0",
@@ -29,6 +29,7 @@
     "node-html-parser": "^7.0.1",
     "nodemailer": "^7.0.6",
     "sanitize-html": "^2.17.0",
+    "socket.io": "catalog:",
     "typebox": "catalog:",
     "zod": "^4.1.11"
   },

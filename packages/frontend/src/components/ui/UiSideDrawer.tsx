@@ -15,20 +15,26 @@ type EditDrawerProps = {
 };
 
 export function UiSideDrawer(props: EditDrawerProps) {
-  const [drawerElement, setDrawerElement] = createSignal<HTMLElement | undefined>(undefined);
+  const [drawerRef, setDrawerRef] = createSignal<HTMLElement | undefined>(undefined);
   const [drawer, setDrawer] = createSignal<Drawer | undefined>(undefined);
+  const [visible, setVisible] = createSignal(false);
 
   createEffect(() => {
-    if (drawerElement() === undefined) {
+    if (props.show()) {
+      setVisible(true);
+    }
+  })
+
+  createEffect(() => {
+    if (drawerRef() === undefined) {
       setDrawer(undefined);
     } else {
       setDrawer(
-        new Drawer(drawerElement(), {
+        new Drawer(drawerRef(), {
           placement: "right",
-          backdrop: true,
+          backdrop: false,
           onShow: props.onShow || (() => undefined),
           onHide: props.onClose || (() => undefined),
-          backdropClasses: "side-drawer-bg",
         })
       );
     }
@@ -39,7 +45,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
     if (drawerInstance === undefined) return;
     const opened = props.show();
     if (drawerInstance.isVisible() && !opened) {
-      drawerInstance.hide();
+      closeDrawer(drawerInstance);
     } else if (!drawerInstance.isVisible() && opened) {
       drawerInstance.show();
     }
@@ -52,14 +58,26 @@ export function UiSideDrawer(props: EditDrawerProps) {
     });
   });
 
+  const closeDrawer = (drawerInstance: Drawer) => {
+    if (drawerRef()) {
+      drawerRef()?.classList.add("drawer-closing");
+      setTimeout(() => {
+        drawerInstance.hide();
+        drawerRef()?.classList.remove("drawer-closing");
+        setVisible(false);
+      }, 300);
+    }
+  };
+
   return (
     <>
-      {props.show() ? (
+      {visible() ? (
         <Portal>
+          <div class="modal-overlay" onClick={() => closeDrawer(drawer()!)} />
           <div
+            ref={setDrawerRef}
             id={props.id}
-            ref={setDrawerElement}
-            class="side-drawer-container"
+            class="side-drawer side-drawer-container"
             style={{ width: "600px" }}
             tabIndex="-1"
             aria-labelledby="drawer-label"
@@ -70,7 +88,7 @@ export function UiSideDrawer(props: EditDrawerProps) {
             </h5>
             <button
               type="button"
-              onClick={() => drawer()?.hide()}
+              onClick={props.onClose}
               aria-controls="drawer-example"
               class="side-drawer-close-btn"
             >

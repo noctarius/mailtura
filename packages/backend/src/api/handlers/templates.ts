@@ -230,7 +230,7 @@ export function templateRoutes<
     );
 
     subRouter.post<{ Params: { tenant_id: string; template_id: string }; Body: PreviewTemplate; Reply: string }>(
-      "/preview",
+      "/preview/",
       {
         schema: {
           params: Type.Object({

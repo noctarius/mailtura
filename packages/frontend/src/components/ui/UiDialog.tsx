@@ -1,7 +1,6 @@
-import { JSX, onCleanup, onMount } from "solid-js";
+import { JSX } from "solid-js";
 import { LucideProps, X } from "lucide-solid";
 import { WizardStep, WizardStepper } from "../interfaces/WizardStepper.js";
-import { disableSwipe, enableSwipe } from "../../helpers/swipe-actions.js";
 
 interface UiDialogProps {
   title: () => string;
@@ -18,15 +17,8 @@ interface UiDialogProps {
 export function UiDialog(props: UiDialogProps) {
   const widthClass = () => props.widthClass || "max-w-md";
 
-  onMount(() => {
-    disableSwipe();
-    onCleanup(() => {
-      enableSwipe();
-    });
-  });
-
   return (
-    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="modal-overlay">
       <div class={`bg-white rounded-xl w-full max-h-[90vh] flex flex-col overflow-hidden ${widthClass()}`}>
         <div class="flex flex-col items-center p-6 border-b border-gray-200">
           <div class="flex items-center justify-between w-full">

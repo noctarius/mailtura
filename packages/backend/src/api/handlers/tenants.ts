@@ -20,6 +20,7 @@ import { campaignRoutes } from "./campaigns.js";
 import { templateRoutes } from "./templates.js";
 import { userRoutes } from "./users.js";
 import { apiKeyRoutes } from "./apikeys.js";
+import { fileRoutes } from "./files.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -180,5 +181,6 @@ export function tenantRoutes<
     subRouter.route("/lists", subscriberListRoutes);
     subRouter.route("/users", userRoutes);
     subRouter.route("/api-keys", apiKeyRoutes);
+    subRouter.route("/files", fileRoutes);
   });
 }

@@ -13,6 +13,7 @@
     "build:openapi": "npx openapi-typescript http://localhost:3000/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
   },
   "dependencies": {
+    "@jsr/timepp__murmurhash": "^0.1.1",
     "@mailtura/rpcmodel": "*",
     "@modular-forms/solid": "^0.25.1",
     "@solid-primitives/destructure": "^0.2.2",
@@ -22,7 +23,6 @@
     "@tanstack/solid-query": "^5.90.4",
     "@tanstack/solid-table": "^8.21.3",
     "@tanstack/solid-virtual": "^3.13.12",
-    "@jsr/timepp__murmurhash": "^0.1.1",
     "clsx": "^2.1.1",
     "echarts": "^6.0.0",
     "echarts-solid": "^0.2.0",
@@ -34,10 +34,12 @@
     "lucide-solid": "^0.545.0",
     "monaco-editor": "^0.54.0",
     "openapi-fetch": "^0.14.1",
-    "papaparse": "^5.5.3",
+    "papaparse": "catalog:",
     "react-dom": "^18.3.1",
+    "socket.io": "catalog:",
     "solid-js": "^1.9.9",
     "solid-monaco": "^0.3.0",
+    "solid-toast": "^0.5.0",
     "typebox": "catalog:"
   },
   "devDependencies": {

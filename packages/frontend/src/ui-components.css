@@ -1,5 +1,31 @@
-.side-drawer-bg {
-    @apply bg-gray-900/50 fixed inset-0 z-40
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.side-drawer {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.side-drawer.drawer-closing {
+    animation: slideOut 0.3s ease forwards;
+}
+
+.modal-overlay {
+    @apply bg-black bg-opacity-50 fixed inset-0 z-40 flex justify-center items-center
 }
 
 .side-drawer-container {
