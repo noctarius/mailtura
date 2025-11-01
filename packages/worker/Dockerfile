@@ -14,7 +14,7 @@ COPY packages/rpcmodel/package.json /temp/prod/packages/rpcmodel/
 COPY packages/frontend/package.json /temp/prod/packages/frontend/
 COPY packages/backend/package.json /temp/prod/packages/backend/
 COPY packages/worker/package.json /temp/prod/packages/worker/
-RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production --filter="./packages/backend,./packages/rpcmodel"
+RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production --filter="./packages/worker"
 
 FROM install AS builder
 RUN cd /temp/dev/packages/worker && bun run build
