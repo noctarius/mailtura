@@ -4,14 +4,22 @@ import Swagger from "@fastify/swagger";
 import Multipart from "@fastify/multipart";
 import SwaggerUi from "@fastify/swagger-ui";
 import Static from "@fastify/static";
+import SocketIo from "./api/socketio/plugin.js";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import registerModelSchema, { registerRoutes } from "./api/index.js";
 import { createRouter } from "./router/index.js";
 import { handlePrismaError } from "./database/index.js";
 import * as path from "node:path";
+import "./tasks/index.js";
 
 const app = Fastify()
-  .register(Multipart)
+  .register(Multipart, {
+    attachFieldsToBody: true,
+    throwFileSizeLimit: true,
+    limits: {
+      fileSize: 1024 * 1024 * 10,
+    },
+  })
   .withTypeProvider<TypeBoxTypeProvider>()
   .setErrorHandler(async (error, request, reply) => {
     // If the error is a validation error, send a 422 error with the validation details
@@ -82,15 +90,24 @@ await app.register(SwaggerUi, {
   },
 });
 
-const currentPath = import.meta.dir
-console.info(`Mounting ${path.join(currentPath, "public")} as /dashboard`)
+const currentPath = import.meta.dir;
+console.info(`Mounting ${path.join(currentPath, "public")} as /dashboard`);
 app.register(Static, {
   root: path.join(currentPath, "public"),
   prefix: "/dashboard/",
   index: "index.html",
 });
 
+app.register(SocketIo, {
+  path: "/api/v1/socket.io",
+  cleanupEmptyChildNamespaces: true,
+  addTrailingSlash: true,
+  cors: {
+    origin: "*",
+  },
+});
+
 createRouter(app).route("/api/v1", registerRoutes);
 
 console.info("Starting server at :3000...");
-await app.listen({ host: '0.0.0.0', port: 3000 });
+await app.listen({ host: "0.0.0.0", port: 3000 });

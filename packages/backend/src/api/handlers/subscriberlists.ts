@@ -208,11 +208,19 @@ export function subscriberListRoutes<
           throw createError(404, "SubscriberList not found");
         }
 
-        await prisma.subscriber_lists.delete({
-          where: {
-            id: subscriberListId,
-            tenant_id: tenantId,
-          },
+        await prisma.$transaction(async tx => {
+          await tx.subscribers.deleteMany({
+            where: {
+              subscriber_list_id: subscriberListId,
+              tenant_id: tenantId,
+            },
+          });
+          await tx.subscriber_lists.delete({
+            where: {
+              id: subscriberListId,
+              tenant_id: tenantId,
+            },
+          });
         });
 
         return reply.status(204).send();

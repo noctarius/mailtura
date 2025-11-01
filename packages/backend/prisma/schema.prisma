@@ -29,7 +29,6 @@ model contacts {
   email            String
   first_name       String?
   last_name        String?
-  last_activity_at DateTime? @db.Timestamptz()
   created_at       DateTime  @db.Timestamptz()
   created_by       String
   updated_at       DateTime? @db.Timestamptz()

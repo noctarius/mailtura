@@ -4,6 +4,7 @@ import type {
   CampaignEntity,
   ContactEntity,
   ContactImportEntity,
+  FileEntity,
   SubscriberEntity,
   SubscriberListEntity,
   TemplateEntity,
@@ -13,12 +14,13 @@ import type {
 import {
   type ApiKey,
   type Campaign,
-  Contact,
+  type Contact,
   type ContactImport,
+  type File,
   type Subscriber,
   type SubscriberList,
   type Template,
-  Tenant,
+  type Tenant,
   type User,
 } from "@mailtura/rpcmodel/lib/models";
 
@@ -86,7 +88,6 @@ export function mapContact(contact: PotentiallyCountedContact): Contact {
     email: contact.email,
     firstName: contact.first_name ?? undefined,
     lastName: contact.last_name ?? undefined,
-    lastActivity: mapDateTime(contact.last_activity_at),
     listIds: hasSubscribers(contact) ? contact.subscribers.map(subscriber => subscriber.subscriber_list_id) : [],
     status: status,
     createdAt: mapDateTime(contact.created_at),
@@ -211,9 +212,21 @@ export function mapContactImport(contactImport: ContactImportEntity): ContactImp
     status: contactImport.status,
     records: contactImport.records,
     finished: contactImport.finished,
+    parameters: contactImport.parameters,
     createdAt: mapDateTime(contactImport.created_at),
     createdBy: contactImport.created_by,
     updatedAt: mapDateTime(contactImport.updated_at),
     updatedBy: contactImport.updated_by ?? undefined,
+  };
+}
+
+export function mapFile(file: FileEntity): File {
+  return {
+    id: file.id,
+    name: file.name,
+    createdAt: mapDateTime(file.created_at),
+    createdBy: file.created_by,
+    updatedAt: mapDateTime(file.updated_at),
+    updatedBy: file.updated_by ?? undefined,
   };
 }
