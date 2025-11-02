@@ -26,6 +26,7 @@ export function campaignRoutes<
     "/",
     {
       schema: {
+        tags: ["campaigns"],
         response: {
           200: Type.Array(Type.Ref("Campaign")),
           401: Type.Ref("ErrorResponse"),
@@ -49,6 +50,7 @@ export function campaignRoutes<
     "/",
     {
       schema: {
+        tags: ["campaigns"],
         body: CreateCampaign,
         response: {
           201: Type.Ref("Campaign"),
@@ -83,6 +85,7 @@ export function campaignRoutes<
       "/",
       {
         schema: {
+          tags: ["campaigns"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             campaign_id: Type.String({ format: "uuid" }),
@@ -117,6 +120,7 @@ export function campaignRoutes<
       "/",
       {
         schema: {
+          tags: ["campaigns"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             campaign_id: Type.String({ format: "uuid" }),
@@ -166,6 +170,7 @@ export function campaignRoutes<
       "/",
       {
         schema: {
+          tags: ["campaigns"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             campaign_id: Type.String({ format: "uuid" }),

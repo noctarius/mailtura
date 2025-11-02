@@ -26,6 +26,7 @@ export function userRoutes<
     "/",
     {
       schema: {
+        tags: ["users"],
         response: {
           200: Type.Array(Type.Ref("User")),
           401: Type.Ref("ErrorResponse"),
@@ -49,6 +50,7 @@ export function userRoutes<
     "/",
     {
       schema: {
+        tags: ["users"],
         body: CreateUser,
         response: {
           201: Type.Ref("User"),
@@ -82,6 +84,7 @@ export function userRoutes<
       "/",
       {
         schema: {
+          tags: ["users"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             user_id: Type.String({ format: "uuid" }),
@@ -116,6 +119,7 @@ export function userRoutes<
       "/",
       {
         schema: {
+          tags: ["users"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             user_id: Type.String({ format: "uuid" }),
@@ -169,6 +173,7 @@ export function userRoutes<
       "/",
       {
         schema: {
+          tags: ["users"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             user_id: Type.String({ format: "uuid" }),

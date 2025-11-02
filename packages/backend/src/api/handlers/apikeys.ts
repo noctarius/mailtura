@@ -26,6 +26,7 @@ export function apiKeyRoutes<
     "/",
     {
       schema: {
+        tags: ["api-keys"],
         response: {
           200: Type.Array(Type.Ref("ApiKey")),
           401: Type.Ref("ErrorResponse"),
@@ -49,6 +50,7 @@ export function apiKeyRoutes<
     "/",
     {
       schema: {
+        tags: ["api-keys"],
         body: CreateApiKey,
         response: {
           201: Type.Ref("ApiKey"),
@@ -81,6 +83,7 @@ export function apiKeyRoutes<
       "/",
       {
         schema: {
+          tags: ["api-keys"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             api_key_id: Type.String({ format: "uuid" }),
@@ -115,6 +118,7 @@ export function apiKeyRoutes<
       "/",
       {
         schema: {
+          tags: ["api-keys"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             api_key_id: Type.String({ format: "uuid" }),
@@ -166,6 +170,7 @@ export function apiKeyRoutes<
       "/",
       {
         schema: {
+          tags: ["api-keys"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             api_key_id: Type.String({ format: "uuid" }),

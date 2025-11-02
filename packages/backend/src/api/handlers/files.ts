@@ -24,6 +24,7 @@ export function fileRoutes<
     "/",
     {
       schema: {
+        tags: ["files"],
         response: {
           200: Type.Array(Type.Ref("File")),
           401: Type.Ref("ErrorResponse"),
@@ -48,6 +49,7 @@ export function fileRoutes<
       "/",
       {
         schema: {
+          tags: ["files"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             file_id: Type.String({ format: "uuid" }),
@@ -82,6 +84,7 @@ export function fileRoutes<
       "/content/",
       {
         schema: {
+          tags: ["files"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             file_id: Type.String({ format: "uuid" }),
@@ -117,6 +120,7 @@ export function fileRoutes<
       "/",
       {
         schema: {
+          tags: ["files"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             file_id: Type.String({ format: "uuid" }),

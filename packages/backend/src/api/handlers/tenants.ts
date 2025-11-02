@@ -33,6 +33,7 @@ export function tenantRoutes<
     "/",
     {
       schema: {
+        tags: ["tenants"],
         response: {
           200: Type.Array(Type.Ref("Tenant")),
           401: Type.Ref("ErrorResponse"),
@@ -49,6 +50,7 @@ export function tenantRoutes<
     "/",
     {
       schema: {
+        tags: ["tenants"],
         body: CreateTenant,
         response: {
           201: Type.Ref("Tenant"),
@@ -74,6 +76,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),
@@ -101,6 +104,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),
@@ -142,6 +146,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),

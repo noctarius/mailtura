@@ -29,6 +29,7 @@ export function templateRoutes<
     "/",
     {
       schema: {
+        tags: ["templates"],
         response: {
           200: Type.Array(Type.Ref("Template")),
           401: Type.Ref("ErrorResponse"),
@@ -54,6 +55,7 @@ export function templateRoutes<
     "/",
     {
       schema: {
+        tags: ["templates"],
         body: CreateTemplate,
         response: {
           201: Type.Ref("Template"),
@@ -96,6 +98,7 @@ export function templateRoutes<
       "/",
       {
         schema: {
+          tags: ["templates"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             template_id: Type.String({ format: "uuid" }),
@@ -133,6 +136,7 @@ export function templateRoutes<
       "/",
       {
         schema: {
+          tags: ["templates"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             template_id: Type.String({ format: "uuid" }),
@@ -192,6 +196,7 @@ export function templateRoutes<
       "/",
       {
         schema: {
+          tags: ["templates"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             template_id: Type.String({ format: "uuid" }),
@@ -233,6 +238,7 @@ export function templateRoutes<
       "/preview/",
       {
         schema: {
+          tags: ["templates"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             template_id: Type.String({ format: "uuid" }),

@@ -37,6 +37,7 @@ export function contactRoutes<
     "/",
     {
       schema: {
+        tags: ["contacts"],
         response: {
           200: Type.Array(Type.Ref("Contact")),
           401: Type.Ref("ErrorResponse"),
@@ -59,6 +60,7 @@ export function contactRoutes<
     "/",
     {
       schema: {
+        tags: ["contacts"],
         body: CreateContact,
         response: {
           201: Type.Ref("Contact"),
@@ -104,6 +106,7 @@ export function contactRoutes<
     "/bulk/",
     {
       schema: {
+        tags: ["contacts"],
         body: CreateContactBatch,
         response: {
           201: CreateContactBatchResponse,
@@ -200,6 +203,7 @@ export function contactRoutes<
       "/",
       {
         schema: {
+          tags: ["contacts"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             contact_id: Type.String({ format: "uuid" }),
@@ -234,6 +238,7 @@ export function contactRoutes<
       "/",
       {
         schema: {
+          tags: ["contacts"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             contact_id: Type.String({ format: "uuid" }),
@@ -322,6 +327,7 @@ export function contactRoutes<
       "/",
       {
         schema: {
+          tags: ["contacts"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             contact_id: Type.String({ format: "uuid" }),
@@ -383,6 +389,7 @@ export function contactImportRoutes<
     "/",
     {
       schema: {
+        tags: ["contacts"],
         response: {
           200: Type.Array(Type.Ref("ContactImport")),
           401: Type.Ref("ErrorResponse"),
@@ -413,6 +420,7 @@ export function contactImportRoutes<
     {
       validatorCompiler: () => () => true,
       schema: {
+        tags: ["contacts"],
         consumes: ["multipart/form-data"],
         body: Type.Object({
           file: Type.String({ format: "binary" }),
@@ -484,6 +492,7 @@ export function contactImportRoutes<
     "/:import_id/",
     {
       schema: {
+        tags: ["contacts"],
         params: Type.Object({
           tenant_id: Type.String({ format: "uuid" }),
           import_id: Type.String({ format: "uuid" }),
@@ -522,6 +531,7 @@ export function contactImportRoutes<
     "/:import_id/",
     {
       schema: {
+        tags: ["contacts"],
         params: Type.Object({
           tenant_id: Type.String({ format: "uuid" }),
           import_id: Type.String({ format: "uuid" }),
