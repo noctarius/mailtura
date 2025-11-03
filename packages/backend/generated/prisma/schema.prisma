@@ -208,19 +208,27 @@ model unsubscribes {
 }
 
 model users {
-  id            String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id     String    @db.Uuid
-  email         String
-  first_name    String?
-  last_name     String?
-  role          String
-  is_active     Boolean
-  last_login_at DateTime? @db.Timestamptz()
-  permissions   String[]
-  created_at    DateTime  @db.Timestamptz()
-  created_by    String
-  updated_at    DateTime? @db.Timestamptz()
-  updated_by    String?
+  id                 String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id          String    @db.Uuid
+  email              String
+  first_name         String?
+  last_name          String?
+  role               String
+  is_active          Boolean
+  last_login_at      DateTime? @db.Timestamptz()
+  permissions        String[]
+  email_verified     Boolean   @default(false)
+  image              String?
+  two_factor_enabled Boolean?
+  created_at         DateTime  @db.Timestamptz()
+  created_by         String
+  updated_at         DateTime? @db.Timestamptz()
+  updated_by         String?
+
+  accounts    accounts[]
+  two_factors two_factors[]
+  passkeys    passkeys[]
+  sessions    sessions[]
 }
 
 model api_keys {
@@ -286,4 +294,78 @@ model files {
   created_by String
   updated_at DateTime? @db.Timestamptz()
   updated_by String?
+}
+
+model accounts {
+  id                       String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  user_id                  String    @db.Uuid
+  account_id               String    @db.Uuid
+  provider_id              String
+  access_token             String?
+  refresh_token            String?
+  access_token_expires_at  DateTime? @db.Timestamptz()
+  refresh_token_expires_at DateTime? @db.Timestamptz()
+  scope                    String?
+  id_token                 String?
+  password                 String?
+  created_at               DateTime  @db.Timestamptz()
+  created_by               String
+  updated_at               DateTime? @db.Timestamptz()
+  updated_by               String?
+
+  users users? @relation(fields: [user_id], references: [id])
+}
+
+model verifications {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  identifier String
+  value      String
+  expires_at DateTime  @db.Timestamptz()
+  created_at DateTime  @db.Timestamptz()
+  created_by String
+  updated_at DateTime? @db.Timestamptz()
+  updated_by String?
+}
+
+model two_factors {
+  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  user_id      String   @db.Uuid
+  secret       String?
+  backup_codes String?
+  created_at   DateTime @db.Timestamptz()
+  created_by   String
+
+  users users? @relation(fields: [user_id], references: [id])
+}
+
+model passkeys {
+  id            String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  name          String?
+  public_key    String
+  user_id       String   @db.Uuid
+  credential_id String
+  counter       Float
+  device_type   String
+  backed_up     Boolean
+  transports    String
+  aaguid        String?
+  created_at    DateTime @db.Timestamptz()
+  created_by    String
+
+  users users? @relation(fields: [user_id], references: [id])
+}
+
+model sessions {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  user_id    String    @db.Uuid
+  token      String
+  expires_at DateTime  @db.Timestamptz()
+  ip_address String?
+  user_agent String?
+  created_at DateTime  @db.Timestamptz()
+  created_by String
+  updated_at DateTime? @db.Timestamptz()
+  updated_by String?
+
+  users users? @relation(fields: [user_id], references: [id])
 }

@@ -5,6 +5,7 @@ import Multipart from "@fastify/multipart";
 import SwaggerUi from "@fastify/swagger-ui";
 import Static from "@fastify/static";
 import SocketIo from "./api/socketio/plugin.js";
+import Auth from "./auth/plugin.js";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import registerModelSchema, { registerRoutes } from "./api/index.js";
 import { createRouter } from "./router/index.js";
@@ -44,6 +45,7 @@ await app.register(cors, {
   origin: true,
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 });
 
 await app.register(Swagger, {
@@ -85,8 +87,19 @@ await app.register(Swagger, {
 await app.register(SwaggerUi, {
   routePrefix: "/docs",
   uiConfig: {
-    docExpansion: "full",
-    deepLinking: false,
+    urls: [
+      {
+        url: "/docs/json",
+        name: "Mailtura API",
+      },
+      {
+        url: "/docs/json2",
+        name: "Mailtura Auth API",
+      },
+    ],
+    docExpansion: "list",
+    deepLinking: true,
+    tagsSorter: (a, b) => (b === "tenants" ? 1 : a.localeCompare(b)),
   },
 });
 
@@ -104,7 +117,15 @@ app.register(SocketIo, {
   addTrailingSlash: true,
   cors: {
     origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    credentials: true,
+    maxAge: 86400,
   },
+});
+
+app.register(Auth, {
+  basePath: "/api/v1/auth",
 });
 
 createRouter(app).route("/api/v1", registerRoutes);

@@ -21,9 +21,10 @@
     "@mailtura/rpcmodel": "*",
     "@prisma/client": "^6.16.3",
     "@temporalio/client": "catalog:",
+    "argon2": "^0.44.0",
+    "better-auth": "catalog:",
     "fastify": "^5.6.1",
     "fastify-plugin": "^5.1.0",
-    "fastify-type-provider-zod": "^6.0.0",
     "mjml": "^4.16.1",
     "mustache": "^4.2.0",
     "node-html-parser": "^7.0.1",
@@ -31,6 +32,7 @@
     "sanitize-html": "^2.17.0",
     "socket.io": "catalog:",
     "typebox": "catalog:",
+    "uuid": "^13.0.0",
     "zod": "^4.1.11"
   },
   "devDependencies": {

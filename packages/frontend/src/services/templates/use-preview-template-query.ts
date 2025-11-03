@@ -14,7 +14,7 @@ export function usePreviewTemplateQuery({ tenantId, templateId, content }: Previ
   return useQuery(() => ({
     queryKey: templateKeys.template_preview(tenantId, templateId, content()),
     queryFn: async () => {
-      const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview", {
+      const response = await client.POST("/api/v1/tenants/{tenant_id}/templates/{template_id}/preview/", {
         params: {
           path: {
             tenant_id: tenantId,

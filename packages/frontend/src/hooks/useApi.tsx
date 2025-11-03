@@ -1,14 +1,17 @@
 import createClient from "openapi-fetch";
 import { createContext, ParentComponent, useContext } from "solid-js";
 import { paths } from "../../generated/api/mailtura.js";
-
-const API_URL = "http://localhost:3000/";
+import { API_URL } from "../constants.js";
 
 interface ApiContextType {
   client: typeof client;
 }
 
-const client = createClient<paths>({ baseUrl: API_URL });
+const client = createClient<paths>({
+  baseUrl: API_URL,
+  credentials: "include",
+  redirect: "follow",
+});
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
 

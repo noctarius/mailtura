@@ -4,6 +4,270 @@
  */
 
 export interface paths {
+    "/docs/json2": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-up/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/verify-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-in/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-in/social": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/sign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/get-session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/request-password-reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/": {
         parameters: {
             query?: never;
@@ -319,6 +583,115 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/contacts/bulk/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        contacts: {
+                            /** Format: email */
+                            email: string;
+                            firstName?: string;
+                            lastName?: string;
+                            listIds: string[];
+                        }[];
+                        upsert: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            items: number;
+                            added: {
+                                /** Format: uuid */
+                                id: string;
+                                /** Format: email */
+                                email: string;
+                                firstName?: string;
+                                lastName?: string;
+                                listIds: string[];
+                                status: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                createdBy: string;
+                                /** Format: date-time */
+                                updatedAt?: string;
+                                updatedBy?: string;
+                            }[];
+                            updated: {
+                                /** Format: uuid */
+                                id: string;
+                                /** Format: email */
+                                email: string;
+                                firstName?: string;
+                                lastName?: string;
+                                listIds: string[];
+                                status: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                createdBy: string;
+                                /** Format: date-time */
+                                updatedAt?: string;
+                                updatedBy?: string;
+                            }[];
+                            skipped: {
+                                /** Format: uuid */
+                                id: string;
+                                /** Format: email */
+                                email: string;
+                                firstName?: string;
+                                lastName?: string;
+                                listIds: string[];
+                                status: string;
+                                /** Format: date-time */
+                                createdAt: string;
+                                createdBy: string;
+                                /** Format: date-time */
+                                updatedAt?: string;
+                                updatedBy?: string;
+                            }[];
+                        };
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/contacts/{contact_id}/": {
         parameters: {
             query?: never;
@@ -529,7 +902,6 @@ export interface paths {
                             mapping: {
                                 [key: string]: string;
                             };
-                            skipFirstRow: boolean;
                             listIds: string[];
                         };
                     };
@@ -562,7 +934,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/tenants/{tenant_id}/contacts/imports/{import_id}": {
+    "/api/v1/tenants/{tenant_id}/contacts/imports/{import_id}/": {
         parameters: {
             query?: never;
             header?: never;
@@ -610,7 +982,56 @@ export interface paths {
                 };
             };
         };
-        put?: never;
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    import_id: string;
+                };
+                cookie?: never;
+            };
+            /** @description An update contact import request */
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        status?: number;
+                        records?: number;
+                        finished?: boolean;
+                    };
+                };
+            };
+            responses: {
+                /** @description A contact import in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ContactImport"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         post?: never;
         delete?: never;
         options?: never;
@@ -859,7 +1280,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/tenants/{tenant_id}/templates/{template_id}/preview": {
+    "/api/v1/tenants/{tenant_id}/templates/{template_id}/preview/": {
         parameters: {
             query?: never;
             header?: never;
@@ -1503,6 +1924,8 @@ export interface paths {
             requestBody: {
                 content: {
                     "application/json": {
+                        /** Format: uuid */
+                        tenantId: string;
                         /** Format: email */
                         email: string;
                         firstName?: string;
@@ -1601,6 +2024,8 @@ export interface paths {
             requestBody?: {
                 content: {
                     "application/json": {
+                        /** Format: uuid */
+                        tenantId?: string;
                         /** Format: email */
                         email?: string;
                         firstName?: string;
@@ -1936,6 +2361,246 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/files/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["File"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/files/{file_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    file_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A contact import in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["File"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    file_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/files/{file_id}/content/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    file_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/octet-stream": unknown;
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/octet-stream": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/octet-stream": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A user in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["User"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1964,8 +2629,6 @@ export interface components {
             email: string;
             firstName?: string;
             lastName?: string;
-            /** Format: date-time */
-            lastActivity?: string;
             listIds: string[];
             status: string;
             /** Format: date-time */
@@ -2039,8 +2702,6 @@ export interface components {
                 email: string;
                 firstName?: string;
                 lastName?: string;
-                /** Format: date-time */
-                lastActivity?: string;
                 listIds: string[];
                 status: string;
                 /** Format: date-time */
@@ -2124,8 +2785,6 @@ export interface components {
                 email: string;
                 firstName?: string;
                 lastName?: string;
-                /** Format: date-time */
-                lastActivity?: string;
                 listIds: string[];
                 status: string;
                 /** Format: date-time */
@@ -2208,8 +2867,6 @@ export interface components {
                 email: string;
                 firstName?: string;
                 lastName?: string;
-                /** Format: date-time */
-                lastActivity?: string;
                 listIds: string[];
                 status: string;
                 /** Format: date-time */
@@ -2282,6 +2939,8 @@ export interface components {
         User: {
             /** Format: uuid */
             id: string;
+            /** Format: uuid */
+            tenantId: string;
             /** Format: email */
             email: string;
             firstName?: string;
@@ -2326,12 +2985,140 @@ export interface components {
             status: number;
             records: number;
             finished: boolean;
+            parameters: unknown;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
             /** Format: date-time */
             updatedAt?: string;
             updatedBy?: string;
+        };
+        /** @description A contact import in the system */
+        File: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            /** Format: date-time */
+            createdAt: string;
+            createdBy: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        };
+        /** @description Sign in with email */
+        SignInEmail: {
+            /** Format: email */
+            email: string;
+            password: string;
+            /** Format: uri */
+            callbackURL?: string;
+            /** @default true */
+            rememberMe?: boolean;
+        };
+        /** @description Sign in with email response */
+        SignInEmailResponse: {
+            redirect: boolean;
+            token: string;
+            url: null;
+            user: components["schemas"]["AuthUser"];
+        };
+        /** @description Get session response */
+        GetSessionResponse: {
+            user: components["schemas"]["AuthUser"];
+            session: components["schemas"]["AuthSession"];
+        };
+        /** @description Verify email response */
+        VerifyEmailResponse: {
+            status: boolean;
+            user: components["schemas"]["AuthUser"];
+        } | {
+            status: boolean;
+        };
+        /** @description Password reset response */
+        PasswordResetResponse: {
+            status: boolean;
+            message: string;
+        };
+        /** @description Sign in with social */
+        SignInSocial: {
+            provider: unknown;
+            /** Format: uri */
+            callbackURL?: string;
+            /** Format: uri */
+            newUserCallbackURL?: string;
+            /** Format: uri */
+            errorCallbackURL?: string;
+            /** @default false */
+            disableRedirect?: boolean;
+            idToken?: {
+                token: string;
+                nonce?: string;
+                accessToken?: string;
+                refreshToken?: string;
+                /** Format: date-time */
+                expiresAt?: string;
+            };
+            scopes?: string[];
+            /** @default false */
+            requestSignUp?: boolean;
+            loginHint?: string;
+        };
+        /** @description Sign in with social response */
+        SignInSocialResponse: {
+            redirect: boolean;
+            token: string;
+            user: components["schemas"]["AuthUser"];
+        } | {
+            /** Format: uri */
+            url: string;
+            redirect: boolean;
+        };
+        /** @description Sign up with email */
+        SignUpEmail: {
+            name?: string;
+            /** Format: email */
+            email: string;
+            password: string;
+            image?: string;
+            /** Format: uri */
+            callbackURL?: string;
+            /** @default true */
+            rememberMe?: boolean;
+        };
+        /** @description Sign up with email response */
+        SignUpEmailResponse: {
+            token?: string;
+            user: components["schemas"]["AuthUser"];
+        };
+        /** @description User object */
+        AuthUser: {
+            /** Format: uuid */
+            id: string;
+            /** Format: email */
+            email: string;
+            name?: string;
+            image?: string;
+            emailVerified: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt?: string;
+        };
+        /** @description Session object */
+        AuthSession: {
+            /** Format: uuid */
+            id: string;
+            /** Format: date-time */
+            createdAt: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            /** Format: uuid */
+            userId: string;
+            /** Format: date-time */
+            expiresAt: string;
+            token: string;
+            ipAddress?: string;
+            userAgent?: string;
         };
     };
     responses: never;

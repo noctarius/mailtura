@@ -1,7 +1,11 @@
-import { AuthState, Permissions, ROLE_PERMISSIONS, User } from "../types/auth.js";
+import { AuthState, Permissions, ROLE_PERMISSIONS } from "../types/auth.js";
 import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 import { useTenantQuery } from "../services/tenants/use-tenant-query.js";
-import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Tenant, User } from "@mailtura/rpcmodel/lib/models/index.js";
+import { createAuthClient } from "better-auth/solid";
+import { API_URL } from "../constants.js";
+import { magicLinkClient, passkeyClient, twoFactorClient } from "better-auth/client/plugins";
+import { useApi } from "./useApi.js";
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
@@ -16,6 +20,12 @@ interface AuthContextType {
   tenant: () => Tenant | null;
   isLoading: () => boolean;
 }
+
+const authClient = createAuthClient({
+  baseURL: API_URL,
+  basePath: "/api/v1/auth",
+  plugins: [twoFactorClient(), passkeyClient(), magicLinkClient()],
+});
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -34,6 +44,8 @@ export const AuthProvider: ParentComponent = props => {
 };
 
 export const useAuthProvider = () => {
+  const api = useApi();
+
   const [authState, setAuthState] = createSignal<AuthState>({
     isAuthenticated: false,
     user: null,
@@ -44,64 +56,6 @@ export const useAuthProvider = () => {
   const [currentUser, setCurrentUser] = createSignal<User | null>(null);
   const [tenantId, setTenantId] = createSignal<string | null>(null);
   const tenantQuery = useTenantQuery({ tenantId });
-
-  // Mock data - in real app this would come from API
-  /*const mockTenants: Tenant[] = [
-    {
-      id: "tenant-1",
-      name: "Acme Corporation",
-      domain: "acme.com",
-      isActive: true,
-      createdAt: "2024-01-01",
-      userCount: 15,
-      settings: {
-        maxUsers: 50,
-        features: ["campaigns", "analytics", "templates"],
-        customBranding: {
-          companyName: "Acme Corporation",
-          primaryColor: "#3b82f6",
-        },
-      },
-    },
-    {
-      id: "tenant-2",
-      name: "TechStart Inc",
-      domain: "techstart.io",
-      isActive: true,
-      createdAt: "2024-01-15",
-      userCount: 8,
-      settings: {
-        maxUsers: 25,
-        features: ["campaigns", "templates"],
-      },
-    },
-  ];*/
-
-  const mockUsers: User[] = [
-    {
-      id: "user-1",
-      email: "admin@acme.com",
-      firstName: "John",
-      lastName: "Admin",
-      role: "tenant_admin",
-      tenantId: "0199e407-dd7f-7dfb-81fc-f39d09316def",
-      permissions: ROLE_PERMISSIONS.tenant_admin,
-      isActive: true,
-      createdAt: "2024-01-01",
-      lastLoginAt: "2024-01-25",
-    },
-    {
-      id: "user-2",
-      email: "user@acme.com",
-      firstName: "Jane",
-      lastName: "User",
-      role: "user",
-      tenantId: "tenant-1",
-      permissions: ROLE_PERMISSIONS.user,
-      isActive: true,
-      createdAt: "2024-01-05",
-    },
-  ];
 
   createEffect(() => {
     if (tenantQuery.isLoading || tenantQuery.isError || !tenantQuery.data) return;
@@ -141,12 +95,23 @@ export const useAuthProvider = () => {
     }
   });
 
-  const signIn = async (email: string, _password: string): Promise<void> => {
-    // Mock authentication - in real app this would be an API call
-    const user = mockUsers.find(u => u.email === email);
-    if (!user) {
-      throw new Error("Invalid credentials");
+  const getUserProfile = async (): Promise<User> => {
+    const response = await api.GET("/api/v1/profile");
+    if (response.error) {
+      throw new Error(response.error.message);
     }
+
+    return response.data;
+  };
+
+  const signIn = async (email: string, password: string): Promise<void> => {
+    const response = await authClient.signIn.email({ email, password });
+    if (response.error) {
+      throw new Error(response.error.message);
+    }
+    console.log(response.data.user);
+
+    const user = await getUserProfile();
 
     setTenantId(user.tenantId);
     setCurrentUser(user);
@@ -164,6 +129,7 @@ export const useAuthProvider = () => {
       permissions: ROLE_PERMISSIONS.user,
       isActive: true,
       createdAt: new Date().toISOString(),
+      createdBy: "mock",
     };
 
     const authData = { user: newUser, tenant: null };
