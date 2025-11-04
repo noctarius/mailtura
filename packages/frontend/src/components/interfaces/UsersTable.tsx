@@ -4,7 +4,7 @@ import { useAuth } from "../../hooks/useAuth.js";
 import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";
 import { VirtualizedTable } from "./VirtualizedTable.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
-import { Building2, Calendar, Ellipsis, Mail, RefreshCcwIcon, Shield, Trash2 } from "lucide-solid";
+import { Building2, Calendar, Ellipsis, Mail, Mailbox, RefreshCcwIcon, Shield, ShieldBan, Trash2 } from "lucide-solid";
 import DeleteUserDialog from "../modals/DeleteUserDialog.js";
 import { ColumnDef } from "@tanstack/solid-table";
 import { formatDateTime } from "../../helpers/format-date-time.js";
@@ -13,19 +13,6 @@ import { getRoleBgColor, getRoleTextColor, getStatusBgColor, getStatusTextColor 
 import { useTenantsQuery } from "../../services/tenants/use-tenants-query.js";
 import { getTimeSince } from "../../helpers/time-since.js";
 import { EditUserDrawer } from "../modals/EditUserDrawer.js";
-
-const contextMenuActions: ContextMenuAction[] = [
-  {
-    action: "reset-password",
-    icon: RefreshCcwIcon,
-    label: "Reset Password",
-  },
-  {
-    action: "delete",
-    icon: Trash2,
-    label: "Delete Contact",
-  },
-];
 
 interface UsersTableProps {
   data: () => User[];
@@ -52,7 +39,7 @@ export function UsersTable(props: UsersTableProps) {
         header: () => "User",
         cell: info => (
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+            <div class="w-10 h-10 min-h-10 min-w-10 bg-blue-100 rounded-full flex items-center justify-center">
               <span class="text-blue-600 font-medium">
                 {info.row.original.firstName?.charAt(0)}
                 {info.row.original.lastName?.charAt(0)}
@@ -223,7 +210,7 @@ function UsersActions(props: UsersActionsProps) {
             }}
             target={ellipsisRef}
             item={props.item}
-            actions={() => contextMenuActions}
+            actions={() => createContextMenu(props.item)}
             onAction={props.onContextMenuAction}
           />
         ) : null}
@@ -236,3 +223,46 @@ function UsersActions(props: UsersActionsProps) {
     </>
   );
 }
+
+const createContextMenu = (user: User): ContextMenuAction[] => {
+  const contextMenuActions: ContextMenuAction[] = [
+    {
+      action: "delete",
+      icon: Trash2,
+      label: "Delete Contact",
+    },
+    {
+      action: "reset-password",
+      icon: RefreshCcwIcon,
+      label: "Reset Password",
+    },
+  ];
+
+  if (user.isActive) {
+    contextMenuActions.push({
+      action: "lock",
+      icon: ShieldBan,
+      label: "Lock User",
+    });
+  } else {
+    contextMenuActions.push({
+      action: "unlock",
+      icon: Shield,
+      label: "Unlock User",
+    });
+  }
+
+  if (user.isEmailVerified) {
+    contextMenuActions.push({
+      action: "verify-email",
+      icon: Mail,
+      label: "Verify Email",
+    }, {
+      action: "resend-verification-email",
+      icon: Mailbox,
+      label: "Resend Verification Email",
+    });
+  }
+
+  return contextMenuActions;
+};

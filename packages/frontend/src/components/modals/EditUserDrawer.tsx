@@ -9,6 +9,7 @@ import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
 import { User } from "@mailtura/rpcmodel/lib/models/index.js";
 import { userKeys } from "../../services/users/keys.js";
+import { UserRole } from "../../types/auth.js";
 
 interface EditUserDrawerProps {
   user: () => User;
@@ -43,6 +44,8 @@ function UserEditForm(props: UserEditFormProps) {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
+  const userRoles: UserRole[] = ["super_admin", "tenant_admin", "user", "viewer"];
+
   const updateUserForm = createFormSpec<typeof UpdateUser>(
     UpdateUser,
     {
@@ -54,11 +57,20 @@ function UserEditForm(props: UserEditFormProps) {
         label: "Last Name",
         type: "text",
       },
+      role: {
+        label: "Role",
+        type: "select",
+        options: () =>
+          userRoles.map(role => {
+            return { label: role, value: role };
+          }),
+      },
     },
-    ["firstName", "lastName"],
+    ["firstName", "lastName", "role"],
     {
       firstName: props.user().firstName,
       lastName: props.user().lastName,
+      role: props.user().role,
     }
   );
 

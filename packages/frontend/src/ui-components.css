@@ -128,6 +128,10 @@
     @apply mt-2 text-xs text-gray-500
 }
 
+.form-select {
+    @apply bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+}
+
 .ui-btn {
     @apply text-center hover:bg-blue-800 focus:ring-4 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 focus:outline-none focus:ring-blue-300
 }

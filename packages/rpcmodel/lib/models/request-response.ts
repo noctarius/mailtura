@@ -197,20 +197,47 @@ export const UpdateSubscriberList = //
 export type UpdateSubscriberList = Static<typeof UpdateSubscriberList>;
 
 export const CreateUser = //
-  Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "isActive", "lastLoginAt"], {
-    $id: "CreateUser",
-    description: "A create user request",
-    additionalProperties: false,
-  });
+  Type.Omit(
+    User,
+    [
+      "id",
+      "isEmailVerified",
+      "image",
+      "isTwoFactorEnabled",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "isActive",
+      "lastLoginAt",
+    ],
+    {
+      $id: "CreateUser",
+      description: "A create user request",
+      additionalProperties: false,
+    }
+  );
 
 export type CreateUser = Static<typeof CreateUser>;
 
 export const UpdateUser = //
-  Type.Partial(Type.Omit(User, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "lastLoginAt"]), {
-    $id: "UpdateUser",
-    description: "An update user request",
-    additionalProperties: false,
-  });
+  Type.Partial(
+    Type.Omit(User, [
+      "id",
+      "isEmailVerified",
+      "isTwoFactorEnabled",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "lastLoginAt",
+    ]),
+    {
+      $id: "UpdateUser",
+      description: "An update user request",
+      additionalProperties: false,
+    }
+  );
 
 export type UpdateUser = Static<typeof UpdateUser>;
 

@@ -6,15 +6,7 @@ import { apiKey, magicLink, openAPI, twoFactor } from "better-auth/plugins";
 import { passkey } from "better-auth/plugins/passkey";
 import { v7 as uuidv7 } from "uuid";
 import * as argon2 from "argon2";
-import {
-  createGetSessionRoute,
-  createPasswordReset,
-  createSignInEmail,
-  createSignInSocial,
-  createSignOut,
-  createSignUpEmail,
-  createVerifyEmail,
-} from "./handler.js";
+import { registerAuthHandler } from "./handler.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -35,18 +27,12 @@ const auth = fastifyPlugin<AuthOptions>(
         done(null, null);
       });
 
-      app.get("/docs/json2", async (_, reply) => {
+      app.get("/docs/json2", { schema: { hide: true } }, async (_, reply) => {
         return reply.type("application/json").send(openApiSpec);
       });
 
       // Register routes and openapi schema
-      createSignUpEmail(app, auth);
-      createVerifyEmail(app, auth);
-      createSignInEmail(app, auth);
-      createSignInSocial(app, auth);
-      createSignOut(app, auth);
-      createGetSessionRoute(app, auth);
-      createPasswordReset(app, auth);
+      registerAuthHandler(app, auth);
     });
   },
   { name: "auth" }

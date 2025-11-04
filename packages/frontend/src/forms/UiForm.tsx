@@ -6,6 +6,7 @@ import UiFormPasswordField from "./UiFormPasswordField.js";
 import UiFormEmailField from "./UiFormEmailField.js";
 import UiFormCheckboxField from "./UiFormCheckboxField.js";
 import UiFormRadioField from "./UiFormRadioField.js";
+import UiFormSelectField from "./UiFormSelectField.js";
 import { combineProps } from "@solid-primitives/props";
 
 interface UiFormProps<
@@ -103,6 +104,15 @@ export function UiForm<
                                 value={field.value as any}
                                 options={fieldSpec.options}
                                 error={error}
+                              />
+                            </Match>
+                            <Match when={fieldSpec.type === "select"}>
+                              <UiFormSelectField
+                                {...properties}
+                                label={() => fieldSpec.label}
+                                spec={spec}
+                                value={field.value as any}
+                                options={fieldSpec.options}
                               />
                             </Match>
                           </Switch>
