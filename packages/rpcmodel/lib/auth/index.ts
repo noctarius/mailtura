@@ -1,5 +1,41 @@
 import { type Static, Type } from "typebox";
 
+export type RolePermission =
+  | "view::campaigns"
+  | "manage::campaigns"
+  | "view::templates"
+  | "manage::templates"
+  | "view::contacts"
+  | "manage::contacts"
+  | "view::api-keys"
+  | "manage::api-keys"
+  | "view::tenants"
+  | "manage::tenants"
+  | "view::users"
+  | "manage::users"
+  | "view::suppressions"
+  | "manage::suppressions"
+  | "view::reports"
+  | "manage::reports"
+  | "view::settings"
+  | "manage::settings"
+  | "view::webhooks"
+  | "manage::webhooks"
+  | "view::integrations"
+  | "manage::integrations"
+  | "view::logs"
+  | "manage::logs";
+
+export type ApiPermission =
+  | "send_emails"
+  | "manage_campaigns_api"
+  | "manage_contacts_api"
+  | "manage_templates_api"
+  | "view_analytics_api"
+  | "manage_users_api"
+  | "manage_suppressions_api"
+  | "webhook_access";
+
 export const SignInEmail = Type.Object(
   {
     email: Type.String({ format: "email" }),

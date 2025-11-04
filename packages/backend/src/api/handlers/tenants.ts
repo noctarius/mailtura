@@ -21,6 +21,7 @@ import { templateRoutes } from "./templates.js";
 import { userRoutes } from "./users.js";
 import { apiKeyRoutes } from "./apikeys.js";
 import { fileRoutes } from "./files.js";
+import { hasAnyPermission } from "../../auth/index.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -40,7 +41,17 @@ export function tenantRoutes<
         },
       },
     },
-    async () => {
+    async request => {
+      // For users with *::tenants permission, return their tenant only
+      if (!hasAnyPermission(["manage::tenants", "view::tenants"], request.user)) {
+        const tenant = await prisma.tenants.findUnique({
+          where: {
+            id: request.user.tenantId,
+          },
+        });
+        return !tenant ? [] : [mapTenant(tenant)];
+      }
+
       const tenants = await prisma.tenants.findMany();
       return tenants.map(mapTenant);
     }
@@ -57,6 +68,7 @@ export function tenantRoutes<
           401: Type.Ref("ErrorResponse"),
         },
       },
+      permissions: ["manage::tenants"],
     },
     async (request, reply) => {
       const newTenant = await prisma.tenants.create({
@@ -86,6 +98,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["view::tenants"],
       },
       async request => {
         const tenant = await prisma.tenants.findUnique({
@@ -116,6 +129,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["manage::tenants"],
       },
       async request => {
         const tenantId = request.params.tenant_id;
@@ -156,6 +170,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["manage::tenants"],
       },
       async (request, reply) => {
         const tenantId = request.params.tenant_id;

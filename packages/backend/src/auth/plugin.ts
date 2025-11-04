@@ -131,6 +131,13 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         emailVerified: "email_verified",
       },
       additionalFields: {
+        tenantId: {
+          fieldName: "tenant_id",
+          type: "string",
+          required: true,
+          returned: true,
+          input: true,
+        },
         role: {
           fieldName: "role",
           type: "string",
@@ -157,6 +164,11 @@ const createBetterAuth = (options: BetterAuthOptions) => {
           fieldName: "last_name",
           type: "string",
           required: false,
+          returned: true,
+        },
+        permissions: {
+          fieldName: "permissions",
+          type: "string[]",
           returned: true,
         },
         createdBy: {

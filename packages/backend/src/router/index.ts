@@ -11,15 +11,40 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { FastifySchema } from "fastify/types/schema.js";
 import { fromNodeHeaders } from "better-auth/node";
-import type { Session, User } from "better-auth";
+import type { Session } from "better-auth";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import type { User } from "@mailtura/rpcmodel/lib/models/index.js";
+import type { RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { hasAllPermissions } from "../auth/index.js";
 
 declare module "fastify" {
   interface FastifyRequest {
-    user?: User;
-    session?: Session;
+    user: User;
+    session: Session;
   }
 }
+
+type PermissionRouteShorthandOptions<
+  RawServer extends RawServerBase = RawServerDefault,
+  RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
+  RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
+  RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
+  ContextConfig = ContextConfigDefault,
+  SchemaCompiler extends FastifySchema = FastifySchema,
+  TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
+  Logger extends FastifyBaseLogger = FastifyBaseLogger,
+> = RouteShorthandOptions<
+  RawServer,
+  RawRequest,
+  RawReply,
+  RouteGeneric,
+  ContextConfig,
+  SchemaCompiler,
+  TypeProvider,
+  Logger
+> & {
+  permissions?: RolePermission[];
+};
 
 export interface Router<
   RawServer extends RawServerBase = RawServerDefault,
@@ -34,7 +59,7 @@ export interface Router<
     SchemaCompiler extends FastifySchema = FastifySchema,
   >(
     path: string,
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -61,7 +86,7 @@ export interface Router<
     const SchemaCompiler extends FastifySchema = FastifySchema,
   >(
     path: string,
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -88,7 +113,7 @@ export interface Router<
     const SchemaCompiler extends FastifySchema = FastifySchema,
   >(
     path: string,
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -115,7 +140,7 @@ export interface Router<
     const SchemaCompiler extends FastifySchema = FastifySchema,
   >(
     path: string,
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -142,7 +167,7 @@ export interface Router<
     const SchemaCompiler extends FastifySchema = FastifySchema,
   >(
     path: string,
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -185,7 +210,7 @@ export function createRouter<
     ContextConfig = ContextConfigDefault,
     const SchemaCompiler extends FastifySchema = FastifySchema,
   >(
-    opts: RouteShorthandOptions<
+    opts: PermissionRouteShorthandOptions<
       RawServer,
       RawRequest,
       RawReply,
@@ -217,8 +242,14 @@ export function createRouter<
           return reply.status(401 as any).send({ message: "Unauthorized" } as any);
         }
 
-        request.user = session.user;
+        request.user = session.user as unknown as User;
         request.session = session.session;
+
+        if (opts.permissions && opts.permissions.length > 0) {
+          if (hasAllPermissions(opts.permissions, request.user)) {
+            return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+          }
+        }
       },
     };
   };
