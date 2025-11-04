@@ -174,6 +174,7 @@ export function mapSubscriber(subscriber: SubscriberEntity): Subscriber {
 export function mapUser(user: UserEntity): User {
   return {
     id: user.id,
+    tenantId: user.tenant_id,
     email: user.email,
     role: user.role,
     firstName: user.first_name ?? undefined,

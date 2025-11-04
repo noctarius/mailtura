@@ -3,14 +3,14 @@ import { useQuery } from "@tanstack/solid-query";
 import { tenantKeys } from "./keys.js";
 
 interface TenantQueryProps {
-  tenantId: () => string | null;
+  tenantId: () => string | undefined;
 }
 
 export function useTenantQuery({ tenantId }: TenantQueryProps) {
   const client = useApi();
 
   return useQuery(() => ({
-    queryKey: tenantKeys.tenant(tenantId() ?? undefined),
+    queryKey: tenantKeys.tenant(tenantId()),
     queryFn: async () => {
       if (!tenantId()) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/", {

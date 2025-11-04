@@ -242,6 +242,9 @@ exports.Prisma.UsersScalarFieldEnum = {
   is_active: 'is_active',
   last_login_at: 'last_login_at',
   permissions: 'permissions',
+  email_verified: 'email_verified',
+  image: 'image',
+  two_factor_enabled: 'two_factor_enabled',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -304,6 +307,72 @@ exports.Prisma.FilesScalarFieldEnum = {
   tenant_id: 'tenant_id',
   name: 'name',
   data: 'data',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.AccountsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  account_id: 'account_id',
+  provider_id: 'provider_id',
+  access_token: 'access_token',
+  refresh_token: 'refresh_token',
+  access_token_expires_at: 'access_token_expires_at',
+  refresh_token_expires_at: 'refresh_token_expires_at',
+  scope: 'scope',
+  id_token: 'id_token',
+  password: 'password',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.VerificationsScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expires_at: 'expires_at',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.Two_factorsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  secret: 'secret',
+  backup_codes: 'backup_codes',
+  created_at: 'created_at',
+  created_by: 'created_by'
+};
+
+exports.Prisma.PasskeysScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  public_key: 'public_key',
+  user_id: 'user_id',
+  credential_id: 'credential_id',
+  counter: 'counter',
+  device_type: 'device_type',
+  backed_up: 'backed_up',
+  transports: 'transports',
+  aaguid: 'aaguid',
+  created_at: 'created_at',
+  created_by: 'created_by'
+};
+
+exports.Prisma.SessionsScalarFieldEnum = {
+  id: 'id',
+  user_id: 'user_id',
+  token: 'token',
+  expires_at: 'expires_at',
+  ip_address: 'ip_address',
+  user_agent: 'user_agent',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -401,7 +470,12 @@ exports.Prisma.ModelName = {
   template_properties: 'template_properties',
   templates: 'templates',
   contact_imports: 'contact_imports',
-  files: 'files'
+  files: 'files',
+  accounts: 'accounts',
+  verifications: 'verifications',
+  two_factors: 'two_factors',
+  passkeys: 'passkeys',
+  sessions: 'sessions'
 };
 
 /**

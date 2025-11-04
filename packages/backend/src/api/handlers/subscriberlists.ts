@@ -26,6 +26,7 @@ export function subscriberListRoutes<
     "/",
     {
       schema: {
+        tags: ["subscriber-lists"],
         response: {
           200: Type.Array(Type.Ref("SubscriberList")),
           401: Type.Ref("ErrorResponse"),
@@ -59,6 +60,7 @@ export function subscriberListRoutes<
     "/",
     {
       schema: {
+        tags: ["subscriber-lists"],
         body: CreateSubscriberList,
         response: {
           201: Type.Ref("SubscriberList"),
@@ -88,6 +90,7 @@ export function subscriberListRoutes<
       "/",
       {
         schema: {
+          tags: ["subscriber-lists"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             subscriber_list_id: Type.String({ format: "uuid" }),
@@ -133,6 +136,7 @@ export function subscriberListRoutes<
       "/",
       {
         schema: {
+          tags: ["subscriber-lists"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             subscriber_list_id: Type.String({ format: "uuid" }),
@@ -182,6 +186,7 @@ export function subscriberListRoutes<
       "/",
       {
         schema: {
+          tags: ["subscriber-lists"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
             subscriber_list_id: Type.String({ format: "uuid" }),
@@ -245,6 +250,7 @@ function subscribersRoutes<
     "/",
     {
       schema: {
+        tags: ["subscriber-lists"],
         params: Type.Object({
           tenant_id: Type.String({ format: "uuid" }),
           subscriber_list_id: Type.String({ format: "uuid" }),

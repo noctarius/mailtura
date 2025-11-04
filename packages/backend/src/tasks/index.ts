@@ -26,7 +26,6 @@ const createTaskManager = async () => {
       return client.workflow.start("importContacts", {
         taskQueue: temporalTaskQueue,
         workflowId: `import-contacts-${contactImportId}`,
-        requestEagerStart: true,
         startDelay: 1,
         workflowTaskTimeout: "5min",
         args: [tenantId, contactImportId],

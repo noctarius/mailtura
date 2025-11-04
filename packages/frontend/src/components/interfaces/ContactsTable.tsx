@@ -10,6 +10,7 @@ import { CreditCard as Edit } from "lucide-solid/icons/index";
 import DeleteContactDialog from "../modals/DeleteContactDialog.js";
 import { formatDateTime } from "../../helpers/format-date-time.js";
 import { EditContactDrawer } from "../modals/EditContactDrawer.js";
+import { useAuth } from "../../hooks/useAuth.js";
 
 const contextMenuActions: ContextMenuAction[] = [
   {
@@ -30,6 +31,9 @@ interface ContactsTableProps {
 }
 
 export function ContactsTable(props: ContactsTableProps) {
+  const auth = useAuth();
+  const canManageContacts = () => auth.hasPermission("manage::contacts");
+
   const [activeContextMenu, setActiveContextMenu] = createSignal<string | undefined>(undefined);
   const [deleteContact, setDeleteContact] = createSignal<Contact | undefined>(undefined);
 
@@ -87,15 +91,16 @@ export function ContactsTable(props: ContactsTableProps) {
       {
         id: "actions",
         header: () => "Actions",
-        cell: info => (
-          <ContactsActions
-            item={info.row.original}
-            onClick={handleContextMenu}
-            activeContextMenu={activeContextMenu}
-            setActiveContextMenu={setActiveContextMenu}
-            onContextMenuAction={handleContextMenuAction}
-          />
-        ),
+        cell: info =>
+          canManageContacts() && (
+            <ContactsActions
+              item={info.row.original}
+              onClick={handleContextMenu}
+              activeContextMenu={activeContextMenu}
+              setActiveContextMenu={setActiveContextMenu}
+              onContextMenuAction={handleContextMenuAction}
+            />
+          ),
       },
     ] as ColumnDef<Contact, any>[];
   });

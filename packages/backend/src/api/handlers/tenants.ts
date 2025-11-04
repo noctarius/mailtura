@@ -21,6 +21,7 @@ import { templateRoutes } from "./templates.js";
 import { userRoutes } from "./users.js";
 import { apiKeyRoutes } from "./apikeys.js";
 import { fileRoutes } from "./files.js";
+import { hasAnyPermission } from "../../auth/index.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -33,13 +34,24 @@ export function tenantRoutes<
     "/",
     {
       schema: {
+        tags: ["tenants"],
         response: {
           200: Type.Array(Type.Ref("Tenant")),
           401: Type.Ref("ErrorResponse"),
         },
       },
     },
-    async () => {
+    async request => {
+      // For users with *::tenants permission, return their tenant only
+      if (!hasAnyPermission(["manage::tenants", "view::tenants"], request.user)) {
+        const tenant = await prisma.tenants.findUnique({
+          where: {
+            id: request.user.tenantId,
+          },
+        });
+        return !tenant ? [] : [mapTenant(tenant)];
+      }
+
       const tenants = await prisma.tenants.findMany();
       return tenants.map(mapTenant);
     }
@@ -49,12 +61,14 @@ export function tenantRoutes<
     "/",
     {
       schema: {
+        tags: ["tenants"],
         body: CreateTenant,
         response: {
           201: Type.Ref("Tenant"),
           401: Type.Ref("ErrorResponse"),
         },
       },
+      permissions: ["manage::tenants"],
     },
     async (request, reply) => {
       const newTenant = await prisma.tenants.create({
@@ -74,6 +88,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),
@@ -83,6 +98,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["view::tenants"],
       },
       async request => {
         const tenant = await prisma.tenants.findUnique({
@@ -101,6 +117,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),
@@ -112,6 +129,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["manage::tenants"],
       },
       async request => {
         const tenantId = request.params.tenant_id;
@@ -142,6 +160,7 @@ export function tenantRoutes<
       "/",
       {
         schema: {
+          tags: ["tenants"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
           }),
@@ -151,6 +170,7 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
+        permissions: ["manage::tenants"],
       },
       async (request, reply) => {
         const tenantId = request.params.tenant_id;

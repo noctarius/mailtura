@@ -319,6 +319,7 @@ export const User = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
+      tenantId: Type.String({ format: "uuid" }),
       email: Type.String({ format: "email" }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),

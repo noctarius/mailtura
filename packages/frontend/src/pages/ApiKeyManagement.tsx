@@ -1,22 +1,23 @@
 import {
-  AlertCircle,
   Calendar,
   CheckCircle,
+  CircleAlert,
   Copy,
   Eye,
   EyeOff,
-  Filter,
+  Funnel,
   Key,
   Plus,
   Search,
   Shield,
   Trash2,
 } from "lucide-solid";
-import { API_PERMISSION_DESCRIPTIONS, ApiKey, ApiPermission } from "../types/auth";
+import { API_PERMISSION_DESCRIPTIONS, ApiKey } from "../types/auth";
 import { useAuth } from "../hooks/useAuth.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createSignal } from "solid-js";
 import { useTenantId } from "../hooks/useTenantId.js";
+import { ApiPermission } from "@mailtura/rpcmodel/lib/auth/index.js";
 
 const ApiKeyManagement = () => {
   const { hasPermission } = useAuth();
@@ -276,7 +277,7 @@ const ApiKeyManagement = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedStatus()}
                 onChange={e => setSelectedStatus(e.target.value)}
@@ -367,7 +368,7 @@ const ApiKeyManagement = () => {
                         value={apiKey.isActive ? "Active" : "Inactive"}
                         bgColor={apiKey.isActive ? "bg-green-100" : "bg-red-100"}
                         textColor={apiKey.isActive ? "text-green-800" : "text-red-800"}
-                        icon={apiKey.isActive ? <CheckCircle class="w-3 h-3" /> : <AlertCircle class="w-3 h-3" />}
+                        icon={apiKey.isActive ? <CheckCircle class="w-3 h-3" /> : <CircleAlert class="w-3 h-3" />}
                       />
                     </td>
                     <td class="py-4 px-6">

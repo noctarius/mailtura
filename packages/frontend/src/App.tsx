@@ -1,5 +1,5 @@
 import { createSignal, lazy, ParentComponent } from "solid-js";
-import { Navigate, RouteDefinition, Router } from "@solidjs/router";
+import { Navigate, Route, Router } from "@solidjs/router";
 import Sidebar from "./components/interfaces/Sidebar";
 import Dashboard from "./pages/Dashboard";
 import SignUp from "./pages/SignUp.tsx";
@@ -8,6 +8,7 @@ import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
 import SignIn from "./pages/SignIn.js";
 import { Toaster } from "solid-toast";
+import { AuthGuard } from "./components/interfaces/AuthGuard.js";
 
 const queryClient = new QueryClient();
 
@@ -24,60 +25,17 @@ function AppContent() {
   const auth = useAuth();
   const [authView, setAuthView] = createSignal<"signin" | "signup">("signin");
 
-  const routes: RouteDefinition[] = [
-    {
-      path: "/",
-      component: () => <Navigate href="/dashboard" />,
-    },
-    {
-      path: "/dashboard",
-      component: () => <Dashboard />,
-    },
-    {
-      path: "/campaigns",
-      component: lazy(() => import("./pages/Campaigns.js")),
-    },
-    {
-      path: "/template-editor",
-      component: lazy(() => import("./pages/TemplateEditor.js")),
-    },
-    {
-      path: "/settings/account",
-      component: lazy(() => import("./pages/Settings.js")),
-    },
-    {
-      path: "/contacts",
-      component: lazy(() => import("./pages/Contacts.js")),
-    },
-    {
-      path: "/activity",
-      component: lazy(() => import("./pages/Activity.js")),
-    },
-    {
-      path: "/suppression/global-unsubscribes",
-      component: lazy(() => import("./pages/GlobalUnsubscribes.js")),
-    },
-    {
-      path: "/suppression/list-unsubscribes",
-      component: lazy(() => import("./pages/ListUnsubscribes.js")),
-    },
-    {
-      path: "/suppression/bounces",
-      component: lazy(() => import("./pages/Bounces.js")),
-    },
-    {
-      path: "/settings/api-key-management",
-      component: lazy(() => import("./pages/ApiKeyManagement.js")),
-    },
-    {
-      path: "/settings/tenant-management",
-      component: lazy(() => import("./pages/TenantManagement.js")),
-    },
-    {
-      path: "*",
-      component: () => <Dashboard />,
-    },
-  ];
+  const Campaigns = lazy(() => import("./pages/Campaigns.js"));
+  const TemplateEditor = lazy(() => import("./pages/TemplateEditor.js"));
+  const Contacts = lazy(() => import("./pages/Contacts.js"));
+  const Activity = lazy(() => import("./pages/Activity.js"));
+  const AccountSettings = lazy(() => import("./pages/Settings.js"));
+  const ApiKeyManagement = lazy(() => import("./pages/ApiKeyManagement.js"));
+  const TenantManagement = lazy(() => import("./pages/TenantManagement.js"));
+  const UserManagement = lazy(() => import("./pages/UserManagement.js"));
+  const GlobalUnsubscribes = lazy(() => import("./pages/GlobalUnsubscribes.js"));
+  const ListUnsubscribes = lazy(() => import("./pages/ListUnsubscribes.js"));
+  const Bounces = lazy(() => import("./pages/Bounces.js"));
 
   return (
     <>
@@ -97,7 +55,125 @@ function AppContent() {
         )
       ) : (
         <div class="flex flex-1 min-h-0 h-screen bg-gray-50">
-          <Router root={AppLayout}>{routes}</Router>
+          <Router root={AppLayout}>
+            <Route path="/">
+              <Route
+                path="/"
+                component={() => <Navigate href="/dashboard" />}
+              />
+              <Route
+                path="/dashboard"
+                component={Dashboard}
+              />
+              <Route
+                path="/campaigns"
+                component={() => (
+                  <AuthGuard>
+                    <Campaigns />
+                  </AuthGuard>
+                )}
+              />
+              <Route
+                path="/template-editor"
+                component={() => (
+                  <AuthGuard>
+                    <TemplateEditor />
+                  </AuthGuard>
+                )}
+              />
+              <Route
+                path="/contacts"
+                component={() => (
+                  <AuthGuard permissions={["view::contacts"]}>
+                    <Contacts />
+                  </AuthGuard>
+                )}
+              />
+              <Route
+                path="/activity"
+                component={() => (
+                  <AuthGuard>
+                    <Activity />
+                  </AuthGuard>
+                )}
+              />
+              <Route path="/settings">
+                <Route
+                  path="/account"
+                  component={() => (
+                    <AuthGuard>
+                      <AccountSettings />
+                    </AuthGuard>
+                  )}
+                />
+                <Route
+                  path="/api-key-management"
+                  component={() => (
+                    <AuthGuard>
+                      <ApiKeyManagement />
+                    </AuthGuard>
+                  )}
+                />
+                <Route
+                  path="/tenant-management"
+                  component={() => (
+                    <AuthGuard>
+                      <TenantManagement />
+                    </AuthGuard>
+                  )}
+                >
+                  <Route path="/:tenantId">
+                    <Route
+                      path="/user-management"
+                      component={() => (
+                        <AuthGuard>
+                          <UserManagement />
+                        </AuthGuard>
+                      )}
+                    />
+                  </Route>
+                </Route>
+                <Route
+                  path="/user-management"
+                  component={() => (
+                    <AuthGuard>
+                      <UserManagement />
+                    </AuthGuard>
+                  )}
+                />
+              </Route>
+              <Route path="/suppression">
+                <Route
+                  path="/global-unsubscribes"
+                  component={() => (
+                    <AuthGuard>
+                      <GlobalUnsubscribes />
+                    </AuthGuard>
+                  )}
+                />
+                <Route
+                  path="/list-unsubscribes"
+                  component={() => (
+                    <AuthGuard>
+                      <ListUnsubscribes />
+                    </AuthGuard>
+                  )}
+                />
+                <Route
+                  path="/bounces"
+                  component={() => (
+                    <AuthGuard>
+                      <Bounces />
+                    </AuthGuard>
+                  )}
+                />
+              </Route>
+            </Route>
+            <Route
+              path="*"
+              component={() => <Navigate href="/dashboard" />}
+            />
+          </Router>
         </div>
       )}
     </>
