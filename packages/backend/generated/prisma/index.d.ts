@@ -26689,11 +26689,11 @@ export namespace Prisma {
 
   export type sessionsWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    token?: string
     AND?: sessionsWhereInput | sessionsWhereInput[]
     OR?: sessionsWhereInput[]
     NOT?: sessionsWhereInput | sessionsWhereInput[]
     user_id?: UuidFilter<"sessions"> | string
-    token?: StringFilter<"sessions"> | string
     expires_at?: DateTimeFilter<"sessions"> | Date | string
     ip_address?: StringNullableFilter<"sessions"> | string | null
     user_agent?: StringNullableFilter<"sessions"> | string | null
@@ -26702,7 +26702,7 @@ export namespace Prisma {
     updated_at?: DateTimeNullableFilter<"sessions"> | Date | string | null
     updated_by?: StringNullableFilter<"sessions"> | string | null
     users?: XOR<UsersNullableScalarRelationFilter, usersWhereInput> | null
-  }, "id">
+  }, "id" | "token">
 
   export type sessionsOrderByWithAggregationInput = {
     id?: SortOrder

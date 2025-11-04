@@ -56,8 +56,8 @@ const DeleteContactDialog = (props: DeleteContactDialogProps) => {
       message={() => (
         <>
           <p>
-            You're about to delete a user. However, the user is a member of one or more lists. Removing the user will
-            prevent the user from receiving further communication.
+            You're about to delete a contact. However, the user is a member of one or more lists. Removing the contact
+            will prevent the contact from receiving further communication.
           </p>
           <p>
             {subscriberLists().length > 0 && (

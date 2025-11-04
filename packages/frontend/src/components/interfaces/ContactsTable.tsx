@@ -37,7 +37,7 @@ export function ContactsTable(props: ContactsTableProps) {
   const [activeContextMenu, setActiveContextMenu] = createSignal<string | undefined>(undefined);
   const [deleteContact, setDeleteContact] = createSignal<Contact | undefined>(undefined);
 
-  const contactsTableColumns = createMemo(() => {
+  const contactsTableColumns = createMemo<ColumnDef<Contact, any>[]>(() => {
     return [
       {
         id: "contact",
@@ -102,7 +102,7 @@ export function ContactsTable(props: ContactsTableProps) {
             />
           ),
       },
-    ] as ColumnDef<Contact, any>[];
+    ];
   });
 
   const handleContextMenuAction = (item: Contact, action: string) => {
@@ -170,7 +170,7 @@ function ContactsActions(props: ContactsActionsProps) {
         <button
           onClick={e => props.onClick(e, props.item)}
           class="p-2 text-gray-400 hover:text-gray-600 transition-colors relative"
-          aria-controls="drawer-example"
+          aria-controls="user-actions"
         >
           <Ellipsis
             ref={setEllipsisRef}

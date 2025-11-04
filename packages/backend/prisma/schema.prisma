@@ -368,4 +368,6 @@ model sessions {
   updated_by String?
 
   users users? @relation(fields: [user_id], references: [id])
+
+  @@unique([token])
 }
