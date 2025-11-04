@@ -1,4 +1,4 @@
-import { AlertTriangle, Calendar, Download, Filter, Mail, Plus, Search, Trash2 } from "lucide-solid";
+import { Calendar, Download, Funnel, Mail, Plus, Search, Trash2, TriangleAlert } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
@@ -151,7 +151,7 @@ const Bounces = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedType()}
                 onChange={e => setSelectedType(e.target.value)}
@@ -215,7 +215,7 @@ const Bounces = () => {
                         value={`${bounce.bounceType} Bounce`}
                         bgColor={getBounceTypeBgColor(bounce.bounceType)}
                         textColor={getBounceTypeTextColor(bounce.bounceType)}
-                        icon={<AlertTriangle class="w-3 h-3" />}
+                        icon={<TriangleAlert class="w-3 h-3" />}
                       />
                     </td>
                     <td class="py-4 px-6">
@@ -244,7 +244,7 @@ const Bounces = () => {
 
         {filteredBounces.length === 0 && (
           <div class="text-center py-12">
-            <AlertTriangle class="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <TriangleAlert class="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 class="text-lg font-medium text-gray-900 mb-2">No bounces found</h3>
             <p class="text-gray-600 mb-6">
               {searchTerm() || selectedType() !== "all" || selectedCampaign() !== "all"

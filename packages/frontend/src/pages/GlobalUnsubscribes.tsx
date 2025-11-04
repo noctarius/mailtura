@@ -1,4 +1,4 @@
-import { Calendar, Download, Filter, Mail, Plus, Search, Trash2 } from "lucide-solid";
+import { Calendar, Download, Funnel, Mail, Plus, Search, Trash2 } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { getTimeSince } from "../helpers/time-since.ts";
 import { formatDateTime } from "../helpers/format-date-time.ts";
@@ -113,7 +113,7 @@ const GlobalUnsubscribes = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedSource()}
                 onChange={e => setSelectedSource(e.target.value)}

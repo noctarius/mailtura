@@ -1,140 +1,69 @@
 import {
   Building2,
   Calendar,
-  CreditCard as Edit,
-  Filter,
+  CreditCard,
+  Ellipsis,
+  Funnel,
+  Loader,
   Mail,
-  MoreHorizontal,
   Plus,
+  RefreshCcwIcon,
   Search,
   Shield,
   Trash2,
   User as UserIcon,
 } from "lucide-solid";
-import { ROLE_PERMISSIONS, User, UserRole } from "../types/auth";
-import { useAuth } from "../hooks/useAuth.tsx";
-import { createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
+import { useTenantsQuery } from "../services/tenants/use-tenants-query.js";
+import { useUsersQuery } from "../services/users/use-users-query.js";
+import { useTenantId } from "../hooks/useTenantId.js";
+import { useParams } from "@solidjs/router";
+import { ContextMenuAction } from "../components/interfaces/ContextMenu.js";
+import { getRoleColorClasses, getStatusColorClasses } from "../components/interfaces/UsersTable.utils.js";
+import { CreateUserDialog } from "../components/modals/CreateUserDialog.js";
+
+const contextMenuActions: ContextMenuAction[] = [
+  {
+    action: "reset-password",
+    icon: RefreshCcwIcon,
+    label: "Reset Password",
+  },
+  {
+    action: "delete",
+    icon: Trash2,
+    label: "Delete Contact",
+  },
+];
 
 const UserManagement = () => {
-  const { user: currentUser } = useAuth();
+  const params = useParams();
+  const tenantId = useTenantId();
+
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedRole, setSelectedRole] = createSignal("all");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [showCreateModal, setShowCreateModal] = createSignal(false);
 
-  // Mock data - in real app this would come from API
-  const users: User[] = [
-    {
-      id: "user-1",
-      email: "admin@acme.com",
-      firstName: "John",
-      lastName: "Admin",
-      role: "tenant_admin",
-      tenantId: "tenant-1",
-      permissions: [
-        "manage::users",
-        "manage::campaigns",
-        "manage::templates",
-        "manage::contacts",
-        "manage::reports",
-        "manage::settings",
-        "manage::suppressions",
-        "manage::api-keys",
-        "manage::integrations",
-        "manage::logs",
-        "manage::webhooks",
-      ],
-      isActive: true,
-      createdAt: "2024-01-01",
-      lastLoginAt: "2024-01-25T14:30:00Z",
-    },
-    {
-      id: "user-2",
-      email: "user@acme.com",
-      firstName: "Jane",
-      lastName: "User",
-      role: "user",
-      tenantId: "tenant-1",
-      permissions: [
-        "manage::campaigns",
-        "manage::templates",
-        "manage::contacts",
-        "view::reports",
-        "view::suppressions",
-        "view::logs",
-      ],
-      isActive: true,
-      createdAt: "2024-01-05",
-      lastLoginAt: "2024-01-24T09:15:00Z",
-    },
-    {
-      id: "user-3",
-      email: "viewer@acme.com",
-      firstName: "Bob",
-      lastName: "Viewer",
-      role: "viewer",
-      tenantId: "tenant-1",
-      permissions: ["view::reports"],
-      isActive: true,
-      createdAt: "2024-01-10",
-    },
-    {
-      id: "user-4",
-      email: "inactive@acme.com",
-      firstName: "Alice",
-      lastName: "Inactive",
-      role: "user",
-      tenantId: "tenant-1",
-      permissions: [
-        "manage::campaigns",
-        "manage::templates",
-        "manage::contacts",
-        "view::reports",
-        "view::suppressions",
-        "view::logs",
-      ],
-      isActive: false,
-      createdAt: "2024-01-15",
-      lastLoginAt: "2024-01-20T16:45:00Z",
-    },
-  ];
+  const usersQuery = useUsersQuery({ tenantId: () => params.tenantId || tenantId() });
+  const tenantsQuery = useTenantsQuery();
 
-  const tenants = [
-    { id: "tenant-1", name: "Acme Corporation" },
-    { id: "tenant-2", name: "TechStart Inc" },
-  ];
+  const isLoading = createMemo(() => usersQuery.isLoading || tenantsQuery.isLoading);
 
-  const filteredUsers = users.filter(user => {
-    const matchesSearch =
-      user.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
-      user.firstName.toLowerCase().includes(searchTerm().toLowerCase()) ||
-      user.lastName.toLowerCase().includes(searchTerm().toLowerCase());
-    const matchesRole = selectedRole() === "all" || user.role === selectedRole();
-    const matchesStatus =
-      selectedStatus() === "all" ||
-      (selectedStatus() === "active" && user.isActive) ||
-      (selectedStatus() === "inactive" && !user.isActive);
-    return matchesSearch && matchesRole && matchesStatus;
+  const filteredUsers = createMemo(() => {
+    if (!usersQuery.data) return [];
+    return usersQuery.data.filter(user => {
+      const matchesSearch =
+        user.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
+        user.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
+        user.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
+      const matchesRole = selectedRole() === "all" || user.role === selectedRole();
+      const matchesStatus =
+        selectedStatus() === "all" ||
+        (selectedStatus() === "active" && user.isActive) ||
+        (selectedStatus() === "inactive" && !user.isActive);
+      return matchesSearch && matchesRole && matchesStatus;
+    });
   });
-
-  const getRoleColor = (role: UserRole) => {
-    switch (role) {
-      case "super_admin":
-        return "bg-purple-100 text-purple-800";
-      case "tenant_admin":
-        return "bg-blue-100 text-blue-800";
-      case "user":
-        return "bg-green-100 text-green-800";
-      case "viewer":
-        return "bg-gray-100 text-gray-800";
-      default:
-        return "bg-gray-100 text-gray-800";
-    }
-  };
-
-  const getStatusColor = (isActive: boolean) => {
-    return isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800";
-  };
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
@@ -160,271 +89,7 @@ const UserManagement = () => {
   };
 
   const getTenantName = (tenantId: string) => {
-    return tenants.find(t => t.id === tenantId)?.name || "Unknown";
-  };
-
-  const CreateUserModal = () => {
-    const [userData, setUserData] = createSignal({
-      firstName: "",
-      lastName: "",
-      email: "",
-      role: "user" as UserRole,
-      tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
-      isActive: true,
-      sendInvitation: true,
-    });
-    const [errors, setErrors] = createSignal<Record<string, string>>({});
-
-    const validateForm = () => {
-      const newErrors: Record<string, string> = {};
-
-      if (!userData().firstName.trim()) {
-        newErrors.firstName = "First name is required";
-      }
-
-      if (!userData().lastName.trim()) {
-        newErrors.lastName = "Last name is required";
-      }
-
-      if (!userData().email.trim()) {
-        newErrors.email = "Email is required";
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData().email)) {
-        newErrors.email = "Please enter a valid email address";
-      } else if (users.some(u => u.email.toLowerCase() === userData().email.toLowerCase())) {
-        newErrors.email = "This email address is already in use";
-      }
-
-      if (currentUser()?.role === "super_admin" && !userData().tenantId) {
-        newErrors.tenantId = "Please select a tenant";
-      }
-
-      setErrors(newErrors);
-      return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = () => {
-      if (!validateForm()) return;
-
-      // In real app, this would create the user via API
-      console.log("Creating user:", userData);
-      setShowCreateModal(false);
-      setUserData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        role: "user",
-        tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
-        isActive: true,
-        sendInvitation: true,
-      });
-      setErrors({});
-    };
-
-    const getAvailableRoles = (): UserRole[] => {
-      if (currentUser()?.role === "super_admin") {
-        return ["super_admin", "tenant_admin", "user", "viewer"];
-      } else if (currentUser()?.role === "tenant_admin") {
-        return ["tenant_admin", "user", "viewer"];
-      }
-      return ["user", "viewer"];
-    };
-
-    const getRoleDescription = (role: UserRole) => {
-      switch (role) {
-        case "super_admin":
-          return "Full system access including tenant management";
-        case "tenant_admin":
-          return "Manage users and all features within tenant";
-        case "user":
-          return "Standard access to campaigns, templates, and contacts";
-        case "viewer":
-          return "Read-only access to analytics and activity";
-        default:
-          return "";
-      }
-    };
-
-    const getPermissionCount = (role: UserRole) => {
-      return ROLE_PERMISSIONS[role]?.length || 0;
-    };
-
-    return (
-      <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
-          <div class="flex items-center justify-between p-6 border-b border-gray-200">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900">Create New User</h3>
-              <p class="text-sm text-gray-600 mt-1">Add a new user to the system</p>
-            </div>
-            <button
-              onClick={() => setShowCreateModal(false)}
-              class="text-gray-400 hover:text-gray-600"
-            >
-              ×
-            </button>
-          </div>
-
-          <div class="p-6 overflow-y-auto max-h-96">
-            <div class="space-y-6">
-              {/* Personal Information */}
-              <div>
-                <h4 class="text-md font-medium text-gray-900 mb-4">Personal Information</h4>
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                    <input
-                      type="text"
-                      value={userData().firstName}
-                      onChange={e => setUserData(prev => ({ ...prev, firstName: e.target.value }))}
-                      class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                        errors().firstName ? "border-red-300" : "border-gray-300"
-                      }`}
-                      placeholder="John"
-                    />
-                    {errors().firstName && <p class="text-red-600 text-sm mt-1">{errors().firstName}</p>}
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                    <input
-                      type="text"
-                      value={userData().lastName}
-                      onChange={e => setUserData(prev => ({ ...prev, lastName: e.target.value }))}
-                      class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                        errors().lastName ? "border-red-300" : "border-gray-300"
-                      }`}
-                      placeholder="Doe"
-                    />
-                    {errors().lastName && <p class="text-red-600 text-sm mt-1">{errors().lastName}</p>}
-                  </div>
-                </div>
-
-                <div class="mt-4">
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                  <input
-                    type="email"
-                    value={userData().email}
-                    onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))}
-                    class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors().email ? "border-red-300" : "border-gray-300"
-                    }`}
-                    placeholder="john.doe@example.com"
-                  />
-                  {errors().email && <p class="text-red-600 text-sm mt-1">{errors().email}</p>}
-                </div>
-              </div>
-
-              {/* Account Settings */}
-              <div>
-                <h4 class="text-md font-medium text-gray-900 mb-4">Account Settings</h4>
-
-                {/* Tenant Selection (only for super admins) */}
-                {currentUser()?.role === "super_admin" && (
-                  <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Tenant *</label>
-                    <select
-                      value={userData().tenantId}
-                      onChange={e => setUserData(prev => ({ ...prev, tenantId: e.target.value }))}
-                      class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                        errors().tenantId ? "border-red-300" : "border-gray-300"
-                      }`}
-                    >
-                      <option value="">Select a tenant</option>
-                      {tenants.map(tenant => (
-                        <option value={tenant.id}>{tenant.name}</option>
-                      ))}
-                    </select>
-                    {errors().tenantId && <p class="text-red-600 text-sm mt-1">{errors().tenantId}</p>}
-                  </div>
-                )}
-
-                {/* Role Selection */}
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-gray-700 mb-3">Role *</label>
-                  <div class="space-y-3">
-                    {getAvailableRoles().map(role => (
-                      <div
-                        onClick={() => setUserData(prev => ({ ...prev, role }))}
-                        class={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                          userData().role === role
-                            ? "border-blue-500 bg-blue-50"
-                            : "border-gray-200 hover:border-gray-300"
-                        }`}
-                      >
-                        <div class="flex items-center justify-between">
-                          <div class="flex items-center space-x-3">
-                            <input
-                              type="radio"
-                              name="role"
-                              checked={userData().role === role}
-                              onChange={() => setUserData(prev => ({ ...prev, role }))}
-                              class="text-blue-600 focus:ring-blue-500"
-                            />
-                            <div>
-                              <h5 class="font-medium text-gray-900 capitalize">{role.replace("_", " ")}</h5>
-                              <p class="text-sm text-gray-600">{getRoleDescription(role)}</p>
-                            </div>
-                          </div>
-                          <div class="text-sm text-gray-500">{getPermissionCount(role)} permissions</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Account Status */}
-                <div class="flex items-center justify-between mb-4">
-                  <div>
-                    <label class="text-sm font-medium text-gray-700">Account Status</label>
-                    <p class="text-sm text-gray-600">User can sign in and access the system</p>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={userData().isActive}
-                      onChange={e => setUserData(prev => ({ ...prev, isActive: e.target.checked }))}
-                      class="sr-only peer"
-                    />
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-
-                {/* Send Invitation */}
-                <div class="flex items-center justify-between">
-                  <div>
-                    <label class="text-sm font-medium text-gray-700">Send Invitation Email</label>
-                    <p class="text-sm text-gray-600">Send setup instructions to the user's email</p>
-                  </div>
-                  <label class="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={userData().sendInvitation}
-                      onChange={e => setUserData(prev => ({ ...prev, sendInvitation: e.target.checked }))}
-                      class="sr-only peer"
-                    />
-                    <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
-            <button
-              onClick={() => setShowCreateModal(false)}
-              class="px-4 py-2 text-gray-600 hover:text-gray-800"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSubmit}
-              class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Create User
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return tenantsQuery.data?.find(tenant => tenant.id === tenantId)?.name ?? "Unknown";
   };
 
   return (
@@ -462,7 +127,7 @@ const UserManagement = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedRole()}
                 onChange={e => setSelectedRole(e.target.value)}
@@ -488,102 +153,134 @@ const UserManagement = () => {
           </div>
 
           <div class="text-sm text-gray-600">
-            {filteredUsers.length} of {users.length} users
+            {filteredUsers().length} of {usersQuery.data?.length} users
           </div>
         </div>
       </div>
 
       {/* Users Table */}
       <div class="flex-1 overflow-auto p-8">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">User</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Role</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Tenant</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Status</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Last Login</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Created</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                {filteredUsers.map(user => (
-                  <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                          <span class="text-blue-600 font-medium">
-                            {user.firstName.charAt(0)}
-                            {user.lastName.charAt(0)}
+        {isLoading() ? (
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
+            <div class="flex flex-col items-center justify-center space-y-4">
+              <div class="relative">
+                <Loader class="w-8 h-8 text-blue-600 animate-spin" />
+              </div>
+              <div class="text-center">
+                <h3 class="text-lg font-medium text-gray-900 mb-2">Loading Users</h3>
+                <p class="text-gray-600">Please wait while we fetch your user data...</p>
+              </div>
+              {/* Loading skeleton */}
+              <div class="w-full max-w-4xl mt-8 space-y-4">
+                {[...Array(5)].map(() => (
+                  <div class="animate-pulse">
+                    <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                      <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
+                      <div class="flex-1 space-y-2">
+                        <div class="h-4 bg-gray-300 rounded w-1/4"></div>
+                        <div class="h-3 bg-gray-300 rounded w-1/3"></div>
+                      </div>
+                      <div class="flex space-x-2">
+                        <div class="h-6 bg-gray-300 rounded-full w-16"></div>
+                        <div class="h-6 bg-gray-300 rounded-full w-20"></div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50 border-b border-gray-200">
+                  <tr>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">User</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Role</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Tenant</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Status</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Last Login</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Created</th>
+                    <th class="text-left py-4 px-6 font-semibold text-gray-900">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                  {filteredUsers().map(user => (
+                    <tr class="hover:bg-gray-50 transition-colors">
+                      <td class="py-4 px-6">
+                        <div class="flex items-center space-x-3">
+                          <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-medium">
+                              {user.firstName?.charAt(0)}
+                              {user.lastName?.charAt(0)}
+                            </span>
+                          </div>
+                          <div>
+                            <div class="font-medium text-gray-900">
+                              {user.firstName} {user.lastName}
+                            </div>
+                            <div class="text-sm text-gray-500 flex items-center space-x-1">
+                              <Mail class="w-3 h-3" />
+                              <span>{user.email}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center space-x-2">
+                          <span
+                            class={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getRoleColorClasses(user.role)}`}
+                          >
+                            <Shield class="w-3 h-3" />
+                            <span class="capitalize">{user.role.replace("_", " ")}</span>
                           </span>
                         </div>
-                        <div>
-                          <div class="font-medium text-gray-900">
-                            {user.firstName} {user.lastName}
-                          </div>
-                          <div class="text-sm text-gray-500 flex items-center space-x-1">
-                            <Mail class="w-3 h-3" />
-                            <span>{user.email}</span>
-                          </div>
+                      </td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center space-x-2">
+                          <Building2 class="w-4 h-4 text-gray-400" />
+                          <span class="text-sm text-gray-900">{getTenantName(user.tenantId)}</span>
                         </div>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-2">
+                      </td>
+                      <td class="py-4 px-6">
                         <span
-                          class={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium ${getRoleColor(user.role)}`}
+                          class={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColorClasses(user.isActive)}`}
                         >
-                          <Shield class="w-3 h-3" />
-                          <span class="capitalize">{user.role.replace("_", " ")}</span>
+                          {user.isActive ? "Active" : "Inactive"}
                         </span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-2">
-                        <Building2 class="w-4 h-4 text-gray-400" />
-                        <span class="text-sm text-gray-900">{getTenantName(user.tenantId)}</span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <span
-                        class={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(user.isActive)}`}
-                      >
-                        {user.isActive ? "Active" : "Inactive"}
-                      </span>
-                    </td>
-                    <td class="py-4 px-6">
-                      <span class="text-sm text-gray-900">{formatLastLogin(user.lastLoginAt)}</span>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-2">
-                        <Calendar class="w-4 h-4 text-gray-400" />
-                        <span class="text-sm text-gray-900">{formatDate(user.createdAt)}</span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-2">
-                        <button class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
-                          <Edit class="w-4 h-4" />
-                        </button>
-                        <button class="p-2 text-gray-400 hover:text-red-600 transition-colors">
-                          <Trash2 class="w-4 h-4" />
-                        </button>
-                        <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                          <MoreHorizontal class="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+                      </td>
+                      <td class="py-4 px-6">
+                        <span class="text-sm text-gray-900">{formatLastLogin(user.lastLoginAt)}</span>
+                      </td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center space-x-2">
+                          <Calendar class="w-4 h-4 text-gray-400" />
+                          <span class="text-sm text-gray-900">{formatDate(user.createdAt)}</span>
+                        </div>
+                      </td>
+                      <td class="py-4 px-6">
+                        <div class="flex items-center space-x-2">
+                          <button class="p-2 text-gray-400 hover:text-blue-600 transition-colors">
+                            <CreditCard class="w-4 h-4" />
+                          </button>
+                          <button class="p-2 text-gray-400 hover:text-red-600 transition-colors">
+                            <Trash2 class="w-4 h-4" />
+                          </button>
+                          <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                            <Ellipsis class="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
 
-        {filteredUsers.length === 0 && (
+        {filteredUsers().length === 0 && (
           <div class="text-center py-12">
             <UserIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 class="text-lg font-medium text-gray-900 mb-2">No users found</h3>
@@ -603,7 +300,7 @@ const UserManagement = () => {
       </div>
 
       {/* Create User Modal */}
-      {showCreateModal() && <CreateUserModal />}
+      {showCreateModal() && <CreateUserDialog onClose={() => setShowCreateModal(false)} />}
     </div>
   );
 };

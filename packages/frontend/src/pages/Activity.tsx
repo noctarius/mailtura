@@ -1,4 +1,4 @@
-import { Activity as ActivityIcon, Calendar, Eye, Filter, MousePointer, Search, User } from "lucide-solid";
+import { Activity as ActivityIcon, Calendar, Eye, Funnel, MousePointer, Search, User } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
@@ -219,7 +219,7 @@ const Activity = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedStatus()}
                 onChange={e => setSelectedStatus(e.target.value)}
@@ -241,11 +241,7 @@ const Activity = () => {
               >
                 <option value="all">All Campaigns</option>
                 {campaigns.map(campaign => (
-                  <option
-                    value={campaign}
-                  >
-                    {campaign}
-                  </option>
+                  <option value={campaign}>{campaign}</option>
                 ))}
               </select>
             </div>
@@ -270,9 +266,7 @@ const Activity = () => {
               </thead>
               <tbody class="divide-y divide-gray-200">
                 {filteredMessages.map(message => (
-                  <tr
-                    class="hover:bg-gray-50 transition-colors"
-                  >
+                  <tr class="hover:bg-gray-50 transition-colors">
                     <td class="py-4 px-6">
                       <TableCellChip
                         value={message.status}

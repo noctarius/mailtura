@@ -1,4 +1,4 @@
-import { Copy, CreditCard as Edit, Filter, MoreHorizontal, Plus, Search, Send, Users } from "lucide-solid";
+import { Copy, CreditCard as Edit, Ellipsis, Funnel, Plus, Search, Send, Users } from "lucide-solid";
 import TableCellProgressBar from "../components/interfaces/TableCellProgressBar.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
@@ -7,16 +7,16 @@ import { getCampaignStatusIcon } from "../helpers/chip-icons.js";
 import { useCampaignQuery } from "../services/campaigns/use-campaigns-query.js";
 import { formatDateTime } from "../helpers/format-date-time.js";
 import { createMemo, createSignal } from "solid-js";
-import { useAuth } from "../hooks/useAuth.js";
+import { useTenantId } from "../hooks/useTenantId.js";
 
 const Campaigns = () => {
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [searchTerm, setSearchTerm] = createSignal("");
 
-  const auth = useAuth();
+  const tenantId = useTenantId();
 
   const campaignQuery = useCampaignQuery({
-    tenantId: auth.tenant()?.id,
+    tenantId,
   });
 
   const campaignsRates = [
@@ -93,7 +93,7 @@ const Campaigns = () => {
         ...campaign,
         ...campaignRate,
       };
-    }),
+    })
   );
 
   const filteredCampaigns = createMemo(() =>
@@ -136,7 +136,7 @@ const Campaigns = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedStatus()}
                 onChange={e => setSelectedStatus(e.target.value)}
@@ -238,7 +238,7 @@ const Campaigns = () => {
                           <Copy class="w-4 h-4" />
                         </button>
                         <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                          <MoreHorizontal class="w-4 h-4" />
+                          <Ellipsis class="w-4 h-4" />
                         </button>
                       </div>
                     </td>

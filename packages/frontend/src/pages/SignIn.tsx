@@ -37,7 +37,7 @@ const SignIn = (props: SignInProps) => {
             <Zap class="w-8 h-8 text-white" />
           </div>
           <h1 class="text-3xl font-bold text-gray-900 mb-2">Welcome back</h1>
-          <p class="text-gray-600">Sign in to your EmailFlow account</p>
+          <p class="text-gray-600">Sign in to your Mailtura account</p>
         </div>
 
         {/* Sign In Form */}
@@ -141,7 +141,7 @@ const SignIn = (props: SignInProps) => {
 
         {/* Footer */}
         <div class="text-center mt-8">
-          <p class="text-sm text-gray-500">© 2024 EmailFlow. All rights reserved. </p>
+          <p class="text-sm text-gray-500">© 2025 Mailtura. All rights reserved. </p>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import { Download, Filter, List, Mail, Plus, Search, Trash2 } from "lucide-solid";
+import { Download, Funnel, List, Mail, Plus, Search, Trash2 } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.tsx";
 import { formatDateTime } from "../helpers/format-date-time.ts";
 import { getUnsubscribeSourceIcon } from "../helpers/chip-icons.js";
@@ -142,7 +142,7 @@ const ListUnsubscribes = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedList()}
                 onChange={e => setSelectedList(e.target.value)}

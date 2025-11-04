@@ -247,7 +247,7 @@ const SignUp = (props: SignUpProps) => {
 
         {/* Footer */}
         <div class="text-center mt-8">
-          <p class="text-sm text-gray-500">© 2024 EmailFlow. All rights reserved. </p>
+          <p class="text-sm text-gray-500">© 2025 Mailtura. All rights reserved. </p>
         </div>
       </div>
     </div>
