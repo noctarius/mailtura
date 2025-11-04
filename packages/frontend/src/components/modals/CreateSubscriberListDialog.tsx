@@ -8,11 +8,11 @@ import { UiForm } from "../../forms/UiForm.js";
 import { UiDialog } from "../ui/UiDialog.js";
 import { toast } from "solid-toast";
 
-interface CreateListDialogProps {
+interface CreateSubscriberListDialogProps {
   onClose: () => void;
 }
 
-const CreateSubscriberListDialog = ({ onClose }: CreateListModalCreateListDialogPropsProps) => {
+const CreateSubscriberListDialog = ({ onClose }: CreateSubscriberListDialogProps) => {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 

@@ -1,40 +1,5 @@
 import { Tenant, User } from "@mailtura/rpcmodel/lib/models/index.js";
-
-export type Permissions =
-  | "view::campaigns"
-  | "manage::campaigns"
-  | "view::templates"
-  | "manage::templates"
-  | "view::contacts"
-  | "manage::contacts"
-  | "view::api-keys"
-  | "manage::api-keys"
-  | "view::tenants"
-  | "manage::tenants"
-  | "view::users"
-  | "manage::users"
-  | "view::suppressions"
-  | "manage::suppressions"
-  | "view::reports"
-  | "manage::reports"
-  | "view::settings"
-  | "manage::settings"
-  | "view::webhooks"
-  | "manage::webhooks"
-  | "view::integrations"
-  | "manage::integrations"
-  | "view::logs"
-  | "manage::logs";
-
-export interface TenantSettings {
-  maxUsers: number;
-  features: string[];
-  customBranding?: {
-    logo?: string;
-    primaryColor?: string;
-    companyName?: string;
-  };
-}
+import { type ApiPermission, type RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
 
 export type UserRole = "super_admin" | "tenant_admin" | "user" | "viewer";
 
@@ -51,16 +16,6 @@ export interface ApiKey {
   createdBy: string;
 }
 
-export type ApiPermission =
-  | "send_emails"
-  | "manage_campaigns_api"
-  | "manage_contacts_api"
-  | "manage_templates_api"
-  | "view_analytics_api"
-  | "manage_users_api"
-  | "manage_suppressions_api"
-  | "webhook_access";
-
 export const API_PERMISSION_DESCRIPTIONS: Record<ApiPermission, string> = {
   send_emails: "Send transactional and campaign emails",
   manage_campaigns_api: "Create, update, and manage email campaigns",
@@ -74,12 +29,12 @@ export const API_PERMISSION_DESCRIPTIONS: Record<ApiPermission, string> = {
 
 export interface AuthState {
   isAuthenticated: boolean;
-  user: User | null;
-  tenant: Tenant | null;
+  user: User | undefined;
+  tenant: Tenant | undefined;
   loading: boolean;
 }
 
-export const ROLE_PERMISSIONS: Record<UserRole, Permissions[]> = {
+export const ROLE_PERMISSIONS: Record<UserRole, RolePermission[]> = {
   super_admin: [
     "manage::tenants",
     "manage::users",

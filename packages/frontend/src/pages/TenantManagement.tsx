@@ -1,4 +1,4 @@
-import { Building2, Edit, Eye, Filter, MoreHorizontal, Plus, Search, Settings, Users } from "lucide-solid";
+import { Building2, Ellipsis, Eye, Funnel, Plus, Search, Settings, SquarePen, Users } from "lucide-solid";
 import { createSignal } from "solid-js";
 import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
 
@@ -126,7 +126,7 @@ const TenantManagement = () => {
             </div>
 
             <div class="flex items-center space-x-2">
-              <Filter class="w-5 h-5 text-gray-400" />
+              <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedStatus()}
                 onChange={e => setSelectedStatus(e.target.value)}
@@ -212,13 +212,13 @@ const TenantManagement = () => {
                           <Eye class="w-4 h-4" />
                         </button>
                         <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                          <Edit class="w-4 h-4" />
+                          <SquarePen class="w-4 h-4" />
                         </button>
                         <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
                           <Settings class="w-4 h-4" />
                         </button>
                         <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                          <MoreHorizontal class="w-4 h-4" />
+                          <Ellipsis class="w-4 h-4" />
                         </button>
                       </div>
                     </td>

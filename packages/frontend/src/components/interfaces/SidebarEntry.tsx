@@ -1,13 +1,13 @@
 import { ChevronDown, ChevronRight, LucideProps } from "lucide-solid";
 import { useAuth } from "../../hooks/useAuth.js";
-import { Permissions } from "../../types/auth.js";
 import { createEffect, createSignal, JSX } from "solid-js";
+import type { RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
 
 export interface NavigationItem {
   id: string;
   label: string;
   icon: (props: LucideProps) => JSX.Element;
-  permissions?: Permissions[];
+  permissions?: RolePermission[];
   subitems?: Omit<NavigationItem, "icon">[];
 }
 
@@ -16,16 +16,30 @@ interface SidebarEntryProps {
   activeView: () => string | undefined;
 }
 
+const navigationItemPermissionCheck = (
+  navigationItem: Omit<NavigationItem, "icon">,
+  hasAllPermissions: (permissions: RolePermission[]) => boolean
+) => {
+  if (!navigationItem.permissions) return true;
+  return hasAllPermissions(navigationItem.permissions);
+};
+
 const SidebarEntry = (props: SidebarEntryProps) => {
   const { hasAllPermissions } = useAuth();
 
   const [expanded, setExpanded] = createSignal(false);
 
   const Icon = props.navigationItem.icon;
-  const hasSubitems = (props.navigationItem.subitems && props.navigationItem.subitems.length > 0) ?? false;
+
+  const subItems = () =>
+    props.navigationItem.subitems && props.navigationItem.subitems.length > 0
+      ? props.navigationItem.subitems.filter(item => navigationItemPermissionCheck(item, hasAllPermissions))
+      : [];
+
+  const hasSubitems = subItems().length > 0;
+
   const isActive = () => props.navigationItem.id === props.activeView();
-  const isSectionActive = () =>
-    (hasSubitems && props.navigationItem.subitems?.some(subitem => subitem.id === props.activeView())) ?? false;
+  const isSectionActive = () => subItems().some(subitem => subitem.id === props.activeView()) ?? false;
 
   createEffect(() => {
     if (hasSubitems && !isActive() && !isSectionActive()) {
@@ -39,7 +53,7 @@ const SidebarEntry = (props: SidebarEntryProps) => {
     }
   };
 
-  if (props.navigationItem.permissions && !hasAllPermissions(props.navigationItem.permissions)) {
+  if (!navigationItemPermissionCheck(props.navigationItem, hasAllPermissions)) {
     return null;
   }
 
@@ -56,7 +70,7 @@ const SidebarEntry = (props: SidebarEntryProps) => {
       </a>
       {hasSubitems && expanded() && (
         <ul class="mt-2 ml-4 space-y-1">
-          {props.navigationItem.subitems?.map(subItem => (
+          {subItems().map(subItem => (
             <li>
               <a
                 href={`/${props.navigationItem.id}/${subItem.id}`}

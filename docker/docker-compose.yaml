@@ -28,6 +28,7 @@ services:
       - 'TEMPORAL_ADDRESS=temporal:7233'
       - 'TEMPORAL_NAMESPACE=default'
       - 'TEMPORAL_TASK_QUEUE=mailtura'
+      - 'API_BASE_URL=http://mailtura:3000/api/v1'
 
   postgresql:
     container_name: postgres
