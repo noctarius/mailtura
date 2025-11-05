@@ -238,7 +238,7 @@ exports.Prisma.UsersScalarFieldEnum = {
   email: 'email',
   first_name: 'first_name',
   last_name: 'last_name',
-  role: 'role',
+  role_id: 'role_id',
   is_active: 'is_active',
   last_login_at: 'last_login_at',
   permissions: 'permissions',
@@ -379,6 +379,18 @@ exports.Prisma.SessionsScalarFieldEnum = {
   updated_by: 'updated_by'
 };
 
+exports.Prisma.RolesScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  description: 'description',
+  permissions: 'permissions',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -475,7 +487,8 @@ exports.Prisma.ModelName = {
   verifications: 'verifications',
   two_factors: 'two_factors',
   passkeys: 'passkeys',
-  sessions: 'sessions'
+  sessions: 'sessions',
+  roles: 'roles'
 };
 
 /**

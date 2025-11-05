@@ -323,7 +323,7 @@ export const User = //
       email: Type.String({ format: "email" }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
-      role: Type.String(),
+      role_id: Type.String({ format: "uuid" }),
       isActive: Type.Boolean(),
       lastLoginAt: Type.Optional(Type.String({ format: "date-time" })),
       permissions: Type.Array(Type.String()),
@@ -480,3 +480,20 @@ export const File = Type.Object(
 );
 
 export type File = Static<typeof File>;
+
+export const Role = Type.Object({
+  id: Type.String({ format: "uuid" }),
+  name: Type.String(),
+  description: Type.Optional(Type.String()),
+  permissions: Type.Array(Type.String()),
+  createdAt: Type.String({ format: "date-time" }),
+  createdBy: Type.String(),
+  updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+  updatedBy: Type.Optional(Type.String()),
+}, {
+  $id: "Role",
+  description: "A role in the system",
+  additionalProperties: false,
+});
+
+export type Role = Static<typeof Role>;

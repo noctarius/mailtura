@@ -1,5 +1,5 @@
 import { Type } from "typebox";
-import { User } from "@mailtura/rpcmodel/lib/models";
+import { Role } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -11,24 +11,24 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import { mapUser } from "../mapper.js";
+import { mapRole } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateUser, UpdateUser } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateRole, UpdateRole } from "@mailtura/rpcmodel/lib/models/request-response.js";
 
-export function userRoutes<
+export function rolesRoutes<
   RawServer extends RawServerBase = RawServerDefault,
   RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: User[] }>(
+  router.get<{ Params: { tenant_id: string }; Reply: Role[] }>(
     "/",
     {
       schema: {
-        tags: ["users"],
+        tags: ["roles"],
         response: {
-          200: Type.Array(Type.Ref("User")),
+          200: Type.Array(Type.Ref("Role")),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -36,24 +36,24 @@ export function userRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const users = await prisma.users.findMany({
+      const roles = await prisma.roles.findMany({
         where: {
           tenant_id: tenantId,
         },
       });
 
-      return users.map(mapUser);
+      return roles.map(mapRole);
     }
   );
 
-  router.post<{ Params: { tenant_id: string }; Body: CreateUser; Reply: User }>(
+  router.post<{ Params: { tenant_id: string }; Body: CreateRole; Reply: Role }>(
     "/",
     {
       schema: {
-        tags: ["users"],
-        body: CreateUser,
+        tags: ["roles"],
+        body: CreateRole,
         response: {
-          201: Type.Ref("User"),
+          201: Type.Ref("Role"),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -61,36 +61,33 @@ export function userRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
-      const newUser = await prisma.users.create({
+      const newRole = await prisma.roles.create({
         data: {
           tenant_id: tenantId,
-          email: request.body.email,
-          first_name: request.body.firstName,
-          last_name: request.body.lastName,
-          role_id: request.body.role_id,
-          is_active: true,
+          name: request.body.name,
+          description: request.body.description,
           permissions: request.body.permissions,
           created_at: UTC.now().toDate(),
           created_by: "api",
         },
       });
 
-      return reply.status(201).send(mapUser(newUser));
+      return reply.status(201).send(mapRole(newRole));
     }
   );
 
-  router.route("/:user_id", subRouter => {
-    subRouter.get<{ Params: { tenant_id: string; user_id: string }; Reply: User }>(
+  router.route("/:role_id", subRouter => {
+    subRouter.get<{ Params: { tenant_id: string; role_id: string }; Reply: Role }>(
       "/",
       {
         schema: {
-          tags: ["users"],
+          tags: ["roles"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
-            user_id: Type.String({ format: "uuid" }),
+            role_id: Type.String({ format: "uuid" }),
           }),
           response: {
-            200: Type.Ref("User"),
+            200: Type.Ref("Role"),
             401: Type.Ref("ErrorResponse"),
             404: Type.Ref("ErrorResponse"),
           },
@@ -98,35 +95,35 @@ export function userRoutes<
       },
       async request => {
         const tenantId = request.params.tenant_id;
-        const userId = request.params.user_id;
+        const roleId = request.params.role_id;
 
-        const user = await prisma.users.findUnique({
+        const role = await prisma.roles.findUnique({
           where: {
-            id: userId,
+            id: roleId,
             tenant_id: tenantId,
           },
         });
 
-        if (!user) {
-          throw createError(404, "User not found");
+        if (!role) {
+          throw createError(404, "Role not found");
         }
 
-        return mapUser(user);
+        return mapRole(role);
       }
     );
 
-    subRouter.put<{ Params: { tenant_id: string; user_id: string }; Body: UpdateUser; Reply: User }>(
+    subRouter.put<{ Params: { tenant_id: string; role_id: string }; Body: UpdateRole; Reply: Role }>(
       "/",
       {
         schema: {
-          tags: ["users"],
+          tags: ["roles"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
-            user_id: Type.String({ format: "uuid" }),
+            role_id: Type.String({ format: "uuid" }),
           }),
-          body: UpdateUser,
+          body: UpdateRole,
           response: {
-            200: Type.Ref("User"),
+            200: Type.Ref("Role"),
             400: Type.Ref("ErrorResponse"),
             401: Type.Ref("ErrorResponse"),
             404: Type.Ref("ErrorResponse"),
@@ -135,48 +132,45 @@ export function userRoutes<
       },
       async request => {
         const tenantId = request.params.tenant_id;
-        const userId = request.params.user_id;
+        const roleId = request.params.role_id;
 
         if (Object.keys(request.body).length === 0) {
           throw createError(400, "No data provided");
         }
 
-        const oldUser = await prisma.users.findUnique({
+        const oldRole = await prisma.roles.findUnique({
           where: {
-            id: userId,
+            id: roleId,
             tenant_id: tenantId,
           },
         });
-        if (!oldUser) {
-          throw createError(404, "User not found");
+        if (!oldRole) {
+          throw createError(404, "Role not found");
         }
 
-        const newUser = await prisma.users.update({
-          where: { id: userId, tenant_id: tenantId },
+        const newRole = await prisma.roles.update({
+          where: { id: roleId, tenant_id: tenantId },
           data: {
-            email: request.body.email,
-            first_name: request.body.firstName,
-            last_name: request.body.lastName,
-            role_id: request.body.role_id,
-            is_active: request.body.isActive,
+            name: request.body.name,
+            description: request.body.description,
             permissions: request.body.permissions,
             updated_at: UTC.now().toDate(),
             updated_by: "api",
           },
         });
 
-        return mapUser(newUser);
+        return mapRole(newRole);
       }
     );
 
-    subRouter.delete<{ Params: { tenant_id: string; user_id: string } }>(
+    subRouter.delete<{ Params: { tenant_id: string; role_id: string } }>(
       "/",
       {
         schema: {
-          tags: ["users"],
+          tags: ["roles"],
           params: Type.Object({
             tenant_id: Type.String({ format: "uuid" }),
-            user_id: Type.String({ format: "uuid" }),
+            role_id: Type.String({ format: "uuid" }),
           }),
           response: {
             204: Type.Null(),
@@ -187,22 +181,22 @@ export function userRoutes<
       },
       async (request, reply) => {
         const tenantId = request.params.tenant_id;
-        const userId = request.params.user_id;
+        const roleId = request.params.role_id;
 
-        const found = prisma.users.findUnique({
+        const found = prisma.roles.findUnique({
           where: {
-            id: userId,
+            id: roleId,
             tenant_id: tenantId,
           },
         });
 
         if (!found) {
-          throw createError(404, "User not found");
+          throw createError(404, "Role not found");
         }
 
-        await prisma.users.delete({
+        await prisma.roles.delete({
           where: {
-            id: userId,
+            id: roleId,
             tenant_id: tenantId,
           },
         });

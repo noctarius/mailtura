@@ -13,6 +13,7 @@ import {
   type files,
   Prisma,
   PrismaClient,
+  type roles,
   type subscriber_lists,
   type subscriber_status,
   type subscribers,
@@ -130,5 +131,6 @@ export type ApiKeyEntity = api_keys;
 export type TemplateEntity = templates & { properties: template_properties[] };
 export type ContactImportEntity = contact_imports;
 export type FileEntity = files;
+export type RoleEntity = roles;
 
 export default prisma;

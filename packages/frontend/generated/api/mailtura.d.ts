@@ -4,270 +4,6 @@
  */
 
 export interface paths {
-    "/docs/json2": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/sign-up/email": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/verify-email": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/sign-in/email": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/sign-in/social": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/sign-out": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/get-session": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/api/v1/auth/request-password-reset": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path?: never;
-                cookie?: never;
-            };
-            requestBody?: never;
-            responses: {
-                /** @description Default Response */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content?: never;
-                };
-            };
-        };
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v1/tenants/": {
         parameters: {
             query?: never;
@@ -403,7 +139,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update tenant request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -544,7 +279,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A create contact request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -750,7 +484,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update contact request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -897,7 +630,6 @@ export interface paths {
                     "multipart/form-data": {
                         /** Format: binary */
                         file: string;
-                        /** @description An import contacts request */
                         parameters: {
                             mapping: {
                                 [key: string]: string;
@@ -992,7 +724,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update contact import request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1087,7 +818,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A create template request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1385,7 +1115,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A create campaign request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -1485,7 +1214,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update campaign request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1627,7 +1355,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A create subscriber list request */
             requestBody: {
                 content: {
                     "application/json": {
@@ -1721,7 +1448,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update subscriber list request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -1920,17 +1646,15 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description A create user request */
             requestBody: {
                 content: {
                     "application/json": {
-                        /** Format: uuid */
-                        tenantId: string;
                         /** Format: email */
                         email: string;
                         firstName?: string;
                         lastName?: string;
-                        role: string;
+                        /** Format: uuid */
+                        role_id: string;
                         permissions: string[];
                     };
                 };
@@ -2020,19 +1744,18 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update user request */
             requestBody?: {
                 content: {
                     "application/json": {
-                        /** Format: uuid */
-                        tenantId?: string;
                         /** Format: email */
                         email?: string;
                         firstName?: string;
                         lastName?: string;
-                        role?: string;
+                        /** Format: uuid */
+                        role_id?: string;
                         isActive?: boolean;
                         permissions?: string[];
+                        image?: string;
                     };
                 };
             };
@@ -2265,7 +1988,6 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            /** @description An update API key request */
             requestBody?: {
                 content: {
                     "application/json": {
@@ -2552,6 +2274,241 @@ export interface paths {
         put?: never;
         post?: never;
         delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/roles/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Role"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        description?: string;
+                        permissions: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description A role in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Role"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/roles/{role_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A role in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Role"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name?: string;
+                        description?: string;
+                        permissions?: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description A role in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Role"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    role_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
         options?: never;
         head?: never;
         patch?: never;
@@ -2945,11 +2902,15 @@ export interface components {
             email: string;
             firstName?: string;
             lastName?: string;
-            role: string;
+            /** Format: uuid */
+            role_id: string;
             isActive: boolean;
             /** Format: date-time */
             lastLoginAt?: string;
             permissions: string[];
+            isEmailVerified: boolean;
+            image?: string;
+            isTwoFactorEnabled: boolean;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
@@ -3005,120 +2966,19 @@ export interface components {
             updatedAt?: string;
             updatedBy?: string;
         };
-        /** @description Sign in with email */
-        SignInEmail: {
-            /** Format: email */
-            email: string;
-            password: string;
-            /** Format: uri */
-            callbackURL?: string;
-            /** @default true */
-            rememberMe?: boolean;
-        };
-        /** @description Sign in with email response */
-        SignInEmailResponse: {
-            redirect: boolean;
-            token: string;
-            url: null;
-            user: components["schemas"]["AuthUser"];
-        };
-        /** @description Get session response */
-        GetSessionResponse: {
-            user: components["schemas"]["AuthUser"];
-            session: components["schemas"]["AuthSession"];
-        };
-        /** @description Verify email response */
-        VerifyEmailResponse: {
-            status: boolean;
-            user: components["schemas"]["AuthUser"];
-        } | {
-            status: boolean;
-        };
-        /** @description Password reset response */
-        PasswordResetResponse: {
-            status: boolean;
-            message: string;
-        };
-        /** @description Sign in with social */
-        SignInSocial: {
-            provider: unknown;
-            /** Format: uri */
-            callbackURL?: string;
-            /** Format: uri */
-            newUserCallbackURL?: string;
-            /** Format: uri */
-            errorCallbackURL?: string;
-            /** @default false */
-            disableRedirect?: boolean;
-            idToken?: {
-                token: string;
-                nonce?: string;
-                accessToken?: string;
-                refreshToken?: string;
-                /** Format: date-time */
-                expiresAt?: string;
-            };
-            scopes?: string[];
-            /** @default false */
-            requestSignUp?: boolean;
-            loginHint?: string;
-        };
-        /** @description Sign in with social response */
-        SignInSocialResponse: {
-            redirect: boolean;
-            token: string;
-            user: components["schemas"]["AuthUser"];
-        } | {
-            /** Format: uri */
-            url: string;
-            redirect: boolean;
-        };
-        /** @description Sign up with email */
-        SignUpEmail: {
-            name?: string;
-            /** Format: email */
-            email: string;
-            password: string;
-            image?: string;
-            /** Format: uri */
-            callbackURL?: string;
-            /** @default true */
-            rememberMe?: boolean;
-        };
-        /** @description Sign up with email response */
-        SignUpEmailResponse: {
-            token?: string;
-            user: components["schemas"]["AuthUser"];
-        };
-        /** @description User object */
-        AuthUser: {
+        /** @description A role in the system */
+        Role: {
             /** Format: uuid */
             id: string;
-            /** Format: email */
-            email: string;
-            name?: string;
-            image?: string;
-            emailVerified: boolean;
+            name: string;
+            description?: string;
+            permissions: string[];
             /** Format: date-time */
             createdAt: string;
+            createdBy: string;
             /** Format: date-time */
             updatedAt?: string;
-        };
-        /** @description Session object */
-        AuthSession: {
-            /** Format: uuid */
-            id: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt?: string;
-            /** Format: uuid */
-            userId: string;
-            /** Format: date-time */
-            expiresAt: string;
-            token: string;
-            ipAddress?: string;
-            userAgent?: string;
+            updatedBy?: string;
         };
     };
     responses: never;

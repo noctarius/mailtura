@@ -15,6 +15,7 @@ import {
   EventType,
   File,
   PerformanceMetricsChartData,
+  Role,
   Subscriber,
   SubscriberList,
   SubscriberStatus,
@@ -60,6 +61,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ApiKey);
   app.addSchema(ContactImport);
   app.addSchema(File);
+  app.addSchema(Role);
 }
 
 export function registerRoutes<

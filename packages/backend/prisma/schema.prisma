@@ -213,7 +213,7 @@ model users {
   email              String
   first_name         String?
   last_name          String?
-  role               String
+  role_id            String    @db.Uuid
   is_active          Boolean
   last_login_at      DateTime? @db.Timestamptz()
   permissions        String[]
@@ -225,10 +225,14 @@ model users {
   updated_at         DateTime? @db.Timestamptz()
   updated_by         String?
 
+  roles roles @relation(fields: [role_id], references: [id])
+
   accounts    accounts[]
   two_factors two_factors[]
   passkeys    passkeys[]
   sessions    sessions[]
+
+  @@unique([email])
 }
 
 model api_keys {
@@ -370,4 +374,20 @@ model sessions {
   users users? @relation(fields: [user_id], references: [id])
 
   @@unique([token])
+}
+
+model roles {
+  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id   String    @db.Uuid
+  name        String
+  description String?
+  permissions String[]
+  created_at  DateTime  @db.Timestamptz()
+  created_by  String
+  updated_at  DateTime? @db.Timestamptz()
+  updated_by  String?
+
+  users users[]
+
+  @@unique([tenant_id, name])
 }

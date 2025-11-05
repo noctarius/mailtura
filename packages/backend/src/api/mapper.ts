@@ -5,6 +5,7 @@ import type {
   ContactEntity,
   ContactImportEntity,
   FileEntity,
+  RoleEntity,
   SubscriberEntity,
   SubscriberListEntity,
   TemplateEntity,
@@ -17,6 +18,7 @@ import {
   type Contact,
   type ContactImport,
   type File,
+  type Role,
   type Subscriber,
   type SubscriberList,
   type Template,
@@ -176,7 +178,7 @@ export function mapUser(user: UserEntity): User {
     id: user.id,
     tenantId: user.tenant_id,
     email: user.email,
-    role: user.role,
+    role_id: user.role_id,
     firstName: user.first_name ?? undefined,
     lastName: user.last_name ?? undefined,
     isActive: user.is_active,
@@ -232,5 +234,18 @@ export function mapFile(file: FileEntity): File {
     createdBy: file.created_by,
     updatedAt: mapDateTime(file.updated_at),
     updatedBy: file.updated_by ?? undefined,
+  };
+}
+
+export function mapRole(role: RoleEntity): Role {
+  return {
+    id: role.id,
+    name: role.name,
+    description: role.description ?? undefined,
+    permissions: role.permissions,
+    createdAt: mapDateTime(role.created_at),
+    createdBy: role.created_by,
+    updatedAt: mapDateTime(role.updated_at),
+    updatedBy: role.updated_by ?? undefined,
   };
 }

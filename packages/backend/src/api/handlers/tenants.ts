@@ -22,6 +22,7 @@ import { userRoutes } from "./users.js";
 import { apiKeyRoutes } from "./apikeys.js";
 import { fileRoutes } from "./files.js";
 import { hasAnyPermission } from "../../auth/index.js";
+import { rolesRoutes } from "./roles.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -202,5 +203,6 @@ export function tenantRoutes<
     subRouter.route("/users", userRoutes);
     subRouter.route("/api-keys", apiKeyRoutes);
     subRouter.route("/files", fileRoutes);
+    subRouter.route("/roles", rolesRoutes);
   });
 }
