@@ -11,6 +11,7 @@ import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
 import { Contact } from "@mailtura/rpcmodel/lib/models/index.js";
+import { contactsKeys } from "../../services/contacts/keys.js";
 
 interface EditContactDrawerProps {
   contact: () => Contact;
@@ -99,7 +100,7 @@ function ContactEditForm(props: ContactEditFormProps) {
     return new Promise((resolve, reject) => {
       updateContact.mutate(values, {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: ["contacts", tenantId()] });
+          await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
           await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
           for (const listId of values.listIds || []) {
             await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });

@@ -5,16 +5,9 @@ import { mailturaAdapter } from "./database.js";
 import { apiKey, magicLink, openAPI, twoFactor } from "better-auth/plugins";
 import { passkey } from "better-auth/plugins/passkey";
 import { v7 as uuidv7 } from "uuid";
-import * as argon2 from "argon2";
-import {
-  createGetSessionRoute,
-  createPasswordReset,
-  createSignInEmail,
-  createSignInSocial,
-  createSignOut,
-  createSignUpEmail,
-  createVerifyEmail,
-} from "./handler.js";
+import { registerAuthHandler } from "./handler.js";
+import prisma from "../database/index.js";
+import { newPasswordHasher } from "./password-hasher.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -35,18 +28,12 @@ const auth = fastifyPlugin<AuthOptions>(
         done(null, null);
       });
 
-      app.get("/docs/json2", async (_, reply) => {
+      app.get("/docs/json2", { schema: { hide: true } }, async (_, reply) => {
         return reply.type("application/json").send(openApiSpec);
       });
 
       // Register routes and openapi schema
-      createSignUpEmail(app, auth);
-      createVerifyEmail(app, auth);
-      createSignInEmail(app, auth);
-      createSignInSocial(app, auth);
-      createSignOut(app, auth);
-      createGetSessionRoute(app, auth);
-      createPasswordReset(app, auth);
+      registerAuthHandler(app, auth);
     });
   },
   { name: "auth" }
@@ -61,14 +48,7 @@ const createBetterAuth = (options: BetterAuthOptions) => {
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,
-      password: {
-        hash(password: string): Promise<string> {
-          return argon2.hash(password, { type: argon2.argon2i });
-        },
-        verify({ hash, password }): Promise<boolean> {
-          return argon2.verify(hash, password);
-        },
-      },
+      password: newPasswordHasher(),
     },
     plugins: [
       openAPI({}),
@@ -121,6 +101,22 @@ const createBetterAuth = (options: BetterAuthOptions) => {
       database: {
         useNumberId: false,
         generateId: () => uuidv7().toString(),
+      },
+    },
+    databaseHooks: {
+      session: {
+        create: {
+          after: async session => {
+            await prisma.users.update({
+              where: {
+                id: session.userId,
+              },
+              data: {
+                last_login_at: session.createdAt,
+              },
+            });
+          },
+        },
       },
     },
     user: {

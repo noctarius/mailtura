@@ -1,30 +1,107 @@
-import { createSignal } from "solid-js";
-import { ROLE_PERMISSIONS, UserRole } from "../../types/auth.js";
-import { useAuth } from "../../hooks/useAuth.js";
+import { createMemo, createSignal } from "solid-js";
 import { useUsersQuery } from "../../services/users/use-users-query.js";
 import { useTenantsQuery } from "../../services/tenants/use-tenants-query.js";
-import { useParams } from "@solidjs/router";
-import { useTenantId } from "../../hooks/useTenantId.js";
+import { useUser } from "../../hooks/useUser.js";
+import { useRolesQuery } from "../../services/roles/use-roles-query.js";
+import { hasPermission } from "@mailtura/backend/src/auth/index.js";
+import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
+import { createFormSpec } from "../../forms/index.js";
+import { CreateUser } from "@mailtura/rpcmodel/lib/models/request-response.js";
 
 type CreateUserDialogProps = {
+  tenantId: () => string;
   onClose: () => void;
 };
 
 export function CreateUserDialog(props: CreateUserDialogProps) {
-  const params = useParams();
-  const tenantId = useTenantId();
+  const user = useUser();
 
-  const { user: currentUser } = useAuth();
-
-  const usersQuery = useUsersQuery({ tenantId: () => params.tenantId || tenantId() });
+  const usersQuery = useUsersQuery({ tenantId: props.tenantId });
+  const rolesQuery = useRolesQuery({ tenantId: props.tenantId });
   const tenantsQuery = useTenantsQuery();
+
+  const createUser = useCreateMutation("/api/v1/tenants/{tenant_id}/users/", {
+    tenant_id: props.tenantId,
+  });
+
+  const newUserForm = createFormSpec<typeof CreateUser>(
+    CreateUser,
+    {
+      email: {
+        label: "Email",
+        type: "email",
+        required: true,
+        cell: info => (
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
+            <input
+              {...info.props}
+              type="text"
+              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                info.field.error ? "border-red-300" : "border-gray-300"
+              }`}
+              placeholder="John"
+            />
+            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
+          </div>
+        ),
+      },
+      firstName: {
+        label: "First Name",
+        type: "text",
+        cell: info => (
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
+            <input
+              {...info.props}
+              type="text"
+              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                info.field.error ? "border-red-300" : "border-gray-300"
+              }`}
+              placeholder="John"
+            />
+            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
+          </div>
+        ),
+      },
+      lastName: {
+        label: "Last Name",
+        type: "text",
+        cell: info => (
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
+            <input
+              {...info.props}
+              type="text"
+              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                info.field.error ? "border-red-300" : "border-gray-300"
+              }`}
+              placeholder="Doe"
+            />
+            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
+          </div>
+        ),
+      },
+      role_id: {
+        label: "Role",
+        type: "select",
+        options: () =>
+          getAvailableRoles().map(role => ({
+            label: role.name.replace("_", " ").toUpperCase(),
+            value: role.id,
+          })),
+        required: true,
+      },
+    },
+    ["firstName", "lastName", "email", "role_id"]
+  );
 
   const [userData, setUserData] = createSignal({
     firstName: "",
     lastName: "",
     email: "",
-    role: "user" as UserRole,
-    tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
+    role_id: "",
+    tenantId: props.tenantId(),
     isActive: true,
     sendInvitation: true,
   });
@@ -49,10 +126,6 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
       newErrors.email = "This email address is already in use";
     }
 
-    if (currentUser()?.role === "super_admin" && !userData().tenantId) {
-      newErrors.tenantId = "Please select a tenant";
-    }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -66,8 +139,8 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
       firstName: "",
       lastName: "",
       email: "",
-      role: "user",
-      tenantId: currentUser()?.role === "super_admin" ? "" : currentUser()?.tenantId || "",
+      role_id: "",
+      tenantId: props.tenantId(),
       isActive: true,
       sendInvitation: true,
     });
@@ -75,16 +148,17 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
     props.onClose();
   };
 
-  const getAvailableRoles = (): UserRole[] => {
-    if (currentUser()?.role === "super_admin") {
-      return ["super_admin", "tenant_admin", "user", "viewer"];
-    } else if (currentUser()?.role === "tenant_admin") {
-      return ["tenant_admin", "user", "viewer"];
+  const getAvailableRoles = createMemo(() => {
+    const creator = user();
+    if (!creator) return [];
+    if (hasPermission("manage::tenants", creator)) {
+      return rolesQuery.data ?? [];
+    } else {
+      return (rolesQuery.data ?? []).filter(role => !role.permissions.includes("manage::tenants"));
     }
-    return ["user", "viewer"];
-  };
+  });
 
-  const getRoleDescription = (role: UserRole) => {
+  const getRoleDescription = (role: string) => {
     switch (role) {
       case "super_admin":
         return "Full system access including tenant management";
@@ -99,8 +173,8 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
     }
   };
 
-  const getPermissionCount = (role: UserRole) => {
-    return ROLE_PERMISSIONS[role]?.length || 0;
+  const getPermissionCount = (roleId: string) => {
+    return (rolesQuery.data ?? []).find(role => role.id === roleId)?.permissions.length || 0;
   };
 
   return (
@@ -173,7 +247,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
               <h4 class="text-md font-medium text-gray-900 mb-4">Account Settings</h4>
 
               {/* Tenant Selection (only for super admins) */}
-              {currentUser()?.role === "super_admin" && (
+              {hasPermission("manage::tenants", user()!) && (
                 <div class="mb-4">
                   <label class="block text-sm font-medium text-gray-700 mb-2">Tenant *</label>
                   <select
@@ -200,7 +274,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
                     <div
                       onClick={() => setUserData(prev => ({ ...prev, role }))}
                       class={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                        userData().role === role
+                        userData().role_id === role.id
                           ? "border-blue-500 bg-blue-50"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
@@ -210,16 +284,16 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
                           <input
                             type="radio"
                             name="role"
-                            checked={userData().role === role}
+                            checked={userData().role_id === role.id}
                             onChange={() => setUserData(prev => ({ ...prev, role }))}
                             class="text-blue-600 focus:ring-blue-500"
                           />
                           <div>
-                            <h5 class="font-medium text-gray-900 capitalize">{role.replace("_", " ")}</h5>
-                            <p class="text-sm text-gray-600">{getRoleDescription(role)}</p>
+                            <h5 class="font-medium text-gray-900 capitalize">{role.name.replace("_", " ")}</h5>
+                            <p class="text-sm text-gray-600">{role.description ?? getRoleDescription(role.name)}</p>
                           </div>
                         </div>
-                        <div class="text-sm text-gray-500">{getPermissionCount(role)} permissions</div>
+                        <div class="text-sm text-gray-500">{getPermissionCount(role.id)} permissions</div>
                       </div>
                     </div>
                   ))}

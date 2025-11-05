@@ -87,14 +87,11 @@ await app.register(Swagger, {
 await app.register(SwaggerUi, {
   routePrefix: "/docs",
   uiConfig: {
+    showExtensions: true,
     urls: [
       {
         url: "/docs/json",
         name: "Mailtura API",
-      },
-      {
-        url: "/docs/json2",
-        name: "Mailtura Auth API",
       },
     ],
     docExpansion: "list",

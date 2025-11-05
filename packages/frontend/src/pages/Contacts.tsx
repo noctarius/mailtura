@@ -224,7 +224,7 @@ const Contacts = () => {
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
               <div
                 ref={setContactsTable}
-                class="overflow-auto relative"
+                class="overflow-auto relative rounded-xl"
                 style={{ "scroll-behavior": "smooth", "min-height": "100%" }}
               >
                 {contactsTable() && (

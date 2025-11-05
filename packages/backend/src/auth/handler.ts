@@ -1,99 +1,212 @@
 import type { FastifyInstance, FastifyReply, HTTPMethods } from "fastify";
 import type { Auth } from "better-auth";
-import { Type } from "typebox";
-import type { FastifySchema } from "fastify/types/schema.js";
 import path from "node:path";
 import { toNodeHandler } from "better-auth/node";
 
-export function createForgetPasswordCallback(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/reset-password/:token", "GET", {
-    tags: ["auth"],
-    querystring: Type.Object({
-      callbackURL: Type.String(),
-    }),
-    response: {
-      200: Type.Ref("ForgetPasswordResponse"),
-    },
-  });
+export function registerAuthHandler(app: FastifyInstance, auth: Auth) {
+  createSignInSocial(app, auth);
+  createGetSession(app, auth);
+  createSignOut(app, auth);
+  createSignUpEmail(app, auth);
+  createSignInEmail(app, auth);
+  createResetPassword(app, auth);
+  createForgetPassword(app, auth);
+  createVerifyEmail(app, auth);
+  createSendVerificationEmail(app, auth);
+  createChangeEmail(app, auth);
+  createChangePassword(app, auth);
+  createResetPasswordCallback(app, auth);
+  createRequestPasswordReset(app, auth);
+  createListSessions(app, auth);
+  createRevokeSession(app, auth);
+  createRevokeSessions(app, auth);
+  createRevokeOtherSessions(app, auth);
+  createLinkSocial(app, auth);
+  createListAccounts(app, auth);
+  createUnlinkAccount(app, auth);
+  createRefreshToken(app, auth);
+  createGetAccessToken(app, auth);
+  createAccountInfo(app, auth);
+  createGetTotpUri(app, auth);
+  createVerifyTotp(app, auth);
+  createSendOtp(app, auth);
+  createVerifyOtp(app, auth);
+  createVerifyBackupCode(app, auth);
+  createGenerateBackupCodes(app, auth);
+  createTwoFactorEnable(app, auth);
+  createTwoFactorDisable(app, auth);
+  createGenerateRegisterOptions1(app, auth);
+  createGenerateRegisterOptions2(app, auth);
+  createVerifyRegistration(app, auth);
+  createVerifyAuthentication(app, auth);
+  createListUserPasskeys(app, auth);
+  createDeletePasskey(app, auth);
+  createUpdatePasskey(app, auth);
+  createMagicLink(app, auth);
+  createMagicLinkVerify(app, auth);
 }
 
-export function createSignOut(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/sign-out", "POST", {
-    tags: ["auth"],
-    response: {
-      200: Type.Null(),
-    },
-  });
-}
+const createMagicLinkVerify = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/magic-link/verify", "GET");
+};
 
-export function createPasswordReset(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/request-password-reset", "POST", {
-    tags: ["auth"],
-    response: {
-      200: Type.Ref("PasswordResetResponse"),
-    },
-  });
-}
+const createMagicLink = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/sign-in/magic-link", "POST");
+};
 
-export function createVerifyEmail(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/verify-email", "GET", {
-    tags: ["auth"],
-    querystring: Type.Object({
-      token: Type.String(),
-      callbackUrl: Type.Optional(Type.String()),
-    }),
-    response: {
-      200: Type.Ref("VerifyEmailResponse"),
-    },
-  });
-}
+const createUpdatePasskey = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/update-passkey", "POST");
+};
 
-export function createSignUpEmail(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/sign-up/email", "POST", {
-    tags: ["auth"],
-    body: Type.Ref("SignUpEmail"),
-    response: {
-      200: Type.Ref("SignUpEmailResponse"),
-    },
-  });
-}
+const createDeletePasskey = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/delete-passkey", "POST");
+};
 
-export function createSignInSocial(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/sign-in/social", "POST", {
-    tags: ["auth"],
-    body: Type.Ref("SignInSocial"),
-    response: {
-      200: Type.Ref("SignInSocialResponse"),
-    },
-  });
-}
+const createListUserPasskeys = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/list-user-passkeys", "POST");
+};
 
-export function createSignInEmail(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/sign-in/email", "POST", {
-    tags: ["auth"],
-    body: Type.Ref("SignInEmail"),
-    response: {
-      200: Type.Ref("SignInEmailResponse"),
-    },
-  });
-}
+const createVerifyAuthentication = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/verify-authentication", "POST");
+};
 
-export function createGetSessionRoute(app: FastifyInstance, auth: Auth) {
-  return createAuthRoute(app, auth, "/get-session", "GET", {
-    tags: ["auth"],
-    response: {
-      200: Type.Ref("GetSessionResponse"),
-    },
-  });
-}
+const createVerifyRegistration = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/verify-registration", "POST");
+};
 
-const createAuthRoute = <SchemaCompiler extends FastifySchema = FastifySchema>(
-  app: FastifyInstance,
-  auth: Auth,
-  subPath: string,
-  method: HTTPMethods,
-  schema: SchemaCompiler
-) => {
+const createGenerateRegisterOptions2 = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/generate-register-options", "POST");
+};
+
+const createGenerateRegisterOptions1 = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/passkey/generate-register-options", "GET");
+};
+
+const createTwoFactorDisable = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/disable", "POST");
+};
+
+const createTwoFactorEnable = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/enable", "POST");
+};
+
+const createGenerateBackupCodes = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/generate-backup-codes", "POST");
+};
+
+const createVerifyBackupCode = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/verify-backup-code", "POST");
+};
+
+const createVerifyOtp = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/verify-otp", "POST");
+};
+
+const createSendOtp = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/send-otp", "POST");
+};
+
+const createVerifyTotp = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/verify-totp", "POST");
+};
+
+const createGetTotpUri = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/two-factor/get-totp-uri", "POST");
+};
+
+const createAccountInfo = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/account-info", "POST");
+};
+
+const createGetAccessToken = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/get-access-token", "POST");
+};
+
+const createRefreshToken = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/refresh-token", "POST");
+};
+
+const createUnlinkAccount = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/unlink-accounts", "POST");
+};
+
+const createListAccounts = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/list-accounts", "GET");
+};
+
+const createLinkSocial = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/link-social", "POST");
+};
+
+const createRevokeOtherSessions = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/revoke-other-sessions", "POST");
+};
+
+const createRevokeSessions = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/revoke-sessions", "POST");
+};
+
+const createRevokeSession = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/revoke-session", "POST");
+};
+
+const createListSessions = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/list-sessions", "GET");
+};
+
+const createRequestPasswordReset = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/request-password-reset", "POST");
+};
+
+const createResetPasswordCallback = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/reset-password/:token", "GET");
+};
+
+const createChangePassword = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/change-password/", "POST");
+};
+
+const createChangeEmail = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/change-email/", "POST");
+};
+
+const createForgetPassword = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/forget-password/", "POST");
+};
+
+const createResetPassword = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/reset-password/", "POST");
+};
+
+const createSignOut = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/sign-out", "POST");
+};
+
+const createSendVerificationEmail = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/send-verification-email", "POST");
+};
+
+const createVerifyEmail = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/verify-email", "GET");
+};
+
+const createSignUpEmail = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/sign-up/email", "POST");
+};
+
+const createSignInSocial = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/sign-in/social", "POST");
+};
+
+const createSignInEmail = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/sign-in/email", "POST");
+};
+
+const createGetSession = (app: FastifyInstance, auth: Auth) => {
+  return createAuthRoute(app, auth, "/get-session", "GET");
+};
+
+const createAuthRoute = (app: FastifyInstance, auth: Auth, subPath: string, method: HTTPMethods) => {
   const authBasePath = auth.options.basePath ?? "/api/auth";
   const authRoute = path.join(authBasePath, subPath);
   const handler = toNodeHandler(auth);
@@ -113,6 +226,9 @@ const createAuthRoute = <SchemaCompiler extends FastifySchema = FastifySchema>(
                 : app.all.bind(app);
 
   return handlerMethod(authRoute, {
+    schema: {
+      hide: true,
+    },
     handler: async (request, reply) => {
       reply.raw.setHeaders(toNodeHeaders(reply.getHeaders()));
       await handler(request.raw, reply.raw);

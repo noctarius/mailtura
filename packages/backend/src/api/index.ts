@@ -15,6 +15,7 @@ import {
   EventType,
   File,
   PerformanceMetricsChartData,
+  Role,
   Subscriber,
   SubscriberList,
   SubscriberStatus,
@@ -34,19 +35,6 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { tenantRoutes } from "./handlers/tenants.js";
-import {
-  AuthSession,
-  AuthUser,
-  GetSessionResponse,
-  PasswordResetResponse,
-  SignInEmail,
-  SignInEmailResponse,
-  SignInSocial,
-  SignInSocialResponse,
-  SignUpEmail,
-  SignUpEmailResponse,
-  VerifyEmailResponse,
-} from "@mailtura/rpcmodel/lib/auth/index.js";
 import { profileRoutes } from "./handlers/profile.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
@@ -73,18 +61,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ApiKey);
   app.addSchema(ContactImport);
   app.addSchema(File);
-
-  app.addSchema(SignInEmail);
-  app.addSchema(SignInEmailResponse);
-  app.addSchema(GetSessionResponse);
-  app.addSchema(VerifyEmailResponse);
-  app.addSchema(PasswordResetResponse);
-  app.addSchema(SignInSocial);
-  app.addSchema(SignInSocialResponse);
-  app.addSchema(SignUpEmail);
-  app.addSchema(SignUpEmailResponse);
-  app.addSchema(AuthUser);
-  app.addSchema(AuthSession);
+  app.addSchema(Role);
 }
 
 export function registerRoutes<
