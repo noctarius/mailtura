@@ -55,6 +55,9 @@ export function UiForm<
                       const properties = combineProps(props, {
                         required: fieldSpec.required,
                       });
+                      if (fieldSpec.cell) {
+                        return fieldSpec.cell({fieldSpec, props, field})
+                      }
                       return (
                         <>
                           <Switch>
