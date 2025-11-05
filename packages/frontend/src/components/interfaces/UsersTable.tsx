@@ -13,8 +13,10 @@ import { getRoleBgColor, getRoleTextColor, getStatusBgColor, getStatusTextColor 
 import { useTenantsQuery } from "../../services/tenants/use-tenants-query.js";
 import { getTimeSince } from "../../helpers/time-since.js";
 import { EditUserDrawer } from "../modals/EditUserDrawer.js";
+import { useRolesQuery } from "../../services/roles/use-roles-query.js";
 
 interface UsersTableProps {
+  tenantId: () => string;
   data: () => User[];
   target: HTMLDivElement;
 }
@@ -24,6 +26,7 @@ export function UsersTable(props: UsersTableProps) {
   const canManageUsers = () => auth.hasPermission("manage::users");
 
   const tenantsQuery = useTenantsQuery();
+  const rolesQuery = useRolesQuery({ tenantId: props.tenantId });
 
   const [activeContextMenu, setActiveContextMenu] = createSignal<string | undefined>(undefined);
   const [deleteUser, setDeleteUser] = createSignal<User | undefined>(undefined);
@@ -60,14 +63,17 @@ export function UsersTable(props: UsersTableProps) {
       {
         id: "role",
         header: () => "Role",
-        cell: info => (
-          <TableCellChip
-            icon={<Shield class="w-3 h-3" />}
-            value={info.row.original.role.replace("_", " ")}
-            textColor={getRoleTextColor(info.row.original.role)}
-            bgColor={getRoleBgColor(info.row.original.role)}
-          />
-        ),
+        cell: info => {
+          const role = (rolesQuery.data || []).find(role => role.id === info.row.original.role_id);
+          return (
+            <TableCellChip
+              icon={<Shield class="w-3 h-3" />}
+              value={role?.name.replace("_", " ") ?? ""}
+              textColor={getRoleTextColor(role?.name ?? "")}
+              bgColor={getRoleBgColor(role?.name ?? "")}
+            />
+          );
+        },
       },
       {
         id: "tenant",
@@ -253,15 +259,18 @@ const createContextMenu = (user: User): ContextMenuAction[] => {
   }
 
   if (user.isEmailVerified) {
-    contextMenuActions.push({
-      action: "verify-email",
-      icon: Mail,
-      label: "Verify Email",
-    }, {
-      action: "resend-verification-email",
-      icon: Mailbox,
-      label: "Resend Verification Email",
-    });
+    contextMenuActions.push(
+      {
+        action: "verify-email",
+        icon: Mail,
+        label: "Verify Email",
+      },
+      {
+        action: "resend-verification-email",
+        icon: Mailbox,
+        label: "Resend Verification Email",
+      }
+    );
   }
 
   return contextMenuActions;

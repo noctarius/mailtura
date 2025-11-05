@@ -12,12 +12,14 @@ const UserManagement = () => {
   const params = useParams();
   const tenantId = useTenantId();
 
+  const selectedTenantId = createMemo(() => params.tenantId || tenantId());
+
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedRole, setSelectedRole] = createSignal("all");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [showCreateModal, setShowCreateModal] = createSignal(false);
 
-  const usersQuery = useUsersQuery({ tenantId: () => params.tenantId || tenantId() });
+  const usersQuery = useUsersQuery({ tenantId: selectedTenantId });
 
   const filteredUsers = createMemo(() => {
     if (!usersQuery.data) return [];
@@ -26,7 +28,7 @@ const UserManagement = () => {
         user.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         user.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
         user.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
-      const matchesRole = selectedRole() === "all" || user.role === selectedRole();
+      const matchesRole = selectedRole() === "all" || user.role_id === selectedRole();
       const matchesStatus =
         selectedStatus() === "all" ||
         (selectedStatus() === "active" && user.isActive) ||
@@ -140,8 +142,9 @@ const UserManagement = () => {
               class="overflow-auto relative rounded-xl"
               style={{ "scroll-behavior": "smooth", "min-height": "100%" }}
             >
-              {usersTable() && (
+              {usersTable() && selectedTenantId() !== undefined && (
                 <UsersTable
+                  tenantId={() => selectedTenantId()!}
                   data={filteredUsers}
                   target={usersTable()!}
                 />
@@ -168,7 +171,12 @@ const UserManagement = () => {
       </div>
 
       {/* Create User Modal */}
-      {showCreateModal() && <CreateUserDialog onClose={() => setShowCreateModal(false)} />}
+      {showCreateModal() && (
+        <CreateUserDialog
+          tenantId={() => selectedTenantId()!}
+          onClose={() => setShowCreateModal(false)}
+        />
+      )}
     </div>
   );
 };

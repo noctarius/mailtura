@@ -9,7 +9,8 @@ import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
 import { User } from "@mailtura/rpcmodel/lib/models/index.js";
 import { userKeys } from "../../services/users/keys.js";
-import { UserRole } from "../../types/auth.js";
+import { useRolesQuery } from "../../services/roles/use-roles-query.js";
+import { createMemo } from "solid-js";
 
 interface EditUserDrawerProps {
   user: () => User;
@@ -44,7 +45,15 @@ function UserEditForm(props: UserEditFormProps) {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
 
-  const userRoles: UserRole[] = ["super_admin", "tenant_admin", "user", "viewer"];
+  const rolesQuery = useRolesQuery({ tenantId });
+  const roles = createMemo(() =>
+    (rolesQuery.data || []).map(role => {
+      return {
+        label: role.name,
+        value: role.id,
+      };
+    })
+  );
 
   const updateUserForm = createFormSpec<typeof UpdateUser>(
     UpdateUser,
@@ -57,20 +66,17 @@ function UserEditForm(props: UserEditFormProps) {
         label: "Last Name",
         type: "text",
       },
-      role: {
+      role_id: {
         label: "Role",
         type: "select",
-        options: () =>
-          userRoles.map(role => {
-            return { label: role, value: role };
-          }),
+        options: roles,
       },
     },
-    ["firstName", "lastName", "role"],
+    ["firstName", "lastName", "role_id"],
     {
       firstName: props.user().firstName,
       lastName: props.user().lastName,
-      role: props.user().role,
+      role_id: props.user().role_id,
     }
   );
 
