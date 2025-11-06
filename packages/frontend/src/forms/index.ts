@@ -1,15 +1,19 @@
-import type { FieldElementProps, FieldPathValue, FieldStore, FieldType } from "@modular-forms/solid";
 import {
   clearError,
   clearResponse,
   createForm,
+  FieldElementProps,
   FieldPath,
+  FieldPathValue,
   FieldProps,
+  FieldStore,
+  FieldType,
   FieldValues,
   FormProps,
   PartialKey,
   PartialValues,
   ResponseData,
+  setValue,
   submit,
 } from "@modular-forms/solid";
 import { JSX } from "solid-js";
@@ -25,7 +29,7 @@ import {
   type TSchema as TypeboxSchema,
 } from "typebox";
 import typeboxForm from "./typeboxForm.js";
-import { IsRequired } from "typebox/schema";
+import { IsAllOf, IsAnyOf, IsRequired } from "typebox/schema";
 import { isEqual } from "lodash";
 
 type Form<TFieldValues extends FieldValues, TResponseData extends ResponseData> = (
@@ -57,12 +61,12 @@ export interface FieldSpec<
   type: "text" | "number" | "email" | "password" | "select" | "checkbox" | "radio" | "textarea" | "file" | "toggle";
   required?: boolean;
   placeholder?: string;
-  options?: () => { label: string; value: string }[];
+  options?: () => { label: string; value: string; description?: string }[];
   disabled?: boolean;
   min?: number;
   max?: number;
   step?: number;
-  defaultValue?: string | number;
+  defaultValue?: string | number | boolean;
   cell?: (info: FieldSpecInfo<TFieldValues, TResponseData, TFieldName>) => JSX.Element;
 }
 
@@ -89,8 +93,10 @@ export interface FormSpec<
   TFieldName extends FieldPath<TFieldValues>,
 > {
   fields: FormFieldSpec<TFieldValues, TResponseData, TFieldName>[];
+  getField(name: TFieldName): FormFieldSpec<TFieldValues, TResponseData, TFieldName>;
   Form: Form<TFieldValues, TResponseData>;
   Field: Field<TFieldValues, TResponseData>;
+  updateField(name: TFieldName, value: any): void;
   submitForm: () => void;
   cancelForm: () => void;
 }
@@ -139,15 +145,27 @@ export function createFormSpec<
   });
 
   const getType = <TFieldName extends FieldPath<TFieldValues>>(
-    name: TFieldName
-  ): FieldType<FieldPathValue<TFieldValues, TFieldName>> => {
-    if (IsObject(schema)) {
-      const spec = specs[name];
-      if (!spec) throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
-      const property = schema.properties[name];
-      return resolveFieldType(name, property, spec);
+    name: TFieldName,
+    useSchema: TypeboxSchema = schema,
+    throwOnMissing: boolean = true
+  ): FieldType<FieldPathValue<TFieldValues, TFieldName>> | undefined => {
+    const spec = specs[name];
+    if (!spec) throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
+    if (IsAnyOf(useSchema)) {
+      for (const anyOf of useSchema.anyOf) {
+        const candidate = getType(name, anyOf, false);
+        if (candidate) return candidate;
+      }
+    } else if (IsAllOf(useSchema)) {
+      for (const allOf of useSchema.allOf) {
+        const candidate = getType(name, allOf, false);
+        if (candidate) return candidate;
+      }
+    } else if (IsObject(useSchema)) {
+      const property = useSchema.properties[name];
+      if (property) return resolveFieldType(name, property, spec);
     }
-    throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
+    if (throwOnMissing) throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
   };
 
   const isRequired = <TFieldName extends FieldPath<TFieldValues>>(name: TFieldName): boolean => {
@@ -164,7 +182,7 @@ export function createFormSpec<
 
   const fields = order.map(name => {
     const spec = specs[name];
-    const formType = getType(name);
+    const formType = getType(name)!;
     return {
       ...spec,
       name,
@@ -183,6 +201,20 @@ export function createFormSpec<
     cancelForm() {
       for (const fieldName of order) clearError(form, fieldName);
       clearResponse(form);
+    },
+    getField(name: TFieldName) {
+      const spec = specs[name];
+      if (!spec) throw new TypeError(`Schema doesn't contain a property with the name: ${name}`);
+      const formType = getType(name)!;
+      return {
+        ...spec,
+        name,
+        formType,
+        required: isRequired(name),
+      };
+    },
+    updateField(name: TFieldName, value: any) {
+      setValue(form, name, value);
     },
   };
 }

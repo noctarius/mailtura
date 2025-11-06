@@ -1646,7 +1646,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody: {
+            requestBody?: {
                 content: {
                     "application/json": {
                         /** Format: email */
@@ -1654,8 +1654,11 @@ export interface paths {
                         firstName?: string;
                         lastName?: string;
                         /** Format: uuid */
-                        role_id: string;
+                        roleId: string;
+                        isActive: boolean;
                         permissions: string[];
+                    } & {
+                        sendInvitationEmail: boolean;
                     };
                 };
             };
@@ -1752,7 +1755,7 @@ export interface paths {
                         firstName?: string;
                         lastName?: string;
                         /** Format: uuid */
-                        role_id?: string;
+                        roleId?: string;
                         isActive?: boolean;
                         permissions?: string[];
                         image?: string;
@@ -2903,7 +2906,7 @@ export interface components {
             firstName?: string;
             lastName?: string;
             /** Format: uuid */
-            role_id: string;
+            roleId: string;
             isActive: boolean;
             /** Format: date-time */
             lastLoginAt?: string;

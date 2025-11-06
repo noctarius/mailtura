@@ -178,7 +178,7 @@ export function mapUser(user: UserEntity): User {
     id: user.id,
     tenantId: user.tenant_id,
     email: user.email,
-    role_id: user.role_id,
+    roleId: user.role_id,
     firstName: user.first_name ?? undefined,
     lastName: user.last_name ?? undefined,
     isActive: user.is_active,

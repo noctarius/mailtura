@@ -323,7 +323,7 @@ export const User = //
       email: Type.String({ format: "email" }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
-      role_id: Type.String({ format: "uuid" }),
+      roleId: Type.String({ format: "uuid" }),
       isActive: Type.Boolean(),
       lastLoginAt: Type.Optional(Type.String({ format: "date-time" })),
       permissions: Type.Array(Type.String()),

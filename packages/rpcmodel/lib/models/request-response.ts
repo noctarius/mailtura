@@ -166,18 +166,22 @@ export const UpdateSubscriberList = //
 export type UpdateSubscriberList = Static<typeof UpdateSubscriberList>;
 
 export const CreateUser = //
-  Type.Omit(User, [
-    "id",
-    "tenantId",
-    "isEmailVerified",
-    "image",
-    "isTwoFactorEnabled",
-    "createdAt",
-    "createdBy",
-    "updatedAt",
-    "updatedBy",
-    "isActive",
-    "lastLoginAt",
+  Type.Intersect([
+    Type.Omit(User, [
+      "id",
+      "tenantId",
+      "isEmailVerified",
+      "image",
+      "isTwoFactorEnabled",
+      "createdAt",
+      "createdBy",
+      "updatedAt",
+      "updatedBy",
+      "lastLoginAt",
+    ]),
+    Type.Object({
+      "sendInvitationEmail": Type.Boolean(),
+    })
   ]);
 
 export type CreateUser = Static<typeof CreateUser>;

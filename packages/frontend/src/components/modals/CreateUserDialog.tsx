@@ -1,12 +1,17 @@
-import { createMemo, createSignal } from "solid-js";
-import { useUsersQuery } from "../../services/users/use-users-query.js";
-import { useTenantsQuery } from "../../services/tenants/use-tenants-query.js";
+import { createMemo } from "solid-js";
 import { useUser } from "../../hooks/useUser.js";
 import { useRolesQuery } from "../../services/roles/use-roles-query.js";
 import { hasPermission } from "@mailtura/backend/src/auth/index.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
-import { createFormSpec } from "../../forms/index.js";
+import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { CreateUser } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { userKeys } from "../../services/users/keys.js";
+import { useQueryClient } from "@tanstack/solid-query";
+import { SubmitHandler } from "@modular-forms/solid";
+import { Static, Type } from "typebox";
+
+const CreateUserForm = Type.Omit(CreateUser, ["permissions"]);
+type CreateUserForm = Static<typeof CreateUserForm>
 
 type CreateUserDialogProps = {
   tenantId: () => string;
@@ -14,138 +19,98 @@ type CreateUserDialogProps = {
 };
 
 export function CreateUserDialog(props: CreateUserDialogProps) {
+  const queryClient = useQueryClient();
   const user = useUser();
 
-  const usersQuery = useUsersQuery({ tenantId: props.tenantId });
   const rolesQuery = useRolesQuery({ tenantId: props.tenantId });
-  const tenantsQuery = useTenantsQuery();
 
   const createUser = useCreateMutation("/api/v1/tenants/{tenant_id}/users/", {
     tenant_id: props.tenantId,
   });
 
-  const newUserForm = createFormSpec<typeof CreateUser>(
-    CreateUser,
+  const newUserForm = createFormSpec<typeof CreateUserForm>(
+    CreateUserForm,
     {
       email: {
         label: "Email",
         type: "email",
         required: true,
-        cell: info => (
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
-            <input
-              {...info.props}
-              type="text"
-              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                info.field.error ? "border-red-300" : "border-gray-300"
-              }`}
-              placeholder="John"
-            />
-            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
-          </div>
-        ),
       },
       firstName: {
         label: "First Name",
         type: "text",
-        cell: info => (
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
-            <input
-              {...info.props}
-              type="text"
-              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                info.field.error ? "border-red-300" : "border-gray-300"
-              }`}
-              placeholder="John"
-            />
-            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
-          </div>
-        ),
+        required: true,
       },
       lastName: {
         label: "Last Name",
         type: "text",
-        cell: info => (
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">{info.fieldSpec.label} *</label>
-            <input
-              {...info.props}
-              type="text"
-              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                info.field.error ? "border-red-300" : "border-gray-300"
-              }`}
-              placeholder="Doe"
-            />
-            {info.field.error && <p class="text-red-600 text-sm mt-1">{info.field.error}</p>}
-          </div>
-        ),
+        required: true,
       },
-      role_id: {
+      roleId: {
         label: "Role",
         type: "select",
         options: () =>
           getAvailableRoles().map(role => ({
-            label: role.name.replace("_", " ").toUpperCase(),
+            label: role.name.replace("_", " "),
             value: role.id,
+            description: role.description ?? getRoleDescription(role.name),
           })),
         required: true,
       },
+      isActive: {
+        label: "Account Status",
+        type: "toggle",
+        defaultValue: true,
+        required: true,
+      },
+      sendInvitationEmail: {
+        label: "Send Invitation Email",
+        type: "toggle",
+        defaultValue: true,
+        required: true,
+      },
     },
-    ["firstName", "lastName", "email", "role_id"]
+    [],
+    {
+      isActive: true,
+      sendInvitationEmail: true,
+    }
   );
 
-  const [userData, setUserData] = createSignal({
-    firstName: "",
-    lastName: "",
-    email: "",
-    role_id: "",
-    tenantId: props.tenantId(),
-    isActive: true,
-    sendInvitation: true,
-  });
-  const [errors, setErrors] = createSignal<Record<string, string>>({});
-
-  const validateForm = () => {
-    const newErrors: Record<string, string> = {};
-
-    if (!userData().firstName.trim()) {
-      newErrors.firstName = "First name is required";
+  const onSubmit: SubmitHandler<CreateUserForm> = async (values, event) => {
+    event.preventDefault();
+    try {
+      await handleCreateUser(values);
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
-
-    if (!userData().lastName.trim()) {
-      newErrors.lastName = "Last name is required";
-    }
-
-    if (!userData().email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData().email)) {
-      newErrors.email = "Please enter a valid email address";
-    } else if (usersQuery.data?.some(u => u.email.toLowerCase() === userData().email.toLowerCase())) {
-      newErrors.email = "This email address is already in use";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
-    if (!validateForm()) return;
-
-    // In real app, this would create the user via API
-    console.log("Creating user:", userData);
-    setUserData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      role_id: "",
-      tenantId: props.tenantId(),
-      isActive: true,
-      sendInvitation: true,
+  const handleCreateUser: FormSubmitHandler<CreateUserForm> = async values => {
+    return new Promise((resolve, reject) => {
+      createUser.mutate(
+        {
+          email: values.email,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          roleId: values.roleId,
+          permissions: rolesQuery.data?.find(role => role.id === values.roleId)?.permissions ?? [],
+          isActive: values.isActive,
+          sendInvitationEmail: values.sendInvitationEmail,
+        },
+        {
+          onSuccess: async () => {
+            await queryClient.invalidateQueries({ queryKey: userKeys.users(props.tenantId()) });
+            props.onClose();
+            resolve(undefined);
+          },
+          onError: error => {
+            console.error("Error updating user:", error);
+            reject(error);
+          },
+        }
+      );
     });
-    setErrors({});
-    props.onClose();
   };
 
   const getAvailableRoles = createMemo(() => {
@@ -177,6 +142,9 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
     return (rolesQuery.data ?? []).find(role => role.id === roleId)?.permissions.length || 0;
   };
 
+  const Form = newUserForm.Form;
+  const Field = newUserForm.Field;
+
   return (
     <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div class="bg-white rounded-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
@@ -193,149 +161,208 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
           </button>
         </div>
 
-        <div class="p-6 overflow-y-auto max-h-96">
-          <div class="space-y-6">
-            {/* Personal Information */}
-            <div>
-              <h4 class="text-md font-medium text-gray-900 mb-4">Personal Information</h4>
-              <div class="grid grid-cols-2 gap-4">
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
-                  <input
-                    type="text"
-                    value={userData().firstName}
-                    onChange={e => setUserData(prev => ({ ...prev, firstName: e.target.value }))}
-                    class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors().firstName ? "border-red-300" : "border-gray-300"
-                    }`}
-                    placeholder="John"
-                  />
-                  {errors().firstName && <p class="text-red-600 text-sm mt-1">{errors().firstName}</p>}
-                </div>
-                <div>
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
-                  <input
-                    type="text"
-                    value={userData().lastName}
-                    onChange={e => setUserData(prev => ({ ...prev, lastName: e.target.value }))}
-                    class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors().lastName ? "border-red-300" : "border-gray-300"
-                    }`}
-                    placeholder="Doe"
-                  />
-                  {errors().lastName && <p class="text-red-600 text-sm mt-1">{errors().lastName}</p>}
-                </div>
-              </div>
-
-              <div class="mt-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
-                <input
-                  type="email"
-                  value={userData().email}
-                  onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))}
-                  class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                    errors().email ? "border-red-300" : "border-gray-300"
-                  }`}
-                  placeholder="john.doe@example.com"
-                />
-                {errors().email && <p class="text-red-600 text-sm mt-1">{errors().email}</p>}
-              </div>
-            </div>
-
-            {/* Account Settings */}
-            <div>
-              <h4 class="text-md font-medium text-gray-900 mb-4">Account Settings</h4>
-
-              {/* Tenant Selection (only for super admins) */}
-              {hasPermission("manage::tenants", user()!) && (
-                <div class="mb-4">
-                  <label class="block text-sm font-medium text-gray-700 mb-2">Tenant *</label>
-                  <select
-                    value={userData().tenantId}
-                    onChange={e => setUserData(prev => ({ ...prev, tenantId: e.target.value }))}
-                    class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
-                      errors().tenantId ? "border-red-300" : "border-gray-300"
-                    }`}
-                  >
-                    <option value="">Select a tenant</option>
-                    {tenantsQuery.data?.map(tenant => (
-                      <option value={tenant.id}>{tenant.name}</option>
-                    ))}
-                  </select>
-                  {errors().tenantId && <p class="text-red-600 text-sm mt-1">{errors().tenantId}</p>}
-                </div>
-              )}
-
-              {/* Role Selection */}
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-3">Role *</label>
-                <div class="space-y-3">
-                  {getAvailableRoles().map(role => (
-                    <div
-                      onClick={() => setUserData(prev => ({ ...prev, role }))}
-                      class={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                        userData().role_id === role.id
-                          ? "border-blue-500 bg-blue-50"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
+        <Form onSubmit={onSubmit}>
+          <div class="p-6 overflow-y-auto max-h-96">
+            <div class="space-y-6">
+              {/* Personal Information */}
+              <div>
+                <h4 class="text-md font-medium text-gray-900 mb-4">Personal Information</h4>
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <Field
+                      name="firstName"
+                      type="string"
                     >
-                      <div class="flex items-center justify-between">
-                        <div class="flex items-center space-x-3">
+                      {(field, props) => {
+                        return (
+                          <>
+                            <label
+                              class={`block text-sm font-medium text-gray-700 mb-2 ${field.error ? "text-red-500" : ""}`}
+                            >
+                              First Name <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                              {...props}
+                              value={field.value}
+                              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                                field.error ? "border-red-500" : "border-gray-300"
+                              }`}
+                              placeholder="John"
+                            />
+                            {field.error && <p class="text-red-500 text-sm mt-1">{field.error}</p>}
+                          </>
+                        );
+                      }}
+                    </Field>
+                  </div>
+                  <div>
+                    <Field
+                      name="lastName"
+                      type="string"
+                    >
+                      {(field, props) => {
+                        return (
+                          <>
+                            <label
+                              class={`block text-sm font-medium text-gray-700 mb-2 ${field.error ? "text-red-500" : ""}`}
+                            >
+                              Last Name <span class="text-red-500">*</span>
+                            </label>
+                            <input
+                              {...props}
+                              value={field.value}
+                              class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                                field.error ? "border-red-500" : "border-gray-300"
+                              }`}
+                              placeholder="Doe"
+                            />
+                            {field.error && <p class="text-red-500 text-sm mt-1">{field.error}</p>}
+                          </>
+                        );
+                      }}
+                    </Field>
+                  </div>
+                </div>
+
+                <div class="mt-4">
+                  <Field
+                    name="email"
+                    type="string"
+                  >
+                    {(field, props) => {
+                      return (
+                        <>
+                          <label
+                            class={`block text-sm font-medium text-gray-700 mb-2 ${field.error ? "text-red-500" : ""}`}
+                          >
+                            Email Address <span class="text-red-500">*</span>
+                          </label>
                           <input
-                            type="radio"
-                            name="role"
-                            checked={userData().role_id === role.id}
-                            onChange={() => setUserData(prev => ({ ...prev, role }))}
-                            class="text-blue-600 focus:ring-blue-500"
+                            {...props}
+                            value={field.value}
+                            class={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                              field.error ? "border-red-500" : "border-gray-300"
+                            }`}
+                            placeholder="john.doe@example.com"
                           />
-                          <div>
-                            <h5 class="font-medium text-gray-900 capitalize">{role.name.replace("_", " ")}</h5>
-                            <p class="text-sm text-gray-600">{role.description ?? getRoleDescription(role.name)}</p>
+                          {field.error && <p class="text-red-500 text-sm mt-1">{field.error}</p>}
+                        </>
+                      );
+                    }}
+                  </Field>
+                </div>
+              </div>
+
+              {/* Account Settings */}
+              <div>
+                <h4 class="text-md font-medium text-gray-900 mb-4">Account Settings</h4>
+                {/* Role Selection */}
+                <div class="mb-4">
+                  <Field
+                    name="roleId"
+                    type="string"
+                  >
+                    {(field, props) => {
+                      const fieldSpec = newUserForm.getField("roleId");
+                      return (
+                        <>
+                          <label class="block text-sm font-medium text-gray-700 mb-3">Role *</label>
+                          <div class="space-y-3">
+                            {(fieldSpec.options ? fieldSpec.options() : []).map(item => (
+                              <div
+                                onClick={() => newUserForm.updateField("roleId", item.value)}
+                                class={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
+                                  field.value === item.value
+                                    ? "border-blue-500 bg-blue-50"
+                                    : "border-gray-200 hover:border-gray-300"
+                                }`}
+                              >
+                                <div class="flex items-center justify-between">
+                                  <div class="flex items-center space-x-3">
+                                    <input
+                                      {...props}
+                                      type="radio"
+                                      name="role"
+                                      checked={field.value === item.value}
+                                      class="text-blue-600 focus:ring-blue-500"
+                                    />
+                                    <div>
+                                      <h5 class="font-medium text-gray-900 capitalize">
+                                        {item.label.replace("_", " ")}
+                                      </h5>
+                                      <p class="text-sm text-gray-600">{item.description ?? ""}</p>
+                                    </div>
+                                  </div>
+                                  <div class="text-sm text-gray-500">{getPermissionCount(item.value)} permissions</div>
+                                </div>
+                              </div>
+                            ))}
                           </div>
-                        </div>
-                        <div class="text-sm text-gray-500">{getPermissionCount(role.id)} permissions</div>
-                      </div>
-                    </div>
-                  ))}
+                        </>
+                      );
+                    }}
+                  </Field>
                 </div>
-              </div>
 
-              {/* Account Status */}
-              <div class="flex items-center justify-between mb-4">
-                <div>
-                  <label class="text-sm font-medium text-gray-700">Account Status</label>
-                  <p class="text-sm text-gray-600">User can sign in and access the system</p>
+                {/* Account Status */}
+                <div class="flex items-center justify-between mb-4">
+                  <Field
+                    name="isActive"
+                    type="boolean"
+                  >
+                    {(field, props) => {
+                      return (
+                        <>
+                          <div>
+                            <label class="text-sm font-medium text-gray-700">Account Status</label>
+                            <p class="text-sm text-gray-600">User can sign in and access the system</p>
+                          </div>
+                          <label class="relative inline-flex items-center cursor-pointer">
+                            <input
+                              {...props}
+                              checked={field.value}
+                              type="checkbox"
+                              class="sr-only peer"
+                            />
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </>
+                      );
+                    }}
+                  </Field>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={userData().isActive}
-                    onChange={e => setUserData(prev => ({ ...prev, isActive: e.target.checked }))}
-                    class="sr-only peer"
-                  />
-                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                </label>
-              </div>
 
-              {/* Send Invitation */}
-              <div class="flex items-center justify-between">
-                <div>
-                  <label class="text-sm font-medium text-gray-700">Send Invitation Email</label>
-                  <p class="text-sm text-gray-600">Send setup instructions to the user's email</p>
+                {/* Send Invitation */}
+                <div class="flex items-center justify-between">
+                  <Field
+                    name="sendInvitationEmail"
+                    type="boolean"
+                  >
+                    {(field, props) => {
+                      return (
+                        <>
+                          <div>
+                            <label class="text-sm font-medium text-gray-700">Send Invitation Email</label>
+                            <p class="text-sm text-gray-600">Send setup instructions to the user's email</p>
+                          </div>
+                          <label class="relative inline-flex items-center cursor-pointer">
+                            <input
+                              {...props}
+                              checked={field.value}
+                              type="checkbox"
+                              class="sr-only peer"
+                            />
+                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                          </label>
+                        </>
+                      );
+                    }}
+                  </Field>
                 </div>
-                <label class="relative inline-flex items-center cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={userData().sendInvitation}
-                    onChange={e => setUserData(prev => ({ ...prev, sendInvitation: e.target.checked }))}
-                    class="sr-only peer"
-                  />
-                  <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                </label>
               </div>
             </div>
           </div>
-        </div>
+        </Form>
 
         <div class="flex items-center justify-end space-x-3 p-6 border-t border-gray-200 bg-gray-50">
           <button
@@ -345,7 +372,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
             Cancel
           </button>
           <button
-            onClick={handleSubmit}
+            onClick={newUserForm.submitForm}
             class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
           >
             Create User
