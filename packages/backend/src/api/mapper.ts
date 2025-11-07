@@ -1,6 +1,7 @@
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import type {
   ApiKeyEntity,
+  BounceEntity,
   CampaignEntity,
   ContactEntity,
   ContactImportEntity,
@@ -10,10 +11,12 @@ import type {
   SubscriberListEntity,
   TemplateEntity,
   TenantEntity,
+  UnsubscribeEntity,
   UserEntity,
 } from "../database/index.js";
 import {
   type ApiKey,
+  type Bounce,
   type Campaign,
   type Contact,
   type ContactImport,
@@ -23,6 +26,7 @@ import {
   type SubscriberList,
   type Template,
   type Tenant,
+  type Unsubscribe,
   type User,
 } from "@mailtura/rpcmodel/lib/models";
 
@@ -247,5 +251,34 @@ export function mapRole(role: RoleEntity): Role {
     createdBy: role.created_by,
     updatedAt: mapDateTime(role.updated_at),
     updatedBy: role.updated_by ?? undefined,
+  };
+}
+
+export function mapUnsubscribe(unsubscribe: UnsubscribeEntity): Unsubscribe {
+  return {
+    id: unsubscribe.id,
+    contactId: unsubscribe.contact_id,
+    source: unsubscribe.source ?? undefined,
+    global: unsubscribe.global ?? false,
+    listIds: unsubscribe.list_ids,
+    unsubscribedAt: mapDateTime(unsubscribe.unsubscribed_at),
+    createdAt: mapDateTime(unsubscribe.created_at),
+    createdBy: unsubscribe.created_by,
+    updatedAt: mapDateTime(unsubscribe.updated_at),
+    updatedBy: unsubscribe.updated_by ?? undefined,
+  };
+}
+
+export function mapBounce(bounce: BounceEntity): Bounce {
+  return {
+    id: bounce.id,
+    reason: bounce.reason,
+    contactId: bounce.contact_id,
+    bouncedAt: mapDateTime(bounce.bounced_at),
+    bounceType: bounce.bounce_type,
+    createdAt: mapDateTime(bounce.created_at),
+    createdBy: bounce.created_by,
+    updatedAt: mapDateTime(bounce.updated_at),
+    updatedBy: bounce.updated_by ?? undefined,
   };
 }

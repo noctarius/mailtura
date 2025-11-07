@@ -201,7 +201,7 @@ export const Bounce = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      contact: Contact,
+      contactId: Type.String({ format: "uuid" }),
       bouncedAt: Type.String({ format: "date-time" }),
       reason: Type.String(),
       bounceType: BounceType,
@@ -296,7 +296,7 @@ export const Unsubscribe = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      contact: Contact,
+      contactId: Type.String({ format: "uuid" }),
       source: UnsubscribeSource,
       unsubscribedAt: Type.String({ format: "date-time" }),
       global: Type.Boolean(),
@@ -481,19 +481,22 @@ export const File = Type.Object(
 
 export type File = Static<typeof File>;
 
-export const Role = Type.Object({
-  id: Type.String({ format: "uuid" }),
-  name: Type.String(),
-  description: Type.Optional(Type.String()),
-  permissions: Type.Array(Type.String()),
-  createdAt: Type.String({ format: "date-time" }),
-  createdBy: Type.String(),
-  updatedAt: Type.Optional(Type.String({ format: "date-time" })),
-  updatedBy: Type.Optional(Type.String()),
-}, {
-  $id: "Role",
-  description: "A role in the system",
-  additionalProperties: false,
-});
+export const Role = Type.Object(
+  {
+    id: Type.String({ format: "uuid" }),
+    name: Type.String(),
+    description: Type.Optional(Type.String()),
+    permissions: Type.Array(Type.String()),
+    createdAt: Type.String({ format: "date-time" }),
+    createdBy: Type.String(),
+    updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+    updatedBy: Type.Optional(Type.String()),
+  },
+  {
+    $id: "Role",
+    description: "A role in the system",
+    additionalProperties: false,
+  }
+);
 
 export type Role = Static<typeof Role>;

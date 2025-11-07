@@ -1,5 +1,16 @@
 import { type Static, type TSchema, Type } from "typebox";
-import { ApiKey, Campaign, Contact, ContactImport, SubscriberList, Template, Tenant, User } from "./index.js";
+import {
+  ApiKey,
+  Bounce,
+  Campaign,
+  Contact,
+  ContactImport,
+  SubscriberList,
+  Template,
+  Tenant,
+  UnsubscribeSource,
+  User,
+} from "./index.js";
 
 type Nullable<T extends TSchema> = ReturnType<
   typeof Type.Optional<ReturnType<typeof Type.Union<[T, ReturnType<typeof Type.Null>]>>>
@@ -180,8 +191,8 @@ export const CreateUser = //
       "lastLoginAt",
     ]),
     Type.Object({
-      "sendInvitationEmail": Type.Boolean(),
-    })
+      sendInvitationEmail: Type.Boolean(),
+    }),
   ]);
 
 export type CreateUser = Static<typeof CreateUser>;
@@ -256,3 +267,23 @@ export const UpdateContactImport = //
   );
 
 export type UpdateContactImport = Static<typeof UpdateContactImport>;
+
+export const CreateUnsubscribe = Type.Object({
+  contactId: Type.String({ format: "uuid" }),
+  source: UnsubscribeSource,
+  global: Type.Boolean(),
+  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
+});
+
+export type CreateUnsubscribe = Static<typeof CreateUnsubscribe>;
+
+export const UpdateUnsubscribe = Type.Object({
+  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
+});
+
+export type UpdateUnsubscribe = Static<typeof UpdateUnsubscribe>;
+
+export const CreateBounce = //
+  Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]);
+
+export type CreateBounce = Static<typeof CreateBounce>;

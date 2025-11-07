@@ -23,6 +23,8 @@ import { apiKeyRoutes } from "./apikeys.js";
 import { fileRoutes } from "./files.js";
 import { hasAnyPermission } from "../../auth/index.js";
 import { rolesRoutes } from "./roles.js";
+import { bouncesRoutes } from "./bounces.js";
+import { unsubscribeRoutes } from "./unsubscribe.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -204,5 +206,7 @@ export function tenantRoutes<
     subRouter.route("/api-keys", apiKeyRoutes);
     subRouter.route("/files", fileRoutes);
     subRouter.route("/roles", rolesRoutes);
+    subRouter.route("/suppressions/unsubscribes", unsubscribeRoutes);
+    subRouter.route("/suppressions/bounces", bouncesRoutes);
   });
 }
