@@ -48,6 +48,28 @@ export const AuthProvider: ParentComponent = props => {
 export const useAuthProvider = () => {
   const api = useApi();
 
+  const getUserProfile = async (): Promise<User> => {
+    const response = await api.GET("/api/v1/profile");
+    if (response.error) {
+      throw new Error(response.error.message);
+    }
+    return response.data;
+  };
+
+  const loadSessionData = async () => {
+    setAuthState({
+      isAuthenticated: false,
+      user: undefined,
+      tenant: undefined,
+      loading: true,
+    });
+
+    // FIXME: remove after figuring out how to extend auth user sent from backend
+    const user = await getUserProfile();
+    setUserId(user.id);
+    setTenantId(user.tenantId);
+  };
+
   const hasSession = hasSessionCookie();
 
   const [authState, setAuthState] = createSignal<AuthState>({
@@ -64,9 +86,18 @@ export const useAuthProvider = () => {
   const userQuery = useUserQuery({ tenantId, userId });
 
   createEffect(() => {
-    if (tenantQuery.isLoading || tenantQuery.isError || !tenantQuery.data) return;
-    const tenant = tenantQuery.data;
+    if (
+      tenantQuery.isLoading ||
+      tenantQuery.isError ||
+      !tenantQuery.data ||
+      userQuery.isLoading ||
+      userQuery.isError ||
+      !userQuery.data
+    ) {
+      return;
+    }
 
+    const tenant = tenantQuery.data;
     setAuthState({
       isAuthenticated: true,
       user: userQuery.data,
@@ -79,20 +110,8 @@ export const useAuthProvider = () => {
     if (!hasSession) return;
     const session = await authClient.getSession();
     if (!session || !session.data || session.error) return;
-
-    const user = await getUserProfile();
-    setUserId(user.id);
-    setTenantId(user.tenantId);
+    await loadSessionData();
   });
-
-  const getUserProfile = async (): Promise<User> => {
-    const response = await api.GET("/api/v1/profile");
-    if (response.error) {
-      throw new Error(response.error.message);
-    }
-
-    return response.data;
-  };
 
   const signIn = async (email: string, password: string): Promise<void> => {
     const response = await authClient.signIn.email({ email, password });
@@ -100,10 +119,7 @@ export const useAuthProvider = () => {
       throw new Error(response.error.message);
     }
 
-    // FIXME: remove after figuring out how to extend auth user sent from backend
-    const user = await getUserProfile();
-    setUserId(user.id);
-    setTenantId(user.tenantId);
+    await loadSessionData();
   };
 
   const signUp = async (firstName: string, lastName: string, email: string, _password: string): Promise<void> => {
@@ -123,9 +139,6 @@ export const useAuthProvider = () => {
       createdBy: "mock",
     };
 
-    const authData = { user: newUser, tenant: undefined };
-    localStorage.setItem("emailflow_auth", JSON.stringify(authData));
-
     setAuthState({
       isAuthenticated: true,
       user: newUser,
@@ -134,13 +147,21 @@ export const useAuthProvider = () => {
     });
   };
 
-  const signOut = (): void => {
-    localStorage.removeItem("emailflow_auth");
+  const signOut = async (): Promise<void> => {
+    setTenantId(undefined);
+    setUserId(undefined);
     setAuthState({
       isAuthenticated: false,
       user: undefined,
       tenant: undefined,
       loading: false,
+    });
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess() {
+          window.location.assign("/");
+        },
+      },
     });
   };
 

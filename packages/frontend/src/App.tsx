@@ -13,9 +13,11 @@ import { AuthGuard } from "./components/interfaces/AuthGuard.js";
 const queryClient = new QueryClient();
 
 const AppLayout: ParentComponent = props => {
+  const auth = useAuth();
+
   return (
     <>
-      <Sidebar />
+      {!auth.isLoading() && auth.isAuthenticated() && <Sidebar />}
       <main class="flex flex-1 flex-col min-h-0 overflow-hidden">{props.children}</main>
     </>
   );
@@ -114,14 +116,15 @@ function AppContent() {
                     </AuthGuard>
                   )}
                 />
-                <Route
-                  path="/tenant-management"
-                  component={() => (
-                    <AuthGuard>
-                      <TenantManagement />
-                    </AuthGuard>
-                  )}
-                >
+                <Route path="/tenant-management">
+                  <Route
+                    path="/"
+                    component={() => (
+                      <AuthGuard>
+                        <TenantManagement />
+                      </AuthGuard>
+                    )}
+                  />
                   <Route path="/:tenantId">
                     <Route
                       path="/user-management"

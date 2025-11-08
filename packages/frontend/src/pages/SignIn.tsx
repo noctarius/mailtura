@@ -112,6 +112,7 @@ const SignIn = (props: SignInProps) => {
               <button
                 type="button"
                 class="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                disabled={isLoading()}
               >
                 Forgot password?
               </button>
