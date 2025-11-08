@@ -44,19 +44,25 @@ export function tenantRoutes<
         },
       },
     },
-    async request => {
-      // For users with *::tenants permission, return their tenant only
-      if (!hasAnyPermission(["manage::tenants", "view::tenants"], request.user)) {
+    async (request, reply) => {
+      // For users without *::tenants permission, return their tenant only
+      const permissions = request.apiKey?.permissions || request.user?.permissions;
+      if (!permissions) {
+        return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+      }
+
+      if (!hasAnyPermission(["manage::tenants", "view::tenants"], { permissions })) {
+        const tenantId = (request.apiKey?.tenant_id || request.user?.tenantId)!;
         const tenant = await prisma.tenants.findUnique({
           where: {
-            id: request.user.tenantId,
+            id: tenantId,
           },
         });
         return !tenant ? [] : [mapTenant(tenant)];
       }
 
       const tenants = await prisma.tenants.findMany();
-      return tenants.map(mapTenant);
+      return reply.send(tenants.map(mapTenant));
     }
   );
 

@@ -1,35 +1,32 @@
-export type RolePermission =
-  | "view::campaigns"
-  | "manage::campaigns"
-  | "view::templates"
-  | "manage::templates"
-  | "view::contacts"
-  | "manage::contacts"
-  | "view::api-keys"
-  | "manage::api-keys"
-  | "view::tenants"
-  | "manage::tenants"
-  | "view::users"
-  | "manage::users"
-  | "view::suppressions"
-  | "manage::suppressions"
-  | "view::reports"
-  | "manage::reports"
-  | "view::settings"
-  | "manage::settings"
-  | "view::webhooks"
-  | "manage::webhooks"
-  | "view::integrations"
-  | "manage::integrations"
-  | "view::logs"
-  | "manage::logs";
+const AVAILABLE_PERMISSIONS = [
+  "view::campaigns",
+  "manage::campaigns",
+  "view::templates",
+  "manage::templates",
+  "view::contacts",
+  "manage::contacts",
+  "view::api-keys",
+  "manage::api-keys",
+  "view::tenants",
+  "manage::tenants",
+  "view::users",
+  "manage::users",
+  "view::suppressions",
+  "manage::suppressions",
+  "view::reports",
+  "manage::reports",
+  "view::settings",
+  "manage::settings",
+  "view::webhooks",
+  "call::webhooks",
+  "manage::webhooks",
+  "view::integrations",
+  "manage::integrations",
+  "view::logs",
+  "manage::logs",
+  "send::emails",
+] as const;
 
-export type ApiPermission =
-  | "send_emails"
-  | "manage_campaigns_api"
-  | "manage_contacts_api"
-  | "manage_templates_api"
-  | "view_analytics_api"
-  | "manage_users_api"
-  | "manage_suppressions_api"
-  | "webhook_access";
+export const PERMISSIONS: Permission[] = [...AVAILABLE_PERMISSIONS];
+
+export type Permission = (typeof AVAILABLE_PERMISSIONS)[number];

@@ -1655,7 +1655,7 @@ export interface paths {
                         lastName?: string;
                         /** Format: uuid */
                         roleId: string;
-                        isActive: boolean;
+                        active: boolean;
                         permissions: string[];
                     } & {
                         sendInvitationEmail: boolean;
@@ -1756,7 +1756,7 @@ export interface paths {
                         lastName?: string;
                         /** Format: uuid */
                         roleId?: string;
-                        isActive?: boolean;
+                        active?: boolean;
                         permissions?: string[];
                         image?: string;
                     };
@@ -2517,6 +2517,430 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/suppressions/unsubscribes/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Unsubscribe"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        contactId: string;
+                        /**
+                         * @description The source of an unsubscribe
+                         * @default Email
+                         */
+                        source: "UnsubscribeLink" | "ManualAddition" | "Bounce" | "Api" | "Other";
+                        global: boolean;
+                        listIds: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description An unsubscribe in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Unsubscribe"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/suppressions/unsubscribes/{unsubscribe_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    unsubscribe_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description An unsubscribe in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Unsubscribe"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    unsubscribe_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        listIds: string[];
+                    };
+                };
+            };
+            responses: {
+                /** @description An unsubscribe in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Unsubscribe"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    unsubscribe_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/suppressions/bounces/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Bounce"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        contactId: string;
+                        /** Format: date-time */
+                        bouncedAt: string;
+                        reason: string;
+                        /**
+                         * @description The type of a bounce
+                         * @default Hard
+                         */
+                        bounceType: "Hard" | "Soft";
+                    };
+                };
+            };
+            responses: {
+                /** @description A bounce in the system */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Bounce"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/suppressions/bounces/{bounce_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    bounce_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description A bounce in the system */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Bounce"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    bounce_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profile": {
         parameters: {
             query?: never;
@@ -2737,23 +3161,8 @@ export interface components {
         Bounce: {
             /** Format: uuid */
             id: string;
-            /** @description A contact in the system */
-            contact: {
-                /** Format: uuid */
-                id: string;
-                /** Format: email */
-                email: string;
-                firstName?: string;
-                lastName?: string;
-                listIds: string[];
-                status: string;
-                /** Format: date-time */
-                createdAt: string;
-                createdBy: string;
-                /** Format: date-time */
-                updatedAt?: string;
-                updatedBy?: string;
-            };
+            /** Format: uuid */
+            contactId: string;
             /** Format: date-time */
             bouncedAt: string;
             reason: string;
@@ -2819,23 +3228,8 @@ export interface components {
         Unsubscribe: {
             /** Format: uuid */
             id: string;
-            /** @description A contact in the system */
-            contact: {
-                /** Format: uuid */
-                id: string;
-                /** Format: email */
-                email: string;
-                firstName?: string;
-                lastName?: string;
-                listIds: string[];
-                status: string;
-                /** Format: date-time */
-                createdAt: string;
-                createdBy: string;
-                /** Format: date-time */
-                updatedAt?: string;
-                updatedBy?: string;
-            };
+            /** Format: uuid */
+            contactId: string;
             /**
              * @description The source of an unsubscribe
              * @default Email
@@ -2907,13 +3301,13 @@ export interface components {
             lastName?: string;
             /** Format: uuid */
             roleId: string;
-            isActive: boolean;
+            active: boolean;
             /** Format: date-time */
             lastLoginAt?: string;
             permissions: string[];
-            isEmailVerified: boolean;
+            emailVerified: boolean;
             image?: string;
-            isTwoFactorEnabled: boolean;
+            twoFactorEnabled: boolean;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
@@ -2927,7 +3321,7 @@ export interface components {
             id: string;
             name: string;
             key: string;
-            isActive: boolean;
+            active: boolean;
             /** Format: date-time */
             lastUsedAt?: string;
             /** Format: date-time */

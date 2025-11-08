@@ -1,13 +1,13 @@
 import { ChevronDown, ChevronRight, LucideProps } from "lucide-solid";
 import { useAuth } from "../../hooks/useAuth.js";
 import { createEffect, createSignal, JSX } from "solid-js";
-import type { RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 
 export interface NavigationItem {
   id: string;
   label: string;
   icon: (props: LucideProps) => JSX.Element;
-  permissions?: RolePermission[];
+  permissions?: Permission[];
   subitems?: Omit<NavigationItem, "icon">[];
 }
 
@@ -18,7 +18,7 @@ interface SidebarEntryProps {
 
 const navigationItemPermissionCheck = (
   navigationItem: Omit<NavigationItem, "icon">,
-  hasAllPermissions: (permissions: RolePermission[]) => boolean
+  hasAllPermissions: (permissions: Permission[]) => boolean
 ) => {
   if (!navigationItem.permissions) return true;
   return hasAllPermissions(navigationItem.permissions);

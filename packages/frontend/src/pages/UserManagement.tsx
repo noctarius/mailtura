@@ -28,11 +28,11 @@ const UserManagement = () => {
         user.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         user.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
         user.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
-      const matchesRole = selectedRole() === "all" || user.role_id === selectedRole();
+      const matchesRole = selectedRole() === "all" || user.roleId === selectedRole();
       const matchesStatus =
         selectedStatus() === "all" ||
-        (selectedStatus() === "active" && user.isActive) ||
-        (selectedStatus() === "inactive" && !user.isActive);
+        (selectedStatus() === "active" && user.active) ||
+        (selectedStatus() === "inactive" && !user.active);
       return matchesSearch && matchesRole && matchesStatus;
     });
   });

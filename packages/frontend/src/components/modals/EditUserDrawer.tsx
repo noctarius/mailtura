@@ -66,17 +66,17 @@ function UserEditForm(props: UserEditFormProps) {
         label: "Last Name",
         type: "text",
       },
-      role_id: {
+      roleId: {
         label: "Role",
         type: "select",
         options: roles,
       },
     },
-    ["firstName", "lastName", "role_id"],
+    ["firstName", "lastName", "roleId"],
     {
       firstName: props.user().firstName,
       lastName: props.user().lastName,
-      role_id: props.user().role_id,
+      roleId: props.user().roleId,
     }
   );
 

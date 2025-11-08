@@ -14,13 +14,16 @@ import { fromNodeHeaders } from "better-auth/node";
 import type { Session } from "better-auth";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import type { User } from "@mailtura/rpcmodel/lib/models/index.js";
-import type { RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 import { hasAllPermissions } from "../auth/index.js";
+import { validateApiKey } from "../auth/validateApiKey.js";
+import type { ApiKeyEntity } from "../database/index.js";
 
 declare module "fastify" {
   interface FastifyRequest {
-    user: User;
-    session: Session;
+    apiKey?: ApiKeyEntity;
+    user?: User;
+    session?: Session;
   }
 }
 
@@ -43,7 +46,7 @@ type PermissionRouteShorthandOptions<
   TypeProvider,
   Logger
 > & {
-  permissions?: RolePermission[];
+  permissions?: Permission[];
 };
 
 export interface Router<
@@ -234,20 +237,36 @@ export function createRouter<
     return {
       ...opts,
       preHandler: async (request, reply) => {
-        const session = await app.auth.api.getSession({
-          headers: fromNodeHeaders(request.headers),
-        });
-
-        if (!session || !session.user) {
-          return reply.status(401 as any).send({ message: "Unauthorized" } as any);
-        }
-
-        request.user = session.user as unknown as User;
-        request.session = session.session;
-
-        if (opts.permissions && opts.permissions.length > 0) {
-          if (hasAllPermissions(opts.permissions, request.user)) {
+        const headerApiKey = request.headers["x-api-key"];
+        if (typeof headerApiKey === "string") {
+          const apiKey = await validateApiKey(headerApiKey);
+          if (!apiKey) {
             return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+          }
+
+          request.apiKey = apiKey;
+
+          if (opts.permissions && opts.permissions.length > 0) {
+            if (hasAllPermissions(opts.permissions, apiKey)) {
+              return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+            }
+          }
+        } else {
+          const session = await app.auth.api.getSession({
+            headers: fromNodeHeaders(request.headers),
+          });
+
+          if (!session || !session.user) {
+            return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+          }
+
+          request.user = session.user as unknown as User;
+          request.session = session.session;
+
+          if (opts.permissions && opts.permissions.length > 0) {
+            if (hasAllPermissions(opts.permissions, request.user)) {
+              return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+            }
           }
         }
       },

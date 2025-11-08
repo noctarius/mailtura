@@ -64,7 +64,7 @@ export function UsersTable(props: UsersTableProps) {
         id: "role",
         header: () => "Role",
         cell: info => {
-          const role = (rolesQuery.data || []).find(role => role.id === info.row.original.role_id);
+          const role = (rolesQuery.data || []).find(role => role.id === info.row.original.roleId);
           return (
             <TableCellChip
               icon={<Shield class="w-3 h-3" />}
@@ -90,9 +90,9 @@ export function UsersTable(props: UsersTableProps) {
         header: () => "Status",
         cell: info => (
           <TableCellChip
-            value={info.row.original.isActive ? "Active" : "Inactive"}
-            textColor={getStatusTextColor(info.row.original.isActive)}
-            bgColor={getStatusBgColor(info.row.original.isActive)}
+            value={info.row.original.active ? "Active" : "Inactive"}
+            textColor={getStatusTextColor(info.row.original.active)}
+            bgColor={getStatusBgColor(info.row.original.active)}
           />
         ),
       },
@@ -244,7 +244,7 @@ const createContextMenu = (user: User): ContextMenuAction[] => {
     },
   ];
 
-  if (user.isActive) {
+  if (user.active) {
     contextMenuActions.push({
       action: "lock",
       icon: ShieldBan,
@@ -258,7 +258,7 @@ const createContextMenu = (user: User): ContextMenuAction[] => {
     });
   }
 
-  if (user.isEmailVerified) {
+  if (user.emailVerified) {
     contextMenuActions.push(
       {
         action: "verify-email",

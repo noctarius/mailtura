@@ -12,12 +12,11 @@ import {
   Shield,
   Trash2,
 } from "lucide-solid";
-import { API_PERMISSION_DESCRIPTIONS, ApiKey } from "../types/auth";
 import { useAuth } from "../hooks/useAuth.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createSignal } from "solid-js";
-import { useTenantId } from "../hooks/useTenantId.js";
-import { ApiPermission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { Permission, PERMISSIONS } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { ApiKey } from "@mailtura/rpcmodel/lib/models/index.js";
 
 const ApiKeyManagement = () => {
   const { hasPermission } = useAuth();
@@ -26,17 +25,14 @@ const ApiKeyManagement = () => {
   const [showCreateModal, setShowCreateModal] = createSignal(false);
   const [visibleKeys, setVisibleKeys] = createSignal<Set<string>>(new Set());
 
-  const tenantId = useTenantId();
-
   // Mock data - in real app this would come from API
   const apiKeys: ApiKey[] = [
     {
       id: "key-1",
       name: "Production API Key",
       key: "sk-live-1234567890abcdef1234567890abcdef12345678",
-      tenantId: tenantId() || "",
       permissions: ["send_emails", "manage_campaigns_api", "view_analytics_api"],
-      isActive: true,
+      active: true,
       createdAt: "2024-01-15T10:30:00Z",
       lastUsedAt: "2024-01-25T14:22:00Z",
       createdBy: "admin@acme.com",
@@ -45,9 +41,8 @@ const ApiKeyManagement = () => {
       id: "key-2",
       name: "Development API Key",
       key: "sk-test-abcdef1234567890abcdef1234567890abcdef12",
-      tenantId: tenantId() || "",
       permissions: ["send_emails", "manage_contacts_api"],
-      isActive: true,
+      active: true,
       createdAt: "2024-01-20T09:15:00Z",
       lastUsedAt: "2024-01-24T16:45:00Z",
       createdBy: "dev@acme.com",
@@ -56,9 +51,8 @@ const ApiKeyManagement = () => {
       id: "key-3",
       name: "Analytics Only Key",
       key: "sk-live-fedcba0987654321fedcba0987654321fedcba09",
-      tenantId: tenantId() || "",
       permissions: ["view_analytics_api"],
-      isActive: false,
+      active: false,
       createdAt: "2024-01-10T14:20:00Z",
       createdBy: "analyst@acme.com",
     },
@@ -70,8 +64,8 @@ const ApiKeyManagement = () => {
       key.createdBy.toLowerCase().includes(searchTerm().toLowerCase());
     const matchesStatus =
       selectedStatus() === "all" ||
-      (selectedStatus() === "active" && key.isActive) ||
-      (selectedStatus() === "inactive" && !key.isActive);
+      (selectedStatus() === "active" && key.active) ||
+      (selectedStatus() === "inactive" && !key.active);
     return matchesSearch && matchesStatus;
   });
 
@@ -122,11 +116,11 @@ const ApiKeyManagement = () => {
   const CreateApiKeyModal = () => {
     const [keyData, setKeyData] = createSignal({
       name: "",
-      permissions: [] as ApiPermission[],
+      permissions: [] as Permission[],
       expiresAt: "",
     });
 
-    const handlePermissionToggle = (permission: ApiPermission) => {
+    const handlePermissionToggle = (permission: Permission) => {
       setKeyData(prev => ({
         ...prev,
         permissions: prev.permissions.includes(permission)
@@ -174,13 +168,13 @@ const ApiKeyManagement = () => {
               <div>
                 <label class="block text-sm font-medium text-gray-700 mb-3">Permissions *</label>
                 <div class="space-y-3 max-h-60 overflow-y-auto border border-gray-200 rounded-lg p-4">
-                  {Object.entries(API_PERMISSION_DESCRIPTIONS).map(([permission, description]) => (
+                  {PERMISSIONS.map(permission => (
                     <div class="flex items-start space-x-3">
                       <input
                         type="checkbox"
                         id={`perm-${permission}`}
-                        checked={keyData().permissions.includes(permission as ApiPermission)}
-                        onChange={() => handlePermissionToggle(permission as ApiPermission)}
+                        checked={keyData().permissions.includes(permission)}
+                        onChange={() => handlePermissionToggle(permission)}
                         class="mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
                       />
                       <div class="flex-1">
@@ -190,7 +184,7 @@ const ApiKeyManagement = () => {
                         >
                           {permission.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase())}
                         </label>
-                        <p class="text-xs text-gray-600 mt-1">{description}</p>
+                        <p class="text-xs text-gray-600 mt-1">{permission}</p>
                       </div>
                     </div>
                   ))}
@@ -365,10 +359,10 @@ const ApiKeyManagement = () => {
                     </td>
                     <td class="py-4 px-6">
                       <TableCellChip
-                        value={apiKey.isActive ? "Active" : "Inactive"}
-                        bgColor={apiKey.isActive ? "bg-green-100" : "bg-red-100"}
-                        textColor={apiKey.isActive ? "text-green-800" : "text-red-800"}
-                        icon={apiKey.isActive ? <CheckCircle class="w-3 h-3" /> : <CircleAlert class="w-3 h-3" />}
+                        value={apiKey.active ? "Active" : "Inactive"}
+                        bgColor={apiKey.active ? "bg-green-100" : "bg-red-100"}
+                        textColor={apiKey.active ? "text-green-800" : "text-red-800"}
+                        icon={apiKey.active ? <CheckCircle class="w-3 h-3" /> : <CircleAlert class="w-3 h-3" />}
                       />
                     </td>
                     <td class="py-4 px-6">

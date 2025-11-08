@@ -2,7 +2,7 @@ import { type Auth, betterAuth, type BetterAuthOptions } from "better-auth";
 import type { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 import { mailturaAdapter } from "./database.js";
-import { apiKey, magicLink, openAPI, twoFactor } from "better-auth/plugins";
+import { magicLink, openAPI, twoFactor } from "better-auth/plugins";
 import { passkey } from "better-auth/plugins/passkey";
 import { v7 as uuidv7 } from "uuid";
 import { registerAuthHandler } from "./handler.js";
@@ -52,7 +52,6 @@ const createBetterAuth = (options: BetterAuthOptions) => {
     },
     plugins: [
       openAPI({}),
-      apiKey({}),
       twoFactor({
         schema: {
           user: {

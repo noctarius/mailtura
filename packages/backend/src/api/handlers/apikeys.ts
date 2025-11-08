@@ -66,7 +66,7 @@ export function apiKeyRoutes<
           tenant_id: tenantId,
           name: request.body.name,
           key: request.body.key,
-          is_active: true,
+          active: true,
           expires_at: request.body.expiresAt,
           permissions: request.body.permissions,
           created_at: UTC.now().toDate(),

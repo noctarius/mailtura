@@ -57,7 +57,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
           })),
         required: true,
       },
-      isActive: {
+      active: {
         label: "Account Status",
         type: "toggle",
         defaultValue: true,
@@ -72,7 +72,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
     },
     [],
     {
-      isActive: true,
+      active: true,
       sendInvitationEmail: true,
     }
   );
@@ -95,7 +95,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
           lastName: values.lastName,
           roleId: values.roleId,
           permissions: rolesQuery.data?.find(role => role.id === values.roleId)?.permissions ?? [],
-          isActive: values.isActive,
+          active: values.active,
           sendInvitationEmail: values.sendInvitationEmail,
         },
         {
@@ -307,7 +307,7 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
                 {/* Account Status */}
                 <div class="flex items-center justify-between mb-4">
                   <Field
-                    name="isActive"
+                    name="active"
                     type="boolean"
                   >
                     {(field, props) => {

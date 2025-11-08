@@ -7,15 +7,15 @@ import { API_URL } from "../constants.js";
 import { magicLinkClient, passkeyClient, twoFactorClient } from "better-auth/client/plugins";
 import { useApi } from "./useApi.js";
 import { useUserQuery } from "../services/users/use-user-query.js";
-import type { RolePermission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signUp: (firstName: string, lastName: string, email: string, password: string) => Promise<void>;
   signOut: () => void;
-  hasPermission: (permission: RolePermission) => boolean;
-  hasAnyPermission: (permissions: RolePermission[]) => boolean;
-  hasAllPermissions: (permissions: RolePermission[]) => boolean;
+  hasPermission: (permission: Permission) => boolean;
+  hasAnyPermission: (permissions: Permission[]) => boolean;
+  hasAllPermissions: (permissions: Permission[]) => boolean;
   switchTenant: (tenantId: string) => Promise<void>;
   isAuthenticated: () => boolean;
   user: () => User | undefined;
@@ -129,10 +129,12 @@ export const useAuthProvider = () => {
       email,
       firstName,
       lastName,
-      role: "user",
+      roleId: "user",
       tenantId: "tenant-1", // Default tenant for demo
       permissions: ROLE_PERMISSIONS.user,
-      isActive: true,
+      active: true,
+      emailVerified: true,
+      twoFactorEnabled: false,
       createdAt: new Date().toISOString(),
       createdBy: "mock",
     };
@@ -158,21 +160,21 @@ export const useAuthProvider = () => {
     });
   };
 
-  const hasPermission = (permission: RolePermission): boolean => {
+  const hasPermission = (permission: Permission): boolean => {
     const [action, resource] = permission.split("::");
 
     const permissions = authState().user?.permissions ?? [];
-    if (action === "view" && permissions.includes(`manage::${resource}` as RolePermission)) {
+    if (action === "view" && permissions.includes(`manage::${resource}` as Permission)) {
       return true;
     }
     return permissions.includes(permission);
   };
 
-  const hasAnyPermission = (permissions: RolePermission[]): boolean => {
+  const hasAnyPermission = (permissions: Permission[]): boolean => {
     return permissions.some(permission => hasPermission(permission));
   };
 
-  const hasAllPermissions = (permissions: RolePermission[]): boolean => {
+  const hasAllPermissions = (permissions: Permission[]): boolean => {
     return permissions.every(permission => hasPermission(permission));
   };
 
