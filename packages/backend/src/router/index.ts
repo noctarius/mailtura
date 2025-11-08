@@ -16,7 +16,7 @@ import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import type { User } from "@mailtura/rpcmodel/lib/models/index.js";
 import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 import { hasAllPermissions } from "../auth/index.js";
-import { validateApiKey } from "../auth/validateApiKey.js";
+import { validateApiKey } from "../auth/apiKey.js";
 import type { ApiKeyEntity } from "../database/index.js";
 
 declare module "fastify" {
@@ -247,7 +247,7 @@ export function createRouter<
           request.apiKey = apiKey;
 
           if (opts.permissions && opts.permissions.length > 0) {
-            if (hasAllPermissions(opts.permissions, apiKey)) {
+            if (!hasAllPermissions(opts.permissions, apiKey)) {
               return reply.status(401 as any).send({ message: "Unauthorized" } as any);
             }
           }
@@ -264,7 +264,7 @@ export function createRouter<
           request.session = session.session;
 
           if (opts.permissions && opts.permissions.length > 0) {
-            if (hasAllPermissions(opts.permissions, request.user)) {
+            if (!hasAllPermissions(opts.permissions, request.user)) {
               return reply.status(401 as any).send({ message: "Unauthorized" } as any);
             }
           }

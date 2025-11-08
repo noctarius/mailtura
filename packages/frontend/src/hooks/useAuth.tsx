@@ -48,11 +48,13 @@ export const AuthProvider: ParentComponent = props => {
 export const useAuthProvider = () => {
   const api = useApi();
 
+  const hasSession = hasSessionCookie();
+
   const [authState, setAuthState] = createSignal<AuthState>({
     isAuthenticated: false,
     user: undefined,
     tenant: undefined,
-    loading: true,
+    loading: false,
   });
 
   const [tenantId, setTenantId] = createSignal<string | undefined>(undefined);
@@ -64,8 +66,6 @@ export const useAuthProvider = () => {
   createEffect(() => {
     if (tenantQuery.isLoading || tenantQuery.isError || !tenantQuery.data) return;
     const tenant = tenantQuery.data;
-    const authData = { user: userQuery.data, tenant };
-    localStorage.setItem("emailflow_auth", JSON.stringify(authData));
 
     setAuthState({
       isAuthenticated: true,
@@ -73,30 +73,16 @@ export const useAuthProvider = () => {
       tenant: tenant,
       loading: false,
     });
-  });
+  }, [tenantQuery]);
 
-  createEffect(() => {
-    // Check for existing session
-    const savedAuth = localStorage.getItem("emailflow_auth");
-    if (savedAuth) {
-      try {
-        const { user, tenant } = JSON.parse(savedAuth);
-        setUserId(user?.id);
-        setTenantId(tenant?.id);
-        setAuthState({
-          isAuthenticated: true,
-          user,
-          tenant,
-          loading: false,
-        });
-      } catch (error: any) {
-        console.error("Error parsing auth data:", error.message);
-        localStorage.removeItem("emailflow_auth");
-        setAuthState(prev => ({ ...prev, loading: false }));
-      }
-    } else {
-      setAuthState(prev => ({ ...prev, loading: false }));
-    }
+  createEffect(async () => {
+    if (!hasSession) return;
+    const session = await authClient.getSession();
+    if (!session || !session.data || session.error) return;
+
+    const user = await getUserProfile();
+    setUserId(user.id);
+    setTenantId(user.tenantId);
   });
 
   const getUserProfile = async (): Promise<User> => {
@@ -113,11 +99,9 @@ export const useAuthProvider = () => {
     if (response.error) {
       throw new Error(response.error.message);
     }
-    console.log(response.data.user);
 
     // FIXME: remove after figuring out how to extend auth user sent from backend
     const user = await getUserProfile();
-
     setUserId(user.id);
     setTenantId(user.tenantId);
   };
@@ -200,4 +184,8 @@ export const useAuthProvider = () => {
     hasAllPermissions,
     switchTenant,
   };
+};
+
+const hasSessionCookie = () => {
+  return document.cookie.split(";").some(cookie => cookie.trim().startsWith("mailtura.session_token="));
 };

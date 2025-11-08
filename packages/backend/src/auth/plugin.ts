@@ -8,6 +8,7 @@ import { v7 as uuidv7 } from "uuid";
 import { registerAuthHandler } from "./handler.js";
 import prisma from "../database/index.js";
 import { newPasswordHasher } from "./password-hasher.js";
+import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -93,9 +94,18 @@ const createBetterAuth = (options: BetterAuthOptions) => {
     secret: process.env.MAILTURA_AUTH_SECRET,
     advanced: {
       cookiePrefix: "mailtura",
+      cookies: {
+        session_token: {
+          attributes: {
+            maxAge: 604800,
+            httpOnly: false
+          },
+        },
+      },
       defaultCookieAttributes: {
         sameSite: "lax",
         secure: process.env.NODE_ENV === "production",
+        httpOnly: false,
       },
       database: {
         useNumberId: false,

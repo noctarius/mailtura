@@ -14,6 +14,7 @@ import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { fromDateTime, mapApiKey, unpackOptionalNullable } from "../mapper.js";
 import { createError } from "../helpers.js";
 import { CreateApiKey, UpdateApiKey } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { generateNewKey } from "../../auth/apiKey.js";
 
 export function apiKeyRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -61,15 +62,16 @@ export function apiKeyRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
+      const now = UTC.now();
       const newApiKey = await prisma.api_keys.create({
         data: {
           tenant_id: tenantId,
           name: request.body.name,
-          key: request.body.key,
+          key: generateNewKey(now),
           active: true,
           expires_at: request.body.expiresAt,
           permissions: request.body.permissions,
-          created_at: UTC.now().toDate(),
+          created_at: now.toDate(),
           created_by: "api",
         },
       });
@@ -154,7 +156,6 @@ export function apiKeyRoutes<
           where: { id: apiKeyId, tenant_id: tenantId },
           data: {
             name: request.body.name,
-            key: request.body.key,
             permissions: request.body.permissions,
             expires_at: unpackOptionalNullable(fromDateTime(request.body.expiresAt), oldApiKey.expires_at),
             updated_at: UTC.now().toDate(),

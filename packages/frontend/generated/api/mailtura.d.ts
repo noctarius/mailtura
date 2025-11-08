@@ -1899,7 +1899,6 @@ export interface paths {
                 content: {
                     "application/json": {
                         name: string;
-                        key: string;
                         /** Format: date-time */
                         expiresAt?: string;
                         permissions: string[];
@@ -1995,7 +1994,6 @@ export interface paths {
                 content: {
                     "application/json": {
                         name?: string;
-                        key?: string;
                         permissions?: string[];
                     } & {
                         expiresAt?: string | null;
