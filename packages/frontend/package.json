@@ -36,7 +36,6 @@
     "monaco-editor": "^0.54.0",
     "openapi-fetch": "^0.15.0",
     "papaparse": "catalog:",
-    "react-dom": "^18.3.1",
     "socket.io": "catalog:",
     "solid-js": "^1.9.9",
     "solid-monaco": "^0.3.0",
