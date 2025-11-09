@@ -1,6 +1,16 @@
 # Mailtura
 
-Reliable, developer-friendly, fully multi-tenant e-mail automation, and routing toolkit.
+<p align="center">
+  <picture>
+    <!-- Dark mode -->
+    <source srcset="img/mailtura_horizontal_white.svg" media="(prefers-color-scheme: dark)">
+    <!-- Light mode -->
+    <source srcset="img/mailtura_horizontal_dark.svg" media="(prefers-color-scheme: light)">
+    <img src="img/mailtura_horizontal_dark.svg" width="400" height="100" alt="Mailtura logo">
+  </picture>
+</p>
+
+<p align="center">Reliable, developer-friendly, fully multi-tenant e-mail automation, and routing toolkit.</p>
 
 ## What is Mailtura?
 
