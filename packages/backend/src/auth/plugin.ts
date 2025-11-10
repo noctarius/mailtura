@@ -113,6 +113,9 @@ const createBetterAuth = (options: BetterAuthOptions) => {
     databaseHooks: {
       session: {
         create: {
+          before: async session => {
+            session.updatedBy = "api";
+          },
           after: async session => {
             await prisma.users.update({
               where: {
@@ -124,6 +127,11 @@ const createBetterAuth = (options: BetterAuthOptions) => {
             });
           },
         },
+        update: {
+          before: async session => {
+            session.updatedBy = "api";
+          }
+        }
       },
     },
     user: {
@@ -230,7 +238,6 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         providerId: "provider_id",
         accessToken: "access_token",
         refreshToken: "refresh_token",
-        expiresAt: "expires_at",
         accessTokenExpiresAt: "access_token_expires_at",
         refreshTokenExpiresAt: "refresh_token_expires_at",
         createdAt: "created_at",
