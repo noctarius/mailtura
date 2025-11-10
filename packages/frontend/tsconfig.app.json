@@ -5,7 +5,8 @@
     "lib": [
       "ES2020",
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "webworker"
     ],
     "module": "ESNext",
     "skipLibCheck": true,
@@ -21,7 +22,10 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": [
+      "vite-plugin-pwa/solid"
+    ]
   },
   "include": [
     "src",

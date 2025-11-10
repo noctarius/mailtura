@@ -1,4 +1,4 @@
-import { createSignal, lazy, ParentComponent } from "solid-js";
+import { createEffect, createSignal, lazy, onCleanup, ParentComponent } from "solid-js";
 import { Navigate, Route, Router } from "@solidjs/router";
 import Sidebar from "./components/interfaces/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -7,8 +7,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/solid-query";
 import { AuthProvider, useAuth } from "./hooks/useAuth.js";
 import { ApiProvider } from "./hooks/useApi.js";
 import SignIn from "./pages/SignIn.js";
-import { Toaster } from "solid-toast";
+import { toast, Toaster } from "solid-toast";
 import { AuthGuard } from "./components/interfaces/AuthGuard.js";
+import { useRegisterSW } from "virtual:pwa-register/solid";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,48 @@ function AppContent() {
   const GlobalUnsubscribes = lazy(() => import("./pages/GlobalUnsubscribes.js"));
   const ListUnsubscribes = lazy(() => import("./pages/ListUnsubscribes.js"));
   const Bounces = lazy(() => import("./pages/Bounces.js"));
+
+  const showUpdateNotification = (onUpdate: (reloadPage?: boolean) => Promise<void>) => () => {
+    toast.custom(
+      t => (
+        <div class="bg-gray-800 text-white px-4 py-3 rounded-lg shadow-lg">
+          <span>A new version of Mailtura is available.</span>
+          <button
+            class="ml-3 bg-blue-500 px-3 py-1 rounded"
+            onClick={async () => {
+              toast.dismiss(t.id);
+              await onUpdate(true);
+            }}
+          >
+            Reload now
+          </button>
+        </div>
+      ),
+      {
+        duration: Infinity,
+        unmountDelay: 0,
+      }
+    );
+  };
+
+  const {
+    needRefresh: [needRefresh, setNeedRefresh],
+    updateServiceWorker,
+  } = useRegisterSW({
+    onRegisteredSW(_, r) {
+      if (r) setInterval(() => r.update(), 1000 * 60 * 60);
+    },
+  });
+
+  createEffect(() => {
+    if (needRefresh()) {
+      showUpdateNotification(updateServiceWorker)();
+    }
+  });
+
+  onCleanup(() => {
+    setNeedRefresh(false);
+  });
 
   return (
     <>
