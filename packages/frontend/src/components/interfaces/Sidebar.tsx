@@ -10,7 +10,7 @@ const navItems: NavigationItem[] = [
   { id: "campaigns", label: "Campaigns", icon: Send, permissions: ["view::campaigns"] },
   { id: "template-editor", label: "Templates", icon: FileText, permissions: ["view::templates"] },
   { id: "contacts", label: "Contacts", icon: Users, permissions: ["view::contacts"] },
-  { id: "activity", label: "Activity", icon: Activity, permissions: ["view::logs"] },
+  { id: "activity", label: "Activity", icon: Activity, permissions: ["view::reports"] },
   { id: "analytics", label: "Analytics", icon: TrendingUp, permissions: ["view::logs"] },
   {
     id: "settings",

@@ -113,7 +113,7 @@ function AppContent() {
               <Route
                 path="/campaigns"
                 component={() => (
-                  <AuthGuard>
+                  <AuthGuard permissions={["view::campaigns"]}>
                     <Campaigns />
                   </AuthGuard>
                 )}
@@ -121,7 +121,7 @@ function AppContent() {
               <Route
                 path="/template-editor"
                 component={() => (
-                  <AuthGuard>
+                  <AuthGuard permissions={["view::templates"]}>
                     <TemplateEditor />
                   </AuthGuard>
                 )}
@@ -137,7 +137,7 @@ function AppContent() {
               <Route
                 path="/activity"
                 component={() => (
-                  <AuthGuard>
+                  <AuthGuard permissions={["view::reports"]}>
                     <Activity />
                   </AuthGuard>
                 )}
@@ -146,7 +146,7 @@ function AppContent() {
                 <Route
                   path="/account"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::settings"]}>
                       <AccountSettings />
                     </AuthGuard>
                   )}
@@ -154,7 +154,7 @@ function AppContent() {
                 <Route
                   path="/api-key-management"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::api-keys"]}>
                       <ApiKeyManagement />
                     </AuthGuard>
                   )}
@@ -163,7 +163,7 @@ function AppContent() {
                   <Route
                     path="/"
                     component={() => (
-                      <AuthGuard>
+                      <AuthGuard permissions={["view::tenants"]}>
                         <TenantManagement />
                       </AuthGuard>
                     )}
@@ -172,7 +172,7 @@ function AppContent() {
                     <Route
                       path="/user-management"
                       component={() => (
-                        <AuthGuard>
+                        <AuthGuard permissions={["view::tenants"]}>
                           <UserManagement />
                         </AuthGuard>
                       )}
@@ -182,7 +182,7 @@ function AppContent() {
                 <Route
                   path="/user-management"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::users"]}>
                       <UserManagement />
                     </AuthGuard>
                   )}
@@ -192,7 +192,7 @@ function AppContent() {
                 <Route
                   path="/global-unsubscribes"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::suppressions"]}>
                       <GlobalUnsubscribes />
                     </AuthGuard>
                   )}
@@ -200,7 +200,7 @@ function AppContent() {
                 <Route
                   path="/list-unsubscribes"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::suppressions"]}>
                       <ListUnsubscribes />
                     </AuthGuard>
                   )}
@@ -208,7 +208,7 @@ function AppContent() {
                 <Route
                   path="/bounces"
                   component={() => (
-                    <AuthGuard>
+                    <AuthGuard permissions={["view::suppressions"]}>
                       <Bounces />
                     </AuthGuard>
                   )}
