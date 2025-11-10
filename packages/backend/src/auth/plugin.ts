@@ -4,11 +4,9 @@ import fastifyPlugin from "fastify-plugin";
 import { mailturaAdapter } from "./database.js";
 import { magicLink, openAPI, twoFactor } from "better-auth/plugins";
 import { passkey } from "better-auth/plugins/passkey";
-import { v7 as uuidv7 } from "uuid";
 import { registerAuthHandler } from "./handler.js";
 import prisma from "../database/index.js";
 import { newPasswordHasher } from "./password-hasher.js";
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -98,7 +96,7 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         session_token: {
           attributes: {
             maxAge: 604800,
-            httpOnly: false
+            httpOnly: false,
           },
         },
       },
@@ -109,7 +107,7 @@ const createBetterAuth = (options: BetterAuthOptions) => {
       },
       database: {
         useNumberId: false,
-        generateId: () => uuidv7().toString(),
+        generateId: false,
       },
     },
     databaseHooks: {
