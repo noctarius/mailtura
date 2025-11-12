@@ -1,4 +1,5 @@
 import {
+  type accounts,
   type activities,
   type activity_status,
   type api_keys,
@@ -132,5 +133,6 @@ export type TemplateEntity = templates & { properties: template_properties[] };
 export type ContactImportEntity = contact_imports;
 export type FileEntity = files;
 export type RoleEntity = roles;
+export type AccountEntity = accounts;
 
 export default prisma;

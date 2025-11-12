@@ -1,13 +1,12 @@
-import { AuthState, ROLE_PERMISSIONS } from "../types/auth.js";
+import { AuthState } from "../types/auth.js";
 import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 import { useTenantQuery } from "../services/tenants/use-tenant-query.js";
 import { Tenant, User } from "@mailtura/rpcmodel/lib/models/index.js";
-import { createAuthClient } from "better-auth/solid";
 import { API_URL } from "../constants.js";
-import { magicLinkClient, passkeyClient, twoFactorClient } from "better-auth/client/plugins";
 import { useApi } from "./useApi.js";
 import { useUserQuery } from "../services/users/use-user-query.js";
 import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { CustomAuthClient } from "../helpers/custom-auth-client.js";
 
 interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
@@ -23,11 +22,7 @@ interface AuthContextType {
   isLoading: () => boolean;
 }
 
-const authClient = createAuthClient({
-  baseURL: API_URL,
-  basePath: "/api/v1/auth",
-  plugins: [twoFactorClient(), passkeyClient(), magicLinkClient()],
-});
+const authClient = new CustomAuthClient(API_URL, "/api/v1");
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -114,30 +109,12 @@ export const useAuthProvider = () => {
   });
 
   const signIn = async (email: string, password: string): Promise<void> => {
-    const response = await authClient.signIn.email({ email, password });
-    if (response.error) {
-      throw new Error(response.error.message);
-    }
-
+    await authClient.signIn(email, password);
     await loadSessionData();
   };
 
-  const signUp = async (firstName: string, lastName: string, email: string, _password: string): Promise<void> => {
-    // Mock signup - in real app this would be an API call
-    const newUser: User = {
-      id: `user-${Date.now()}`,
-      email,
-      firstName,
-      lastName,
-      roleId: "user",
-      tenantId: "tenant-1", // Default tenant for demo
-      permissions: ROLE_PERMISSIONS.user,
-      active: true,
-      emailVerified: true,
-      twoFactorEnabled: false,
-      createdAt: new Date().toISOString(),
-      createdBy: "mock",
-    };
+  const signUp = async (firstName: string, lastName: string, email: string, password: string): Promise<void> => {
+    const newUser = await authClient.signUp(email, firstName, lastName, password);
 
     setAuthState({
       isAuthenticated: true,
@@ -156,13 +133,7 @@ export const useAuthProvider = () => {
       tenant: undefined,
       loading: false,
     });
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess() {
-          window.location.assign("/");
-        },
-      },
-    });
+    await authClient.signOut("/");
   };
 
   const hasPermission = (permission: Permission): boolean => {
@@ -184,8 +155,7 @@ export const useAuthProvider = () => {
   };
 
   const switchTenant = async (tenantId: string): Promise<void> => {
-    // In real app, this would validate user access to tenant
-    setTenantId(tenantId);
+    if (!hasPermission("manage::tenants")) setTenantId(tenantId);
   };
 
   const isAuthenticated = createMemo(() => authState().isAuthenticated || false);

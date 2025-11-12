@@ -7,6 +7,8 @@ import { passkey } from "better-auth/plugins/passkey";
 import { registerAuthHandler } from "./handler.js";
 import prisma from "../database/index.js";
 import { newPasswordHasher } from "./password-hasher.js";
+import { registerCustomAuthRoutes } from "./custom-handlers.js";
+import { createRouter } from "../router/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -33,6 +35,7 @@ const auth = fastifyPlugin<AuthOptions>(
 
       // Register routes and openapi schema
       registerAuthHandler(app, auth);
+      createRouter(app, true).route("/api/auth", router => registerCustomAuthRoutes(router, auth));
     });
   },
   { name: "auth" }
@@ -130,8 +133,8 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         update: {
           before: async session => {
             session.updatedBy = "api";
-          }
-        }
+          },
+        },
       },
     },
     user: {

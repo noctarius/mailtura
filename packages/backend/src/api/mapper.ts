@@ -1,5 +1,6 @@
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import type {
+  AccountEntity,
   ApiKeyEntity,
   BounceEntity,
   CampaignEntity,
@@ -15,6 +16,7 @@ import type {
   UserEntity,
 } from "../database/index.js";
 import {
+  type Account,
   type ApiKey,
   type Bounce,
   type Campaign,
@@ -280,5 +282,19 @@ export function mapBounce(bounce: BounceEntity): Bounce {
     createdBy: bounce.created_by,
     updatedAt: mapDateTime(bounce.updated_at),
     updatedBy: bounce.updated_by ?? undefined,
+  };
+}
+
+export function mapAccount(account: AccountEntity): Account {
+  return {
+    id: account.id,
+    userId: account.user_id,
+    accountId: account.account_id,
+    providerId: account.provider_id ?? undefined,
+    scope: account.scope ?? undefined,
+    createdAt: mapDateTime(account.created_at),
+    createdBy: account.created_by,
+    updatedAt: mapDateTime(account.updated_at),
+    updatedBy: account.updated_by ?? undefined,
   };
 }

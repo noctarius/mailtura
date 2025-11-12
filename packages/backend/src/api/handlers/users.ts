@@ -14,6 +14,7 @@ import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapUser } from "../mapper.js";
 import { createError } from "../helpers.js";
 import { CreateUser, UpdateUser } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { accountRoutes } from "./accounts.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -210,5 +211,7 @@ export function userRoutes<
         return reply.status(204).send();
       }
     );
+
+    subRouter.route("/accounts", accountRoutes);
   });
 }

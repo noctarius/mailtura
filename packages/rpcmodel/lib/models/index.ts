@@ -500,3 +500,24 @@ export const Role = Type.Object(
 );
 
 export type Role = Static<typeof Role>;
+
+export const Account = Type.Object(
+  {
+    id: Type.String({ format: "uuid" }),
+    userId: Type.String({ format: "uuid" }),
+    accountId: Type.String({ format: "uuid" }),
+    providerId: Type.String(),
+    scope: Type.Optional(Type.String()),
+    createdAt: Type.String({ format: "date-time" }),
+    createdBy: Type.String(),
+    updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+    updatedBy: Type.Optional(Type.String()),
+  },
+  {
+    $id: "Account",
+    description: "An account in the system",
+    additionalProperties: false,
+  }
+);
+
+export type Account = Static<typeof Account>;

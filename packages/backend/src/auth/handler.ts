@@ -7,7 +7,7 @@ export function registerAuthHandler(app: FastifyInstance, auth: Auth) {
   createSignInSocial(app, auth);
   createGetSession(app, auth);
   createSignOut(app, auth);
-  createSignUpEmail(app, auth);
+  //createSignUpEmail(app, auth);
   createSignInEmail(app, auth);
   createResetPassword(app, auth);
   createForgetPassword(app, auth);
