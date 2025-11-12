@@ -21,7 +21,6 @@ export type AuthOptions = Partial<BetterAuthOptions>;
 const auth = fastifyPlugin<AuthOptions>(
   async (fastify: FastifyInstance, options: BetterAuthOptions) => {
     const auth = createBetterAuth(options);
-    const openApiSpec = JSON.stringify(await auth.api.generateOpenAPISchema());
 
     fastify.decorate("auth", auth);
     fastify.register(app => {
@@ -29,14 +28,12 @@ const auth = fastifyPlugin<AuthOptions>(
         done(null, null);
       });
 
-      app.get("/docs/json2", { schema: { hide: true } }, async (_, reply) => {
-        return reply.type("application/json").send(openApiSpec);
-      });
-
-      // Register routes and openapi schema
+      // Register routes
       registerAuthHandler(app, auth);
-      createRouter(app, true).route("/api/auth", router => registerCustomAuthRoutes(router, auth));
     });
+
+    // Register custom routes
+    createRouter(fastify, true).route("/api/v1/auth", router => registerCustomAuthRoutes(router, auth));
   },
   { name: "auth" }
 );
@@ -51,6 +48,7 @@ const createBetterAuth = (options: BetterAuthOptions) => {
       enabled: true,
       requireEmailVerification: false,
       password: newPasswordHasher(),
+      autoSignIn: false,
     },
     plugins: [
       openAPI({}),

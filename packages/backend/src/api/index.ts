@@ -1,5 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import {
+  Account,
   Activity,
   ActivityStatus,
   ApiKey,
@@ -62,6 +63,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ContactImport);
   app.addSchema(File);
   app.addSchema(Role);
+  app.addSchema(Account);
 }
 
 export function registerRoutes<

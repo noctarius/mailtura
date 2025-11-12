@@ -15,6 +15,7 @@ services:
       - 'DATABASE_URL=postgres://mailtura:mailtura@postgresql:5432/postgres'
       - 'TEMPORAL_ADDRESS=temporal:7233'
       - 'TEMPORAL_TASK_QUEUE=mailtura'
+      - 'MAILTURA_AUTH_SECRET=SomeRandomLongSecurityKey'
 
   worker:
     container_name: temporal-worker

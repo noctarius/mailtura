@@ -10,21 +10,21 @@ const newAuthClient = (baseURL: string, basePath: string) => {
   });
 };
 
-const joinPath = (a: string, b: string) => {
+const joinPath = (a: string, ...paths: string[]) => {
   if (a.endsWith("/")) a = a.substring(0, a.length - 1);
-  if (b.startsWith("/")) b = b.substring(1);
-  return `${a}/${b}`;
+  paths = paths.map(p => (p.startsWith("/") ? p.substring(1) : p));
+  return [a, ...paths].join("/");
 };
 
 export class CustomAuthClient {
-  readonly #apiBasePath: string;
+  readonly #baseUrl: string;
   readonly #authApiBasePath: string;
   readonly #client: ReturnType<typeof newAuthClient>;
 
-  constructor(baseURL: string, basePath: string) {
-    this.#apiBasePath = basePath;
-    this.#authApiBasePath = joinPath(this.#apiBasePath, "/auth");
-    this.#client = newAuthClient(baseURL, this.#authApiBasePath);
+  constructor(baseUrl: string, basePath: string) {
+    this.#baseUrl = baseUrl;
+    this.#authApiBasePath = joinPath(basePath, "/auth");
+    this.#client = newAuthClient(baseUrl, this.#authApiBasePath);
   }
 
   async signIn(email: string, password: string): Promise<void> {
@@ -55,7 +55,8 @@ export class CustomAuthClient {
     password: string,
     callbackURL?: string
   ): Promise<User> {
-    const response = await fetch(`${this.#authApiBasePath}/sign-up/email`, {
+    const url = joinPath(this.#baseUrl, this.#authApiBasePath, "/sign-up/email");
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

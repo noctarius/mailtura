@@ -23,17 +23,17 @@ const SignUp = (props: SignUpProps) => {
     e.preventDefault();
     setError("");
 
-    if (password !== confirmPassword) {
+    if (password() !== confirmPassword()) {
       setError("Passwords do not match.");
       return;
     }
 
-    if (password.length < 8) {
+    if (password().length < 8) {
       setError("Password must be at least 8 characters long.");
       return;
     }
 
-    if (!acceptTerms) {
+    if (!acceptTerms()) {
       setError("Please accept the terms and conditions.");
       return;
     }

@@ -107,11 +107,23 @@ export function tenantRoutes<
             404: Type.Ref("ErrorResponse"),
           },
         },
-        permissions: ["view::tenants"],
       },
-      async request => {
+      async (request, reply) => {
+        const permissions = request.apiKey?.permissions || request.user?.permissions;
+        if (!permissions) {
+          return reply.status(401 as any).send({ message: "Unauthorized" } as any);
+        }
+
+        const canAccessAnyTenant = hasAnyPermission(["manage::tenants", "view::tenants"], { permissions })
+        const tenantId = (request.apiKey?.tenant_id || request.user?.tenantId)!;
+        if (!canAccessAnyTenant && tenantId !== request.params.tenant_id) {
+          return reply.status(404 as any).send({ message: "Tenant not found" } as any);
+        }
+
         const tenant = await prisma.tenants.findUnique({
-          where: { id: request.params.tenant_id },
+          where: {
+            id: request.params.tenant_id,
+          },
         });
 
         if (!tenant) {

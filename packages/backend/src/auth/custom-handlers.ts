@@ -13,6 +13,7 @@ import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
+import { mapUser } from "../api/mapper.js";
 
 const SignUpEmail = Type.Object({
   email: Type.String({ format: "email" }),
@@ -38,6 +39,11 @@ export function registerCustomAuthRoutes<
     {
       schema: {
         hide: true,
+        body: SignUpEmail,
+        response: {
+          201: Type.Ref("User"),
+          409: Type.Object({ message: Type.String() }),
+        },
       },
     },
     async (request, reply) => {
@@ -91,7 +97,7 @@ export function registerCustomAuthRoutes<
           data: {
             tenant_id: tenant.id,
             name: "User",
-            description: "Can manage capaigns, contacts, and templates",
+            description: "Can manage campaigns, contacts, and templates",
             permissions: [
               "manage::campaigns",
               "manage::templates",
@@ -109,7 +115,7 @@ export function registerCustomAuthRoutes<
           data: {
             tenant_id: tenant.id,
             name: "Viewer",
-            description: "Can view reports, supressions, and logs",
+            description: "Can view reports, suppressions, and logs",
             permissions: ["view::reports", "view::suppressions", "view::logs"],
             created_at: UTC.now().toDate(),
             created_by: "api",
@@ -119,7 +125,7 @@ export function registerCustomAuthRoutes<
         // Create user
         const user = await tx.users.create({
           data: {
-            tenant_id: tenantAdmin.id,
+            tenant_id: tenant.id,
             email,
             first_name: firstName,
             last_name: lastName,
@@ -145,11 +151,12 @@ export function registerCustomAuthRoutes<
 
         // Create and send verification email
         const token = await createEmailVerificationToken(auth.options.secret!, email, void 0, 60 * 5);
-        const url = `${auth.options.baseURL}/verify-email?token=${token}&callbackURL=${request.body.callbackURL || "/"}`;
+        const url = `${auth.options.baseURL}/api/v1/auth/verify-email?token=${token}&callbackURL=${request.body.callbackURL || "/"}`;
         console.log("url", url); // TODO: send the email
 
-        return reply.status(201).send(user);
+        return reply.status(201).send(mapUser(user));
       });
-    }
+    },
+    false
   );
 }

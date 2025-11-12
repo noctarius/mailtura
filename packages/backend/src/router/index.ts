@@ -81,7 +81,8 @@ export interface Router<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    requiresAuth?: boolean
   ) => FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>;
   post: <
     RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
@@ -108,7 +109,8 @@ export interface Router<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    requiresAuth?: boolean
   ) => FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>;
   delete: <
     RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
@@ -135,7 +137,8 @@ export interface Router<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    requiresAuth?: boolean
   ) => FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>;
   put: <
     RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
@@ -162,7 +165,8 @@ export interface Router<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    requiresAuth?: boolean
   ) => FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>;
   patch: <
     RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
@@ -189,7 +193,8 @@ export interface Router<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    requiresAuth?: boolean
   ) => FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>;
   route(
     prefix: string,
@@ -222,7 +227,8 @@ export function createRouter<
       SchemaCompiler,
       TypeProvider,
       Logger
-    >
+    >,
+    pathLevelRequiresAuth: boolean
   ): RouteShorthandOptions<
     RawServer,
     RawRequest,
@@ -233,7 +239,7 @@ export function createRouter<
     TypeProvider,
     Logger
   > => {
-    if (!requiresAuth) return opts;
+    if (!requiresAuth || !pathLevelRequiresAuth) return opts;
     return {
       ...opts,
       preHandler: async (request, reply) => {
@@ -274,20 +280,20 @@ export function createRouter<
   };
 
   return {
-    get: (path, opts, handler) => {
-      return app.get(path, maybeAuthMiddleware(opts), handler);
+    get: (path, opts, handler, pathLevelRequiresAuth = requiresAuth) => {
+      return app.get(path, maybeAuthMiddleware(opts, pathLevelRequiresAuth), handler);
     },
-    post: (path, opts, handler) => {
-      return app.post(path, maybeAuthMiddleware(opts), handler);
+    post: (path, opts, handler, pathLevelRequiresAuth = requiresAuth) => {
+      return app.post(path, maybeAuthMiddleware(opts, pathLevelRequiresAuth), handler);
     },
-    put: (path, opts, handler) => {
-      return app.put(path, maybeAuthMiddleware(opts), handler);
+    put: (path, opts, handler, pathLevelRequiresAuth = requiresAuth) => {
+      return app.put(path, maybeAuthMiddleware(opts, pathLevelRequiresAuth), handler);
     },
-    patch: (path, opts, handler) => {
-      return app.patch(path, maybeAuthMiddleware(opts), handler);
+    patch: (path, opts, handler, pathLevelRequiresAuth = requiresAuth) => {
+      return app.patch(path, maybeAuthMiddleware(opts, pathLevelRequiresAuth), handler);
     },
-    delete: (path, opts, handler) => {
-      return app.delete(path, maybeAuthMiddleware(opts), handler);
+    delete: (path, opts, handler, pathLevelRequiresAuth = requiresAuth) => {
+      return app.delete(path, maybeAuthMiddleware(opts, pathLevelRequiresAuth), handler);
     },
     route(
       prefix: string,
