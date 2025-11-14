@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { ApiKey } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -13,8 +12,9 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { fromDateTime, mapApiKey, unpackOptionalNullable } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateApiKey, UpdateApiKey } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateApiKey, UpdateApiKey } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { generateNewKey } from "../../auth/apiKey.js";
+import type { ApiKey } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function apiKeyRoutes<
   RawServer extends RawServerBase = RawServerDefault,

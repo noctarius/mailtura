@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { Unsubscribe } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -13,7 +12,8 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapUnsubscribe } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateUnsubscribe, UpdateUnsubscribe } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateUnsubscribe, UpdateUnsubscribe } from "@mailtura/rpcmodel/lib/api/request-response.js";
+import type { Unsubscribe } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function unsubscribeRoutes<
   RawServer extends RawServerBase = RawServerDefault,

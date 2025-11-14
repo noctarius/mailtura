@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { Contact, ContactImport } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -20,11 +19,12 @@ import {
   ImportContacts,
   UpdateContact,
   UpdateContactImport,
-} from "@mailtura/rpcmodel/lib/models/request-response.js";
+} from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { getTaskManager } from "../../tasks/index.js";
 import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/lib/tasks/index.js";
+import type { Contact, ContactImport } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,

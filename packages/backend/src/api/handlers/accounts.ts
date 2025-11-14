@@ -10,7 +10,7 @@ import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
 import prisma from "../../database/index.js";
 import { mapAccount } from "../mapper.js";
-import type { Account } from "@mailtura/rpcmodel/lib/models/index.js";
+import type { Account } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function accountRoutes<
   RawServer extends RawServerBase = RawServerDefault,

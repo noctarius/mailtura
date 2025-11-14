@@ -7,7 +7,7 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import { File } from "@mailtura/rpcmodel/lib/models/index.js";
+import { File } from "@mailtura/rpcmodel/lib/api/index.js";
 import { Type } from "typebox";
 import prisma from "../../database/index.js";
 import { mapFile } from "../mapper.js";

@@ -3,7 +3,7 @@ import { useDeleteMutation } from "../../services/adapters/useDeleteMutation.js"
 import { useQueryClient } from "@tanstack/solid-query";
 import { UiDeleteApprovalDialog } from "../ui/UiDeleteApprovalDialog.js";
 import { toast } from "solid-toast";
-import { User } from "@mailtura/rpcmodel/lib/models/index.js";
+import { User } from "@mailtura/rpcmodel/lib/api/index.js";
 import { userKeys } from "../../services/users/keys.js";
 
 type DeleteUserDialogProps = {

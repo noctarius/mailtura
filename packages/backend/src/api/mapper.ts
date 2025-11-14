@@ -15,22 +15,22 @@ import type {
   UnsubscribeEntity,
   UserEntity,
 } from "../database/index.js";
-import {
-  type Account,
-  type ApiKey,
-  type Bounce,
-  type Campaign,
-  type Contact,
-  type ContactImport,
-  type File,
-  type Role,
-  type Subscriber,
-  type SubscriberList,
-  type Template,
-  type Tenant,
-  type Unsubscribe,
-  type User,
-} from "@mailtura/rpcmodel/lib/models";
+import type {
+  Account,
+  ApiKey,
+  Bounce,
+  Campaign,
+  Contact,
+  ContactImport,
+  File,
+  Role,
+  Subscriber,
+  SubscriberList,
+  Template,
+  Tenant,
+  Unsubscribe,
+  User,
+} from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null

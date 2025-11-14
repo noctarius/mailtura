@@ -25,7 +25,7 @@ import {
   Unsubscribe,
   UnsubscribeSource,
   User,
-} from "@mailtura/rpcmodel/lib/models";
+} from "@mailtura/rpcmodel/lib/api/index.js";
 import { type Router } from "../router/index.js";
 import type {
   RawReplyDefaultExpression,

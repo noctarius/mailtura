@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { type Subscriber, type SubscriberList } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -13,7 +12,8 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapSubscriber, mapSubscriberList, unpackOptionalNullable } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateSubscriberList, UpdateSubscriberList } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateSubscriberList, UpdateSubscriberList } from "@mailtura/rpcmodel/lib/api/request-response.js";
+import type { Subscriber, SubscriberList } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function subscriberListRoutes<
   RawServer extends RawServerBase = RawServerDefault,

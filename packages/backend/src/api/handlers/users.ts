@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { User } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -13,8 +12,9 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapUser } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateUser, UpdateUser } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateUser, UpdateUser } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { accountRoutes } from "./accounts.js";
+import type { User } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,

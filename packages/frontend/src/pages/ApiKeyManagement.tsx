@@ -16,7 +16,7 @@ import { useAuth } from "../hooks/useAuth.tsx";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
 import { createSignal } from "solid-js";
 import { Permission, PERMISSIONS } from "@mailtura/rpcmodel/lib/auth/index.js";
-import { ApiKey } from "@mailtura/rpcmodel/lib/models/index.js";
+import { ApiKey } from "@mailtura/rpcmodel/lib/api/index.js";
 
 const ApiKeyManagement = () => {
   const { hasPermission } = useAuth();

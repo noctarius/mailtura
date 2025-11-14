@@ -13,7 +13,7 @@ import type { FastifySchema } from "fastify/types/schema.js";
 import { fromNodeHeaders } from "better-auth/node";
 import type { Session } from "better-auth";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
-import type { User } from "@mailtura/rpcmodel/lib/models/index.js";
+import type { User } from "@mailtura/rpcmodel/lib/api/index.js";
 import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 import { hasAllPermissions } from "../auth/index.js";
 import { validateApiKey } from "../auth/apiKey.js";

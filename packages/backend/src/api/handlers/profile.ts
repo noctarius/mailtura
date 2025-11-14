@@ -2,7 +2,7 @@ import type { RawReplyDefaultExpression, RawRequestDefaultExpression, RawServerB
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import { User } from "@mailtura/rpcmodel/lib/models/index.js";
+import { User } from "@mailtura/rpcmodel/lib/api/index.js";
 import { Type } from "typebox";
 import prisma from "../../database/index.js";
 import { createError } from "../helpers.js";

@@ -5,10 +5,9 @@ import type {
   RawServerDefault,
 } from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
-import { CreateTemplate, PreviewTemplate, UpdateTemplate } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateTemplate, PreviewTemplate, UpdateTemplate } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import { Template } from "@mailtura/rpcmodel/lib/models";
 import { Type } from "typebox";
 import prisma from "../../database/index.js";
 import { mapTemplate } from "../mapper.js";
@@ -17,6 +16,7 @@ import { createError } from "../helpers.js";
 import mjml2html from "mjml";
 import Mustache from "mustache";
 import sanitizeHtml from "sanitize-html";
+import type { Template } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,

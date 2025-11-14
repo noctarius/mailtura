@@ -1,7 +1,7 @@
 import { For } from "solid-js";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
-import { Contact } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Contact } from "@mailtura/rpcmodel/lib/api/index.js";
 import { useDeleteMutation } from "../../services/adapters/useDeleteMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { contactsKeys } from "../../services/contacts/keys.js";

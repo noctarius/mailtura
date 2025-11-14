@@ -1,6 +1,6 @@
 import { Building2, Ellipsis, Eye, Funnel, Plus, Search, Settings, SquarePen, Users } from "lucide-solid";
 import { createSignal } from "solid-js";
-import { Tenant } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Tenant } from "@mailtura/rpcmodel/lib/api/index.js";
 
 interface Tentant0 extends Tenant {
   domain: string;

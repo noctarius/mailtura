@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { Role } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -13,7 +12,8 @@ import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapRole } from "../mapper.js";
 import { createError } from "../helpers.js";
-import { CreateRole, UpdateRole } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateRole, UpdateRole } from "@mailtura/rpcmodel/lib/api/request-response.js";
+import type { Role } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function rolesRoutes<
   RawServer extends RawServerBase = RawServerDefault,

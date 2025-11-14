@@ -1,7 +1,7 @@
 import { createMemo, createSignal } from "solid-js";
 import { Plus } from "lucide-solid";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
-import { CreateContact, CreateSubscriberList } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateContact, CreateSubscriberList } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { contactsKeys } from "../../services/contacts/keys.js";

@@ -1,9 +1,9 @@
-import type { ContactImport, File } from "@mailtura/rpcmodel/lib/models/index.js";
+import type { ContactImport, File } from "@mailtura/rpcmodel/lib/api/index.js";
 import type {
   CreateContactBatch,
   CreateContactBatchResponse,
   UpdateContactImport,
-} from "@mailtura/rpcmodel/lib/models/request-response.js";
+} from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { ApplicationFailure } from "@temporalio/client";
 
 const handleError = async (response: Response, type: string) => {

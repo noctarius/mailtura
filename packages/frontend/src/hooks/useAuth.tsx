@@ -1,7 +1,7 @@
 import { AuthState } from "../types/auth.js";
 import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 import { useTenantQuery } from "../services/tenants/use-tenant-query.js";
-import { Tenant, User } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Tenant, User } from "@mailtura/rpcmodel/lib/api/index.js";
 import { API_URL } from "../constants.js";
 import { useApi } from "./useApi.js";
 import { useUserQuery } from "../services/users/use-user-query.js";

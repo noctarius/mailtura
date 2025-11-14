@@ -1,5 +1,4 @@
 import { Type } from "typebox";
-import { type Campaign, CampaignStatus } from "@mailtura/rpcmodel/lib/models";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
@@ -12,8 +11,9 @@ import type { Router } from "../../router/index.js";
 import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { createError } from "../helpers.js";
-import { CreateCampaign, UpdateCampaign } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateCampaign, UpdateCampaign } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { fromDateTime, mapCampaign, unpackOptionalNullable } from "../mapper.js";
+import type { Campaign, CampaignStatus } from "@mailtura/rpcmodel/lib/api/index.js";
 
 export function campaignRoutes<
   RawServer extends RawServerBase = RawServerDefault,

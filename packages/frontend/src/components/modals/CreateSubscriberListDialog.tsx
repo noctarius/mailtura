@@ -1,4 +1,4 @@
-import { CreateSubscriberList } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { CreateSubscriberList } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";

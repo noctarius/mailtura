@@ -5,12 +5,12 @@ import { useTenantId } from "../../hooks/useTenantId.js";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
 import { createMemo } from "solid-js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
-import { UpdateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import { UpdateContact } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { useUpdateMutation } from "../../services/adapters/useUpdateMutation.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
-import { Contact } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Contact } from "@mailtura/rpcmodel/lib/api/index.js";
 import { contactsKeys } from "../../services/contacts/keys.js";
 
 interface EditContactDrawerProps {

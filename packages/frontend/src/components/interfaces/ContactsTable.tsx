@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import TableCellChip from "./TableCellChip.js";
 import { Calendar, Ellipsis, Trash2, UserMinus } from "lucide-solid";
-import { Contact } from "@mailtura/rpcmodel/lib/models/index.js";
+import { Contact } from "@mailtura/rpcmodel/lib/api/index.js";
 import { getStatusBgColor, getStatusTextColor } from "./ContactsTable.utils.js";
 import { VirtualizedTable } from "./VirtualizedTable.js";
 import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";

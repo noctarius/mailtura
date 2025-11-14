@@ -6,7 +6,7 @@ import papaparse, {
   type ParseStepResult,
 } from "papaparse";
 import type { ContactImportArguments, ContactImportParameters } from "@mailtura/rpcmodel/lib/tasks/index.js";
-import type { CreateContact } from "@mailtura/rpcmodel/lib/models/request-response.js";
+import type { CreateContact } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import { getRpcManager } from "../../rpc/index.js";
 import { log } from "@temporalio/activity";
 
