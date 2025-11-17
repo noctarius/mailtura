@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bunx --bun vite dev",
+    "dev:docker": "bunx --bun vite dev",
     "build": "bunx --bun vite build",
     "lint": "eslint .",
     "preview": "bunx --bun vite preview",

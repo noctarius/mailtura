@@ -113,6 +113,21 @@ export type sessions = $Result.DefaultSelection<Prisma.$sessionsPayload>
  * 
  */
 export type roles = $Result.DefaultSelection<Prisma.$rolesPayload>
+/**
+ * Model mail_configs
+ * 
+ */
+export type mail_configs = $Result.DefaultSelection<Prisma.$mail_configsPayload>
+/**
+ * Model mail_logs
+ * 
+ */
+export type mail_logs = $Result.DefaultSelection<Prisma.$mail_logsPayload>
+/**
+ * Model webhooks
+ * 
+ */
+export type webhooks = $Result.DefaultSelection<Prisma.$webhooksPayload>
 
 /**
  * Enums
@@ -191,6 +206,17 @@ export const unsubscribe_source: {
 
 export type unsubscribe_source = (typeof unsubscribe_source)[keyof typeof unsubscribe_source]
 
+
+export const mail_log_status: {
+  Delivered: 'Delivered',
+  Pending: 'Pending',
+  Scheduled: 'Scheduled',
+  Bounced: 'Bounced',
+  Failed: 'Failed'
+};
+
+export type mail_log_status = (typeof mail_log_status)[keyof typeof mail_log_status]
+
 }
 
 export type campaign_status = $Enums.campaign_status
@@ -220,6 +246,10 @@ export const subscriber_status: typeof $Enums.subscriber_status
 export type unsubscribe_source = $Enums.unsubscribe_source
 
 export const unsubscribe_source: typeof $Enums.unsubscribe_source
+
+export type mail_log_status = $Enums.mail_log_status
+
+export const mail_log_status: typeof $Enums.mail_log_status
 
 /**
  * ##  Prisma Client ʲˢ
@@ -538,6 +568,36 @@ export class PrismaClient<
     * ```
     */
   get roles(): Prisma.rolesDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mail_configs`: Exposes CRUD operations for the **mail_configs** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mail_configs
+    * const mail_configs = await prisma.mail_configs.findMany()
+    * ```
+    */
+  get mail_configs(): Prisma.mail_configsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mail_logs`: Exposes CRUD operations for the **mail_logs** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mail_logs
+    * const mail_logs = await prisma.mail_logs.findMany()
+    * ```
+    */
+  get mail_logs(): Prisma.mail_logsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.webhooks`: Exposes CRUD operations for the **webhooks** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Webhooks
+    * const webhooks = await prisma.webhooks.findMany()
+    * ```
+    */
+  get webhooks(): Prisma.webhooksDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -998,7 +1058,10 @@ export namespace Prisma {
     two_factors: 'two_factors',
     passkeys: 'passkeys',
     sessions: 'sessions',
-    roles: 'roles'
+    roles: 'roles',
+    mail_configs: 'mail_configs',
+    mail_logs: 'mail_logs',
+    webhooks: 'webhooks'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1017,7 +1080,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles"
+      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2501,6 +2564,228 @@ export namespace Prisma {
           }
         }
       }
+      mail_configs: {
+        payload: Prisma.$mail_configsPayload<ExtArgs>
+        fields: Prisma.mail_configsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.mail_configsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.mail_configsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          findFirst: {
+            args: Prisma.mail_configsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.mail_configsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          findMany: {
+            args: Prisma.mail_configsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>[]
+          }
+          create: {
+            args: Prisma.mail_configsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          createMany: {
+            args: Prisma.mail_configsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.mail_configsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>[]
+          }
+          delete: {
+            args: Prisma.mail_configsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          update: {
+            args: Prisma.mail_configsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          deleteMany: {
+            args: Prisma.mail_configsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.mail_configsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.mail_configsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>[]
+          }
+          upsert: {
+            args: Prisma.mail_configsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_configsPayload>
+          }
+          aggregate: {
+            args: Prisma.Mail_configsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMail_configs>
+          }
+          groupBy: {
+            args: Prisma.mail_configsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Mail_configsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.mail_configsCountArgs<ExtArgs>
+            result: $Utils.Optional<Mail_configsCountAggregateOutputType> | number
+          }
+        }
+      }
+      mail_logs: {
+        payload: Prisma.$mail_logsPayload<ExtArgs>
+        fields: Prisma.mail_logsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.mail_logsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.mail_logsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          findFirst: {
+            args: Prisma.mail_logsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.mail_logsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          findMany: {
+            args: Prisma.mail_logsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>[]
+          }
+          create: {
+            args: Prisma.mail_logsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          createMany: {
+            args: Prisma.mail_logsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.mail_logsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>[]
+          }
+          delete: {
+            args: Prisma.mail_logsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          update: {
+            args: Prisma.mail_logsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          deleteMany: {
+            args: Prisma.mail_logsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.mail_logsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.mail_logsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>[]
+          }
+          upsert: {
+            args: Prisma.mail_logsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_logsPayload>
+          }
+          aggregate: {
+            args: Prisma.Mail_logsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMail_logs>
+          }
+          groupBy: {
+            args: Prisma.mail_logsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Mail_logsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.mail_logsCountArgs<ExtArgs>
+            result: $Utils.Optional<Mail_logsCountAggregateOutputType> | number
+          }
+        }
+      }
+      webhooks: {
+        payload: Prisma.$webhooksPayload<ExtArgs>
+        fields: Prisma.webhooksFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.webhooksFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.webhooksFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          findFirst: {
+            args: Prisma.webhooksFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.webhooksFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          findMany: {
+            args: Prisma.webhooksFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>[]
+          }
+          create: {
+            args: Prisma.webhooksCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          createMany: {
+            args: Prisma.webhooksCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.webhooksCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>[]
+          }
+          delete: {
+            args: Prisma.webhooksDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          update: {
+            args: Prisma.webhooksUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          deleteMany: {
+            args: Prisma.webhooksDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.webhooksUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.webhooksUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>[]
+          }
+          upsert: {
+            args: Prisma.webhooksUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$webhooksPayload>
+          }
+          aggregate: {
+            args: Prisma.WebhooksAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateWebhooks>
+          }
+          groupBy: {
+            args: Prisma.webhooksGroupByArgs<ExtArgs>
+            result: $Utils.Optional<WebhooksGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.webhooksCountArgs<ExtArgs>
+            result: $Utils.Optional<WebhooksCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2617,6 +2902,9 @@ export namespace Prisma {
     passkeys?: passkeysOmit
     sessions?: sessionsOmit
     roles?: rolesOmit
+    mail_configs?: mail_configsOmit
+    mail_logs?: mail_logsOmit
+    webhooks?: webhooksOmit
   }
 
   /* Types for Logging */
@@ -2701,6 +2989,7 @@ export namespace Prisma {
     bounces: number
     subscribers: number
     unsubscribes: number
+    mail_logs: number
   }
 
   export type ContactsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2708,6 +2997,7 @@ export namespace Prisma {
     bounces?: boolean | ContactsCountOutputTypeCountBouncesArgs
     subscribers?: boolean | ContactsCountOutputTypeCountSubscribersArgs
     unsubscribes?: boolean | ContactsCountOutputTypeCountUnsubscribesArgs
+    mail_logs?: boolean | ContactsCountOutputTypeCountMail_logsArgs
   }
 
   // Custom InputTypes
@@ -2747,6 +3037,13 @@ export namespace Prisma {
    */
   export type ContactsCountOutputTypeCountUnsubscribesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: unsubscribesWhereInput
+  }
+
+  /**
+   * ContactsCountOutputType without action
+   */
+  export type ContactsCountOutputTypeCountMail_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: mail_logsWhereInput
   }
 
 
@@ -2929,6 +3226,37 @@ export namespace Prisma {
    */
   export type RolesCountOutputTypeCountUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: usersWhereInput
+  }
+
+
+  /**
+   * Count Type Mail_configsCountOutputType
+   */
+
+  export type Mail_configsCountOutputType = {
+    webhooks: number
+  }
+
+  export type Mail_configsCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    webhooks?: boolean | Mail_configsCountOutputTypeCountWebhooksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * Mail_configsCountOutputType without action
+   */
+  export type Mail_configsCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Mail_configsCountOutputType
+     */
+    select?: Mail_configsCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * Mail_configsCountOutputType without action
+   */
+  export type Mail_configsCountOutputTypeCountWebhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: webhooksWhereInput
   }
 
 
@@ -4153,6 +4481,7 @@ export namespace Prisma {
     bounces?: boolean | contacts$bouncesArgs<ExtArgs>
     subscribers?: boolean | contacts$subscribersArgs<ExtArgs>
     unsubscribes?: boolean | contacts$unsubscribesArgs<ExtArgs>
+    mail_logs?: boolean | contacts$mail_logsArgs<ExtArgs>
     _count?: boolean | ContactsCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["contacts"]>
 
@@ -4198,6 +4527,7 @@ export namespace Prisma {
     bounces?: boolean | contacts$bouncesArgs<ExtArgs>
     subscribers?: boolean | contacts$subscribersArgs<ExtArgs>
     unsubscribes?: boolean | contacts$unsubscribesArgs<ExtArgs>
+    mail_logs?: boolean | contacts$mail_logsArgs<ExtArgs>
     _count?: boolean | ContactsCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type contactsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -4210,6 +4540,7 @@ export namespace Prisma {
       bounces: Prisma.$bouncesPayload<ExtArgs>[]
       subscribers: Prisma.$subscribersPayload<ExtArgs>[]
       unsubscribes: Prisma.$unsubscribesPayload<ExtArgs>[]
+      mail_logs: Prisma.$mail_logsPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4619,6 +4950,7 @@ export namespace Prisma {
     bounces<T extends contacts$bouncesArgs<ExtArgs> = {}>(args?: Subset<T, contacts$bouncesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$bouncesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     subscribers<T extends contacts$subscribersArgs<ExtArgs> = {}>(args?: Subset<T, contacts$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$subscribersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     unsubscribes<T extends contacts$unsubscribesArgs<ExtArgs> = {}>(args?: Subset<T, contacts$unsubscribesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$unsubscribesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    mail_logs<T extends contacts$mail_logsArgs<ExtArgs> = {}>(args?: Subset<T, contacts$mail_logsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5147,6 +5479,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UnsubscribesScalarFieldEnum | UnsubscribesScalarFieldEnum[]
+  }
+
+  /**
+   * contacts.mail_logs
+   */
+  export type contacts$mail_logsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    where?: mail_logsWhereInput
+    orderBy?: mail_logsOrderByWithRelationInput | mail_logsOrderByWithRelationInput[]
+    cursor?: mail_logsWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: Mail_logsScalarFieldEnum | Mail_logsScalarFieldEnum[]
   }
 
   /**
@@ -25856,6 +26212,3383 @@ export namespace Prisma {
 
 
   /**
+   * Model mail_configs
+   */
+
+  export type AggregateMail_configs = {
+    _count: Mail_configsCountAggregateOutputType | null
+    _min: Mail_configsMinAggregateOutputType | null
+    _max: Mail_configsMaxAggregateOutputType | null
+  }
+
+  export type Mail_configsMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    type: string | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Mail_configsMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    name: string | null
+    type: string | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Mail_configsCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    name: number
+    type: number
+    config: number
+    created_at: number
+    created_by: number
+    updated_at: number
+    updated_by: number
+    _all: number
+  }
+
+
+  export type Mail_configsMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    type?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Mail_configsMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    type?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Mail_configsCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    name?: true
+    type?: true
+    config?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+    _all?: true
+  }
+
+  export type Mail_configsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_configs to aggregate.
+     */
+    where?: mail_configsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_configs to fetch.
+     */
+    orderBy?: mail_configsOrderByWithRelationInput | mail_configsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: mail_configsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned mail_configs
+    **/
+    _count?: true | Mail_configsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Mail_configsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Mail_configsMaxAggregateInputType
+  }
+
+  export type GetMail_configsAggregateType<T extends Mail_configsAggregateArgs> = {
+        [P in keyof T & keyof AggregateMail_configs]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMail_configs[P]>
+      : GetScalarType<T[P], AggregateMail_configs[P]>
+  }
+
+
+
+
+  export type mail_configsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: mail_configsWhereInput
+    orderBy?: mail_configsOrderByWithAggregationInput | mail_configsOrderByWithAggregationInput[]
+    by: Mail_configsScalarFieldEnum[] | Mail_configsScalarFieldEnum
+    having?: mail_configsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Mail_configsCountAggregateInputType | true
+    _min?: Mail_configsMinAggregateInputType
+    _max?: Mail_configsMaxAggregateInputType
+  }
+
+  export type Mail_configsGroupByOutputType = {
+    id: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonValue
+    created_at: Date
+    created_by: string
+    updated_at: Date | null
+    updated_by: string | null
+    _count: Mail_configsCountAggregateOutputType | null
+    _min: Mail_configsMinAggregateOutputType | null
+    _max: Mail_configsMaxAggregateOutputType | null
+  }
+
+  type GetMail_configsGroupByPayload<T extends mail_configsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Mail_configsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Mail_configsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Mail_configsGroupByOutputType[P]>
+            : GetScalarType<T[P], Mail_configsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type mail_configsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    type?: boolean
+    config?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+    webhooks?: boolean | mail_configs$webhooksArgs<ExtArgs>
+    _count?: boolean | Mail_configsCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mail_configs"]>
+
+  export type mail_configsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    type?: boolean
+    config?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["mail_configs"]>
+
+  export type mail_configsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    type?: boolean
+    config?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }, ExtArgs["result"]["mail_configs"]>
+
+  export type mail_configsSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    name?: boolean
+    type?: boolean
+    config?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }
+
+  export type mail_configsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "name" | "type" | "config" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_configs"]>
+  export type mail_configsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    webhooks?: boolean | mail_configs$webhooksArgs<ExtArgs>
+    _count?: boolean | Mail_configsCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type mail_configsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type mail_configsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $mail_configsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "mail_configs"
+    objects: {
+      webhooks: Prisma.$webhooksPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      name: string
+      type: string
+      config: Prisma.JsonValue
+      created_at: Date
+      created_by: string
+      updated_at: Date | null
+      updated_by: string | null
+    }, ExtArgs["result"]["mail_configs"]>
+    composites: {}
+  }
+
+  type mail_configsGetPayload<S extends boolean | null | undefined | mail_configsDefaultArgs> = $Result.GetResult<Prisma.$mail_configsPayload, S>
+
+  type mail_configsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<mail_configsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: Mail_configsCountAggregateInputType | true
+    }
+
+  export interface mail_configsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['mail_configs'], meta: { name: 'mail_configs' } }
+    /**
+     * Find zero or one Mail_configs that matches the filter.
+     * @param {mail_configsFindUniqueArgs} args - Arguments to find a Mail_configs
+     * @example
+     * // Get one Mail_configs
+     * const mail_configs = await prisma.mail_configs.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends mail_configsFindUniqueArgs>(args: SelectSubset<T, mail_configsFindUniqueArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Mail_configs that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {mail_configsFindUniqueOrThrowArgs} args - Arguments to find a Mail_configs
+     * @example
+     * // Get one Mail_configs
+     * const mail_configs = await prisma.mail_configs.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends mail_configsFindUniqueOrThrowArgs>(args: SelectSubset<T, mail_configsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_configs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsFindFirstArgs} args - Arguments to find a Mail_configs
+     * @example
+     * // Get one Mail_configs
+     * const mail_configs = await prisma.mail_configs.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends mail_configsFindFirstArgs>(args?: SelectSubset<T, mail_configsFindFirstArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_configs that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsFindFirstOrThrowArgs} args - Arguments to find a Mail_configs
+     * @example
+     * // Get one Mail_configs
+     * const mail_configs = await prisma.mail_configs.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends mail_configsFindFirstOrThrowArgs>(args?: SelectSubset<T, mail_configsFindFirstOrThrowArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Mail_configs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mail_configs
+     * const mail_configs = await prisma.mail_configs.findMany()
+     * 
+     * // Get first 10 Mail_configs
+     * const mail_configs = await prisma.mail_configs.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mail_configsWithIdOnly = await prisma.mail_configs.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends mail_configsFindManyArgs>(args?: SelectSubset<T, mail_configsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Mail_configs.
+     * @param {mail_configsCreateArgs} args - Arguments to create a Mail_configs.
+     * @example
+     * // Create one Mail_configs
+     * const Mail_configs = await prisma.mail_configs.create({
+     *   data: {
+     *     // ... data to create a Mail_configs
+     *   }
+     * })
+     * 
+     */
+    create<T extends mail_configsCreateArgs>(args: SelectSubset<T, mail_configsCreateArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Mail_configs.
+     * @param {mail_configsCreateManyArgs} args - Arguments to create many Mail_configs.
+     * @example
+     * // Create many Mail_configs
+     * const mail_configs = await prisma.mail_configs.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends mail_configsCreateManyArgs>(args?: SelectSubset<T, mail_configsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Mail_configs and returns the data saved in the database.
+     * @param {mail_configsCreateManyAndReturnArgs} args - Arguments to create many Mail_configs.
+     * @example
+     * // Create many Mail_configs
+     * const mail_configs = await prisma.mail_configs.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Mail_configs and only return the `id`
+     * const mail_configsWithIdOnly = await prisma.mail_configs.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends mail_configsCreateManyAndReturnArgs>(args?: SelectSubset<T, mail_configsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Mail_configs.
+     * @param {mail_configsDeleteArgs} args - Arguments to delete one Mail_configs.
+     * @example
+     * // Delete one Mail_configs
+     * const Mail_configs = await prisma.mail_configs.delete({
+     *   where: {
+     *     // ... filter to delete one Mail_configs
+     *   }
+     * })
+     * 
+     */
+    delete<T extends mail_configsDeleteArgs>(args: SelectSubset<T, mail_configsDeleteArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Mail_configs.
+     * @param {mail_configsUpdateArgs} args - Arguments to update one Mail_configs.
+     * @example
+     * // Update one Mail_configs
+     * const mail_configs = await prisma.mail_configs.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends mail_configsUpdateArgs>(args: SelectSubset<T, mail_configsUpdateArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Mail_configs.
+     * @param {mail_configsDeleteManyArgs} args - Arguments to filter Mail_configs to delete.
+     * @example
+     * // Delete a few Mail_configs
+     * const { count } = await prisma.mail_configs.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends mail_configsDeleteManyArgs>(args?: SelectSubset<T, mail_configsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mail_configs
+     * const mail_configs = await prisma.mail_configs.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends mail_configsUpdateManyArgs>(args: SelectSubset<T, mail_configsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_configs and returns the data updated in the database.
+     * @param {mail_configsUpdateManyAndReturnArgs} args - Arguments to update many Mail_configs.
+     * @example
+     * // Update many Mail_configs
+     * const mail_configs = await prisma.mail_configs.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Mail_configs and only return the `id`
+     * const mail_configsWithIdOnly = await prisma.mail_configs.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends mail_configsUpdateManyAndReturnArgs>(args: SelectSubset<T, mail_configsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Mail_configs.
+     * @param {mail_configsUpsertArgs} args - Arguments to update or create a Mail_configs.
+     * @example
+     * // Update or create a Mail_configs
+     * const mail_configs = await prisma.mail_configs.upsert({
+     *   create: {
+     *     // ... data to create a Mail_configs
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mail_configs we want to update
+     *   }
+     * })
+     */
+    upsert<T extends mail_configsUpsertArgs>(args: SelectSubset<T, mail_configsUpsertArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Mail_configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsCountArgs} args - Arguments to filter Mail_configs to count.
+     * @example
+     * // Count the number of Mail_configs
+     * const count = await prisma.mail_configs.count({
+     *   where: {
+     *     // ... the filter for the Mail_configs we want to count
+     *   }
+     * })
+    **/
+    count<T extends mail_configsCountArgs>(
+      args?: Subset<T, mail_configsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Mail_configsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mail_configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Mail_configsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Mail_configsAggregateArgs>(args: Subset<T, Mail_configsAggregateArgs>): Prisma.PrismaPromise<GetMail_configsAggregateType<T>>
+
+    /**
+     * Group by Mail_configs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_configsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends mail_configsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: mail_configsGroupByArgs['orderBy'] }
+        : { orderBy?: mail_configsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, mail_configsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMail_configsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the mail_configs model
+   */
+  readonly fields: mail_configsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for mail_configs.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__mail_configsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    webhooks<T extends mail_configs$webhooksArgs<ExtArgs> = {}>(args?: Subset<T, mail_configs$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the mail_configs model
+   */
+  interface mail_configsFieldRefs {
+    readonly id: FieldRef<"mail_configs", 'String'>
+    readonly tenant_id: FieldRef<"mail_configs", 'String'>
+    readonly name: FieldRef<"mail_configs", 'String'>
+    readonly type: FieldRef<"mail_configs", 'String'>
+    readonly config: FieldRef<"mail_configs", 'Json'>
+    readonly created_at: FieldRef<"mail_configs", 'DateTime'>
+    readonly created_by: FieldRef<"mail_configs", 'String'>
+    readonly updated_at: FieldRef<"mail_configs", 'DateTime'>
+    readonly updated_by: FieldRef<"mail_configs", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * mail_configs findUnique
+   */
+  export type mail_configsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_configs to fetch.
+     */
+    where: mail_configsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs findUniqueOrThrow
+   */
+  export type mail_configsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_configs to fetch.
+     */
+    where: mail_configsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs findFirst
+   */
+  export type mail_configsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_configs to fetch.
+     */
+    where?: mail_configsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_configs to fetch.
+     */
+    orderBy?: mail_configsOrderByWithRelationInput | mail_configsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_configs.
+     */
+    cursor?: mail_configsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_configs.
+     */
+    distinct?: Mail_configsScalarFieldEnum | Mail_configsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs findFirstOrThrow
+   */
+  export type mail_configsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_configs to fetch.
+     */
+    where?: mail_configsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_configs to fetch.
+     */
+    orderBy?: mail_configsOrderByWithRelationInput | mail_configsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_configs.
+     */
+    cursor?: mail_configsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_configs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_configs.
+     */
+    distinct?: Mail_configsScalarFieldEnum | Mail_configsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs findMany
+   */
+  export type mail_configsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_configs to fetch.
+     */
+    where?: mail_configsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_configs to fetch.
+     */
+    orderBy?: mail_configsOrderByWithRelationInput | mail_configsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing mail_configs.
+     */
+    cursor?: mail_configsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_configs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_configs.
+     */
+    skip?: number
+    distinct?: Mail_configsScalarFieldEnum | Mail_configsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs create
+   */
+  export type mail_configsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a mail_configs.
+     */
+    data: XOR<mail_configsCreateInput, mail_configsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs createMany
+   */
+  export type mail_configsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many mail_configs.
+     */
+    data: mail_configsCreateManyInput | mail_configsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_configs createManyAndReturn
+   */
+  export type mail_configsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * The data used to create many mail_configs.
+     */
+    data: mail_configsCreateManyInput | mail_configsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_configs update
+   */
+  export type mail_configsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a mail_configs.
+     */
+    data: XOR<mail_configsUpdateInput, mail_configsUncheckedUpdateInput>
+    /**
+     * Choose, which mail_configs to update.
+     */
+    where: mail_configsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs updateMany
+   */
+  export type mail_configsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update mail_configs.
+     */
+    data: XOR<mail_configsUpdateManyMutationInput, mail_configsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_configs to update
+     */
+    where?: mail_configsWhereInput
+    /**
+     * Limit how many mail_configs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_configs updateManyAndReturn
+   */
+  export type mail_configsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * The data used to update mail_configs.
+     */
+    data: XOR<mail_configsUpdateManyMutationInput, mail_configsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_configs to update
+     */
+    where?: mail_configsWhereInput
+    /**
+     * Limit how many mail_configs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_configs upsert
+   */
+  export type mail_configsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the mail_configs to update in case it exists.
+     */
+    where: mail_configsWhereUniqueInput
+    /**
+     * In case the mail_configs found by the `where` argument doesn't exist, create a new mail_configs with this data.
+     */
+    create: XOR<mail_configsCreateInput, mail_configsUncheckedCreateInput>
+    /**
+     * In case the mail_configs was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<mail_configsUpdateInput, mail_configsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs delete
+   */
+  export type mail_configsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+    /**
+     * Filter which mail_configs to delete.
+     */
+    where: mail_configsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_configs deleteMany
+   */
+  export type mail_configsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_configs to delete
+     */
+    where?: mail_configsWhereInput
+    /**
+     * Limit how many mail_configs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_configs.webhooks
+   */
+  export type mail_configs$webhooksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    where?: webhooksWhereInput
+    orderBy?: webhooksOrderByWithRelationInput | webhooksOrderByWithRelationInput[]
+    cursor?: webhooksWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: WebhooksScalarFieldEnum | WebhooksScalarFieldEnum[]
+  }
+
+  /**
+   * mail_configs without action
+   */
+  export type mail_configsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_configs
+     */
+    select?: mail_configsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_configs
+     */
+    omit?: mail_configsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_configsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model mail_logs
+   */
+
+  export type AggregateMail_logs = {
+    _count: Mail_logsCountAggregateOutputType | null
+    _avg: Mail_logsAvgAggregateOutputType | null
+    _sum: Mail_logsSumAggregateOutputType | null
+    _min: Mail_logsMinAggregateOutputType | null
+    _max: Mail_logsMaxAggregateOutputType | null
+  }
+
+  export type Mail_logsAvgAggregateOutputType = {
+    opens: number | null
+    clicks: number | null
+  }
+
+  export type Mail_logsSumAggregateOutputType = {
+    opens: number | null
+    clicks: number | null
+  }
+
+  export type Mail_logsMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    contact_id: string | null
+    provider_id: string | null
+    provider_mail_id: string | null
+    opens: number | null
+    clicks: number | null
+    status: $Enums.mail_log_status | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Mail_logsMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    contact_id: string | null
+    provider_id: string | null
+    provider_mail_id: string | null
+    opens: number | null
+    clicks: number | null
+    status: $Enums.mail_log_status | null
+    created_at: Date | null
+    created_by: string | null
+    updated_at: Date | null
+    updated_by: string | null
+  }
+
+  export type Mail_logsCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    contact_id: number
+    provider_id: number
+    provider_mail_id: number
+    opens: number
+    clicks: number
+    status: number
+    created_at: number
+    created_by: number
+    updated_at: number
+    updated_by: number
+    _all: number
+  }
+
+
+  export type Mail_logsAvgAggregateInputType = {
+    opens?: true
+    clicks?: true
+  }
+
+  export type Mail_logsSumAggregateInputType = {
+    opens?: true
+    clicks?: true
+  }
+
+  export type Mail_logsMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    provider_id?: true
+    provider_mail_id?: true
+    opens?: true
+    clicks?: true
+    status?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Mail_logsMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    provider_id?: true
+    provider_mail_id?: true
+    opens?: true
+    clicks?: true
+    status?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+  }
+
+  export type Mail_logsCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    provider_id?: true
+    provider_mail_id?: true
+    opens?: true
+    clicks?: true
+    status?: true
+    created_at?: true
+    created_by?: true
+    updated_at?: true
+    updated_by?: true
+    _all?: true
+  }
+
+  export type Mail_logsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_logs to aggregate.
+     */
+    where?: mail_logsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_logs to fetch.
+     */
+    orderBy?: mail_logsOrderByWithRelationInput | mail_logsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: mail_logsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned mail_logs
+    **/
+    _count?: true | Mail_logsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Mail_logsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Mail_logsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Mail_logsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Mail_logsMaxAggregateInputType
+  }
+
+  export type GetMail_logsAggregateType<T extends Mail_logsAggregateArgs> = {
+        [P in keyof T & keyof AggregateMail_logs]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMail_logs[P]>
+      : GetScalarType<T[P], AggregateMail_logs[P]>
+  }
+
+
+
+
+  export type mail_logsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: mail_logsWhereInput
+    orderBy?: mail_logsOrderByWithAggregationInput | mail_logsOrderByWithAggregationInput[]
+    by: Mail_logsScalarFieldEnum[] | Mail_logsScalarFieldEnum
+    having?: mail_logsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Mail_logsCountAggregateInputType | true
+    _avg?: Mail_logsAvgAggregateInputType
+    _sum?: Mail_logsSumAggregateInputType
+    _min?: Mail_logsMinAggregateInputType
+    _max?: Mail_logsMaxAggregateInputType
+  }
+
+  export type Mail_logsGroupByOutputType = {
+    id: string
+    tenant_id: string
+    contact_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date
+    created_by: string
+    updated_at: Date | null
+    updated_by: string | null
+    _count: Mail_logsCountAggregateOutputType | null
+    _avg: Mail_logsAvgAggregateOutputType | null
+    _sum: Mail_logsSumAggregateOutputType | null
+    _min: Mail_logsMinAggregateOutputType | null
+    _max: Mail_logsMaxAggregateOutputType | null
+  }
+
+  type GetMail_logsGroupByPayload<T extends mail_logsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Mail_logsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Mail_logsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Mail_logsGroupByOutputType[P]>
+            : GetScalarType<T[P], Mail_logsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type mail_logsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    provider_id?: boolean
+    provider_mail_id?: boolean
+    opens?: boolean
+    clicks?: boolean
+    status?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mail_logs"]>
+
+  export type mail_logsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    provider_id?: boolean
+    provider_mail_id?: boolean
+    opens?: boolean
+    clicks?: boolean
+    status?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mail_logs"]>
+
+  export type mail_logsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    provider_id?: boolean
+    provider_mail_id?: boolean
+    opens?: boolean
+    clicks?: boolean
+    status?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["mail_logs"]>
+
+  export type mail_logsSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    provider_id?: boolean
+    provider_mail_id?: boolean
+    opens?: boolean
+    clicks?: boolean
+    status?: boolean
+    created_at?: boolean
+    created_by?: boolean
+    updated_at?: boolean
+    updated_by?: boolean
+  }
+
+  export type mail_logsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "contact_id" | "provider_id" | "provider_mail_id" | "opens" | "clicks" | "status" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_logs"]>
+  export type mail_logsInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }
+  export type mail_logsIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }
+  export type mail_logsIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    contacts?: boolean | contactsDefaultArgs<ExtArgs>
+  }
+
+  export type $mail_logsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "mail_logs"
+    objects: {
+      contacts: Prisma.$contactsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      contact_id: string
+      provider_id: string
+      provider_mail_id: string
+      opens: number
+      clicks: number
+      status: $Enums.mail_log_status
+      created_at: Date
+      created_by: string
+      updated_at: Date | null
+      updated_by: string | null
+    }, ExtArgs["result"]["mail_logs"]>
+    composites: {}
+  }
+
+  type mail_logsGetPayload<S extends boolean | null | undefined | mail_logsDefaultArgs> = $Result.GetResult<Prisma.$mail_logsPayload, S>
+
+  type mail_logsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<mail_logsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: Mail_logsCountAggregateInputType | true
+    }
+
+  export interface mail_logsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['mail_logs'], meta: { name: 'mail_logs' } }
+    /**
+     * Find zero or one Mail_logs that matches the filter.
+     * @param {mail_logsFindUniqueArgs} args - Arguments to find a Mail_logs
+     * @example
+     * // Get one Mail_logs
+     * const mail_logs = await prisma.mail_logs.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends mail_logsFindUniqueArgs>(args: SelectSubset<T, mail_logsFindUniqueArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Mail_logs that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {mail_logsFindUniqueOrThrowArgs} args - Arguments to find a Mail_logs
+     * @example
+     * // Get one Mail_logs
+     * const mail_logs = await prisma.mail_logs.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends mail_logsFindUniqueOrThrowArgs>(args: SelectSubset<T, mail_logsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_logs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsFindFirstArgs} args - Arguments to find a Mail_logs
+     * @example
+     * // Get one Mail_logs
+     * const mail_logs = await prisma.mail_logs.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends mail_logsFindFirstArgs>(args?: SelectSubset<T, mail_logsFindFirstArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_logs that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsFindFirstOrThrowArgs} args - Arguments to find a Mail_logs
+     * @example
+     * // Get one Mail_logs
+     * const mail_logs = await prisma.mail_logs.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends mail_logsFindFirstOrThrowArgs>(args?: SelectSubset<T, mail_logsFindFirstOrThrowArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Mail_logs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mail_logs
+     * const mail_logs = await prisma.mail_logs.findMany()
+     * 
+     * // Get first 10 Mail_logs
+     * const mail_logs = await prisma.mail_logs.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mail_logsWithIdOnly = await prisma.mail_logs.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends mail_logsFindManyArgs>(args?: SelectSubset<T, mail_logsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Mail_logs.
+     * @param {mail_logsCreateArgs} args - Arguments to create a Mail_logs.
+     * @example
+     * // Create one Mail_logs
+     * const Mail_logs = await prisma.mail_logs.create({
+     *   data: {
+     *     // ... data to create a Mail_logs
+     *   }
+     * })
+     * 
+     */
+    create<T extends mail_logsCreateArgs>(args: SelectSubset<T, mail_logsCreateArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Mail_logs.
+     * @param {mail_logsCreateManyArgs} args - Arguments to create many Mail_logs.
+     * @example
+     * // Create many Mail_logs
+     * const mail_logs = await prisma.mail_logs.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends mail_logsCreateManyArgs>(args?: SelectSubset<T, mail_logsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Mail_logs and returns the data saved in the database.
+     * @param {mail_logsCreateManyAndReturnArgs} args - Arguments to create many Mail_logs.
+     * @example
+     * // Create many Mail_logs
+     * const mail_logs = await prisma.mail_logs.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Mail_logs and only return the `id`
+     * const mail_logsWithIdOnly = await prisma.mail_logs.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends mail_logsCreateManyAndReturnArgs>(args?: SelectSubset<T, mail_logsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Mail_logs.
+     * @param {mail_logsDeleteArgs} args - Arguments to delete one Mail_logs.
+     * @example
+     * // Delete one Mail_logs
+     * const Mail_logs = await prisma.mail_logs.delete({
+     *   where: {
+     *     // ... filter to delete one Mail_logs
+     *   }
+     * })
+     * 
+     */
+    delete<T extends mail_logsDeleteArgs>(args: SelectSubset<T, mail_logsDeleteArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Mail_logs.
+     * @param {mail_logsUpdateArgs} args - Arguments to update one Mail_logs.
+     * @example
+     * // Update one Mail_logs
+     * const mail_logs = await prisma.mail_logs.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends mail_logsUpdateArgs>(args: SelectSubset<T, mail_logsUpdateArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Mail_logs.
+     * @param {mail_logsDeleteManyArgs} args - Arguments to filter Mail_logs to delete.
+     * @example
+     * // Delete a few Mail_logs
+     * const { count } = await prisma.mail_logs.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends mail_logsDeleteManyArgs>(args?: SelectSubset<T, mail_logsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mail_logs
+     * const mail_logs = await prisma.mail_logs.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends mail_logsUpdateManyArgs>(args: SelectSubset<T, mail_logsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_logs and returns the data updated in the database.
+     * @param {mail_logsUpdateManyAndReturnArgs} args - Arguments to update many Mail_logs.
+     * @example
+     * // Update many Mail_logs
+     * const mail_logs = await prisma.mail_logs.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Mail_logs and only return the `id`
+     * const mail_logsWithIdOnly = await prisma.mail_logs.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends mail_logsUpdateManyAndReturnArgs>(args: SelectSubset<T, mail_logsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Mail_logs.
+     * @param {mail_logsUpsertArgs} args - Arguments to update or create a Mail_logs.
+     * @example
+     * // Update or create a Mail_logs
+     * const mail_logs = await prisma.mail_logs.upsert({
+     *   create: {
+     *     // ... data to create a Mail_logs
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mail_logs we want to update
+     *   }
+     * })
+     */
+    upsert<T extends mail_logsUpsertArgs>(args: SelectSubset<T, mail_logsUpsertArgs<ExtArgs>>): Prisma__mail_logsClient<$Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Mail_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsCountArgs} args - Arguments to filter Mail_logs to count.
+     * @example
+     * // Count the number of Mail_logs
+     * const count = await prisma.mail_logs.count({
+     *   where: {
+     *     // ... the filter for the Mail_logs we want to count
+     *   }
+     * })
+    **/
+    count<T extends mail_logsCountArgs>(
+      args?: Subset<T, mail_logsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Mail_logsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mail_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Mail_logsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Mail_logsAggregateArgs>(args: Subset<T, Mail_logsAggregateArgs>): Prisma.PrismaPromise<GetMail_logsAggregateType<T>>
+
+    /**
+     * Group by Mail_logs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_logsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends mail_logsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: mail_logsGroupByArgs['orderBy'] }
+        : { orderBy?: mail_logsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, mail_logsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMail_logsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the mail_logs model
+   */
+  readonly fields: mail_logsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for mail_logs.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__mail_logsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    contacts<T extends contactsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, contactsDefaultArgs<ExtArgs>>): Prisma__contactsClient<$Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the mail_logs model
+   */
+  interface mail_logsFieldRefs {
+    readonly id: FieldRef<"mail_logs", 'String'>
+    readonly tenant_id: FieldRef<"mail_logs", 'String'>
+    readonly contact_id: FieldRef<"mail_logs", 'String'>
+    readonly provider_id: FieldRef<"mail_logs", 'String'>
+    readonly provider_mail_id: FieldRef<"mail_logs", 'String'>
+    readonly opens: FieldRef<"mail_logs", 'Int'>
+    readonly clicks: FieldRef<"mail_logs", 'Int'>
+    readonly status: FieldRef<"mail_logs", 'mail_log_status'>
+    readonly created_at: FieldRef<"mail_logs", 'DateTime'>
+    readonly created_by: FieldRef<"mail_logs", 'String'>
+    readonly updated_at: FieldRef<"mail_logs", 'DateTime'>
+    readonly updated_by: FieldRef<"mail_logs", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * mail_logs findUnique
+   */
+  export type mail_logsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_logs to fetch.
+     */
+    where: mail_logsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs findUniqueOrThrow
+   */
+  export type mail_logsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_logs to fetch.
+     */
+    where: mail_logsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs findFirst
+   */
+  export type mail_logsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_logs to fetch.
+     */
+    where?: mail_logsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_logs to fetch.
+     */
+    orderBy?: mail_logsOrderByWithRelationInput | mail_logsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_logs.
+     */
+    cursor?: mail_logsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_logs.
+     */
+    distinct?: Mail_logsScalarFieldEnum | Mail_logsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs findFirstOrThrow
+   */
+  export type mail_logsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_logs to fetch.
+     */
+    where?: mail_logsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_logs to fetch.
+     */
+    orderBy?: mail_logsOrderByWithRelationInput | mail_logsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_logs.
+     */
+    cursor?: mail_logsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_logs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_logs.
+     */
+    distinct?: Mail_logsScalarFieldEnum | Mail_logsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs findMany
+   */
+  export type mail_logsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter, which mail_logs to fetch.
+     */
+    where?: mail_logsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_logs to fetch.
+     */
+    orderBy?: mail_logsOrderByWithRelationInput | mail_logsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing mail_logs.
+     */
+    cursor?: mail_logsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_logs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_logs.
+     */
+    skip?: number
+    distinct?: Mail_logsScalarFieldEnum | Mail_logsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs create
+   */
+  export type mail_logsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * The data needed to create a mail_logs.
+     */
+    data: XOR<mail_logsCreateInput, mail_logsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs createMany
+   */
+  export type mail_logsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many mail_logs.
+     */
+    data: mail_logsCreateManyInput | mail_logsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_logs createManyAndReturn
+   */
+  export type mail_logsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * The data used to create many mail_logs.
+     */
+    data: mail_logsCreateManyInput | mail_logsCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * mail_logs update
+   */
+  export type mail_logsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * The data needed to update a mail_logs.
+     */
+    data: XOR<mail_logsUpdateInput, mail_logsUncheckedUpdateInput>
+    /**
+     * Choose, which mail_logs to update.
+     */
+    where: mail_logsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs updateMany
+   */
+  export type mail_logsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update mail_logs.
+     */
+    data: XOR<mail_logsUpdateManyMutationInput, mail_logsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_logs to update
+     */
+    where?: mail_logsWhereInput
+    /**
+     * Limit how many mail_logs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_logs updateManyAndReturn
+   */
+  export type mail_logsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * The data used to update mail_logs.
+     */
+    data: XOR<mail_logsUpdateManyMutationInput, mail_logsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_logs to update
+     */
+    where?: mail_logsWhereInput
+    /**
+     * Limit how many mail_logs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * mail_logs upsert
+   */
+  export type mail_logsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * The filter to search for the mail_logs to update in case it exists.
+     */
+    where: mail_logsWhereUniqueInput
+    /**
+     * In case the mail_logs found by the `where` argument doesn't exist, create a new mail_logs with this data.
+     */
+    create: XOR<mail_logsCreateInput, mail_logsUncheckedCreateInput>
+    /**
+     * In case the mail_logs was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<mail_logsUpdateInput, mail_logsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs delete
+   */
+  export type mail_logsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+    /**
+     * Filter which mail_logs to delete.
+     */
+    where: mail_logsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_logs deleteMany
+   */
+  export type mail_logsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_logs to delete
+     */
+    where?: mail_logsWhereInput
+    /**
+     * Limit how many mail_logs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_logs without action
+   */
+  export type mail_logsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_logs
+     */
+    select?: mail_logsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_logs
+     */
+    omit?: mail_logsOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: mail_logsInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model webhooks
+   */
+
+  export type AggregateWebhooks = {
+    _count: WebhooksCountAggregateOutputType | null
+    _min: WebhooksMinAggregateOutputType | null
+    _max: WebhooksMaxAggregateOutputType | null
+  }
+
+  export type WebhooksMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    mail_config_id: string | null
+    provider_id: string | null
+  }
+
+  export type WebhooksMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    mail_config_id: string | null
+    provider_id: string | null
+  }
+
+  export type WebhooksCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    mail_config_id: number
+    provider_id: number
+    _all: number
+  }
+
+
+  export type WebhooksMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    mail_config_id?: true
+    provider_id?: true
+  }
+
+  export type WebhooksMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    mail_config_id?: true
+    provider_id?: true
+  }
+
+  export type WebhooksCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    mail_config_id?: true
+    provider_id?: true
+    _all?: true
+  }
+
+  export type WebhooksAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which webhooks to aggregate.
+     */
+    where?: webhooksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of webhooks to fetch.
+     */
+    orderBy?: webhooksOrderByWithRelationInput | webhooksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: webhooksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` webhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` webhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned webhooks
+    **/
+    _count?: true | WebhooksCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: WebhooksMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: WebhooksMaxAggregateInputType
+  }
+
+  export type GetWebhooksAggregateType<T extends WebhooksAggregateArgs> = {
+        [P in keyof T & keyof AggregateWebhooks]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateWebhooks[P]>
+      : GetScalarType<T[P], AggregateWebhooks[P]>
+  }
+
+
+
+
+  export type webhooksGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: webhooksWhereInput
+    orderBy?: webhooksOrderByWithAggregationInput | webhooksOrderByWithAggregationInput[]
+    by: WebhooksScalarFieldEnum[] | WebhooksScalarFieldEnum
+    having?: webhooksScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: WebhooksCountAggregateInputType | true
+    _min?: WebhooksMinAggregateInputType
+    _max?: WebhooksMaxAggregateInputType
+  }
+
+  export type WebhooksGroupByOutputType = {
+    id: string
+    tenant_id: string
+    mail_config_id: string
+    provider_id: string
+    _count: WebhooksCountAggregateOutputType | null
+    _min: WebhooksMinAggregateOutputType | null
+    _max: WebhooksMaxAggregateOutputType | null
+  }
+
+  type GetWebhooksGroupByPayload<T extends webhooksGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<WebhooksGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof WebhooksGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], WebhooksGroupByOutputType[P]>
+            : GetScalarType<T[P], WebhooksGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type webhooksSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    mail_config_id?: boolean
+    provider_id?: boolean
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["webhooks"]>
+
+  export type webhooksSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    mail_config_id?: boolean
+    provider_id?: boolean
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["webhooks"]>
+
+  export type webhooksSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    mail_config_id?: boolean
+    provider_id?: boolean
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["webhooks"]>
+
+  export type webhooksSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    mail_config_id?: boolean
+    provider_id?: boolean
+  }
+
+  export type webhooksOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "mail_config_id" | "provider_id", ExtArgs["result"]["webhooks"]>
+  export type webhooksInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }
+  export type webhooksIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }
+  export type webhooksIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    mail_config?: boolean | mail_configsDefaultArgs<ExtArgs>
+  }
+
+  export type $webhooksPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "webhooks"
+    objects: {
+      mail_config: Prisma.$mail_configsPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      mail_config_id: string
+      provider_id: string
+    }, ExtArgs["result"]["webhooks"]>
+    composites: {}
+  }
+
+  type webhooksGetPayload<S extends boolean | null | undefined | webhooksDefaultArgs> = $Result.GetResult<Prisma.$webhooksPayload, S>
+
+  type webhooksCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<webhooksFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: WebhooksCountAggregateInputType | true
+    }
+
+  export interface webhooksDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['webhooks'], meta: { name: 'webhooks' } }
+    /**
+     * Find zero or one Webhooks that matches the filter.
+     * @param {webhooksFindUniqueArgs} args - Arguments to find a Webhooks
+     * @example
+     * // Get one Webhooks
+     * const webhooks = await prisma.webhooks.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends webhooksFindUniqueArgs>(args: SelectSubset<T, webhooksFindUniqueArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Webhooks that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {webhooksFindUniqueOrThrowArgs} args - Arguments to find a Webhooks
+     * @example
+     * // Get one Webhooks
+     * const webhooks = await prisma.webhooks.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends webhooksFindUniqueOrThrowArgs>(args: SelectSubset<T, webhooksFindUniqueOrThrowArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Webhooks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksFindFirstArgs} args - Arguments to find a Webhooks
+     * @example
+     * // Get one Webhooks
+     * const webhooks = await prisma.webhooks.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends webhooksFindFirstArgs>(args?: SelectSubset<T, webhooksFindFirstArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Webhooks that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksFindFirstOrThrowArgs} args - Arguments to find a Webhooks
+     * @example
+     * // Get one Webhooks
+     * const webhooks = await prisma.webhooks.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends webhooksFindFirstOrThrowArgs>(args?: SelectSubset<T, webhooksFindFirstOrThrowArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Webhooks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Webhooks
+     * const webhooks = await prisma.webhooks.findMany()
+     * 
+     * // Get first 10 Webhooks
+     * const webhooks = await prisma.webhooks.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const webhooksWithIdOnly = await prisma.webhooks.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends webhooksFindManyArgs>(args?: SelectSubset<T, webhooksFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Webhooks.
+     * @param {webhooksCreateArgs} args - Arguments to create a Webhooks.
+     * @example
+     * // Create one Webhooks
+     * const Webhooks = await prisma.webhooks.create({
+     *   data: {
+     *     // ... data to create a Webhooks
+     *   }
+     * })
+     * 
+     */
+    create<T extends webhooksCreateArgs>(args: SelectSubset<T, webhooksCreateArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Webhooks.
+     * @param {webhooksCreateManyArgs} args - Arguments to create many Webhooks.
+     * @example
+     * // Create many Webhooks
+     * const webhooks = await prisma.webhooks.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends webhooksCreateManyArgs>(args?: SelectSubset<T, webhooksCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Webhooks and returns the data saved in the database.
+     * @param {webhooksCreateManyAndReturnArgs} args - Arguments to create many Webhooks.
+     * @example
+     * // Create many Webhooks
+     * const webhooks = await prisma.webhooks.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Webhooks and only return the `id`
+     * const webhooksWithIdOnly = await prisma.webhooks.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends webhooksCreateManyAndReturnArgs>(args?: SelectSubset<T, webhooksCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Webhooks.
+     * @param {webhooksDeleteArgs} args - Arguments to delete one Webhooks.
+     * @example
+     * // Delete one Webhooks
+     * const Webhooks = await prisma.webhooks.delete({
+     *   where: {
+     *     // ... filter to delete one Webhooks
+     *   }
+     * })
+     * 
+     */
+    delete<T extends webhooksDeleteArgs>(args: SelectSubset<T, webhooksDeleteArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Webhooks.
+     * @param {webhooksUpdateArgs} args - Arguments to update one Webhooks.
+     * @example
+     * // Update one Webhooks
+     * const webhooks = await prisma.webhooks.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends webhooksUpdateArgs>(args: SelectSubset<T, webhooksUpdateArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Webhooks.
+     * @param {webhooksDeleteManyArgs} args - Arguments to filter Webhooks to delete.
+     * @example
+     * // Delete a few Webhooks
+     * const { count } = await prisma.webhooks.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends webhooksDeleteManyArgs>(args?: SelectSubset<T, webhooksDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Webhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Webhooks
+     * const webhooks = await prisma.webhooks.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends webhooksUpdateManyArgs>(args: SelectSubset<T, webhooksUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Webhooks and returns the data updated in the database.
+     * @param {webhooksUpdateManyAndReturnArgs} args - Arguments to update many Webhooks.
+     * @example
+     * // Update many Webhooks
+     * const webhooks = await prisma.webhooks.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Webhooks and only return the `id`
+     * const webhooksWithIdOnly = await prisma.webhooks.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends webhooksUpdateManyAndReturnArgs>(args: SelectSubset<T, webhooksUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Webhooks.
+     * @param {webhooksUpsertArgs} args - Arguments to update or create a Webhooks.
+     * @example
+     * // Update or create a Webhooks
+     * const webhooks = await prisma.webhooks.upsert({
+     *   create: {
+     *     // ... data to create a Webhooks
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Webhooks we want to update
+     *   }
+     * })
+     */
+    upsert<T extends webhooksUpsertArgs>(args: SelectSubset<T, webhooksUpsertArgs<ExtArgs>>): Prisma__webhooksClient<$Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Webhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksCountArgs} args - Arguments to filter Webhooks to count.
+     * @example
+     * // Count the number of Webhooks
+     * const count = await prisma.webhooks.count({
+     *   where: {
+     *     // ... the filter for the Webhooks we want to count
+     *   }
+     * })
+    **/
+    count<T extends webhooksCountArgs>(
+      args?: Subset<T, webhooksCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], WebhooksCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Webhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {WebhooksAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends WebhooksAggregateArgs>(args: Subset<T, WebhooksAggregateArgs>): Prisma.PrismaPromise<GetWebhooksAggregateType<T>>
+
+    /**
+     * Group by Webhooks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {webhooksGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends webhooksGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: webhooksGroupByArgs['orderBy'] }
+        : { orderBy?: webhooksGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, webhooksGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetWebhooksGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the webhooks model
+   */
+  readonly fields: webhooksFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for webhooks.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__webhooksClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    mail_config<T extends mail_configsDefaultArgs<ExtArgs> = {}>(args?: Subset<T, mail_configsDefaultArgs<ExtArgs>>): Prisma__mail_configsClient<$Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the webhooks model
+   */
+  interface webhooksFieldRefs {
+    readonly id: FieldRef<"webhooks", 'String'>
+    readonly tenant_id: FieldRef<"webhooks", 'String'>
+    readonly mail_config_id: FieldRef<"webhooks", 'String'>
+    readonly provider_id: FieldRef<"webhooks", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * webhooks findUnique
+   */
+  export type webhooksFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter, which webhooks to fetch.
+     */
+    where: webhooksWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks findUniqueOrThrow
+   */
+  export type webhooksFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter, which webhooks to fetch.
+     */
+    where: webhooksWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks findFirst
+   */
+  export type webhooksFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter, which webhooks to fetch.
+     */
+    where?: webhooksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of webhooks to fetch.
+     */
+    orderBy?: webhooksOrderByWithRelationInput | webhooksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for webhooks.
+     */
+    cursor?: webhooksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` webhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` webhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of webhooks.
+     */
+    distinct?: WebhooksScalarFieldEnum | WebhooksScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks findFirstOrThrow
+   */
+  export type webhooksFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter, which webhooks to fetch.
+     */
+    where?: webhooksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of webhooks to fetch.
+     */
+    orderBy?: webhooksOrderByWithRelationInput | webhooksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for webhooks.
+     */
+    cursor?: webhooksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` webhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` webhooks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of webhooks.
+     */
+    distinct?: WebhooksScalarFieldEnum | WebhooksScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks findMany
+   */
+  export type webhooksFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter, which webhooks to fetch.
+     */
+    where?: webhooksWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of webhooks to fetch.
+     */
+    orderBy?: webhooksOrderByWithRelationInput | webhooksOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing webhooks.
+     */
+    cursor?: webhooksWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` webhooks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` webhooks.
+     */
+    skip?: number
+    distinct?: WebhooksScalarFieldEnum | WebhooksScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks create
+   */
+  export type webhooksCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * The data needed to create a webhooks.
+     */
+    data: XOR<webhooksCreateInput, webhooksUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks createMany
+   */
+  export type webhooksCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many webhooks.
+     */
+    data: webhooksCreateManyInput | webhooksCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * webhooks createManyAndReturn
+   */
+  export type webhooksCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * The data used to create many webhooks.
+     */
+    data: webhooksCreateManyInput | webhooksCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * webhooks update
+   */
+  export type webhooksUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * The data needed to update a webhooks.
+     */
+    data: XOR<webhooksUpdateInput, webhooksUncheckedUpdateInput>
+    /**
+     * Choose, which webhooks to update.
+     */
+    where: webhooksWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks updateMany
+   */
+  export type webhooksUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update webhooks.
+     */
+    data: XOR<webhooksUpdateManyMutationInput, webhooksUncheckedUpdateManyInput>
+    /**
+     * Filter which webhooks to update
+     */
+    where?: webhooksWhereInput
+    /**
+     * Limit how many webhooks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * webhooks updateManyAndReturn
+   */
+  export type webhooksUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * The data used to update webhooks.
+     */
+    data: XOR<webhooksUpdateManyMutationInput, webhooksUncheckedUpdateManyInput>
+    /**
+     * Filter which webhooks to update
+     */
+    where?: webhooksWhereInput
+    /**
+     * Limit how many webhooks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * webhooks upsert
+   */
+  export type webhooksUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * The filter to search for the webhooks to update in case it exists.
+     */
+    where: webhooksWhereUniqueInput
+    /**
+     * In case the webhooks found by the `where` argument doesn't exist, create a new webhooks with this data.
+     */
+    create: XOR<webhooksCreateInput, webhooksUncheckedCreateInput>
+    /**
+     * In case the webhooks was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<webhooksUpdateInput, webhooksUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks delete
+   */
+  export type webhooksDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+    /**
+     * Filter which webhooks to delete.
+     */
+    where: webhooksWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * webhooks deleteMany
+   */
+  export type webhooksDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which webhooks to delete
+     */
+    where?: webhooksWhereInput
+    /**
+     * Limit how many webhooks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * webhooks without action
+   */
+  export type webhooksDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the webhooks
+     */
+    select?: webhooksSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the webhooks
+     */
+    omit?: webhooksOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: webhooksInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -26203,6 +29936,49 @@ export namespace Prisma {
   export type RolesScalarFieldEnum = (typeof RolesScalarFieldEnum)[keyof typeof RolesScalarFieldEnum]
 
 
+  export const Mail_configsScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    name: 'name',
+    type: 'type',
+    config: 'config',
+    created_at: 'created_at',
+    created_by: 'created_by',
+    updated_at: 'updated_at',
+    updated_by: 'updated_by'
+  };
+
+  export type Mail_configsScalarFieldEnum = (typeof Mail_configsScalarFieldEnum)[keyof typeof Mail_configsScalarFieldEnum]
+
+
+  export const Mail_logsScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    contact_id: 'contact_id',
+    provider_id: 'provider_id',
+    provider_mail_id: 'provider_mail_id',
+    opens: 'opens',
+    clicks: 'clicks',
+    status: 'status',
+    created_at: 'created_at',
+    created_by: 'created_by',
+    updated_at: 'updated_at',
+    updated_by: 'updated_by'
+  };
+
+  export type Mail_logsScalarFieldEnum = (typeof Mail_logsScalarFieldEnum)[keyof typeof Mail_logsScalarFieldEnum]
+
+
+  export const WebhooksScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    mail_config_id: 'mail_config_id',
+    provider_id: 'provider_id'
+  };
+
+  export type WebhooksScalarFieldEnum = (typeof WebhooksScalarFieldEnum)[keyof typeof WebhooksScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -26435,6 +30211,20 @@ export namespace Prisma {
    */
   export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Bytes[]'>
     
+
+
+  /**
+   * Reference to a field of type 'mail_log_status'
+   */
+  export type Enummail_log_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'mail_log_status'>
+    
+
+
+  /**
+   * Reference to a field of type 'mail_log_status[]'
+   */
+  export type ListEnummail_log_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'mail_log_status[]'>
+    
   /**
    * Deep Input Types
    */
@@ -26514,6 +30304,7 @@ export namespace Prisma {
     bounces?: BouncesListRelationFilter
     subscribers?: SubscribersListRelationFilter
     unsubscribes?: UnsubscribesListRelationFilter
+    mail_logs?: Mail_logsListRelationFilter
   }
 
   export type contactsOrderByWithRelationInput = {
@@ -26530,6 +30321,7 @@ export namespace Prisma {
     bounces?: bouncesOrderByRelationAggregateInput
     subscribers?: subscribersOrderByRelationAggregateInput
     unsubscribes?: unsubscribesOrderByRelationAggregateInput
+    mail_logs?: mail_logsOrderByRelationAggregateInput
   }
 
   export type contactsWhereUniqueInput = Prisma.AtLeast<{
@@ -26550,6 +30342,7 @@ export namespace Prisma {
     bounces?: BouncesListRelationFilter
     subscribers?: SubscribersListRelationFilter
     unsubscribes?: UnsubscribesListRelationFilter
+    mail_logs?: Mail_logsListRelationFilter
   }, "id" | "tenant_id_email">
 
   export type contactsOrderByWithAggregationInput = {
@@ -28097,6 +31890,224 @@ export namespace Prisma {
     updated_by?: StringNullableWithAggregatesFilter<"roles"> | string | null
   }
 
+  export type mail_configsWhereInput = {
+    AND?: mail_configsWhereInput | mail_configsWhereInput[]
+    OR?: mail_configsWhereInput[]
+    NOT?: mail_configsWhereInput | mail_configsWhereInput[]
+    id?: UuidFilter<"mail_configs"> | string
+    tenant_id?: UuidFilter<"mail_configs"> | string
+    name?: StringFilter<"mail_configs"> | string
+    type?: StringFilter<"mail_configs"> | string
+    config?: JsonFilter<"mail_configs">
+    created_at?: DateTimeFilter<"mail_configs"> | Date | string
+    created_by?: StringFilter<"mail_configs"> | string
+    updated_at?: DateTimeNullableFilter<"mail_configs"> | Date | string | null
+    updated_by?: StringNullableFilter<"mail_configs"> | string | null
+    webhooks?: WebhooksListRelationFilter
+  }
+
+  export type mail_configsOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    config?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    webhooks?: webhooksOrderByRelationAggregateInput
+  }
+
+  export type mail_configsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: mail_configsWhereInput | mail_configsWhereInput[]
+    OR?: mail_configsWhereInput[]
+    NOT?: mail_configsWhereInput | mail_configsWhereInput[]
+    tenant_id?: UuidFilter<"mail_configs"> | string
+    name?: StringFilter<"mail_configs"> | string
+    type?: StringFilter<"mail_configs"> | string
+    config?: JsonFilter<"mail_configs">
+    created_at?: DateTimeFilter<"mail_configs"> | Date | string
+    created_by?: StringFilter<"mail_configs"> | string
+    updated_at?: DateTimeNullableFilter<"mail_configs"> | Date | string | null
+    updated_by?: StringNullableFilter<"mail_configs"> | string | null
+    webhooks?: WebhooksListRelationFilter
+  }, "id">
+
+  export type mail_configsOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    config?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    _count?: mail_configsCountOrderByAggregateInput
+    _max?: mail_configsMaxOrderByAggregateInput
+    _min?: mail_configsMinOrderByAggregateInput
+  }
+
+  export type mail_configsScalarWhereWithAggregatesInput = {
+    AND?: mail_configsScalarWhereWithAggregatesInput | mail_configsScalarWhereWithAggregatesInput[]
+    OR?: mail_configsScalarWhereWithAggregatesInput[]
+    NOT?: mail_configsScalarWhereWithAggregatesInput | mail_configsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"mail_configs"> | string
+    tenant_id?: UuidWithAggregatesFilter<"mail_configs"> | string
+    name?: StringWithAggregatesFilter<"mail_configs"> | string
+    type?: StringWithAggregatesFilter<"mail_configs"> | string
+    config?: JsonWithAggregatesFilter<"mail_configs">
+    created_at?: DateTimeWithAggregatesFilter<"mail_configs"> | Date | string
+    created_by?: StringWithAggregatesFilter<"mail_configs"> | string
+    updated_at?: DateTimeNullableWithAggregatesFilter<"mail_configs"> | Date | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"mail_configs"> | string | null
+  }
+
+  export type mail_logsWhereInput = {
+    AND?: mail_logsWhereInput | mail_logsWhereInput[]
+    OR?: mail_logsWhereInput[]
+    NOT?: mail_logsWhereInput | mail_logsWhereInput[]
+    id?: UuidFilter<"mail_logs"> | string
+    tenant_id?: UuidFilter<"mail_logs"> | string
+    contact_id?: UuidFilter<"mail_logs"> | string
+    provider_id?: StringFilter<"mail_logs"> | string
+    provider_mail_id?: StringFilter<"mail_logs"> | string
+    opens?: IntFilter<"mail_logs"> | number
+    clicks?: IntFilter<"mail_logs"> | number
+    status?: Enummail_log_statusFilter<"mail_logs"> | $Enums.mail_log_status
+    created_at?: DateTimeFilter<"mail_logs"> | Date | string
+    created_by?: StringFilter<"mail_logs"> | string
+    updated_at?: DateTimeNullableFilter<"mail_logs"> | Date | string | null
+    updated_by?: StringNullableFilter<"mail_logs"> | string | null
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+  }
+
+  export type mail_logsOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    provider_id?: SortOrder
+    provider_mail_id?: SortOrder
+    opens?: SortOrder
+    clicks?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    contacts?: contactsOrderByWithRelationInput
+  }
+
+  export type mail_logsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    provider_id_provider_mail_id?: mail_logsProvider_idProvider_mail_idCompoundUniqueInput
+    AND?: mail_logsWhereInput | mail_logsWhereInput[]
+    OR?: mail_logsWhereInput[]
+    NOT?: mail_logsWhereInput | mail_logsWhereInput[]
+    tenant_id?: UuidFilter<"mail_logs"> | string
+    contact_id?: UuidFilter<"mail_logs"> | string
+    provider_id?: StringFilter<"mail_logs"> | string
+    provider_mail_id?: StringFilter<"mail_logs"> | string
+    opens?: IntFilter<"mail_logs"> | number
+    clicks?: IntFilter<"mail_logs"> | number
+    status?: Enummail_log_statusFilter<"mail_logs"> | $Enums.mail_log_status
+    created_at?: DateTimeFilter<"mail_logs"> | Date | string
+    created_by?: StringFilter<"mail_logs"> | string
+    updated_at?: DateTimeNullableFilter<"mail_logs"> | Date | string | null
+    updated_by?: StringNullableFilter<"mail_logs"> | string | null
+    contacts?: XOR<ContactsScalarRelationFilter, contactsWhereInput>
+  }, "id" | "provider_id_provider_mail_id">
+
+  export type mail_logsOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    provider_id?: SortOrder
+    provider_mail_id?: SortOrder
+    opens?: SortOrder
+    clicks?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrderInput | SortOrder
+    updated_by?: SortOrderInput | SortOrder
+    _count?: mail_logsCountOrderByAggregateInput
+    _avg?: mail_logsAvgOrderByAggregateInput
+    _max?: mail_logsMaxOrderByAggregateInput
+    _min?: mail_logsMinOrderByAggregateInput
+    _sum?: mail_logsSumOrderByAggregateInput
+  }
+
+  export type mail_logsScalarWhereWithAggregatesInput = {
+    AND?: mail_logsScalarWhereWithAggregatesInput | mail_logsScalarWhereWithAggregatesInput[]
+    OR?: mail_logsScalarWhereWithAggregatesInput[]
+    NOT?: mail_logsScalarWhereWithAggregatesInput | mail_logsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"mail_logs"> | string
+    tenant_id?: UuidWithAggregatesFilter<"mail_logs"> | string
+    contact_id?: UuidWithAggregatesFilter<"mail_logs"> | string
+    provider_id?: StringWithAggregatesFilter<"mail_logs"> | string
+    provider_mail_id?: StringWithAggregatesFilter<"mail_logs"> | string
+    opens?: IntWithAggregatesFilter<"mail_logs"> | number
+    clicks?: IntWithAggregatesFilter<"mail_logs"> | number
+    status?: Enummail_log_statusWithAggregatesFilter<"mail_logs"> | $Enums.mail_log_status
+    created_at?: DateTimeWithAggregatesFilter<"mail_logs"> | Date | string
+    created_by?: StringWithAggregatesFilter<"mail_logs"> | string
+    updated_at?: DateTimeNullableWithAggregatesFilter<"mail_logs"> | Date | string | null
+    updated_by?: StringNullableWithAggregatesFilter<"mail_logs"> | string | null
+  }
+
+  export type webhooksWhereInput = {
+    AND?: webhooksWhereInput | webhooksWhereInput[]
+    OR?: webhooksWhereInput[]
+    NOT?: webhooksWhereInput | webhooksWhereInput[]
+    id?: UuidFilter<"webhooks"> | string
+    tenant_id?: UuidFilter<"webhooks"> | string
+    mail_config_id?: UuidFilter<"webhooks"> | string
+    provider_id?: StringFilter<"webhooks"> | string
+    mail_config?: XOR<Mail_configsScalarRelationFilter, mail_configsWhereInput>
+  }
+
+  export type webhooksOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    mail_config_id?: SortOrder
+    provider_id?: SortOrder
+    mail_config?: mail_configsOrderByWithRelationInput
+  }
+
+  export type webhooksWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: webhooksWhereInput | webhooksWhereInput[]
+    OR?: webhooksWhereInput[]
+    NOT?: webhooksWhereInput | webhooksWhereInput[]
+    tenant_id?: UuidFilter<"webhooks"> | string
+    mail_config_id?: UuidFilter<"webhooks"> | string
+    provider_id?: StringFilter<"webhooks"> | string
+    mail_config?: XOR<Mail_configsScalarRelationFilter, mail_configsWhereInput>
+  }, "id">
+
+  export type webhooksOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    mail_config_id?: SortOrder
+    provider_id?: SortOrder
+    _count?: webhooksCountOrderByAggregateInput
+    _max?: webhooksMaxOrderByAggregateInput
+    _min?: webhooksMinOrderByAggregateInput
+  }
+
+  export type webhooksScalarWhereWithAggregatesInput = {
+    AND?: webhooksScalarWhereWithAggregatesInput | webhooksScalarWhereWithAggregatesInput[]
+    OR?: webhooksScalarWhereWithAggregatesInput[]
+    NOT?: webhooksScalarWhereWithAggregatesInput | webhooksScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"webhooks"> | string
+    tenant_id?: UuidWithAggregatesFilter<"webhooks"> | string
+    mail_config_id?: UuidWithAggregatesFilter<"webhooks"> | string
+    provider_id?: StringWithAggregatesFilter<"webhooks"> | string
+  }
+
   export type tenantsCreateInput = {
     id?: string
     name: string
@@ -28174,6 +32185,7 @@ export namespace Prisma {
     bounces?: bouncesCreateNestedManyWithoutContactsInput
     subscribers?: subscribersCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateInput = {
@@ -28190,6 +32202,7 @@ export namespace Prisma {
     bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
     subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUpdateInput = {
@@ -28206,6 +32219,7 @@ export namespace Prisma {
     bounces?: bouncesUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateInput = {
@@ -28222,6 +32236,7 @@ export namespace Prisma {
     bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsCreateManyInput = {
@@ -29995,6 +34010,246 @@ export namespace Prisma {
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type mail_configsCreateInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonNullValueInput | InputJsonValue
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+    webhooks?: webhooksCreateNestedManyWithoutMail_configInput
+  }
+
+  export type mail_configsUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonNullValueInput | InputJsonValue
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+    webhooks?: webhooksUncheckedCreateNestedManyWithoutMail_configInput
+  }
+
+  export type mail_configsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    webhooks?: webhooksUpdateManyWithoutMail_configNestedInput
+  }
+
+  export type mail_configsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    webhooks?: webhooksUncheckedUpdateManyWithoutMail_configNestedInput
+  }
+
+  export type mail_configsCreateManyInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonNullValueInput | InputJsonValue
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_configsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_configsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsCreateInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+    contacts: contactsCreateNestedOneWithoutMail_logsInput
+  }
+
+  export type mail_logsUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    contact_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_logsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    contacts?: contactsUpdateOneRequiredWithoutMail_logsNestedInput
+  }
+
+  export type mail_logsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsCreateManyInput = {
+    id?: string
+    tenant_id: string
+    contact_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_logsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type webhooksCreateInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+    mail_config: mail_configsCreateNestedOneWithoutWebhooksInput
+  }
+
+  export type webhooksUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    mail_config_id: string
+    provider_id: string
+  }
+
+  export type webhooksUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    mail_config?: mail_configsUpdateOneRequiredWithoutWebhooksNestedInput
+  }
+
+  export type webhooksUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    mail_config_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type webhooksCreateManyInput = {
+    id?: string
+    tenant_id: string
+    mail_config_id: string
+    provider_id: string
+  }
+
+  export type webhooksUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type webhooksUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    mail_config_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -30194,6 +34449,12 @@ export namespace Prisma {
     none?: unsubscribesWhereInput
   }
 
+  export type Mail_logsListRelationFilter = {
+    every?: mail_logsWhereInput
+    some?: mail_logsWhereInput
+    none?: mail_logsWhereInput
+  }
+
   export type activitiesOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -30207,6 +34468,10 @@ export namespace Prisma {
   }
 
   export type unsubscribesOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type mail_logsOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -31435,6 +35700,153 @@ export namespace Prisma {
     updated_by?: SortOrder
   }
 
+  export type WebhooksListRelationFilter = {
+    every?: webhooksWhereInput
+    some?: webhooksWhereInput
+    none?: webhooksWhereInput
+  }
+
+  export type webhooksOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type mail_configsCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    config?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type mail_configsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type mail_configsMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    name?: SortOrder
+    type?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type Enummail_log_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.mail_log_status | Enummail_log_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    not?: NestedEnummail_log_statusFilter<$PrismaModel> | $Enums.mail_log_status
+  }
+
+  export type mail_logsProvider_idProvider_mail_idCompoundUniqueInput = {
+    provider_id: string
+    provider_mail_id: string
+  }
+
+  export type mail_logsCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    provider_id?: SortOrder
+    provider_mail_id?: SortOrder
+    opens?: SortOrder
+    clicks?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type mail_logsAvgOrderByAggregateInput = {
+    opens?: SortOrder
+    clicks?: SortOrder
+  }
+
+  export type mail_logsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    provider_id?: SortOrder
+    provider_mail_id?: SortOrder
+    opens?: SortOrder
+    clicks?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type mail_logsMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    provider_id?: SortOrder
+    provider_mail_id?: SortOrder
+    opens?: SortOrder
+    clicks?: SortOrder
+    status?: SortOrder
+    created_at?: SortOrder
+    created_by?: SortOrder
+    updated_at?: SortOrder
+    updated_by?: SortOrder
+  }
+
+  export type mail_logsSumOrderByAggregateInput = {
+    opens?: SortOrder
+    clicks?: SortOrder
+  }
+
+  export type Enummail_log_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.mail_log_status | Enummail_log_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    not?: NestedEnummail_log_statusWithAggregatesFilter<$PrismaModel> | $Enums.mail_log_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnummail_log_statusFilter<$PrismaModel>
+    _max?: NestedEnummail_log_statusFilter<$PrismaModel>
+  }
+
+  export type Mail_configsScalarRelationFilter = {
+    is?: mail_configsWhereInput
+    isNot?: mail_configsWhereInput
+  }
+
+  export type webhooksCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    mail_config_id?: SortOrder
+    provider_id?: SortOrder
+  }
+
+  export type webhooksMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    mail_config_id?: SortOrder
+    provider_id?: SortOrder
+  }
+
+  export type webhooksMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    mail_config_id?: SortOrder
+    provider_id?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -31479,6 +35891,13 @@ export namespace Prisma {
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
   }
 
+  export type mail_logsCreateNestedManyWithoutContactsInput = {
+    create?: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput> | mail_logsCreateWithoutContactsInput[] | mail_logsUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: mail_logsCreateOrConnectWithoutContactsInput | mail_logsCreateOrConnectWithoutContactsInput[]
+    createMany?: mail_logsCreateManyContactsInputEnvelope
+    connect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+  }
+
   export type activitiesUncheckedCreateNestedManyWithoutReceiversInput = {
     create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
     connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
@@ -31505,6 +35924,13 @@ export namespace Prisma {
     connectOrCreate?: unsubscribesCreateOrConnectWithoutContactsInput | unsubscribesCreateOrConnectWithoutContactsInput[]
     createMany?: unsubscribesCreateManyContactsInputEnvelope
     connect?: unsubscribesWhereUniqueInput | unsubscribesWhereUniqueInput[]
+  }
+
+  export type mail_logsUncheckedCreateNestedManyWithoutContactsInput = {
+    create?: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput> | mail_logsCreateWithoutContactsInput[] | mail_logsUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: mail_logsCreateOrConnectWithoutContactsInput | mail_logsCreateOrConnectWithoutContactsInput[]
+    createMany?: mail_logsCreateManyContactsInputEnvelope
+    connect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
   }
 
   export type activitiesUpdateManyWithoutReceiversNestedInput = {
@@ -31563,6 +35989,20 @@ export namespace Prisma {
     deleteMany?: unsubscribesScalarWhereInput | unsubscribesScalarWhereInput[]
   }
 
+  export type mail_logsUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput> | mail_logsCreateWithoutContactsInput[] | mail_logsUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: mail_logsCreateOrConnectWithoutContactsInput | mail_logsCreateOrConnectWithoutContactsInput[]
+    upsert?: mail_logsUpsertWithWhereUniqueWithoutContactsInput | mail_logsUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: mail_logsCreateManyContactsInputEnvelope
+    set?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    disconnect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    delete?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    connect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    update?: mail_logsUpdateWithWhereUniqueWithoutContactsInput | mail_logsUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: mail_logsUpdateManyWithWhereWithoutContactsInput | mail_logsUpdateManyWithWhereWithoutContactsInput[]
+    deleteMany?: mail_logsScalarWhereInput | mail_logsScalarWhereInput[]
+  }
+
   export type activitiesUncheckedUpdateManyWithoutReceiversNestedInput = {
     create?: XOR<activitiesCreateWithoutReceiversInput, activitiesUncheckedCreateWithoutReceiversInput> | activitiesCreateWithoutReceiversInput[] | activitiesUncheckedCreateWithoutReceiversInput[]
     connectOrCreate?: activitiesCreateOrConnectWithoutReceiversInput | activitiesCreateOrConnectWithoutReceiversInput[]
@@ -31617,6 +36057,20 @@ export namespace Prisma {
     update?: unsubscribesUpdateWithWhereUniqueWithoutContactsInput | unsubscribesUpdateWithWhereUniqueWithoutContactsInput[]
     updateMany?: unsubscribesUpdateManyWithWhereWithoutContactsInput | unsubscribesUpdateManyWithWhereWithoutContactsInput[]
     deleteMany?: unsubscribesScalarWhereInput | unsubscribesScalarWhereInput[]
+  }
+
+  export type mail_logsUncheckedUpdateManyWithoutContactsNestedInput = {
+    create?: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput> | mail_logsCreateWithoutContactsInput[] | mail_logsUncheckedCreateWithoutContactsInput[]
+    connectOrCreate?: mail_logsCreateOrConnectWithoutContactsInput | mail_logsCreateOrConnectWithoutContactsInput[]
+    upsert?: mail_logsUpsertWithWhereUniqueWithoutContactsInput | mail_logsUpsertWithWhereUniqueWithoutContactsInput[]
+    createMany?: mail_logsCreateManyContactsInputEnvelope
+    set?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    disconnect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    delete?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    connect?: mail_logsWhereUniqueInput | mail_logsWhereUniqueInput[]
+    update?: mail_logsUpdateWithWhereUniqueWithoutContactsInput | mail_logsUpdateWithWhereUniqueWithoutContactsInput[]
+    updateMany?: mail_logsUpdateManyWithWhereWithoutContactsInput | mail_logsUpdateManyWithWhereWithoutContactsInput[]
+    deleteMany?: mail_logsScalarWhereInput | mail_logsScalarWhereInput[]
   }
 
   export type activitiesCreateNestedManyWithoutCampaignsInput = {
@@ -32227,6 +36681,80 @@ export namespace Prisma {
     deleteMany?: usersScalarWhereInput | usersScalarWhereInput[]
   }
 
+  export type webhooksCreateNestedManyWithoutMail_configInput = {
+    create?: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput> | webhooksCreateWithoutMail_configInput[] | webhooksUncheckedCreateWithoutMail_configInput[]
+    connectOrCreate?: webhooksCreateOrConnectWithoutMail_configInput | webhooksCreateOrConnectWithoutMail_configInput[]
+    createMany?: webhooksCreateManyMail_configInputEnvelope
+    connect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+  }
+
+  export type webhooksUncheckedCreateNestedManyWithoutMail_configInput = {
+    create?: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput> | webhooksCreateWithoutMail_configInput[] | webhooksUncheckedCreateWithoutMail_configInput[]
+    connectOrCreate?: webhooksCreateOrConnectWithoutMail_configInput | webhooksCreateOrConnectWithoutMail_configInput[]
+    createMany?: webhooksCreateManyMail_configInputEnvelope
+    connect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+  }
+
+  export type webhooksUpdateManyWithoutMail_configNestedInput = {
+    create?: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput> | webhooksCreateWithoutMail_configInput[] | webhooksUncheckedCreateWithoutMail_configInput[]
+    connectOrCreate?: webhooksCreateOrConnectWithoutMail_configInput | webhooksCreateOrConnectWithoutMail_configInput[]
+    upsert?: webhooksUpsertWithWhereUniqueWithoutMail_configInput | webhooksUpsertWithWhereUniqueWithoutMail_configInput[]
+    createMany?: webhooksCreateManyMail_configInputEnvelope
+    set?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    disconnect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    delete?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    connect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    update?: webhooksUpdateWithWhereUniqueWithoutMail_configInput | webhooksUpdateWithWhereUniqueWithoutMail_configInput[]
+    updateMany?: webhooksUpdateManyWithWhereWithoutMail_configInput | webhooksUpdateManyWithWhereWithoutMail_configInput[]
+    deleteMany?: webhooksScalarWhereInput | webhooksScalarWhereInput[]
+  }
+
+  export type webhooksUncheckedUpdateManyWithoutMail_configNestedInput = {
+    create?: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput> | webhooksCreateWithoutMail_configInput[] | webhooksUncheckedCreateWithoutMail_configInput[]
+    connectOrCreate?: webhooksCreateOrConnectWithoutMail_configInput | webhooksCreateOrConnectWithoutMail_configInput[]
+    upsert?: webhooksUpsertWithWhereUniqueWithoutMail_configInput | webhooksUpsertWithWhereUniqueWithoutMail_configInput[]
+    createMany?: webhooksCreateManyMail_configInputEnvelope
+    set?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    disconnect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    delete?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    connect?: webhooksWhereUniqueInput | webhooksWhereUniqueInput[]
+    update?: webhooksUpdateWithWhereUniqueWithoutMail_configInput | webhooksUpdateWithWhereUniqueWithoutMail_configInput[]
+    updateMany?: webhooksUpdateManyWithWhereWithoutMail_configInput | webhooksUpdateManyWithWhereWithoutMail_configInput[]
+    deleteMany?: webhooksScalarWhereInput | webhooksScalarWhereInput[]
+  }
+
+  export type contactsCreateNestedOneWithoutMail_logsInput = {
+    create?: XOR<contactsCreateWithoutMail_logsInput, contactsUncheckedCreateWithoutMail_logsInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutMail_logsInput
+    connect?: contactsWhereUniqueInput
+  }
+
+  export type Enummail_log_statusFieldUpdateOperationsInput = {
+    set?: $Enums.mail_log_status
+  }
+
+  export type contactsUpdateOneRequiredWithoutMail_logsNestedInput = {
+    create?: XOR<contactsCreateWithoutMail_logsInput, contactsUncheckedCreateWithoutMail_logsInput>
+    connectOrCreate?: contactsCreateOrConnectWithoutMail_logsInput
+    upsert?: contactsUpsertWithoutMail_logsInput
+    connect?: contactsWhereUniqueInput
+    update?: XOR<XOR<contactsUpdateToOneWithWhereWithoutMail_logsInput, contactsUpdateWithoutMail_logsInput>, contactsUncheckedUpdateWithoutMail_logsInput>
+  }
+
+  export type mail_configsCreateNestedOneWithoutWebhooksInput = {
+    create?: XOR<mail_configsCreateWithoutWebhooksInput, mail_configsUncheckedCreateWithoutWebhooksInput>
+    connectOrCreate?: mail_configsCreateOrConnectWithoutWebhooksInput
+    connect?: mail_configsWhereUniqueInput
+  }
+
+  export type mail_configsUpdateOneRequiredWithoutWebhooksNestedInput = {
+    create?: XOR<mail_configsCreateWithoutWebhooksInput, mail_configsUncheckedCreateWithoutWebhooksInput>
+    connectOrCreate?: mail_configsCreateOrConnectWithoutWebhooksInput
+    upsert?: mail_configsUpsertWithoutWebhooksInput
+    connect?: mail_configsWhereUniqueInput
+    update?: XOR<XOR<mail_configsUpdateToOneWithWhereWithoutWebhooksInput, mail_configsUpdateWithoutWebhooksInput>, mail_configsUncheckedUpdateWithoutWebhooksInput>
+  }
+
   export type NestedUuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -32639,6 +37167,23 @@ export namespace Prisma {
     _max?: NestedBytesFilter<$PrismaModel>
   }
 
+  export type NestedEnummail_log_statusFilter<$PrismaModel = never> = {
+    equals?: $Enums.mail_log_status | Enummail_log_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    not?: NestedEnummail_log_statusFilter<$PrismaModel> | $Enums.mail_log_status
+  }
+
+  export type NestedEnummail_log_statusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.mail_log_status | Enummail_log_statusFieldRefInput<$PrismaModel>
+    in?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.mail_log_status[] | ListEnummail_log_statusFieldRefInput<$PrismaModel>
+    not?: NestedEnummail_log_statusWithAggregatesFilter<$PrismaModel> | $Enums.mail_log_status
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnummail_log_statusFilter<$PrismaModel>
+    _max?: NestedEnummail_log_statusFilter<$PrismaModel>
+  }
+
   export type activitiesCreateWithoutReceiversInput = {
     id?: string
     tenant_id: string
@@ -32789,6 +37334,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type mail_logsCreateWithoutContactsInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_logsUncheckedCreateWithoutContactsInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_logsCreateOrConnectWithoutContactsInput = {
+    where: mail_logsWhereUniqueInput
+    create: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput>
+  }
+
+  export type mail_logsCreateManyContactsInputEnvelope = {
+    data: mail_logsCreateManyContactsInput | mail_logsCreateManyContactsInput[]
+    skipDuplicates?: boolean
+  }
+
   export type activitiesUpsertWithWhereUniqueWithoutReceiversInput = {
     where: activitiesWhereUniqueInput
     update: XOR<activitiesUpdateWithoutReceiversInput, activitiesUncheckedUpdateWithoutReceiversInput>
@@ -32924,6 +37507,40 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"unsubscribes"> | string | null
   }
 
+  export type mail_logsUpsertWithWhereUniqueWithoutContactsInput = {
+    where: mail_logsWhereUniqueInput
+    update: XOR<mail_logsUpdateWithoutContactsInput, mail_logsUncheckedUpdateWithoutContactsInput>
+    create: XOR<mail_logsCreateWithoutContactsInput, mail_logsUncheckedCreateWithoutContactsInput>
+  }
+
+  export type mail_logsUpdateWithWhereUniqueWithoutContactsInput = {
+    where: mail_logsWhereUniqueInput
+    data: XOR<mail_logsUpdateWithoutContactsInput, mail_logsUncheckedUpdateWithoutContactsInput>
+  }
+
+  export type mail_logsUpdateManyWithWhereWithoutContactsInput = {
+    where: mail_logsScalarWhereInput
+    data: XOR<mail_logsUpdateManyMutationInput, mail_logsUncheckedUpdateManyWithoutContactsInput>
+  }
+
+  export type mail_logsScalarWhereInput = {
+    AND?: mail_logsScalarWhereInput | mail_logsScalarWhereInput[]
+    OR?: mail_logsScalarWhereInput[]
+    NOT?: mail_logsScalarWhereInput | mail_logsScalarWhereInput[]
+    id?: UuidFilter<"mail_logs"> | string
+    tenant_id?: UuidFilter<"mail_logs"> | string
+    contact_id?: UuidFilter<"mail_logs"> | string
+    provider_id?: StringFilter<"mail_logs"> | string
+    provider_mail_id?: StringFilter<"mail_logs"> | string
+    opens?: IntFilter<"mail_logs"> | number
+    clicks?: IntFilter<"mail_logs"> | number
+    status?: Enummail_log_statusFilter<"mail_logs"> | $Enums.mail_log_status
+    created_at?: DateTimeFilter<"mail_logs"> | Date | string
+    created_by?: StringFilter<"mail_logs"> | string
+    updated_at?: DateTimeNullableFilter<"mail_logs"> | Date | string | null
+    updated_by?: StringNullableFilter<"mail_logs"> | string | null
+  }
+
   export type activitiesCreateWithoutCampaignsInput = {
     id?: string
     tenant_id: string
@@ -32999,6 +37616,7 @@ export namespace Prisma {
     bounces?: bouncesCreateNestedManyWithoutContactsInput
     subscribers?: subscribersCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateWithoutActivitiesInput = {
@@ -33014,6 +37632,7 @@ export namespace Prisma {
     bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
     subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsCreateOrConnectWithoutActivitiesInput = {
@@ -33082,6 +37701,7 @@ export namespace Prisma {
     bounces?: bouncesUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateWithoutActivitiesInput = {
@@ -33097,6 +37717,7 @@ export namespace Prisma {
     bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type campaignsUpsertWithoutActivitiesInput = {
@@ -33155,6 +37776,7 @@ export namespace Prisma {
     activities?: activitiesCreateNestedManyWithoutReceiversInput
     subscribers?: subscribersCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateWithoutBouncesInput = {
@@ -33170,6 +37792,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
     subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsCreateOrConnectWithoutBouncesInput = {
@@ -33201,6 +37824,7 @@ export namespace Prisma {
     activities?: activitiesUpdateManyWithoutReceiversNestedInput
     subscribers?: subscribersUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateWithoutBouncesInput = {
@@ -33216,6 +37840,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
     subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsCreateWithoutSubscribersInput = {
@@ -33231,6 +37856,7 @@ export namespace Prisma {
     activities?: activitiesCreateNestedManyWithoutReceiversInput
     bounces?: bouncesCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateWithoutSubscribersInput = {
@@ -33246,6 +37872,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
     bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
     unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsCreateOrConnectWithoutSubscribersInput = {
@@ -33304,6 +37931,7 @@ export namespace Prisma {
     activities?: activitiesUpdateManyWithoutReceiversNestedInput
     bounces?: bouncesUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateWithoutSubscribersInput = {
@@ -33319,6 +37947,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
     bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
     unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type subscriber_listsUpsertWithoutSubscribersInput = {
@@ -33417,6 +38046,7 @@ export namespace Prisma {
     activities?: activitiesCreateNestedManyWithoutReceiversInput
     bounces?: bouncesCreateNestedManyWithoutContactsInput
     subscribers?: subscribersCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsCreateNestedManyWithoutContactsInput
   }
 
   export type contactsUncheckedCreateWithoutUnsubscribesInput = {
@@ -33432,6 +38062,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
     bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
     subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
+    mail_logs?: mail_logsUncheckedCreateNestedManyWithoutContactsInput
   }
 
   export type contactsCreateOrConnectWithoutUnsubscribesInput = {
@@ -33463,6 +38094,7 @@ export namespace Prisma {
     activities?: activitiesUpdateManyWithoutReceiversNestedInput
     bounces?: bouncesUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUpdateManyWithoutContactsNestedInput
   }
 
   export type contactsUncheckedUpdateWithoutUnsubscribesInput = {
@@ -33478,6 +38110,7 @@ export namespace Prisma {
     activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
     bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
     subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
+    mail_logs?: mail_logsUncheckedUpdateManyWithoutContactsNestedInput
   }
 
   export type rolesCreateWithoutUsersInput = {
@@ -34443,6 +39076,198 @@ export namespace Prisma {
     updated_by?: StringNullableFilter<"users"> | string | null
   }
 
+  export type webhooksCreateWithoutMail_configInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+  }
+
+  export type webhooksUncheckedCreateWithoutMail_configInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+  }
+
+  export type webhooksCreateOrConnectWithoutMail_configInput = {
+    where: webhooksWhereUniqueInput
+    create: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput>
+  }
+
+  export type webhooksCreateManyMail_configInputEnvelope = {
+    data: webhooksCreateManyMail_configInput | webhooksCreateManyMail_configInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type webhooksUpsertWithWhereUniqueWithoutMail_configInput = {
+    where: webhooksWhereUniqueInput
+    update: XOR<webhooksUpdateWithoutMail_configInput, webhooksUncheckedUpdateWithoutMail_configInput>
+    create: XOR<webhooksCreateWithoutMail_configInput, webhooksUncheckedCreateWithoutMail_configInput>
+  }
+
+  export type webhooksUpdateWithWhereUniqueWithoutMail_configInput = {
+    where: webhooksWhereUniqueInput
+    data: XOR<webhooksUpdateWithoutMail_configInput, webhooksUncheckedUpdateWithoutMail_configInput>
+  }
+
+  export type webhooksUpdateManyWithWhereWithoutMail_configInput = {
+    where: webhooksScalarWhereInput
+    data: XOR<webhooksUpdateManyMutationInput, webhooksUncheckedUpdateManyWithoutMail_configInput>
+  }
+
+  export type webhooksScalarWhereInput = {
+    AND?: webhooksScalarWhereInput | webhooksScalarWhereInput[]
+    OR?: webhooksScalarWhereInput[]
+    NOT?: webhooksScalarWhereInput | webhooksScalarWhereInput[]
+    id?: UuidFilter<"webhooks"> | string
+    tenant_id?: UuidFilter<"webhooks"> | string
+    mail_config_id?: UuidFilter<"webhooks"> | string
+    provider_id?: StringFilter<"webhooks"> | string
+  }
+
+  export type contactsCreateWithoutMail_logsInput = {
+    id?: string
+    tenant_id: string
+    email: string
+    first_name?: string | null
+    last_name?: string | null
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+    activities?: activitiesCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesCreateNestedManyWithoutContactsInput
+  }
+
+  export type contactsUncheckedCreateWithoutMail_logsInput = {
+    id?: string
+    tenant_id: string
+    email: string
+    first_name?: string | null
+    last_name?: string | null
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+    activities?: activitiesUncheckedCreateNestedManyWithoutReceiversInput
+    bounces?: bouncesUncheckedCreateNestedManyWithoutContactsInput
+    subscribers?: subscribersUncheckedCreateNestedManyWithoutContactsInput
+    unsubscribes?: unsubscribesUncheckedCreateNestedManyWithoutContactsInput
+  }
+
+  export type contactsCreateOrConnectWithoutMail_logsInput = {
+    where: contactsWhereUniqueInput
+    create: XOR<contactsCreateWithoutMail_logsInput, contactsUncheckedCreateWithoutMail_logsInput>
+  }
+
+  export type contactsUpsertWithoutMail_logsInput = {
+    update: XOR<contactsUpdateWithoutMail_logsInput, contactsUncheckedUpdateWithoutMail_logsInput>
+    create: XOR<contactsCreateWithoutMail_logsInput, contactsUncheckedCreateWithoutMail_logsInput>
+    where?: contactsWhereInput
+  }
+
+  export type contactsUpdateToOneWithWhereWithoutMail_logsInput = {
+    where?: contactsWhereInput
+    data: XOR<contactsUpdateWithoutMail_logsInput, contactsUncheckedUpdateWithoutMail_logsInput>
+  }
+
+  export type contactsUpdateWithoutMail_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    activities?: activitiesUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUpdateManyWithoutContactsNestedInput
+  }
+
+  export type contactsUncheckedUpdateWithoutMail_logsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    first_name?: NullableStringFieldUpdateOperationsInput | string | null
+    last_name?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+    activities?: activitiesUncheckedUpdateManyWithoutReceiversNestedInput
+    bounces?: bouncesUncheckedUpdateManyWithoutContactsNestedInput
+    subscribers?: subscribersUncheckedUpdateManyWithoutContactsNestedInput
+    unsubscribes?: unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
+  }
+
+  export type mail_configsCreateWithoutWebhooksInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonNullValueInput | InputJsonValue
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_configsUncheckedCreateWithoutWebhooksInput = {
+    id?: string
+    tenant_id: string
+    name: string
+    type: string
+    config: JsonNullValueInput | InputJsonValue
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_configsCreateOrConnectWithoutWebhooksInput = {
+    where: mail_configsWhereUniqueInput
+    create: XOR<mail_configsCreateWithoutWebhooksInput, mail_configsUncheckedCreateWithoutWebhooksInput>
+  }
+
+  export type mail_configsUpsertWithoutWebhooksInput = {
+    update: XOR<mail_configsUpdateWithoutWebhooksInput, mail_configsUncheckedUpdateWithoutWebhooksInput>
+    create: XOR<mail_configsCreateWithoutWebhooksInput, mail_configsUncheckedCreateWithoutWebhooksInput>
+    where?: mail_configsWhereInput
+  }
+
+  export type mail_configsUpdateToOneWithWhereWithoutWebhooksInput = {
+    where?: mail_configsWhereInput
+    data: XOR<mail_configsUpdateWithoutWebhooksInput, mail_configsUncheckedUpdateWithoutWebhooksInput>
+  }
+
+  export type mail_configsUpdateWithoutWebhooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_configsUncheckedUpdateWithoutWebhooksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    config?: JsonNullValueInput | InputJsonValue
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
   export type activitiesCreateManyReceiversInput = {
     id?: string
     tenant_id: string
@@ -34492,6 +39317,20 @@ export namespace Prisma {
     unsubscribed_at: Date | string
     global: boolean
     list_ids?: unsubscribesCreatelist_idsInput | string[]
+    created_at: Date | string
+    created_by: string
+    updated_at?: Date | string | null
+    updated_by?: string | null
+  }
+
+  export type mail_logsCreateManyContactsInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+    provider_mail_id: string
+    opens: number
+    clicks: number
+    status: $Enums.mail_log_status
     created_at: Date | string
     created_by: string
     updated_at?: Date | string | null
@@ -34657,6 +39496,48 @@ export namespace Prisma {
     unsubscribed_at?: DateTimeFieldUpdateOperationsInput | Date | string
     global?: BoolFieldUpdateOperationsInput | boolean
     list_ids?: unsubscribesUpdatelist_idsInput | string[]
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsUpdateWithoutContactsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsUncheckedUpdateWithoutContactsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    created_by?: StringFieldUpdateOperationsInput | string
+    updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type mail_logsUncheckedUpdateManyWithoutContactsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+    provider_mail_id?: StringFieldUpdateOperationsInput | string
+    opens?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    status?: Enummail_log_statusFieldUpdateOperationsInput | $Enums.mail_log_status
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -35097,6 +39978,30 @@ export namespace Prisma {
     created_by?: StringFieldUpdateOperationsInput | string
     updated_at?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     updated_by?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type webhooksCreateManyMail_configInput = {
+    id?: string
+    tenant_id: string
+    provider_id: string
+  }
+
+  export type webhooksUpdateWithoutMail_configInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type webhooksUncheckedUpdateWithoutMail_configInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type webhooksUncheckedUpdateManyWithoutMail_configInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    provider_id?: StringFieldUpdateOperationsInput | string
   }
 
 

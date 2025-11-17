@@ -6,71 +6,107 @@ import type {
 } from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
-import type { Router } from "../router/index.js";
-import prisma from "../database/index.js";
+import type { Router } from "../../router/index.js";
+import { MailConfig } from "@mailtura/rpcmodel/lib/mails/index.js";
 import { type Static, Type } from "typebox";
+import { requiresInstallation } from "../../helpers/requires-installation.js";
+import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import { newPasswordHasher } from "./password-hasher.js";
-import { createEmailVerificationToken } from "better-auth/api";
-import type { Auth } from "better-auth";
-import { mapUser } from "../api/mapper.js";
+import { newPasswordHasher } from "../../auth/password-hasher.js";
 
-const SignUpEmail = Type.Object({
+const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),
   password: Type.String({ minLength: 8 }),
   firstName: Type.String(),
   lastName: Type.String(),
-  callbackURL: Type.Optional(Type.String({ format: "uri" })),
 });
 
-type SignUpEmail = Static<typeof SignUpEmail>;
+const Installation = Type.Object({
+  user: UserEmail,
+  systemMail: MailConfig,
+});
+
+type Installation = Static<typeof Installation>;
 
 const passwordHasher = newPasswordHasher();
 
-export function registerCustomAuthRoutes<
+const filterMailSettings = (mailSettings: MailConfig) => {
+  const { name, type, ...rest } = mailSettings;
+  return rest;
+};
+
+export function installationRoutes<
   RawServer extends RawServerBase = RawServerDefault,
   RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
   RawReply extends RawReplyDefaultExpression<RawServer> = RawReplyDefaultExpression<RawServer>,
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
->(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>, auth: Auth) {
-  router.post<{ Body: SignUpEmail }>(
-    "/sign-up/email",
+>(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  router.get(
+    "/",
     {
       schema: {
         hide: true,
-        body: SignUpEmail,
-        response: {
-          201: Type.Ref("User"),
-          409: Type.Object({ message: Type.String() }),
-        },
+      },
+    },
+    async (_, reply) => {
+      if (!(await requiresInstallation())) {
+        return reply.status(500).send({ installation: "Finished" });
+      }
+      return reply.send({ installation: "required" });
+    }
+  );
+
+  router.post<{ Body: Installation }>(
+    "/",
+    {
+      schema: {
+        hide: true,
+        body: Installation,
       },
     },
     async (request, reply) => {
-      const { email, password, firstName, lastName } = request.body;
-
-      const existingUser = await prisma.users.findUnique({
-        where: {
-          email: email,
-        },
-      });
-
-      if (existingUser) {
-        return reply.status(409).send({ message: "User already exists" });
+      if (!(await requiresInstallation())) {
+        return reply.status(500).send({ installation: "Finished" });
       }
 
       return prisma.$transaction(async tx => {
         // Create Tenant
         const tenant = await tx.tenants.create({
           data: {
-            name: (firstName.endsWith("s") ? `${firstName}'` : `${firstName}'s`) + " Tenant",
+            name: "System",
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
+
+        // System admin role
+        const systemAdmin = await tx.roles.create({
+          data: {
+            tenant_id: tenant.id,
+            name: "Super Admin",
+            description: "System administrator",
+            permissions: [
+              "manage::tenants",
+              "manage::users",
+              "manage::campaigns",
+              "manage::templates",
+              "manage::contacts",
+              "manage::reports",
+              "manage::settings",
+              "manage::suppressions",
+              "manage::api-keys",
+              "manage::integrations",
+              "manage::logs",
+              "manage::webhooks",
+            ],
             created_at: UTC.now().toDate(),
             created_by: "api",
           },
         });
 
         // Tenant admin role
-        const tenantAdmin = await tx.roles.create({
+        await tx.roles.create({
           data: {
             tenant_id: tenant.id,
             name: "Tenant Admin",
@@ -128,12 +164,13 @@ export function registerCustomAuthRoutes<
         const user = await tx.users.create({
           data: {
             tenant_id: tenant.id,
-            email,
-            first_name: firstName,
-            last_name: lastName,
+            email: request.body.user.email,
+            first_name: request.body.user.firstName,
+            last_name: request.body.user.lastName,
             active: true,
-            permissions: tenantAdmin.permissions,
-            role_id: tenantAdmin.id,
+            email_verified: true,
+            permissions: systemAdmin.permissions,
+            role_id: systemAdmin.id,
             created_at: UTC.now().toDate(),
             created_by: "api",
           },
@@ -145,20 +182,25 @@ export function registerCustomAuthRoutes<
             user_id: user.id,
             account_id: user.id,
             provider_id: "credential",
-            password: await passwordHasher.hash(password),
+            password: await passwordHasher.hash(request.body.user.password),
             created_at: UTC.now().toDate(),
             created_by: "api",
           },
         });
 
-        // Create and send verification email
-        const token = await createEmailVerificationToken(auth.options.secret!, email, void 0, 60 * 5);
-        const url = `${auth.options.baseURL}/api/v1/auth/verify-email?token=${token}&callbackURL=${request.body.callbackURL || "/"}`;
-        console.log("url", url); // TODO: send the email
+        await tx.mail_configs.create({
+          data: {
+            tenant_id: tenant.id,
+            name: "System",
+            type: request.body.systemMail.type,
+            config: filterMailSettings(request.body.systemMail),
+            created_at: UTC.now().toDate(),
+            created_by: "api",
+          },
+        });
 
-        return reply.status(201).send(mapUser(user));
+        return reply.status(201).send({ installation: "finished" });
       });
-    },
-    false
+    }
   );
 }

@@ -37,6 +37,7 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { tenantRoutes } from "./handlers/tenants.js";
 import { profileRoutes } from "./handlers/profile.js";
+import { webhookRoutes } from "./handlers/webhooks/index.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ErrorResponse);
@@ -74,5 +75,5 @@ export function registerRoutes<
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
   router.route("/tenants", tenantRoutes);
-  router.route("/", profileRoutes);
+  router.route("/profile", profileRoutes);
 }

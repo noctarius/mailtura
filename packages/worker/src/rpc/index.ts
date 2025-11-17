@@ -1,4 +1,4 @@
-import type { ContactImport, File } from "@mailtura/rpcmodel/lib/api/index.js";
+import type { ContactImport, File, Template } from "@mailtura/rpcmodel/lib/api/index.js";
 import type {
   CreateContactBatch,
   CreateContactBatchResponse,
@@ -21,6 +21,7 @@ export interface RpcManager {
   readFile(tenantId: string, fileId: string): Promise<File>;
   readFileContent(tenantId: string, fileId: string): Promise<Buffer>;
   createContacts(tenantId: string, contacts: CreateContactBatch): Promise<CreateContactBatchResponse>;
+  readTemplate(tenantId: string, templateId: string): Promise<Template>;
 }
 
 const createRpcManager = (): RpcManager => {
@@ -93,6 +94,17 @@ const createRpcManager = (): RpcManager => {
         await handleError(response, "bulk-error");
       }
       return (await response.json()) as CreateContactBatchResponse;
+    },
+
+    async readTemplate(tenantId: string, templateId: string): Promise<Template> {
+      const response = await fetch(`${baseUrl}/tenants/${tenantId}/templates/${templateId}/`);
+      if (!response.ok) {
+        throw ApplicationFailure.create({
+          type: "read-error",
+          message: `Could not read file: ${response.statusText}`,
+        });
+      }
+      return (await response.json()) as Template;
     },
   };
 };

@@ -391,6 +391,40 @@ exports.Prisma.RolesScalarFieldEnum = {
   updated_by: 'updated_by'
 };
 
+exports.Prisma.Mail_configsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  type: 'type',
+  config: 'config',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.Mail_logsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  contact_id: 'contact_id',
+  provider_id: 'provider_id',
+  provider_mail_id: 'provider_mail_id',
+  opens: 'opens',
+  clicks: 'clicks',
+  status: 'status',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+};
+
+exports.Prisma.WebhooksScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  mail_config_id: 'mail_config_id',
+  provider_id: 'provider_id'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -468,6 +502,14 @@ exports.unsubscribe_source = exports.$Enums.unsubscribe_source = {
   Other: 'Other'
 };
 
+exports.mail_log_status = exports.$Enums.mail_log_status = {
+  Delivered: 'Delivered',
+  Pending: 'Pending',
+  Scheduled: 'Scheduled',
+  Bounced: 'Bounced',
+  Failed: 'Failed'
+};
+
 exports.Prisma.ModelName = {
   tenants: 'tenants',
   contacts: 'contacts',
@@ -488,7 +530,10 @@ exports.Prisma.ModelName = {
   two_factors: 'two_factors',
   passkeys: 'passkeys',
   sessions: 'sessions',
-  roles: 'roles'
+  roles: 'roles',
+  mail_configs: 'mail_configs',
+  mail_logs: 'mail_logs',
+  webhooks: 'webhooks'
 };
 
 /**

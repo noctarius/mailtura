@@ -38,6 +38,7 @@ model contacts {
   bounces      bounces[]
   subscribers  subscribers[]
   unsubscribes unsubscribes[]
+  mail_logs    mail_logs[]
 
   @@unique([tenant_id, email])
 }
@@ -233,6 +234,7 @@ model users {
   sessions    sessions[]
 
   @@unique([email])
+  @@index([tenant_id])
 }
 
 model api_keys {
@@ -250,6 +252,7 @@ model api_keys {
   updated_by   String?
 
   @@unique([key])
+  @@index([tenant_id])
 }
 
 model template_properties {
@@ -261,6 +264,8 @@ model template_properties {
   default_value Json
 
   templates templates? @relation(fields: [templates_id], references: [id])
+
+  @@index([tenant_id])
 }
 
 model templates {
@@ -274,6 +279,8 @@ model templates {
   created_by  String
   updated_at  DateTime?             @db.Timestamptz()
   updated_by  String?
+
+  @@index([tenant_id])
 }
 
 model contact_imports {
@@ -289,6 +296,8 @@ model contact_imports {
   created_by String
   updated_at DateTime? @db.Timestamptz()
   updated_by String?
+
+  @@index([tenant_id])
 }
 
 model files {
@@ -300,6 +309,8 @@ model files {
   created_by String
   updated_at DateTime? @db.Timestamptz()
   updated_by String?
+
+  @@index([tenant_id])
 }
 
 model accounts {
@@ -320,6 +331,10 @@ model accounts {
   updated_by               String?
 
   users users? @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+  @@index([provider_id, account_id])
+  @@index([access_token])
 }
 
 model verifications {
@@ -342,6 +357,8 @@ model two_factors {
   created_by   String
 
   users users? @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
 }
 
 model passkeys {
@@ -359,6 +376,8 @@ model passkeys {
   created_by    String
 
   users users? @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
 }
 
 model sessions {
@@ -376,6 +395,7 @@ model sessions {
   users users? @relation(fields: [user_id], references: [id])
 
   @@unique([token])
+  @@index([user_id])
 }
 
 model roles {
@@ -392,4 +412,56 @@ model roles {
   users users[]
 
   @@unique([tenant_id, name])
+}
+
+model mail_configs {
+  id         String     @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String     @db.Uuid
+  name       String
+  type       String
+  config     Json       @db.JsonB
+  created_at DateTime   @db.Timestamptz()
+  created_by String
+  updated_at DateTime?  @db.Timestamptz()
+  updated_by String?
+  webhooks   webhooks[]
+
+  @@index([tenant_id])
+}
+
+enum mail_log_status {
+  Delivered
+  Pending
+  Scheduled
+  Bounced
+  Failed
+}
+
+model mail_logs {
+  id               String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id        String          @db.Uuid
+  contact_id       String          @db.Uuid
+  provider_id      String
+  provider_mail_id String
+  opens            Int
+  clicks           Int
+  status           mail_log_status
+  created_at       DateTime        @db.Timestamptz()
+  created_by       String
+  updated_at       DateTime?       @db.Timestamptz()
+  updated_by       String?
+
+  contacts contacts @relation(fields: [contact_id], references: [id])
+
+  @@unique([provider_id, provider_mail_id])
+  @@index([tenant_id])
+}
+
+model webhooks {
+  id             String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id      String @db.Uuid
+  mail_config_id String @db.Uuid
+  provider_id    String
+
+  mail_config mail_configs @relation(fields: [mail_config_id], references: [id])
 }

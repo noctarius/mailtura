@@ -16,7 +16,7 @@ export function profileRoutes<
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
   router.get<{ Reply: User }>(
-    "/profile",
+    "/",
     {
       schema: {
         tags: ["profile"],

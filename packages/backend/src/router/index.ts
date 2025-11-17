@@ -199,7 +199,8 @@ export interface Router<
   route(
     prefix: string,
     callback: (router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) => void,
-    requiresAuth?: boolean
+    requiresAuth?: boolean,
+    parseBody?: boolean
   ): void;
 }
 
@@ -298,10 +299,15 @@ export function createRouter<
     route(
       prefix: string,
       callback: (router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) => void,
-      requiresAuth: boolean = true
+      requiresAuth: boolean = true,
+      parseBody: boolean = true
     ): void {
       app.register(
         fastify => {
+          if (!parseBody)
+            fastify.addContentTypeParser("application/json", { parseAs: "buffer" }, (_, body, done) => {
+              done(null, typeof body === "string" ? Buffer.from(body) : (body as Buffer));
+            });
           const subRouter = createRouter(fastify, requiresAuth);
           callback(subRouter as any);
           return fastify;

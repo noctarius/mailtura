@@ -12,6 +12,8 @@ import { createRouter } from "./router/index.js";
 import { handlePrismaError } from "./database/index.js";
 import * as path from "node:path";
 import "./tasks/index.js";
+import { requiresInstallation } from "./helpers/requires-installation.js";
+import { installationRoutes } from "./api/handlers/installation.js";
 
 const app = Fastify()
   .register(Multipart, {
@@ -119,7 +121,13 @@ app.register(Auth, {
   basePath: "/api/v1/auth",
 });
 
-createRouter(app).route("/api/v1", registerRoutes);
+const router = createRouter(app);
+router.route("/api/v1", registerRoutes);
+
+if (await requiresInstallation()) {
+  console.info("Installation required, enabling installation routes.");
+  router.route("/api/v1/install", installationRoutes);
+}
 
 console.info("Starting server at :3000...");
 await app.listen({ host: "0.0.0.0", port: 3000 });

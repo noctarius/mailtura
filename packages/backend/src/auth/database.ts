@@ -122,7 +122,6 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
           });
         },
         async findOne({ model, where, select }) {
-          console.log("TEST2", model, where);
           const whereClause = convertWhereClause(model, where);
           if (!db[model]) {
             throw new BetterAuthError(

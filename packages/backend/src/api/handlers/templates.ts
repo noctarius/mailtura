@@ -13,10 +13,8 @@ import prisma from "../../database/index.js";
 import { mapTemplate } from "../mapper.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { createError } from "../helpers.js";
-import mjml2html from "mjml";
-import Mustache from "mustache";
-import sanitizeHtml from "sanitize-html";
 import type { Template } from "@mailtura/rpcmodel/lib/api/index.js";
+import { createTemplateCompiler } from "@mailtura/contentcompiler";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -234,7 +232,11 @@ export function templateRoutes<
       }
     );
 
-    subRouter.post<{ Params: { tenant_id: string; template_id: string }; Body: PreviewTemplate; Reply: string }>(
+    subRouter.post<{
+      Params: { tenant_id: string; template_id: string };
+      Body: PreviewTemplate;
+      Reply: { html: string; text: string };
+    }>(
       "/preview/",
       {
         schema: {
@@ -245,42 +247,28 @@ export function templateRoutes<
           }),
           body: PreviewTemplate,
           response: {
-            200: Type.String(),
+            200: Type.Object({ html: Type.String(), text: Type.String() }),
             401: Type.Ref("ErrorResponse"),
           },
         },
       },
       async request => {
-        try {
-          const content = request.body.content;
-          const template = Mustache.render(content, request.body.data);
-          const renderResult = mjml2html(template, {});
-          return renderResult.html;
-          return sanitizeHtml(renderResult.html, {
-            enforceHtmlBoundary: true,
-            parser: {
-              lowerCaseTags: true,
-            },
-            allowedTags: sanitizeHtml.defaults.allowedTags.concat([
-              "img",
-              "html",
-              "head",
-              "body",
-              "style",
-              "meta",
-              "title",
-              "link",
-              "thead",
-            ]),
-            allowedAttributes: {
-              "*": ["*"],
-            },
-          });
-          return renderResult.html;
-        } catch (error) {
-          console.error("Error rendering template:", error);
+        const templateCompiler = createTemplateCompiler(async () => undefined, "");
+        const resolvedTemplate = await templateCompiler.resolveTemplate(
+          { type: "direct", content: request.body.content },
+          request.body.data
+        );
+
+        const html = resolvedTemplate.html;
+        const text = resolvedTemplate.text;
+        const errors = resolvedTemplate.errors;
+
+        if (errors) {
+          console.error("Error rendering template:", errors);
           throw createError(500, "Error rendering template");
         }
+
+        return { html, text };
       }
     );
   });
