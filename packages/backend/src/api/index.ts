@@ -76,4 +76,5 @@ export function registerRoutes<
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
   router.route("/tenants", tenantRoutes);
   router.route("/profile", profileRoutes);
+  router.route("/webhooks", webhookRoutes, false, true);
 }

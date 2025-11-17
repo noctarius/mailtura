@@ -5,7 +5,7 @@ services:
     container_name: mailtura
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: packages/backend/Dockerfile-dev
     ports:
       - '3000:3000'
     depends_on:
@@ -16,6 +16,14 @@ services:
       - 'TEMPORAL_ADDRESS=temporal:7233'
       - 'TEMPORAL_TASK_QUEUE=mailtura'
       - 'MAILTURA_AUTH_SECRET=SomeRandomLongSecurityKey'
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ..
+      dockerfile: packages/frontend/Dockerfile-dev
+    ports:
+      - '5173:5173'
 
   worker:
     container_name: temporal-worker
@@ -30,6 +38,20 @@ services:
       - 'TEMPORAL_NAMESPACE=default'
       - 'TEMPORAL_TASK_QUEUE=mailtura'
       - 'API_BASE_URL=http://mailtura:3000/api/v1'
+
+  caddy:
+    container_name: caddy
+    image: caddy:latest
+    ports:
+      - '80:80'
+      - '443:443'
+    depends_on:
+      - mailtura
+      - frontend
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy/data:/data
+      - ./caddy/config:/config
 
   postgresql:
     container_name: postgres
