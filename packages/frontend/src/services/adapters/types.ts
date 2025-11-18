@@ -1,5 +1,5 @@
-import { HttpMethod, PathsWithMethod } from "openapi-typescript-helpers";
-import { paths } from "../../../generated/api/mailtura.js";
+import type { HttpMethod, PathsWithMethod } from "openapi-typescript-helpers";
+import type { paths } from "../../../generated/api/mailtura.js";
 import { Record } from "typebox";
 import { useMutation } from "@tanstack/solid-query";
 

@@ -11,7 +11,13 @@ import * as cheerio from "cheerio";
 import mjml2html from "mjml";
 import htmlnano from "htmlnano";
 import { Liquid, type Template as LiquidTemplate } from "liquidjs";
-import { LiquidErrors } from "liquidjs/dist/util/index.js";
+import { LiquidError, RenderError } from "liquidjs/dist/util/error.js";
+
+declare class LiquidErrors extends LiquidError {
+  errors: RenderError[];
+  constructor(errors: RenderError[]);
+  static is(obj: any): obj is LiquidErrors;
+}
 
 const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/g;
 
