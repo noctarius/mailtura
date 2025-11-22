@@ -10,24 +10,19 @@ import { convert } from "html-to-text";
 import * as cheerio from "cheerio";
 import mjml2html from "mjml";
 import htmlnano from "htmlnano";
-import { Liquid, type Template as LiquidTemplate } from "liquidjs";
-import { LiquidError, RenderError } from "liquidjs/dist/util/error.js";
+import { Liquid, LiquidError, RenderError, type Template as LiquidTemplate } from "liquidjs";
+import { v7 } from "uuid";
+import { joinPath } from "@mailtura/rpcmodel/lib/helpers/index.js";
 
 declare class LiquidErrors extends LiquidError {
   errors: RenderError[];
-  constructor(errors: RenderError[]);
-  static is(obj: any): obj is LiquidErrors;
 }
+
+const isLiquidErrors = (e: unknown): e is LiquidErrors => e instanceof LiquidError && "errors" in e;
 
 const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/g;
 
 type TemplateFunction<T> = (context: T) => string;
-
-const isTemplateError = <T>(
-  templateOrError: T | { errors: TemplateError[] }
-): templateOrError is { errors: TemplateError[] } => {
-  return templateOrError && typeof templateOrError === "object" && "errors" in templateOrError;
-};
 
 interface ApplicableTemplate<T extends Record<string, any> = any> {
   html: TemplateFunction<T>;
@@ -35,8 +30,11 @@ interface ApplicableTemplate<T extends Record<string, any> = any> {
 }
 
 interface UrlProxy {
+  id: string;
   from: string;
   to: string;
+  contactId?: string;
+  position: number;
 }
 
 interface ProxyingResult {
@@ -74,6 +72,17 @@ export function createTemplateCompiler(templateResolver: TemplateResolver, apiBa
   return new TemplateCompilerImpl(templateResolver, apiBase);
 }
 
+export function isTemplateError<T>(
+  templateOrError: T | { errors: TemplateError[] }
+): templateOrError is { errors: TemplateError[] } {
+  return (
+    templateOrError &&
+    typeof templateOrError === "object" &&
+    "errors" in templateOrError &&
+    templateOrError.errors?.length > 0
+  );
+}
+
 class TemplateCompilerImpl implements TemplateCompiler {
   readonly #templateCache = new Cacheable();
   readonly #templateResolver: TemplateResolver;
@@ -107,7 +116,9 @@ class TemplateCompilerImpl implements TemplateCompiler {
     return { ...(await this.#renderTemplate(compiledTemplate, substitutions)), errors: undefined };
   }
 
-  registerMjmlComponent(name: string, component: string): void {}
+  registerMjmlComponent(name: string, component: string): void {
+
+  }
 
   async #renderTemplate<T extends Record<string, any>>(template: ApplicableTemplate<T>, substitutions: T) {
     // Resolve the actual templates
@@ -117,7 +128,11 @@ class TemplateCompilerImpl implements TemplateCompiler {
     const proxiedHtml = this.#proxyHtmlUrls(html);
     const proxiedText = this.#proxyTextUrls(text ?? convert(html, { wordwrap: 120 }));
 
-    const minifiedHtml = await htmlnano.process(proxiedHtml.content, { removeComments: "safe" });
+    const minifiedHtml = await htmlnano.process(proxiedHtml.content, {
+      removeComments: "safe",
+      minifyCss: false,
+      minifySvg: false,
+    });
 
     return {
       html: minifiedHtml.html,
@@ -127,30 +142,35 @@ class TemplateCompilerImpl implements TemplateCompiler {
     };
   }
 
-  #generateProxyUrl(url: string, contactId?: string): string {
-    return "";
+  #generateProxyUrl(url: string | undefined, position: number, contactId?: string): UrlProxy | undefined {
+    if (!url || url.startsWith("http")) return undefined;
+
+    const id = v7();
+    const proxyUrl = joinPath(this.#apiBase, "tracking", id);
+    return {
+      id,
+      from: url,
+      to: proxyUrl,
+      position,
+      contactId,
+    };
   }
 
   #proxyHtmlUrls(html: string, contactId?: string): ProxyingResult {
     const urlRelocations: UrlProxy[] = [];
 
     const $ = cheerio.load(html);
-    $("a").each((_, el) => {
+    $("a, img").each((pos, el) => {
       const element = $(el);
       const href = element.attr("href");
-      if (!href || href.startsWith("http")) return;
-      const relocatedUrl = this.#generateProxyUrl(href, contactId);
-      urlRelocations.push({ from: href, to: relocatedUrl });
-      element.attr("href", relocatedUrl);
-    });
-
-    $("img").each((_, el) => {
-      const element = $(el);
       const src = element.attr("src");
-      if (!src || src.startsWith("http")) return;
-      const relocatedUrl = this.#generateProxyUrl(src, contactId);
-      urlRelocations.push({ from: src, to: relocatedUrl });
-      element.attr("src", relocatedUrl);
+
+      const from = href || src;
+      const urlProxy = this.#generateProxyUrl(from, pos, contactId);
+      if (!urlProxy) return;
+
+      urlRelocations.push(urlProxy);
+      element.attr(href ? "href" : "src", urlProxy.to);
     });
 
     return { content: $.html(), urlRelocations };
@@ -161,7 +181,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
 
     const matches = text.matchAll(urlRegex);
     const parts = matches.reduce(
-      (state, match) => {
+      (state, match, pos) => {
         const url = match[0];
         const startIndex = match.index;
         const endIndex = match.index + url.length;
@@ -170,9 +190,13 @@ class TemplateCompilerImpl implements TemplateCompiler {
           state.segments.push(text.slice(state.startIndex, startIndex));
         }
 
-        const relocatedUrl = this.#generateProxyUrl(url, contactId);
-        urlRelocations.push({ from: url, to: relocatedUrl });
-        state.segments.push(relocatedUrl);
+        const proxyUrl = this.#generateProxyUrl(url, pos, contactId);
+        if (proxyUrl) {
+          urlRelocations.push(proxyUrl);
+          state.segments.push(proxyUrl.to);
+        } else {
+          state.segments.push(url);
+        }
 
         state.startIndex = endIndex;
         return state;
@@ -246,7 +270,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
     // We need to precompile the Liquid template twice to get syntax errors at the correct location
     const stage1 = this.#compileLiquidTemplate(template);
     const stage2 = this.#compileMjmlTemplate(template);
-    if (stage1.errors || stage2.errors) {
+    if ((stage1.errors && stage1.errors?.length > 0) || (stage2.errors && stage2.errors?.length > 0)) {
       return {
         errors: [...(stage1.errors ?? []), ...(stage2.errors ?? [])].sort((a, b) =>
           a.line === b.line ? 0 : a.line < b.line ? -1 : 1
@@ -263,7 +287,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
     try {
       return { engine: liquid, template: liquid.parse(template), errors: undefined };
     } catch (e) {
-      if (!LiquidErrors.is(e)) {
+      if (!isLiquidErrors(e)) {
         throw e;
       }
       return {
@@ -284,11 +308,11 @@ class TemplateCompilerImpl implements TemplateCompiler {
 
   #compileMjmlTemplate(template: string): { template: string; errors?: TemplateError[] } {
     const parserResult = mjml2html(template, { validationLevel: "strict" });
-    if (!parserResult.errors || parserResult.errors.length === 0) {
+    if (!parserResult.errors || parserResult.errors.length > 0) {
       return { template: parserResult.html, errors: undefined };
     }
     return {
-      template: "",
+      template: parserResult.html,
       errors: parserResult.errors.map(e => ({
         type: "mjml",
         line: e.line,

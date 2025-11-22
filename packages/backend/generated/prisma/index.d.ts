@@ -128,6 +128,16 @@ export type mail_logs = $Result.DefaultSelection<Prisma.$mail_logsPayload>
  * 
  */
 export type webhooks = $Result.DefaultSelection<Prisma.$webhooksPayload>
+/**
+ * Model mail_sendings
+ * 
+ */
+export type mail_sendings = $Result.DefaultSelection<Prisma.$mail_sendingsPayload>
+/**
+ * Model mail_url_proxies
+ * 
+ */
+export type mail_url_proxies = $Result.DefaultSelection<Prisma.$mail_url_proxiesPayload>
 
 /**
  * Enums
@@ -598,6 +608,26 @@ export class PrismaClient<
     * ```
     */
   get webhooks(): Prisma.webhooksDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mail_sendings`: Exposes CRUD operations for the **mail_sendings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mail_sendings
+    * const mail_sendings = await prisma.mail_sendings.findMany()
+    * ```
+    */
+  get mail_sendings(): Prisma.mail_sendingsDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.mail_url_proxies`: Exposes CRUD operations for the **mail_url_proxies** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Mail_url_proxies
+    * const mail_url_proxies = await prisma.mail_url_proxies.findMany()
+    * ```
+    */
+  get mail_url_proxies(): Prisma.mail_url_proxiesDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1061,7 +1091,9 @@ export namespace Prisma {
     roles: 'roles',
     mail_configs: 'mail_configs',
     mail_logs: 'mail_logs',
-    webhooks: 'webhooks'
+    webhooks: 'webhooks',
+    mail_sendings: 'mail_sendings',
+    mail_url_proxies: 'mail_url_proxies'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1080,7 +1112,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks"
+      modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_url_proxies"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2786,6 +2818,154 @@ export namespace Prisma {
           }
         }
       }
+      mail_sendings: {
+        payload: Prisma.$mail_sendingsPayload<ExtArgs>
+        fields: Prisma.mail_sendingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.mail_sendingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.mail_sendingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          findFirst: {
+            args: Prisma.mail_sendingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.mail_sendingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          findMany: {
+            args: Prisma.mail_sendingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>[]
+          }
+          create: {
+            args: Prisma.mail_sendingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          createMany: {
+            args: Prisma.mail_sendingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.mail_sendingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>[]
+          }
+          delete: {
+            args: Prisma.mail_sendingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          update: {
+            args: Prisma.mail_sendingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.mail_sendingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.mail_sendingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.mail_sendingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.mail_sendingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_sendingsPayload>
+          }
+          aggregate: {
+            args: Prisma.Mail_sendingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMail_sendings>
+          }
+          groupBy: {
+            args: Prisma.mail_sendingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Mail_sendingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.mail_sendingsCountArgs<ExtArgs>
+            result: $Utils.Optional<Mail_sendingsCountAggregateOutputType> | number
+          }
+        }
+      }
+      mail_url_proxies: {
+        payload: Prisma.$mail_url_proxiesPayload<ExtArgs>
+        fields: Prisma.mail_url_proxiesFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.mail_url_proxiesFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.mail_url_proxiesFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          findFirst: {
+            args: Prisma.mail_url_proxiesFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.mail_url_proxiesFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          findMany: {
+            args: Prisma.mail_url_proxiesFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>[]
+          }
+          create: {
+            args: Prisma.mail_url_proxiesCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          createMany: {
+            args: Prisma.mail_url_proxiesCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.mail_url_proxiesCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>[]
+          }
+          delete: {
+            args: Prisma.mail_url_proxiesDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          update: {
+            args: Prisma.mail_url_proxiesUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          deleteMany: {
+            args: Prisma.mail_url_proxiesDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.mail_url_proxiesUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.mail_url_proxiesUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>[]
+          }
+          upsert: {
+            args: Prisma.mail_url_proxiesUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$mail_url_proxiesPayload>
+          }
+          aggregate: {
+            args: Prisma.Mail_url_proxiesAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMail_url_proxies>
+          }
+          groupBy: {
+            args: Prisma.mail_url_proxiesGroupByArgs<ExtArgs>
+            result: $Utils.Optional<Mail_url_proxiesGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.mail_url_proxiesCountArgs<ExtArgs>
+            result: $Utils.Optional<Mail_url_proxiesCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2905,6 +3085,8 @@ export namespace Prisma {
     mail_configs?: mail_configsOmit
     mail_logs?: mail_logsOmit
     webhooks?: webhooksOmit
+    mail_sendings?: mail_sendingsOmit
+    mail_url_proxies?: mail_url_proxiesOmit
   }
 
   /* Types for Logging */
@@ -29589,6 +29771,2022 @@ export namespace Prisma {
 
 
   /**
+   * Model mail_sendings
+   */
+
+  export type AggregateMail_sendings = {
+    _count: Mail_sendingsCountAggregateOutputType | null
+    _min: Mail_sendingsMinAggregateOutputType | null
+    _max: Mail_sendingsMaxAggregateOutputType | null
+  }
+
+  export type Mail_sendingsMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+  }
+
+  export type Mail_sendingsMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+  }
+
+  export type Mail_sendingsCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    _all: number
+  }
+
+
+  export type Mail_sendingsMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+  }
+
+  export type Mail_sendingsMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+  }
+
+  export type Mail_sendingsCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    _all?: true
+  }
+
+  export type Mail_sendingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_sendings to aggregate.
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_sendings to fetch.
+     */
+    orderBy?: mail_sendingsOrderByWithRelationInput | mail_sendingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: mail_sendingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_sendings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_sendings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned mail_sendings
+    **/
+    _count?: true | Mail_sendingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Mail_sendingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Mail_sendingsMaxAggregateInputType
+  }
+
+  export type GetMail_sendingsAggregateType<T extends Mail_sendingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateMail_sendings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMail_sendings[P]>
+      : GetScalarType<T[P], AggregateMail_sendings[P]>
+  }
+
+
+
+
+  export type mail_sendingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: mail_sendingsWhereInput
+    orderBy?: mail_sendingsOrderByWithAggregationInput | mail_sendingsOrderByWithAggregationInput[]
+    by: Mail_sendingsScalarFieldEnum[] | Mail_sendingsScalarFieldEnum
+    having?: mail_sendingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Mail_sendingsCountAggregateInputType | true
+    _min?: Mail_sendingsMinAggregateInputType
+    _max?: Mail_sendingsMaxAggregateInputType
+  }
+
+  export type Mail_sendingsGroupByOutputType = {
+    id: string
+    tenant_id: string
+    _count: Mail_sendingsCountAggregateOutputType | null
+    _min: Mail_sendingsMinAggregateOutputType | null
+    _max: Mail_sendingsMaxAggregateOutputType | null
+  }
+
+  type GetMail_sendingsGroupByPayload<T extends mail_sendingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Mail_sendingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Mail_sendingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Mail_sendingsGroupByOutputType[P]>
+            : GetScalarType<T[P], Mail_sendingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type mail_sendingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+  }, ExtArgs["result"]["mail_sendings"]>
+
+  export type mail_sendingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+  }, ExtArgs["result"]["mail_sendings"]>
+
+  export type mail_sendingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+  }, ExtArgs["result"]["mail_sendings"]>
+
+  export type mail_sendingsSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+  }
+
+  export type mail_sendingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id", ExtArgs["result"]["mail_sendings"]>
+
+  export type $mail_sendingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "mail_sendings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+    }, ExtArgs["result"]["mail_sendings"]>
+    composites: {}
+  }
+
+  type mail_sendingsGetPayload<S extends boolean | null | undefined | mail_sendingsDefaultArgs> = $Result.GetResult<Prisma.$mail_sendingsPayload, S>
+
+  type mail_sendingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<mail_sendingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: Mail_sendingsCountAggregateInputType | true
+    }
+
+  export interface mail_sendingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['mail_sendings'], meta: { name: 'mail_sendings' } }
+    /**
+     * Find zero or one Mail_sendings that matches the filter.
+     * @param {mail_sendingsFindUniqueArgs} args - Arguments to find a Mail_sendings
+     * @example
+     * // Get one Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends mail_sendingsFindUniqueArgs>(args: SelectSubset<T, mail_sendingsFindUniqueArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Mail_sendings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {mail_sendingsFindUniqueOrThrowArgs} args - Arguments to find a Mail_sendings
+     * @example
+     * // Get one Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends mail_sendingsFindUniqueOrThrowArgs>(args: SelectSubset<T, mail_sendingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_sendings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsFindFirstArgs} args - Arguments to find a Mail_sendings
+     * @example
+     * // Get one Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends mail_sendingsFindFirstArgs>(args?: SelectSubset<T, mail_sendingsFindFirstArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_sendings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsFindFirstOrThrowArgs} args - Arguments to find a Mail_sendings
+     * @example
+     * // Get one Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends mail_sendingsFindFirstOrThrowArgs>(args?: SelectSubset<T, mail_sendingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Mail_sendings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findMany()
+     * 
+     * // Get first 10 Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mail_sendingsWithIdOnly = await prisma.mail_sendings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends mail_sendingsFindManyArgs>(args?: SelectSubset<T, mail_sendingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Mail_sendings.
+     * @param {mail_sendingsCreateArgs} args - Arguments to create a Mail_sendings.
+     * @example
+     * // Create one Mail_sendings
+     * const Mail_sendings = await prisma.mail_sendings.create({
+     *   data: {
+     *     // ... data to create a Mail_sendings
+     *   }
+     * })
+     * 
+     */
+    create<T extends mail_sendingsCreateArgs>(args: SelectSubset<T, mail_sendingsCreateArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Mail_sendings.
+     * @param {mail_sendingsCreateManyArgs} args - Arguments to create many Mail_sendings.
+     * @example
+     * // Create many Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends mail_sendingsCreateManyArgs>(args?: SelectSubset<T, mail_sendingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Mail_sendings and returns the data saved in the database.
+     * @param {mail_sendingsCreateManyAndReturnArgs} args - Arguments to create many Mail_sendings.
+     * @example
+     * // Create many Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Mail_sendings and only return the `id`
+     * const mail_sendingsWithIdOnly = await prisma.mail_sendings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends mail_sendingsCreateManyAndReturnArgs>(args?: SelectSubset<T, mail_sendingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Mail_sendings.
+     * @param {mail_sendingsDeleteArgs} args - Arguments to delete one Mail_sendings.
+     * @example
+     * // Delete one Mail_sendings
+     * const Mail_sendings = await prisma.mail_sendings.delete({
+     *   where: {
+     *     // ... filter to delete one Mail_sendings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends mail_sendingsDeleteArgs>(args: SelectSubset<T, mail_sendingsDeleteArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Mail_sendings.
+     * @param {mail_sendingsUpdateArgs} args - Arguments to update one Mail_sendings.
+     * @example
+     * // Update one Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends mail_sendingsUpdateArgs>(args: SelectSubset<T, mail_sendingsUpdateArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Mail_sendings.
+     * @param {mail_sendingsDeleteManyArgs} args - Arguments to filter Mail_sendings to delete.
+     * @example
+     * // Delete a few Mail_sendings
+     * const { count } = await prisma.mail_sendings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends mail_sendingsDeleteManyArgs>(args?: SelectSubset<T, mail_sendingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_sendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends mail_sendingsUpdateManyArgs>(args: SelectSubset<T, mail_sendingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_sendings and returns the data updated in the database.
+     * @param {mail_sendingsUpdateManyAndReturnArgs} args - Arguments to update many Mail_sendings.
+     * @example
+     * // Update many Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Mail_sendings and only return the `id`
+     * const mail_sendingsWithIdOnly = await prisma.mail_sendings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends mail_sendingsUpdateManyAndReturnArgs>(args: SelectSubset<T, mail_sendingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Mail_sendings.
+     * @param {mail_sendingsUpsertArgs} args - Arguments to update or create a Mail_sendings.
+     * @example
+     * // Update or create a Mail_sendings
+     * const mail_sendings = await prisma.mail_sendings.upsert({
+     *   create: {
+     *     // ... data to create a Mail_sendings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mail_sendings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends mail_sendingsUpsertArgs>(args: SelectSubset<T, mail_sendingsUpsertArgs<ExtArgs>>): Prisma__mail_sendingsClient<$Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Mail_sendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsCountArgs} args - Arguments to filter Mail_sendings to count.
+     * @example
+     * // Count the number of Mail_sendings
+     * const count = await prisma.mail_sendings.count({
+     *   where: {
+     *     // ... the filter for the Mail_sendings we want to count
+     *   }
+     * })
+    **/
+    count<T extends mail_sendingsCountArgs>(
+      args?: Subset<T, mail_sendingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Mail_sendingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mail_sendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Mail_sendingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Mail_sendingsAggregateArgs>(args: Subset<T, Mail_sendingsAggregateArgs>): Prisma.PrismaPromise<GetMail_sendingsAggregateType<T>>
+
+    /**
+     * Group by Mail_sendings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_sendingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends mail_sendingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: mail_sendingsGroupByArgs['orderBy'] }
+        : { orderBy?: mail_sendingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, mail_sendingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMail_sendingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the mail_sendings model
+   */
+  readonly fields: mail_sendingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for mail_sendings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__mail_sendingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the mail_sendings model
+   */
+  interface mail_sendingsFieldRefs {
+    readonly id: FieldRef<"mail_sendings", 'String'>
+    readonly tenant_id: FieldRef<"mail_sendings", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * mail_sendings findUnique
+   */
+  export type mail_sendingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_sendings to fetch.
+     */
+    where: mail_sendingsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings findUniqueOrThrow
+   */
+  export type mail_sendingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_sendings to fetch.
+     */
+    where: mail_sendingsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings findFirst
+   */
+  export type mail_sendingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_sendings to fetch.
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_sendings to fetch.
+     */
+    orderBy?: mail_sendingsOrderByWithRelationInput | mail_sendingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_sendings.
+     */
+    cursor?: mail_sendingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_sendings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_sendings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_sendings.
+     */
+    distinct?: Mail_sendingsScalarFieldEnum | Mail_sendingsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings findFirstOrThrow
+   */
+  export type mail_sendingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_sendings to fetch.
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_sendings to fetch.
+     */
+    orderBy?: mail_sendingsOrderByWithRelationInput | mail_sendingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_sendings.
+     */
+    cursor?: mail_sendingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_sendings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_sendings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_sendings.
+     */
+    distinct?: Mail_sendingsScalarFieldEnum | Mail_sendingsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings findMany
+   */
+  export type mail_sendingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_sendings to fetch.
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_sendings to fetch.
+     */
+    orderBy?: mail_sendingsOrderByWithRelationInput | mail_sendingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing mail_sendings.
+     */
+    cursor?: mail_sendingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_sendings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_sendings.
+     */
+    skip?: number
+    distinct?: Mail_sendingsScalarFieldEnum | Mail_sendingsScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings create
+   */
+  export type mail_sendingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a mail_sendings.
+     */
+    data: XOR<mail_sendingsCreateInput, mail_sendingsUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings createMany
+   */
+  export type mail_sendingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many mail_sendings.
+     */
+    data: mail_sendingsCreateManyInput | mail_sendingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_sendings createManyAndReturn
+   */
+  export type mail_sendingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many mail_sendings.
+     */
+    data: mail_sendingsCreateManyInput | mail_sendingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_sendings update
+   */
+  export type mail_sendingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a mail_sendings.
+     */
+    data: XOR<mail_sendingsUpdateInput, mail_sendingsUncheckedUpdateInput>
+    /**
+     * Choose, which mail_sendings to update.
+     */
+    where: mail_sendingsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings updateMany
+   */
+  export type mail_sendingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update mail_sendings.
+     */
+    data: XOR<mail_sendingsUpdateManyMutationInput, mail_sendingsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_sendings to update
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * Limit how many mail_sendings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_sendings updateManyAndReturn
+   */
+  export type mail_sendingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * The data used to update mail_sendings.
+     */
+    data: XOR<mail_sendingsUpdateManyMutationInput, mail_sendingsUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_sendings to update
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * Limit how many mail_sendings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_sendings upsert
+   */
+  export type mail_sendingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the mail_sendings to update in case it exists.
+     */
+    where: mail_sendingsWhereUniqueInput
+    /**
+     * In case the mail_sendings found by the `where` argument doesn't exist, create a new mail_sendings with this data.
+     */
+    create: XOR<mail_sendingsCreateInput, mail_sendingsUncheckedCreateInput>
+    /**
+     * In case the mail_sendings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<mail_sendingsUpdateInput, mail_sendingsUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings delete
+   */
+  export type mail_sendingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+    /**
+     * Filter which mail_sendings to delete.
+     */
+    where: mail_sendingsWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_sendings deleteMany
+   */
+  export type mail_sendingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_sendings to delete
+     */
+    where?: mail_sendingsWhereInput
+    /**
+     * Limit how many mail_sendings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_sendings without action
+   */
+  export type mail_sendingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_sendings
+     */
+    select?: mail_sendingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_sendings
+     */
+    omit?: mail_sendingsOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model mail_url_proxies
+   */
+
+  export type AggregateMail_url_proxies = {
+    _count: Mail_url_proxiesCountAggregateOutputType | null
+    _avg: Mail_url_proxiesAvgAggregateOutputType | null
+    _sum: Mail_url_proxiesSumAggregateOutputType | null
+    _min: Mail_url_proxiesMinAggregateOutputType | null
+    _max: Mail_url_proxiesMaxAggregateOutputType | null
+  }
+
+  export type Mail_url_proxiesAvgAggregateOutputType = {
+    position: number | null
+  }
+
+  export type Mail_url_proxiesSumAggregateOutputType = {
+    position: number | null
+  }
+
+  export type Mail_url_proxiesMinAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    contact_id: string | null
+    position: number | null
+    from: string | null
+    to: string | null
+  }
+
+  export type Mail_url_proxiesMaxAggregateOutputType = {
+    id: string | null
+    tenant_id: string | null
+    contact_id: string | null
+    position: number | null
+    from: string | null
+    to: string | null
+  }
+
+  export type Mail_url_proxiesCountAggregateOutputType = {
+    id: number
+    tenant_id: number
+    contact_id: number
+    position: number
+    from: number
+    to: number
+    _all: number
+  }
+
+
+  export type Mail_url_proxiesAvgAggregateInputType = {
+    position?: true
+  }
+
+  export type Mail_url_proxiesSumAggregateInputType = {
+    position?: true
+  }
+
+  export type Mail_url_proxiesMinAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    position?: true
+    from?: true
+    to?: true
+  }
+
+  export type Mail_url_proxiesMaxAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    position?: true
+    from?: true
+    to?: true
+  }
+
+  export type Mail_url_proxiesCountAggregateInputType = {
+    id?: true
+    tenant_id?: true
+    contact_id?: true
+    position?: true
+    from?: true
+    to?: true
+    _all?: true
+  }
+
+  export type Mail_url_proxiesAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_url_proxies to aggregate.
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_url_proxies to fetch.
+     */
+    orderBy?: mail_url_proxiesOrderByWithRelationInput | mail_url_proxiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: mail_url_proxiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_url_proxies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_url_proxies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned mail_url_proxies
+    **/
+    _count?: true | Mail_url_proxiesCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: Mail_url_proxiesAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: Mail_url_proxiesSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Mail_url_proxiesMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Mail_url_proxiesMaxAggregateInputType
+  }
+
+  export type GetMail_url_proxiesAggregateType<T extends Mail_url_proxiesAggregateArgs> = {
+        [P in keyof T & keyof AggregateMail_url_proxies]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMail_url_proxies[P]>
+      : GetScalarType<T[P], AggregateMail_url_proxies[P]>
+  }
+
+
+
+
+  export type mail_url_proxiesGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: mail_url_proxiesWhereInput
+    orderBy?: mail_url_proxiesOrderByWithAggregationInput | mail_url_proxiesOrderByWithAggregationInput[]
+    by: Mail_url_proxiesScalarFieldEnum[] | Mail_url_proxiesScalarFieldEnum
+    having?: mail_url_proxiesScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Mail_url_proxiesCountAggregateInputType | true
+    _avg?: Mail_url_proxiesAvgAggregateInputType
+    _sum?: Mail_url_proxiesSumAggregateInputType
+    _min?: Mail_url_proxiesMinAggregateInputType
+    _max?: Mail_url_proxiesMaxAggregateInputType
+  }
+
+  export type Mail_url_proxiesGroupByOutputType = {
+    id: string
+    tenant_id: string
+    contact_id: string | null
+    position: number
+    from: string
+    to: string
+    _count: Mail_url_proxiesCountAggregateOutputType | null
+    _avg: Mail_url_proxiesAvgAggregateOutputType | null
+    _sum: Mail_url_proxiesSumAggregateOutputType | null
+    _min: Mail_url_proxiesMinAggregateOutputType | null
+    _max: Mail_url_proxiesMaxAggregateOutputType | null
+  }
+
+  type GetMail_url_proxiesGroupByPayload<T extends mail_url_proxiesGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<Mail_url_proxiesGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Mail_url_proxiesGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Mail_url_proxiesGroupByOutputType[P]>
+            : GetScalarType<T[P], Mail_url_proxiesGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type mail_url_proxiesSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    position?: boolean
+    from?: boolean
+    to?: boolean
+  }, ExtArgs["result"]["mail_url_proxies"]>
+
+  export type mail_url_proxiesSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    position?: boolean
+    from?: boolean
+    to?: boolean
+  }, ExtArgs["result"]["mail_url_proxies"]>
+
+  export type mail_url_proxiesSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    position?: boolean
+    from?: boolean
+    to?: boolean
+  }, ExtArgs["result"]["mail_url_proxies"]>
+
+  export type mail_url_proxiesSelectScalar = {
+    id?: boolean
+    tenant_id?: boolean
+    contact_id?: boolean
+    position?: boolean
+    from?: boolean
+    to?: boolean
+  }
+
+  export type mail_url_proxiesOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "tenant_id" | "contact_id" | "position" | "from" | "to", ExtArgs["result"]["mail_url_proxies"]>
+
+  export type $mail_url_proxiesPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "mail_url_proxies"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      tenant_id: string
+      contact_id: string | null
+      position: number
+      from: string
+      to: string
+    }, ExtArgs["result"]["mail_url_proxies"]>
+    composites: {}
+  }
+
+  type mail_url_proxiesGetPayload<S extends boolean | null | undefined | mail_url_proxiesDefaultArgs> = $Result.GetResult<Prisma.$mail_url_proxiesPayload, S>
+
+  type mail_url_proxiesCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<mail_url_proxiesFindManyArgs, 'select' | 'include' | 'distinct' | 'omit' | 'relationLoadStrategy'> & {
+      select?: Mail_url_proxiesCountAggregateInputType | true
+    }
+
+  export interface mail_url_proxiesDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['mail_url_proxies'], meta: { name: 'mail_url_proxies' } }
+    /**
+     * Find zero or one Mail_url_proxies that matches the filter.
+     * @param {mail_url_proxiesFindUniqueArgs} args - Arguments to find a Mail_url_proxies
+     * @example
+     * // Get one Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends mail_url_proxiesFindUniqueArgs>(args: SelectSubset<T, mail_url_proxiesFindUniqueArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Mail_url_proxies that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {mail_url_proxiesFindUniqueOrThrowArgs} args - Arguments to find a Mail_url_proxies
+     * @example
+     * // Get one Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends mail_url_proxiesFindUniqueOrThrowArgs>(args: SelectSubset<T, mail_url_proxiesFindUniqueOrThrowArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_url_proxies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesFindFirstArgs} args - Arguments to find a Mail_url_proxies
+     * @example
+     * // Get one Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends mail_url_proxiesFindFirstArgs>(args?: SelectSubset<T, mail_url_proxiesFindFirstArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Mail_url_proxies that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesFindFirstOrThrowArgs} args - Arguments to find a Mail_url_proxies
+     * @example
+     * // Get one Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends mail_url_proxiesFindFirstOrThrowArgs>(args?: SelectSubset<T, mail_url_proxiesFindFirstOrThrowArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Mail_url_proxies that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findMany()
+     * 
+     * // Get first 10 Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const mail_url_proxiesWithIdOnly = await prisma.mail_url_proxies.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends mail_url_proxiesFindManyArgs>(args?: SelectSubset<T, mail_url_proxiesFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Mail_url_proxies.
+     * @param {mail_url_proxiesCreateArgs} args - Arguments to create a Mail_url_proxies.
+     * @example
+     * // Create one Mail_url_proxies
+     * const Mail_url_proxies = await prisma.mail_url_proxies.create({
+     *   data: {
+     *     // ... data to create a Mail_url_proxies
+     *   }
+     * })
+     * 
+     */
+    create<T extends mail_url_proxiesCreateArgs>(args: SelectSubset<T, mail_url_proxiesCreateArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Mail_url_proxies.
+     * @param {mail_url_proxiesCreateManyArgs} args - Arguments to create many Mail_url_proxies.
+     * @example
+     * // Create many Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends mail_url_proxiesCreateManyArgs>(args?: SelectSubset<T, mail_url_proxiesCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Mail_url_proxies and returns the data saved in the database.
+     * @param {mail_url_proxiesCreateManyAndReturnArgs} args - Arguments to create many Mail_url_proxies.
+     * @example
+     * // Create many Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Mail_url_proxies and only return the `id`
+     * const mail_url_proxiesWithIdOnly = await prisma.mail_url_proxies.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends mail_url_proxiesCreateManyAndReturnArgs>(args?: SelectSubset<T, mail_url_proxiesCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Mail_url_proxies.
+     * @param {mail_url_proxiesDeleteArgs} args - Arguments to delete one Mail_url_proxies.
+     * @example
+     * // Delete one Mail_url_proxies
+     * const Mail_url_proxies = await prisma.mail_url_proxies.delete({
+     *   where: {
+     *     // ... filter to delete one Mail_url_proxies
+     *   }
+     * })
+     * 
+     */
+    delete<T extends mail_url_proxiesDeleteArgs>(args: SelectSubset<T, mail_url_proxiesDeleteArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Mail_url_proxies.
+     * @param {mail_url_proxiesUpdateArgs} args - Arguments to update one Mail_url_proxies.
+     * @example
+     * // Update one Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends mail_url_proxiesUpdateArgs>(args: SelectSubset<T, mail_url_proxiesUpdateArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Mail_url_proxies.
+     * @param {mail_url_proxiesDeleteManyArgs} args - Arguments to filter Mail_url_proxies to delete.
+     * @example
+     * // Delete a few Mail_url_proxies
+     * const { count } = await prisma.mail_url_proxies.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends mail_url_proxiesDeleteManyArgs>(args?: SelectSubset<T, mail_url_proxiesDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_url_proxies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends mail_url_proxiesUpdateManyArgs>(args: SelectSubset<T, mail_url_proxiesUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Mail_url_proxies and returns the data updated in the database.
+     * @param {mail_url_proxiesUpdateManyAndReturnArgs} args - Arguments to update many Mail_url_proxies.
+     * @example
+     * // Update many Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Mail_url_proxies and only return the `id`
+     * const mail_url_proxiesWithIdOnly = await prisma.mail_url_proxies.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends mail_url_proxiesUpdateManyAndReturnArgs>(args: SelectSubset<T, mail_url_proxiesUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Mail_url_proxies.
+     * @param {mail_url_proxiesUpsertArgs} args - Arguments to update or create a Mail_url_proxies.
+     * @example
+     * // Update or create a Mail_url_proxies
+     * const mail_url_proxies = await prisma.mail_url_proxies.upsert({
+     *   create: {
+     *     // ... data to create a Mail_url_proxies
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Mail_url_proxies we want to update
+     *   }
+     * })
+     */
+    upsert<T extends mail_url_proxiesUpsertArgs>(args: SelectSubset<T, mail_url_proxiesUpsertArgs<ExtArgs>>): Prisma__mail_url_proxiesClient<$Result.GetResult<Prisma.$mail_url_proxiesPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Mail_url_proxies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesCountArgs} args - Arguments to filter Mail_url_proxies to count.
+     * @example
+     * // Count the number of Mail_url_proxies
+     * const count = await prisma.mail_url_proxies.count({
+     *   where: {
+     *     // ... the filter for the Mail_url_proxies we want to count
+     *   }
+     * })
+    **/
+    count<T extends mail_url_proxiesCountArgs>(
+      args?: Subset<T, mail_url_proxiesCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Mail_url_proxiesCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Mail_url_proxies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Mail_url_proxiesAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Mail_url_proxiesAggregateArgs>(args: Subset<T, Mail_url_proxiesAggregateArgs>): Prisma.PrismaPromise<GetMail_url_proxiesAggregateType<T>>
+
+    /**
+     * Group by Mail_url_proxies.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {mail_url_proxiesGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends mail_url_proxiesGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: mail_url_proxiesGroupByArgs['orderBy'] }
+        : { orderBy?: mail_url_proxiesGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, mail_url_proxiesGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMail_url_proxiesGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the mail_url_proxies model
+   */
+  readonly fields: mail_url_proxiesFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for mail_url_proxies.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__mail_url_proxiesClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the mail_url_proxies model
+   */
+  interface mail_url_proxiesFieldRefs {
+    readonly id: FieldRef<"mail_url_proxies", 'String'>
+    readonly tenant_id: FieldRef<"mail_url_proxies", 'String'>
+    readonly contact_id: FieldRef<"mail_url_proxies", 'String'>
+    readonly position: FieldRef<"mail_url_proxies", 'Int'>
+    readonly from: FieldRef<"mail_url_proxies", 'String'>
+    readonly to: FieldRef<"mail_url_proxies", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * mail_url_proxies findUnique
+   */
+  export type mail_url_proxiesFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_url_proxies to fetch.
+     */
+    where: mail_url_proxiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies findUniqueOrThrow
+   */
+  export type mail_url_proxiesFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_url_proxies to fetch.
+     */
+    where: mail_url_proxiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies findFirst
+   */
+  export type mail_url_proxiesFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_url_proxies to fetch.
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_url_proxies to fetch.
+     */
+    orderBy?: mail_url_proxiesOrderByWithRelationInput | mail_url_proxiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_url_proxies.
+     */
+    cursor?: mail_url_proxiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_url_proxies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_url_proxies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_url_proxies.
+     */
+    distinct?: Mail_url_proxiesScalarFieldEnum | Mail_url_proxiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies findFirstOrThrow
+   */
+  export type mail_url_proxiesFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_url_proxies to fetch.
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_url_proxies to fetch.
+     */
+    orderBy?: mail_url_proxiesOrderByWithRelationInput | mail_url_proxiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for mail_url_proxies.
+     */
+    cursor?: mail_url_proxiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_url_proxies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_url_proxies.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of mail_url_proxies.
+     */
+    distinct?: Mail_url_proxiesScalarFieldEnum | Mail_url_proxiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies findMany
+   */
+  export type mail_url_proxiesFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter, which mail_url_proxies to fetch.
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of mail_url_proxies to fetch.
+     */
+    orderBy?: mail_url_proxiesOrderByWithRelationInput | mail_url_proxiesOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing mail_url_proxies.
+     */
+    cursor?: mail_url_proxiesWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` mail_url_proxies from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` mail_url_proxies.
+     */
+    skip?: number
+    distinct?: Mail_url_proxiesScalarFieldEnum | Mail_url_proxiesScalarFieldEnum[]
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies create
+   */
+  export type mail_url_proxiesCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * The data needed to create a mail_url_proxies.
+     */
+    data: XOR<mail_url_proxiesCreateInput, mail_url_proxiesUncheckedCreateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies createMany
+   */
+  export type mail_url_proxiesCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many mail_url_proxies.
+     */
+    data: mail_url_proxiesCreateManyInput | mail_url_proxiesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_url_proxies createManyAndReturn
+   */
+  export type mail_url_proxiesCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * The data used to create many mail_url_proxies.
+     */
+    data: mail_url_proxiesCreateManyInput | mail_url_proxiesCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * mail_url_proxies update
+   */
+  export type mail_url_proxiesUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * The data needed to update a mail_url_proxies.
+     */
+    data: XOR<mail_url_proxiesUpdateInput, mail_url_proxiesUncheckedUpdateInput>
+    /**
+     * Choose, which mail_url_proxies to update.
+     */
+    where: mail_url_proxiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies updateMany
+   */
+  export type mail_url_proxiesUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update mail_url_proxies.
+     */
+    data: XOR<mail_url_proxiesUpdateManyMutationInput, mail_url_proxiesUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_url_proxies to update
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * Limit how many mail_url_proxies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_url_proxies updateManyAndReturn
+   */
+  export type mail_url_proxiesUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * The data used to update mail_url_proxies.
+     */
+    data: XOR<mail_url_proxiesUpdateManyMutationInput, mail_url_proxiesUncheckedUpdateManyInput>
+    /**
+     * Filter which mail_url_proxies to update
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * Limit how many mail_url_proxies to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_url_proxies upsert
+   */
+  export type mail_url_proxiesUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * The filter to search for the mail_url_proxies to update in case it exists.
+     */
+    where: mail_url_proxiesWhereUniqueInput
+    /**
+     * In case the mail_url_proxies found by the `where` argument doesn't exist, create a new mail_url_proxies with this data.
+     */
+    create: XOR<mail_url_proxiesCreateInput, mail_url_proxiesUncheckedCreateInput>
+    /**
+     * In case the mail_url_proxies was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<mail_url_proxiesUpdateInput, mail_url_proxiesUncheckedUpdateInput>
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies delete
+   */
+  export type mail_url_proxiesDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+    /**
+     * Filter which mail_url_proxies to delete.
+     */
+    where: mail_url_proxiesWhereUniqueInput
+    relationLoadStrategy?: RelationLoadStrategy
+  }
+
+  /**
+   * mail_url_proxies deleteMany
+   */
+  export type mail_url_proxiesDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which mail_url_proxies to delete
+     */
+    where?: mail_url_proxiesWhereInput
+    /**
+     * Limit how many mail_url_proxies to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * mail_url_proxies without action
+   */
+  export type mail_url_proxiesDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the mail_url_proxies
+     */
+    select?: mail_url_proxiesSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the mail_url_proxies
+     */
+    omit?: mail_url_proxiesOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -29977,6 +32175,26 @@ export namespace Prisma {
   };
 
   export type WebhooksScalarFieldEnum = (typeof WebhooksScalarFieldEnum)[keyof typeof WebhooksScalarFieldEnum]
+
+
+  export const Mail_sendingsScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id'
+  };
+
+  export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
+
+
+  export const Mail_url_proxiesScalarFieldEnum: {
+    id: 'id',
+    tenant_id: 'tenant_id',
+    contact_id: 'contact_id',
+    position: 'position',
+    from: 'from',
+    to: 'to'
+  };
+
+  export type Mail_url_proxiesScalarFieldEnum = (typeof Mail_url_proxiesScalarFieldEnum)[keyof typeof Mail_url_proxiesScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -32106,6 +34324,102 @@ export namespace Prisma {
     tenant_id?: UuidWithAggregatesFilter<"webhooks"> | string
     mail_config_id?: UuidWithAggregatesFilter<"webhooks"> | string
     provider_id?: StringWithAggregatesFilter<"webhooks"> | string
+  }
+
+  export type mail_sendingsWhereInput = {
+    AND?: mail_sendingsWhereInput | mail_sendingsWhereInput[]
+    OR?: mail_sendingsWhereInput[]
+    NOT?: mail_sendingsWhereInput | mail_sendingsWhereInput[]
+    id?: UuidFilter<"mail_sendings"> | string
+    tenant_id?: UuidFilter<"mail_sendings"> | string
+  }
+
+  export type mail_sendingsOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+  }
+
+  export type mail_sendingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: mail_sendingsWhereInput | mail_sendingsWhereInput[]
+    OR?: mail_sendingsWhereInput[]
+    NOT?: mail_sendingsWhereInput | mail_sendingsWhereInput[]
+    tenant_id?: UuidFilter<"mail_sendings"> | string
+  }, "id">
+
+  export type mail_sendingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    _count?: mail_sendingsCountOrderByAggregateInput
+    _max?: mail_sendingsMaxOrderByAggregateInput
+    _min?: mail_sendingsMinOrderByAggregateInput
+  }
+
+  export type mail_sendingsScalarWhereWithAggregatesInput = {
+    AND?: mail_sendingsScalarWhereWithAggregatesInput | mail_sendingsScalarWhereWithAggregatesInput[]
+    OR?: mail_sendingsScalarWhereWithAggregatesInput[]
+    NOT?: mail_sendingsScalarWhereWithAggregatesInput | mail_sendingsScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"mail_sendings"> | string
+    tenant_id?: UuidWithAggregatesFilter<"mail_sendings"> | string
+  }
+
+  export type mail_url_proxiesWhereInput = {
+    AND?: mail_url_proxiesWhereInput | mail_url_proxiesWhereInput[]
+    OR?: mail_url_proxiesWhereInput[]
+    NOT?: mail_url_proxiesWhereInput | mail_url_proxiesWhereInput[]
+    id?: UuidFilter<"mail_url_proxies"> | string
+    tenant_id?: UuidFilter<"mail_url_proxies"> | string
+    contact_id?: UuidNullableFilter<"mail_url_proxies"> | string | null
+    position?: IntFilter<"mail_url_proxies"> | number
+    from?: StringFilter<"mail_url_proxies"> | string
+    to?: StringFilter<"mail_url_proxies"> | string
+  }
+
+  export type mail_url_proxiesOrderByWithRelationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrderInput | SortOrder
+    position?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+  }
+
+  export type mail_url_proxiesWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: mail_url_proxiesWhereInput | mail_url_proxiesWhereInput[]
+    OR?: mail_url_proxiesWhereInput[]
+    NOT?: mail_url_proxiesWhereInput | mail_url_proxiesWhereInput[]
+    tenant_id?: UuidFilter<"mail_url_proxies"> | string
+    contact_id?: UuidNullableFilter<"mail_url_proxies"> | string | null
+    position?: IntFilter<"mail_url_proxies"> | number
+    from?: StringFilter<"mail_url_proxies"> | string
+    to?: StringFilter<"mail_url_proxies"> | string
+  }, "id">
+
+  export type mail_url_proxiesOrderByWithAggregationInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrderInput | SortOrder
+    position?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+    _count?: mail_url_proxiesCountOrderByAggregateInput
+    _avg?: mail_url_proxiesAvgOrderByAggregateInput
+    _max?: mail_url_proxiesMaxOrderByAggregateInput
+    _min?: mail_url_proxiesMinOrderByAggregateInput
+    _sum?: mail_url_proxiesSumOrderByAggregateInput
+  }
+
+  export type mail_url_proxiesScalarWhereWithAggregatesInput = {
+    AND?: mail_url_proxiesScalarWhereWithAggregatesInput | mail_url_proxiesScalarWhereWithAggregatesInput[]
+    OR?: mail_url_proxiesScalarWhereWithAggregatesInput[]
+    NOT?: mail_url_proxiesScalarWhereWithAggregatesInput | mail_url_proxiesScalarWhereWithAggregatesInput[]
+    id?: UuidWithAggregatesFilter<"mail_url_proxies"> | string
+    tenant_id?: UuidWithAggregatesFilter<"mail_url_proxies"> | string
+    contact_id?: UuidNullableWithAggregatesFilter<"mail_url_proxies"> | string | null
+    position?: IntWithAggregatesFilter<"mail_url_proxies"> | number
+    from?: StringWithAggregatesFilter<"mail_url_proxies"> | string
+    to?: StringWithAggregatesFilter<"mail_url_proxies"> | string
   }
 
   export type tenantsCreateInput = {
@@ -34250,6 +36564,104 @@ export namespace Prisma {
     provider_id?: StringFieldUpdateOperationsInput | string
   }
 
+  export type mail_sendingsCreateInput = {
+    id?: string
+    tenant_id: string
+  }
+
+  export type mail_sendingsUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+  }
+
+  export type mail_sendingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_sendingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_sendingsCreateManyInput = {
+    id?: string
+    tenant_id: string
+  }
+
+  export type mail_sendingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_sendingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_url_proxiesCreateInput = {
+    id?: string
+    tenant_id: string
+    contact_id?: string | null
+    position: number
+    from: string
+    to: string
+  }
+
+  export type mail_url_proxiesUncheckedCreateInput = {
+    id?: string
+    tenant_id: string
+    contact_id?: string | null
+    position: number
+    from: string
+    to: string
+  }
+
+  export type mail_url_proxiesUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_url_proxiesUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_url_proxiesCreateManyInput = {
+    id?: string
+    tenant_id: string
+    contact_id?: string | null
+    position: number
+    from: string
+    to: string
+  }
+
+  export type mail_url_proxiesUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type mail_url_proxiesUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    tenant_id?: StringFieldUpdateOperationsInput | string
+    contact_id?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: IntFieldUpdateOperationsInput | number
+    from?: StringFieldUpdateOperationsInput | string
+    to?: StringFieldUpdateOperationsInput | string
+  }
+
   export type UuidFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -35845,6 +38257,56 @@ export namespace Prisma {
     tenant_id?: SortOrder
     mail_config_id?: SortOrder
     provider_id?: SortOrder
+  }
+
+  export type mail_sendingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+  }
+
+  export type mail_sendingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+  }
+
+  export type mail_sendingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+  }
+
+  export type mail_url_proxiesCountOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    position?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+  }
+
+  export type mail_url_proxiesAvgOrderByAggregateInput = {
+    position?: SortOrder
+  }
+
+  export type mail_url_proxiesMaxOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    position?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+  }
+
+  export type mail_url_proxiesMinOrderByAggregateInput = {
+    id?: SortOrder
+    tenant_id?: SortOrder
+    contact_id?: SortOrder
+    position?: SortOrder
+    from?: SortOrder
+    to?: SortOrder
+  }
+
+  export type mail_url_proxiesSumOrderByAggregateInput = {
+    position?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {

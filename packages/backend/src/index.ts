@@ -37,7 +37,7 @@ const app = Fastify()
     handlePrismaError(error);
 
     // If any other error, send a generic 500 error
-    reply.status(error.statusCode ?? 500).send({ message: error.message });
+    reply.status(error.statusCode ?? 500).send({ message: error.message, details: (error as any)?.details });
   });
 
 // Register schema types

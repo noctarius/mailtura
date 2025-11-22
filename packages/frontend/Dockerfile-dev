@@ -1,0 +1,15 @@
+FROM oven/bun:alpine AS base
+WORKDIR /opt/app
+
+FROM base AS development
+ENV DASHBOARD_BASE_URL=http://localhost
+
+RUN mkdir -p /opt/app
+COPY . /opt/app/
+RUN cd /opt/app && bun install --linker hoisted --frozen-lockfile
+RUN apk add openssl
+
+USER bun
+EXPOSE 5173/tcp
+WORKDIR /opt/app
+CMD [ "bun", "run", "vite", "--config", "packages/frontend/vite.config.ts" ]

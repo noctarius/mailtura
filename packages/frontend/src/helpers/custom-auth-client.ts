@@ -1,6 +1,7 @@
 import { createAuthClient } from "better-auth/solid";
 import { magicLinkClient, passkeyClient, twoFactorClient } from "better-auth/client/plugins";
 import { User } from "@mailtura/rpcmodel/lib/api/index.js";
+import { joinPath } from "@mailtura/rpcmodel/lib/helpers/index.js";
 
 const newAuthClient = (baseURL: string, basePath: string) => {
   return createAuthClient({
@@ -8,12 +9,6 @@ const newAuthClient = (baseURL: string, basePath: string) => {
     basePath: basePath,
     plugins: [twoFactorClient(), passkeyClient(), magicLinkClient()],
   });
-};
-
-const joinPath = (a: string, ...paths: string[]) => {
-  if (a.endsWith("/")) a = a.substring(0, a.length - 1);
-  paths = paths.map(p => (p.startsWith("/") ? p.substring(1) : p));
-  return [a, ...paths].join("/");
 };
 
 export class CustomAuthClient {

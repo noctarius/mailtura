@@ -4,7 +4,7 @@ import { usePreviewTemplateQuery } from "../services/templates/use-preview-templ
 import { createSignal } from "solid-js";
 
 const Templates = () => {
-  const [editorMode, setEditorMode] = createSignal<"visual" | "html">("visual");
+  const [editorMode, setEditorMode] = createSignal<"visual" | "code">("visual");
   const [templateIndex, setTemplateIndex] = createSignal(0);
   const [selectedTemplate, setSelectedTemplate] = createSignal("welcome");
   const [htmlContent, setHtmlContent] = createSignal(`<mjml>
@@ -107,11 +107,11 @@ const Templates = () => {
                 Visual
               </button>
               <button
-                onClick={() => setEditorMode("html")}
-                class={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${editorMode() === "html" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
+                onClick={() => setEditorMode("code")}
+                class={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${editorMode() === "code" ? "bg-white text-gray-900 shadow-sm" : "text-gray-600 hover:text-gray-900"}`}
               >
                 <Code class="w-4 h-4 inline mr-1" />
-                HTML
+                Code
               </button>
             </div>
           </div>
@@ -140,7 +140,7 @@ const Templates = () => {
 
         {/* Editor Content */}
         <div class="flex-1 flex">
-          {editorMode() === "html" ? (
+          {editorMode() === "code" ? (
             <div class="w-1/2 border-r border-gray-200">
               <MonacoEditor
                 height="100vh"
@@ -193,7 +193,7 @@ const Templates = () => {
               </div>
               {!previewTemplateQuery.isLoading && (
                 <iframe
-                  srcdoc={previewTemplateQuery.data}
+                  srcdoc={previewTemplateQuery.data?.html}
                   class="p-4 w-full h-full border-none"
                 />
               )}

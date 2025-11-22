@@ -425,6 +425,20 @@ exports.Prisma.WebhooksScalarFieldEnum = {
   provider_id: 'provider_id'
 };
 
+exports.Prisma.Mail_sendingsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id'
+};
+
+exports.Prisma.Mail_url_proxiesScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  contact_id: 'contact_id',
+  position: 'position',
+  from: 'from',
+  to: 'to'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -533,7 +547,9 @@ exports.Prisma.ModelName = {
   roles: 'roles',
   mail_configs: 'mail_configs',
   mail_logs: 'mail_logs',
-  webhooks: 'webhooks'
+  webhooks: 'webhooks',
+  mail_sendings: 'mail_sendings',
+  mail_url_proxies: 'mail_url_proxies'
 };
 
 /**

@@ -87,7 +87,7 @@ export const PreviewTemplate = //
   Type.Object(
     {
       content: Type.String(),
-      data: Type.Record(Type.String(), Type.String()),
+      data: Type.Any(),
     },
     {
       $id: "PreviewTemplate",

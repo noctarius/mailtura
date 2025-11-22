@@ -36,7 +36,6 @@ export function accountRoutes<
     },
     async (request, reply) => {
       const userId = request.params.user_id;
-
       const accounts = await prisma.accounts.findMany({
         where: {
           user_id: userId,

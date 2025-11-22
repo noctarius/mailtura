@@ -20,7 +20,8 @@
     "liquidjs": "^10.24.0",
     "mjml": "^4.17.0",
     "moment-timezone": "^0.6.0",
-    "typebox": "catalog:"
+    "typebox": "catalog:",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@eslint/js": "catalog:",

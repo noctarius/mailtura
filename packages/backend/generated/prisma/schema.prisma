@@ -465,3 +465,19 @@ model webhooks {
 
   mail_config mail_configs @relation(fields: [mail_config_id], references: [id])
 }
+
+model mail_sendings {
+  id        String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id String @db.Uuid
+}
+
+model mail_url_proxies {
+  id         String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String  @db.Uuid
+  contact_id String? @db.Uuid
+  position   Int
+  from       String
+  to         String
+
+  @@index([tenant_id, contact_id])
+}

@@ -24,11 +24,18 @@ export function usePreviewTemplateQuery({ tenantId, templateId, content }: Previ
         body: {
           content: content(),
           data: {
-            firstName: "John",
-            lastName: "Doe",
+            contacts: [
+              {
+                firstName: "John",
+                lastName: "Doe",
+              },
+              {
+                firstName: "Jane",
+                lastName: "Smith",
+              },
+            ],
           },
         },
-        parseAs: "text",
       });
 
       if (response.error) {

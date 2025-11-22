@@ -14,7 +14,7 @@ import { mapTemplate } from "../mapper.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { createError } from "../helpers.js";
 import type { Template } from "@mailtura/rpcmodel/lib/api/index.js";
-import { createTemplateCompiler } from "@mailtura/contentcompiler";
+import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompiler";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -255,9 +255,13 @@ export function templateRoutes<
       async request => {
         const templateCompiler = createTemplateCompiler(async () => undefined, "");
         const resolvedTemplate = await templateCompiler.resolveTemplate(
-          { type: "direct", content: request.body.content },
+          { type: "direct", isTemplate: true, content: request.body.content },
           request.body.data
         );
+
+        if (isTemplateError(resolvedTemplate)) {
+          throw createError(400, "Failed to compile template", resolvedTemplate.errors);
+        }
 
         const html = resolvedTemplate.html;
         const text = resolvedTemplate.text;

@@ -1034,9 +1034,7 @@ export interface paths {
                 content: {
                     "application/json": {
                         content: string;
-                        data: {
-                            [key: string]: string;
-                        };
+                        data: unknown;
                     };
                 };
             };
@@ -1047,7 +1045,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": string;
+                        "application/json": {
+                            html: string;
+                            text: string;
+                        };
                     };
                 };
                 /** @description An error response */
@@ -1841,6 +1842,53 @@ export interface paths {
                 };
             };
         };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/users/{user_id}/accounts/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    user_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["Account"][];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -2939,7 +2987,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/profile": {
+    "/api/v1/profile/": {
         parameters: {
             query?: never;
             header?: never;
@@ -3368,6 +3416,23 @@ export interface components {
             name: string;
             description?: string;
             permissions: string[];
+            /** Format: date-time */
+            createdAt: string;
+            createdBy: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        };
+        /** @description An account in the system */
+        Account: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            userId: string;
+            /** Format: uuid */
+            accountId: string;
+            providerId: string;
+            scope?: string;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
