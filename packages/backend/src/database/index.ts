@@ -26,10 +26,15 @@ import {
   type unsubscribe_source,
   type unsubscribes,
   type users,
-} from "../../generated/prisma";
+} from "../../generated/prisma/client";
 import { createError } from "../api/helpers.js";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient().$extends({
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+const prisma = new PrismaClient({ adapter }).$extends({
   query: {
     contacts: {
       async $allOperations({ operation, args, query }) {

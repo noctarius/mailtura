@@ -25,6 +25,7 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/lib/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/lib/api/index.js";
+import type { Prisma } from "../../../generated/prisma/client.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -460,7 +461,7 @@ export function contactImportRoutes<
           },
         });
 
-        const parameters: ContactImportParameters = {
+        const parameters: ContactImportParameters & { [key: string]: Prisma.InputJsonValue } = {
           file_id: newFile.id,
           list_ids: request.body.parameters.listIds,
           mapping,
@@ -473,7 +474,7 @@ export function contactImportRoutes<
             records: 0,
             finished: false,
             filename: newFile.name,
-            parameters,
+            parameters: parameters,
             created_at: UTC.now().toDate(),
             created_by: "api",
           },

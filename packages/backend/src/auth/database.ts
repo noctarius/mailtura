@@ -5,7 +5,7 @@ import {
   type DBAdapter,
   type DBAdapterDebugLogOption,
 } from "better-auth/adapters";
-import type { PrismaClient } from "../../generated/prisma";
+import type { PrismaClient } from "../../generated/prisma/client";
 import prisma from "../database/index.js";
 import { BetterAuthError, type BetterAuthOptions, type Where } from "better-auth";
 
