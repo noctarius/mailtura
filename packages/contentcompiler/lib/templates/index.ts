@@ -116,9 +116,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
     return { ...(await this.#renderTemplate(compiledTemplate, substitutions)), errors: undefined };
   }
 
-  registerMjmlComponent(name: string, component: string): void {
-
-  }
+  registerMjmlComponent(name: string, component: string): void {}
 
   async #renderTemplate<T extends Record<string, any>>(template: ApplicableTemplate<T>, substitutions: T) {
     // Resolve the actual templates
@@ -268,18 +266,26 @@ class TemplateCompilerImpl implements TemplateCompiler {
 
   #compileHtmlTemplate<T extends Record<string, any>>(template: string) {
     // We need to precompile the Liquid template twice to get syntax errors at the correct location
-    const stage1 = this.#compileLiquidTemplate(template);
-    const stage2 = this.#compileMjmlTemplate(template);
-    if ((stage1.errors && stage1.errors?.length > 0) || (stage2.errors && stage2.errors?.length > 0)) {
+    const liquid = this.#compileLiquidTemplate(template);
+    const mjml = this.#compileMjmlTemplate(template);
+    if ((liquid.errors && liquid.errors?.length > 0) || (mjml.errors && mjml.errors?.length > 0)) {
       return {
-        errors: [...(stage1.errors ?? []), ...(stage2.errors ?? [])].sort((a, b) =>
+        errors: [...(liquid.errors ?? []), ...(mjml.errors ?? [])].sort((a, b) =>
           a.line === b.line ? 0 : a.line < b.line ? -1 : 1
         ),
       };
     }
 
-    const stage3 = this.#compileLiquidTemplate(stage2.template);
-    return (context: T) => stage3.engine.renderSync(stage3.template, context ?? {});
+    const stage1 = this.#compileMjmlTemplate(this.#wrapLiquidLogic(template));
+    const stage2 = this.#compileLiquidTemplate(stage1.template);
+    return (context: T) => stage2.engine.renderSync(stage2.template, context ?? {});
+  }
+
+  #wrapLiquidLogic(template: string): string {
+    const alreadyWrapped = /<mj-raw>\s*(\{%[\s\S]*?%})\s*<\/mj-raw>/;
+    const logicTagRegex = /\{%\s*[\s\S]*?%}/g;
+    const wrap = (match: string) => (alreadyWrapped.test(match) ? match : `<mj-raw>${match}</mj-raw>`);
+    return template.replace(logicTagRegex, wrap);
   }
 
   #compileLiquidTemplate(template: string): { engine: Liquid; template: LiquidTemplate[]; errors?: TemplateError[] } {
