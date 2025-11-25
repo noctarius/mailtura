@@ -26,9 +26,9 @@ import {
   type unsubscribe_source,
   type unsubscribes,
   type users,
-} from "../../generated/prisma/client";
-import { createError } from "../api/helpers.js";
+} from "./generated/prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,

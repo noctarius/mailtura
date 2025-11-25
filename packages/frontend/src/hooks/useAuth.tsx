@@ -44,7 +44,7 @@ export const useAuthProvider = () => {
   const api = useApi();
 
   const getUserProfile = async (): Promise<User> => {
-    const response = await api.GET("/api/v1/profile");
+    const response = await api.GET("/api/v1/profile/");
     if (response.error) {
       throw new Error(response.error.message);
     }

@@ -9,11 +9,11 @@ import Auth from "./auth/plugin.js";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import registerModelSchema, { registerRoutes } from "./api/index.js";
 import { createRouter } from "./router/index.js";
-import { handlePrismaError } from "./database/index.js";
 import * as path from "node:path";
 import "./tasks/index.js";
 import { requiresInstallation } from "./helpers/requires-installation.js";
 import { installationRoutes } from "./api/handlers/installation.js";
+import { handlePrismaError } from "@mailtura/database";
 
 const app = Fastify()
   .register(Multipart, {

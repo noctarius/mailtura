@@ -7,13 +7,13 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../router/index.js";
-import prisma from "../database/index.js";
 import { type Static, Type } from "typebox";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
 import { mapUser } from "../api/mapper.js";
+import prisma from "@mailtura/database";
 
 const SignUpEmail = Type.Object({
   email: Type.String({ format: "email" }),

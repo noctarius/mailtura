@@ -1,7 +1,5 @@
-import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { Type } from "typebox";
-import { createError } from "../helpers.js";
 import { contactRoutes } from "./contacts.js";
 import type { Router } from "../../router/index.js";
 import type {
@@ -25,6 +23,8 @@ import { rolesRoutes } from "./roles.js";
 import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
 import type { Tenant } from "@mailtura/rpcmodel/lib/api/index.js";
+import prisma from "@mailtura/database";
+import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,

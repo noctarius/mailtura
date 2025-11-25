@@ -1,0 +1,35 @@
+{
+  "name": "@mailtura/database",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "lib/index.ts",
+  "types": "lib/index.ts",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@mailtura/rpcmodel": "*",
+    "@prisma/adapter-pg": "^7.0.0",
+    "@prisma/client": "^7.0.0",
+    "cacheable": "^2.1.1",
+    "handlebars": "^4.7.8",
+    "html-to-text": "^9.0.5",
+    "htmlnano": "^2.1.5",
+    "liquidjs": "^10.24.0",
+    "mjml": "^4.17.0",
+    "moment-timezone": "^0.6.0",
+    "typebox": "catalog:",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "eslint": "catalog:",
+    "prisma": "^7.0.0",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:"
+  }
+}

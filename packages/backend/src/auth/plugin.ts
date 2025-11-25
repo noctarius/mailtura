@@ -5,10 +5,10 @@ import { mailturaAdapter } from "./database.js";
 import { magicLink, openAPI, twoFactor } from "better-auth/plugins";
 import { passkey } from "better-auth/plugins/passkey";
 import { registerAuthHandler } from "./handler.js";
-import prisma from "../database/index.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
+import prisma from "@mailtura/database";
 
 declare module "fastify" {
   interface FastifyInstance {

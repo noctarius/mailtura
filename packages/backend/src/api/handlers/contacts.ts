@@ -8,10 +8,8 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapContact, mapContactImport } from "../mapper.js";
-import { createError } from "../helpers.js";
 import {
   CreateContact,
   CreateContactBatch,
@@ -25,7 +23,9 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/lib/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/lib/api/index.js";
-import type { Prisma } from "../../../generated/prisma/client.js";
+import prisma from "@mailtura/database";
+import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
+import { Prisma } from "@mailtura/database/lib/generated/prisma/client.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,

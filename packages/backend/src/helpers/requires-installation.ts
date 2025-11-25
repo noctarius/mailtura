@@ -1,4 +1,4 @@
-import prisma from "../database/index.js";
+import prisma from "@mailtura/database";
 
 export async function requiresInstallation() {
   const tenantCount = await prisma.tenants.count()

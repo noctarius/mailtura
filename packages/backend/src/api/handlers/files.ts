@@ -9,9 +9,9 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { File } from "@mailtura/rpcmodel/lib/api/index.js";
 import { Type } from "typebox";
-import prisma from "../../database/index.js";
 import { mapFile } from "../mapper.js";
-import { createError } from "../helpers.js";
+import prisma from "@mailtura/database";
+import {createError} from "@mailtura/rpcmodel/lib/api/errors.js";
 
 export function fileRoutes<
   RawServer extends RawServerBase = RawServerDefault,

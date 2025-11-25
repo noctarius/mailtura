@@ -8,9 +8,9 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
-import prisma from "../../database/index.js";
 import { mapAccount } from "../mapper.js";
 import type { Account } from "@mailtura/rpcmodel/lib/api/index.js";
+import prisma from "@mailtura/database";
 
 export function accountRoutes<
   RawServer extends RawServerBase = RawServerDefault,

@@ -12,13 +12,11 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@mailtura/contentcompiler": "*",
     "@mailtura/rpcmodel": "*",
     "@sendgrid/mail": "^8.1.6",
     "@temporalio/worker": "catalog:",
     "@temporalio/workflow": "catalog:",
-    "handlebars": "^4.7.8",
-    "html-to-text": "^9.0.5",
-    "mjml": "^4.16.1",
     "node-html-parser": "^7.0.1",
     "nodemailer": "^7.0.6",
     "papaparse": "catalog:",

@@ -8,12 +8,12 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { mapSubscriber, mapSubscriberList, unpackOptionalNullable } from "../mapper.js";
-import { createError } from "../helpers.js";
 import { CreateSubscriberList, UpdateSubscriberList } from "@mailtura/rpcmodel/lib/api/request-response.js";
 import type { Subscriber, SubscriberList } from "@mailtura/rpcmodel/lib/api/index.js";
+import prisma from "@mailtura/database";
+import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
 
 export function subscriberListRoutes<
   RawServer extends RawServerBase = RawServerDefault,

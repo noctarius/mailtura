@@ -14,7 +14,7 @@ import type {
   TenantEntity,
   UnsubscribeEntity,
   UserEntity,
-} from "../database/index.js";
+} from "@mailtura/database";
 import type {
   Account,
   ApiKey,

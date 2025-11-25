@@ -10,9 +10,9 @@ import type { Router } from "../../router/index.js";
 import { MailConfig } from "@mailtura/rpcmodel/lib/mails/index.js";
 import { type Static, Type } from "typebox";
 import { requiresInstallation } from "../../helpers/requires-installation.js";
-import prisma from "../../database/index.js";
 import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
+import prisma from "@mailtura/database";
 
 const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),

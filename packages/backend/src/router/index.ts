@@ -17,7 +17,7 @@ import type { User } from "@mailtura/rpcmodel/lib/api/index.js";
 import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
 import { hasAllPermissions } from "../auth/index.js";
 import { validateApiKey } from "../auth/apiKey.js";
-import type { ApiKeyEntity } from "../database/index.js";
+import type { ApiKeyEntity } from "@mailtura/database";
 
 declare module "fastify" {
   interface FastifyRequest {

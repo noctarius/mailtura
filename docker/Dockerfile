@@ -15,6 +15,7 @@ COPY packages/frontend/package.json /temp/prod/packages/frontend/
 COPY packages/backend/package.json /temp/prod/packages/backend/
 COPY packages/worker/package.json /temp/prod/packages/worker/
 COPY packages/contentcompiler/package.json /temp/prod/packages/contentcompiler/
+COPY packages/database/package.json /temp/prod/packages/database/
 RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production --filter="./packages/backend"
 
 FROM production AS builder
@@ -28,6 +29,8 @@ RUN rm -rf node_modules/@mailtura/rpcmodel
 COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/rpcmodel
 RUN rm -rf node_modules/@mailtura/contentcompiler
 COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/contentcompiler
+RUN rm -rf node_modules/@mailtura/database
+COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/database
 COPY --from=builder /temp/dev/packages/frontend/dist public
 COPY --from=builder /temp/dev/packages/backend/prisma prisma
 COPY --from=builder /temp/dev/packages/backend/dist .
