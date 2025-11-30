@@ -3,7 +3,7 @@ import type { FastifyInstance } from "fastify";
 import fastifyPlugin from "fastify-plugin";
 import { mailturaAdapter } from "./database.js";
 import { magicLink, openAPI, twoFactor } from "better-auth/plugins";
-import { passkey } from "better-auth/plugins/passkey";
+import { passkey } from "@better-auth/passkey";
 import { registerAuthHandler } from "./handler.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { registerCustomAuthRoutes } from "./custom-handlers.js";
