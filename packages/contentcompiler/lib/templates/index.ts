@@ -313,18 +313,22 @@ class TemplateCompilerImpl implements TemplateCompiler {
   }
 
   #compileMjmlTemplate(template: string): { template: string; errors?: TemplateError[] } {
-    const parserResult = mjml2html(template, { validationLevel: "strict" });
-    if (!parserResult.errors || parserResult.errors.length > 0) {
-      return { template: parserResult.html, errors: undefined };
+    try {
+      const parserResult = mjml2html(template, { validationLevel: "strict" });
+      if (!parserResult.errors || parserResult.errors.length > 0) {
+        return { template: parserResult.html, errors: undefined };
+      }
+      return {
+        template: parserResult.html,
+        errors: parserResult.errors.map(e => ({
+          type: "mjml",
+          line: e.line,
+          column: 0,
+          message: e.message,
+        })),
+      };
+    } catch (e: any) {
+      return { template: "", errors: [{ type: "mjml", line: 0, column: 0, message: e.toString() }] };
     }
-    return {
-      template: parserResult.html,
-      errors: parserResult.errors.map(e => ({
-        type: "mjml",
-        line: e.line,
-        column: 0,
-        message: e.message,
-      })),
-    };
   }
 }
