@@ -1,6 +1,6 @@
 interface PaginationToken {
-  // cursor
-  c: string;
+  // entity id
+  i: string | { [key: string]: string | number | boolean };
   // sorting
   s?: { [key: string]: "a" | "d" };
   // filter
@@ -34,8 +34,10 @@ interface PaginationTokenFilter {
   ge?: any;
   // not
   n?: any;
-  // contains
-  c?: any;
+  // like
+  li?: any;
+  // ilike
+  il?: any;
 }
 
 export interface PaginationFilter {
@@ -49,16 +51,24 @@ export interface PaginationFilter {
   gt?: any;
   gte?: any;
   not?: any;
-  contains?: any;
+  like?: any;
+  ilike?: any;
 }
 
 export interface Pagination {
-  cursor: string;
+  id: string | { [key: string]: string | number | boolean };
   page: number;
   pageSize: number;
   pages?: number;
   where?: { [key: string]: PaginationFilter };
   orderBy?: { [key: string]: "asc" | "desc" };
+}
+
+export interface PaginationQueryParameters {
+  cursor?: string;
+  page?: number;
+  limit?: number;
+  query?: string;
 }
 
 export function decodePaginationToken(paginationToken: string): Pagination {
@@ -67,7 +77,7 @@ export function decodePaginationToken(paginationToken: string): Pagination {
   const where = decodeWhere(token.f);
   const orderBy = decodeOrderBy(token.s);
   return {
-    cursor: token.c,
+    id: token.i,
     page: token.p,
     pages: token.pg,
     pageSize: token.ps,
@@ -80,7 +90,7 @@ export function encodePaginationToken(pagination: Pagination): string {
   const where = encodeWhere(pagination.where);
   const orderBy = encodeOrderBy(pagination.orderBy);
   const paginationToken: PaginationToken = {
-    c: pagination.cursor,
+    i: pagination.id,
     p: pagination.page,
     pg: pagination.pages,
     ps: pagination.pageSize,
@@ -125,7 +135,8 @@ const decodeWhere = (
         gt: currentFilter.g,
         gte: currentFilter.ge,
         not: currentFilter.n,
-        contains: currentFilter.c,
+        like: currentFilter.li,
+        ilike: currentFilter.il,
       };
       return acc;
     },
@@ -168,7 +179,8 @@ const encodeWhere = (
         g: currentFilter.gt,
         ge: currentFilter.gte,
         n: currentFilter.not,
-        c: currentFilter.contains,
+        li: currentFilter.like,
+        il: currentFilter.ilike,
       };
       return acc;
     },
