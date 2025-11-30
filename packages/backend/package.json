@@ -10,9 +10,10 @@
     "dev:docker": "TEMPORAL_ADDRESS=temporal:7233 TEMPORAL_TASK_QUEUE=mailtura NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bun test"
   },
   "dependencies": {
+    "@better-auth/passkey": "^1.4.3",
     "@fastify/cors": "^11.1.0",
     "@fastify/multipart": "^9.3.0",
     "@fastify/static": "^8.3.0",
@@ -29,7 +30,6 @@
     "fastify": "^5.6.1",
     "fastify-plugin": "^5.1.0",
     "mjml": "^4.16.1",
-    "mustache": "^4.2.0",
     "node-html-parser": "^7.0.1",
     "sanitize-html": "^2.17.0",
     "socket.io": "catalog:",
@@ -42,22 +42,22 @@
     "@prisma/language-server": "^7.0.0",
     "@types/bun": "^1.2.23",
     "@types/express": "^5.0.3",
+    "@types/jest": "catalog:",
     "@types/mjml": "^4.7.4",
-    "@types/mustache": "^4.2.6",
     "@types/sanitize-html": "^2.16.0",
     "@types/supertest": "^6.0.3",
     "eslint": "catalog:",
     "eslint-config-prettier": "catalog:",
+    "jest": "catalog:",
     "openapi-types": "^12.1.3",
     "prettier": "catalog:",
     "prettier-plugin-sql-cst": "^0.13.0",
     "prisma": "^7.0.0",
     "supertest": "^7.1.4",
+    "ts-jest": "catalog:",
     "tsc-watch": "^7.2.0",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:"
   },
-  "trustedDependencies": [
-    "@nestjs/core"
-  ]
+  "trustedDependencies": ["@nestjs/core"]
 }
