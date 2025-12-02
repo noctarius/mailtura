@@ -14,7 +14,6 @@ import {
   type files,
   type mail_sendings,
   type mail_url_proxies,
-  Prisma,
   PrismaClient,
   type roles,
   type subscriber_lists,
@@ -26,9 +25,10 @@ import {
   type unsubscribe_source,
   type unsubscribes,
   type users,
-} from "./generated/prisma/client";
+} from "./generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
+import { PrismaClientKnownRequestError } from "./generated/prisma/internal/prismaNamespace.js";
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -102,8 +102,8 @@ const prisma = new PrismaClient({ adapter }).$extends({
   },
 });
 
-export function handlePrismaError(err: unknown) {
-  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+export function handlePrismaError(err: any) {
+  if (err instanceof PrismaClientKnownRequestError) {
     switch (err.code) {
       case "P2002":
         throw createError(409, `Conflict: ${err.meta?.target} already exists`);

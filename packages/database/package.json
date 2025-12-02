@@ -3,7 +3,6 @@
   "version": "0.0.0",
   "type": "module",
   "main": "lib/index.ts",
-  "types": "lib/index.ts",
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -14,7 +13,7 @@
   "dependencies": {
     "@mailtura/rpcmodel": "*",
     "@prisma/adapter-pg": "^7.0.0",
-    "@prisma/client": "^7.0.0",
+    "@prisma/client": "^7.0.1",
     "cacheable": "^2.1.1",
     "handlebars": "^4.7.8",
     "html-to-text": "^9.0.5",
