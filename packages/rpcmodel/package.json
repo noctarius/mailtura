@@ -3,6 +3,14 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
+  "exports": {
+    "./*": "./lib/*"
+  },
+  "typesVersions": {
+    "*": {
+      "*": ["./lib/*"]
+    }
+  },
   "scripts": {
     "build": "tsc",
     "lint": "eslint .",

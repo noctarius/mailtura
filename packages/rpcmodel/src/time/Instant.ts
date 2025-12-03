@@ -1,7 +1,7 @@
 import moment from "moment-timezone";
-import type { Timestamp } from "./Timestamp";
-import { asTimestamp } from "./Timestamp";
-import { Timezone, UTC } from "./Timezone";
+import type { Timestamp } from "./Timestamp.js";
+import { asTimestamp } from "./Timestamp.js";
+import { Timezone, UTC } from "./Timezone.js";
 
 export type UnitOfTime = moment.DurationInputArg2;
 export type InstantSetObject = moment.MomentSetObject;

@@ -1,6 +1,6 @@
 import moment from "moment-timezone";
 import { Instant } from "./Instant.js";
-import type { Timestamp } from "./Timestamp";
+import type { Timestamp } from "./Timestamp.js";
 
 /**
  * A ParseFormatSpecification is a string representing a format
