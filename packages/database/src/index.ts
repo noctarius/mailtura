@@ -27,7 +27,7 @@ import {
   type users,
 } from "./generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
+import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PrismaClientKnownRequestError } from "./generated/prisma/internal/prismaNamespace.js";
 
 const adapter = new PrismaPg({
@@ -101,6 +101,8 @@ const prisma = new PrismaClient({ adapter }).$extends({
     },
   },
 });
+
+export { Prisma, PrismaClient } from "./generated/prisma/client.js";
 
 export function handlePrismaError(err: any) {
   if (err instanceof PrismaClientKnownRequestError) {
