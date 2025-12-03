@@ -1,10 +1,10 @@
-import type { Template } from "@mailtura/rpcmodel/lib/api/index.js";
+import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import {
   isDirectContent,
   isTemplatedContent,
   type MailContent,
   MailDirectContent,
-} from "@mailtura/rpcmodel/lib/mails/index.js";
+} from "@mailtura/rpcmodel/mails/index.js";
 import { Cacheable } from "cacheable";
 import { convert } from "html-to-text";
 import * as cheerio from "cheerio";
@@ -12,7 +12,7 @@ import mjml2html from "mjml";
 import htmlnano from "htmlnano";
 import { Liquid, LiquidError, RenderError, type Template as LiquidTemplate } from "liquidjs";
 import { v7 } from "uuid";
-import { joinPath } from "@mailtura/rpcmodel/lib/helpers/index.js";
+import { joinPath } from "@mailtura/rpcmodel/helpers/index.js";
 
 declare class LiquidErrors extends LiquidError {
   errors: RenderError[];
