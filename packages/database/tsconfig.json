@@ -13,7 +13,6 @@
     "noEmit": true,
     "sourceMap": true,
     "declaration": true,
-    "composite": true,
     "declarationMap": true,
     "incremental": true,
     // Best practices
