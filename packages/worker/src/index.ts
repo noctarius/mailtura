@@ -1,5 +1,5 @@
 import { NativeConnection, Worker } from "@temporalio/worker";
-import { importContactsBatch } from "./tasks/activities/import-contacts.js";
+import { importContactsBatch } from "./tasks/activities/import-contacts-activity.js";
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 import { resolve } from "./helper/resolver.js";

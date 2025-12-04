@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@mailtura/contentcompiler": "*",
+    "@mailtura/database": "*",
     "@mailtura/rpcmodel": "*",
     "@sendgrid/mail": "^8.1.6",
     "@temporalio/worker": "catalog:",

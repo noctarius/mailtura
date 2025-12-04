@@ -1,12 +1,12 @@
 import { proxyActivities } from "@temporalio/workflow";
-import * as contactImports from "../activities/import-contacts.js";
-import type { ContactImportArguments } from "@mailtura/rpcmodel/lib/tasks/index.js";
+import * as contactImports from "../activities/import-contacts-activity.js";
+import type { ContactImportArguments } from "@mailtura/rpcmodel/tasks/index.js";
 
 const { importContactsBatch } = proxyActivities<typeof contactImports>({
   startToCloseTimeout: "5min",
 });
 
-export async function importContacts(tenantId: string, contactImportId: string): Promise<void> {
+export async function importContactsWorkflow(tenantId: string, contactImportId: string): Promise<void> {
   console.log(`Starting import of contacts for tenant ${tenantId} with import id ${contactImportId}`);
   const config: ContactImportArguments = {
     import_id: contactImportId,

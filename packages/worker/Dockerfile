@@ -14,6 +14,8 @@ COPY packages/rpcmodel/package.json /temp/prod/packages/rpcmodel/
 COPY packages/frontend/package.json /temp/prod/packages/frontend/
 COPY packages/backend/package.json /temp/prod/packages/backend/
 COPY packages/worker/package.json /temp/prod/packages/worker/
+COPY packages/contentcompiler/package.json /temp/prod/packages/contentcompiler/
+COPY packages/database/package.json /temp/prod/packages/database/
 RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production --filter="./packages/worker"
 
 FROM install AS builder
@@ -24,6 +26,10 @@ FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 RUN rm -rf node_modules/@mailtura/rpcmodel
 COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/rpcmodel
+RUN rm -rf node_modules/@mailtura/contentcompiler
+COPY --from=builder /temp/dev/packages/contentcompiler node_modules/@mailtura/contentcompiler
+RUN rm -rf node_modules/@mailtura/database
+COPY --from=builder /temp/dev/packages/database node_modules/@mailtura/database
 COPY --from=builder /temp/dev/packages/worker/dist .
 COPY --from=builder /temp/dev/packages/worker/package.json .
 COPY --from=builder /temp/dev/packages/worker/entrypoint.sh .

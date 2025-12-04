@@ -1,1 +1,1 @@
-export { importContacts } from "./import-contacts.js";
+export { importContactsWorkflow } from "./import-contacts-workflow.js";

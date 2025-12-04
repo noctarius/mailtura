@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
     // Environment setup & latest features
-    "lib": [
-      "ESNext"
-    ],
+    "lib": ["ESNext"],
     "outDir": "dist",
     "target": "ESNext",
     "module": "NodeNext",
@@ -16,6 +14,7 @@
     "allowImportingTsExtensions": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
     // Best practices
     "strict": true,
     "skipLibCheck": true,
@@ -27,8 +26,5 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
   },
-  "include": [
-    "src",
-    "generated"
-  ]
+  "include": ["src"]
 }
