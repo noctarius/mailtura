@@ -1,4 +1,4 @@
-import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/auth/index.js";
 
 interface PermissionHolder {
   permissions: string[];

@@ -1,4 +1,4 @@
-import type { AstNode, ComparisonNode } from "@mailtura/rpcmodel/lib/api/where-clause-parser.js";
+import type { AstNode, ComparisonNode } from "@mailtura/rpcmodel/api/where-clause-parser.js";
 
 interface BasePrismaWhereInput<T extends BasePrismaWhereInput<T>> {
   AND?: T | T[];

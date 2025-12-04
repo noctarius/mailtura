@@ -1,5 +1,5 @@
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import { Instant } from "@mailtura/rpcmodel/lib/time/Instant.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
+import { Instant } from "@mailtura/rpcmodel/time/Instant.js";
 import { createHash, getRandomValues } from "node:crypto";
 import prisma, { type ApiKeyEntity } from "@mailtura/database";
 

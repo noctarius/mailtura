@@ -5,16 +5,16 @@ import type {
   RawServerDefault,
 } from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
-import { CreateTemplate, PreviewTemplate, UpdateTemplate } from "@mailtura/rpcmodel/lib/api/request-response.js";
+import { CreateTemplate, PreviewTemplate, UpdateTemplate } from "@mailtura/rpcmodel/api/request-response.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
 import { mapTemplate } from "../mapper.js";
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
-import type { Template } from "@mailtura/rpcmodel/lib/api/index.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
+import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompiler";
 import prisma from "@mailtura/database";
-import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
+import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,

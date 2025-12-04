@@ -7,10 +7,10 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import { MailConfig } from "@mailtura/rpcmodel/lib/mails/index.js";
+import { MailConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { type Static, Type } from "typebox";
 import { requiresInstallation } from "../../helpers/requires-installation.js";
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
 import prisma from "@mailtura/database";
 

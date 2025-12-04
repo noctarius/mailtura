@@ -8,7 +8,7 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../router/index.js";
 import { type Static, Type } from "typebox";
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";

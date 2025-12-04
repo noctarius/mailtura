@@ -6,8 +6,7 @@ import {
   type DBAdapterDebugLogOption,
 } from "better-auth/adapters";
 import { BetterAuthError, type BetterAuthOptions, type Where } from "better-auth";
-import type { PrismaClient } from "@mailtura/database/lib/generated/prisma/client.js";
-import prisma from "@mailtura/database";
+import prisma, { PrismaClient } from "@mailtura/database";
 
 type PrismaClientInternal = PrismaClient & {
   $transaction: (callback: (db: PrismaClient) => Promise<any> | any) => Promise<any>;

@@ -1,4 +1,4 @@
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import type {
   AccountEntity,
   ApiKeyEntity,
@@ -30,7 +30,7 @@ import type {
   Tenant,
   Unsubscribe,
   User,
-} from "@mailtura/rpcmodel/lib/api/index.js";
+} from "@mailtura/rpcmodel/api/index.js";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null

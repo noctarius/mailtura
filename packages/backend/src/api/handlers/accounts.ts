@@ -9,7 +9,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
 import { mapAccount } from "../mapper.js";
-import type { Account } from "@mailtura/rpcmodel/lib/api/index.js";
+import type { Account } from "@mailtura/rpcmodel/api/index.js";
 import prisma from "@mailtura/database";
 
 export function accountRoutes<

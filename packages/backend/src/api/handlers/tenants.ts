@@ -1,4 +1,4 @@
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.js";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { Type } from "typebox";
 import { contactRoutes } from "./contacts.js";
 import type { Router } from "../../router/index.js";
@@ -11,7 +11,7 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { mapTenant } from "../mapper.js";
-import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/lib/api/request-response.js";
+import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/api/request-response.js";
 import { subscriberListRoutes } from "./subscriberlists.js";
 import { campaignRoutes } from "./campaigns.js";
 import { templateRoutes } from "./templates.js";
@@ -22,9 +22,9 @@ import { hasAnyPermission } from "../../auth/index.js";
 import { rolesRoutes } from "./roles.js";
 import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
-import type { Tenant } from "@mailtura/rpcmodel/lib/api/index.js";
+import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
 import prisma from "@mailtura/database";
-import { createError } from "@mailtura/rpcmodel/lib/api/errors.js";
+import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,

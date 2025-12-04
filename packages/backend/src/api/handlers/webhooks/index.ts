@@ -8,7 +8,7 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../../router/index.js";
 import { EventWebhook } from "@sendgrid/eventwebhook";
-import type { SendgridConfig } from "@mailtura/rpcmodel/lib/mails/index.js";
+import type { SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { Cacheable } from "cacheable";
 import { ResponseError } from "@mailtura/frontend/src/services/adapters/types.js";
 import prisma from "@mailtura/database";
