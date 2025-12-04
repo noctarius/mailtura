@@ -10,6 +10,7 @@
     "catalog": {
       "@eslint/js": "^9.9.1",
       "@temporalio/client": "^1.13.1",
+      "@temporalio/proto": "^1.13.1",
       "@temporalio/worker": "^1.13.1",
       "@temporalio/workflow": "^1.13.1",
       "@types/jest": "^30.0.0",

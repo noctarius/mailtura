@@ -1,4 +1,4 @@
-import type { DataSeries } from "@mailtura/rpcmodel/lib/series/dataseries.js";
+import type { DataSeries } from "@mailtura/rpcmodel/series/dataseries.js";
 
 type DataSeriesInput<XAxisKey extends keyof any, T> = {
   [K in keyof T]: K extends XAxisKey ? string : number;

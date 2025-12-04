@@ -28,13 +28,11 @@ COPY --from=production /temp/prod/node_modules node_modules
 RUN rm -rf node_modules/@mailtura/rpcmodel
 COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/rpcmodel
 RUN rm -rf node_modules/@mailtura/contentcompiler
-COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/contentcompiler
+COPY --from=builder /temp/dev/packages/contentcompiler node_modules/@mailtura/contentcompiler
 RUN rm -rf node_modules/@mailtura/database
-COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/database
+COPY --from=builder /temp/dev/packages/database node_modules/@mailtura/database
 COPY --from=builder /temp/dev/packages/frontend/dist public
-COPY --from=builder /temp/dev/packages/backend/prisma prisma
 COPY --from=builder /temp/dev/packages/backend/dist .
-COPY --from=builder /temp/dev/packages/backend/generated generated
 COPY --from=builder /temp/dev/packages/backend/package.json .
 COPY --from=builder /temp/dev/packages/backend/entrypoint.sh .
 RUN chown bun -R /opt/app

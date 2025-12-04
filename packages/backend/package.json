@@ -5,7 +5,7 @@
   "main": "src/index.ts",
   "private": true,
   "scripts": {
-    "build": "bunx prisma generate && bun build.ts",
+    "build": "bun build.ts",
     "dev": "TEMPORAL_ADDRESS=localhost:7233 TEMPORAL_TASK_QUEUE=mailtura NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
     "dev:docker": "TEMPORAL_ADDRESS=temporal:7233 TEMPORAL_TASK_QUEUE=mailtura NODE_ENV=development tsc-watch --onSuccess \"bun --bun .\"",
     "lint": "eslint .",
@@ -24,6 +24,7 @@
     "@mailtura/rpcmodel": "*",
     "@sendgrid/eventwebhook": "^8.0.0",
     "@temporalio/client": "catalog:",
+    "@temporalio/proto": "catalog:",
     "argon2": "^0.44.0",
     "better-auth": "catalog:",
     "cacheable": "^2.1.1",
@@ -39,7 +40,6 @@
   },
   "devDependencies": {
     "@eslint/js": "catalog:",
-    "@prisma/language-server": "^7.0.0",
     "@types/bun": "^1.2.23",
     "@types/express": "^5.0.3",
     "@types/jest": "catalog:",

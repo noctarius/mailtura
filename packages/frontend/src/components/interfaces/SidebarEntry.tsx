@@ -1,7 +1,7 @@
 import { ChevronDown, ChevronRight, LucideProps } from "lucide-solid";
 import { useAuth } from "../../hooks/useAuth.js";
 import { createEffect, createSignal, JSX } from "solid-js";
-import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/auth/index.js";
 
 export interface NavigationItem {
   id: string;

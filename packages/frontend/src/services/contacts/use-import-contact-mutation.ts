@@ -2,8 +2,8 @@ import { useMutation } from "@tanstack/solid-query";
 import { useApi } from "../../hooks/useApi.js";
 import { ResponseError } from "../adapters/types.js";
 import { maybeHandleError } from "../adapters/errors.js";
-import { ImportContacts } from "@mailtura/rpcmodel/lib/api/request-response.js";
-import { ContactImport } from "@mailtura/rpcmodel/lib/api/index.js";
+import { ImportContacts } from "@mailtura/rpcmodel/api/request-response.js";
+import { ContactImport } from "@mailtura/rpcmodel/api/index.js";
 
 interface ImportContactsMutationProps {
   file: File;

@@ -1,4 +1,4 @@
-import type { DataSeries } from "@mailtura/rpcmodel/lib/series/dataseries.js";
+import type { DataSeries } from "@mailtura/rpcmodel/series/dataseries.js";
 import { capitalize } from "../../helpers/capitalize.js";
 import { getSolidColor } from "../../helpers/charts-colors.js";
 import { EChartsAutoSize } from "echarts-solid";

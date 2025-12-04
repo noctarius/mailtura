@@ -1,4 +1,4 @@
-import { LOCAL, UTC } from "@mailtura/rpcmodel/lib/time/Timezone.ts";
+import { LOCAL, UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 
 export function formatDateTime(dateTime: string, asLocalTime: boolean = false) {
   const date = UTC.parse(dateTime);

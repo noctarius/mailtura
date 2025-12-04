@@ -1,4 +1,4 @@
-import { UTC } from "@mailtura/rpcmodel/lib/time/Timezone.ts";
+import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 
 export function getTimeSince(dateTime: string, showHours: boolean = false) {
   const now = UTC.now();

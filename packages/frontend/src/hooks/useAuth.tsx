@@ -1,11 +1,11 @@
 import { AuthState } from "../types/auth.js";
 import { createContext, createEffect, createMemo, createSignal, ParentComponent, useContext } from "solid-js";
 import { useTenantQuery } from "../services/tenants/use-tenant-query.js";
-import { Tenant, User } from "@mailtura/rpcmodel/lib/api/index.js";
+import { Tenant, User } from "@mailtura/rpcmodel/api/index.js";
 import { API_URL } from "../constants.js";
 import { useApi } from "./useApi.js";
 import { useUserQuery } from "../services/users/use-user-query.js";
-import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import type { Permission } from "@mailtura/rpcmodel/auth/index.js";
 import { CustomAuthClient } from "../helpers/custom-auth-client.js";
 
 interface AuthContextType {

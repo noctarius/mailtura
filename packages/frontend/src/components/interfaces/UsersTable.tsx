@@ -1,4 +1,4 @@
-import { User } from "@mailtura/rpcmodel/lib/api/index.js";
+import { User } from "@mailtura/rpcmodel/api/index.js";
 import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { useAuth } from "../../hooks/useAuth.js";
 import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";

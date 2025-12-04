@@ -1,4 +1,4 @@
-import type { TimeSeries } from "@mailtura/rpcmodel/lib/series/timeseries.js";
+import type { TimeSeries } from "@mailtura/rpcmodel/series/timeseries.js";
 
 type TimeSeriesInput<XAxisKey extends keyof any, T> = {
   [K in keyof T]: K extends XAxisKey ? string : number;

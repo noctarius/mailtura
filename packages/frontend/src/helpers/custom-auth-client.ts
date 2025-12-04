@@ -1,7 +1,8 @@
 import { createAuthClient } from "better-auth/solid";
-import { magicLinkClient, passkeyClient, twoFactorClient } from "better-auth/client/plugins";
-import { User } from "@mailtura/rpcmodel/lib/api/index.js";
-import { joinPath } from "@mailtura/rpcmodel/lib/helpers/index.js";
+import { magicLinkClient, twoFactorClient } from "better-auth/client/plugins";
+import { User } from "@mailtura/rpcmodel/api/index.js";
+import { joinPath } from "@mailtura/rpcmodel/helpers/index.js";
+import { passkeyClient } from "@better-auth/passkey/client";
 
 const newAuthClient = (baseURL: string, basePath: string) => {
   return createAuthClient({

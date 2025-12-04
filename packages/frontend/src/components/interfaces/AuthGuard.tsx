@@ -1,7 +1,7 @@
 import { Navigate } from "@solidjs/router";
 import { useAuth } from "../../hooks/useAuth.js";
 import { JSX } from "solid-js";
-import { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { Permission } from "@mailtura/rpcmodel/auth/index.js";
 
 interface AuthGuardProps {
   children: JSX.Element;

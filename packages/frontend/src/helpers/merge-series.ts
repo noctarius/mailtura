@@ -1,5 +1,5 @@
-import type { DataSeries, DataSeriesDataPoint } from "@mailtura/rpcmodel/lib/series/dataseries.js";
-import type { TimeSeries, TimeSeriesDataPoint } from "@mailtura/rpcmodel/lib/series/timeseries.js";
+import type { DataSeries, DataSeriesDataPoint } from "@mailtura/rpcmodel/series/dataseries.js";
+import type { TimeSeries, TimeSeriesDataPoint } from "@mailtura/rpcmodel/series/timeseries.js";
 
 export function mergeDataSeries<Key extends string | number>(
   currentSeries: DataSeries<Key>,

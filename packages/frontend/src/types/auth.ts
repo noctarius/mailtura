@@ -1,5 +1,5 @@
-import { Tenant, User } from "@mailtura/rpcmodel/lib/api/index.js";
-import type { Permission } from "@mailtura/rpcmodel/lib/auth/index.js";
+import { Tenant, User } from "@mailtura/rpcmodel/api/index.js";
+import type { Permission } from "@mailtura/rpcmodel/auth/index.js";
 
 export interface AuthState {
   isAuthenticated: boolean;
