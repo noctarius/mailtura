@@ -2,7 +2,7 @@ generator client {
   provider        = "prisma-client"
   output          = "../src/generated/prisma"
   moduleFormat    = "esm"
-  runtime         = "bun"
+  runtime         = "nodejs"
   previewFeatures = ["postgresqlExtensions", "relationJoins"]
 }
 

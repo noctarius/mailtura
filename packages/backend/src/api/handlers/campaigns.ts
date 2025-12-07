@@ -10,9 +10,8 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateCampaign, UpdateCampaign } from "@mailtura/rpcmodel/api/request-response.js";
-import { fromDateTime, mapCampaign, unpackOptionalNullable } from "../mapper.js";
 import type { Campaign, CampaignStatus } from "@mailtura/rpcmodel/api/index.js";
-import prisma from "@mailtura/database";
+import prisma, { fromDateTime, mapCampaign, unpackOptionalNullable } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function campaignRoutes<

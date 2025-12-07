@@ -10,8 +10,8 @@ import type { Router } from "../../../router/index.js";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import type { SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { Cacheable } from "cacheable";
-import { ResponseError } from "@mailtura/frontend/src/services/adapters/types.js";
 import prisma from "@mailtura/database";
+import { ResponseError } from "../../index.js";
 
 /**
  * Thanks to https://gist.github.com/rndD/bbcde87f397e85b5c95b3e3c7b95cd4a 🙏

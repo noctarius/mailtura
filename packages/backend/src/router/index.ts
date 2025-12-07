@@ -14,8 +14,7 @@ import { fromNodeHeaders } from "better-auth/node";
 import type { Session } from "better-auth";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import type { User } from "@mailtura/rpcmodel/api/index.js";
-import type { Permission } from "@mailtura/rpcmodel/auth/index.js";
-import { hasAllPermissions } from "../auth/index.js";
+import { hasAllPermissions, type Permission } from "@mailtura/rpcmodel/auth/index.js";
 import { validateApiKey } from "../auth/apiKey.js";
 import type { ApiKeyEntity } from "@mailtura/database";
 

@@ -28,13 +28,23 @@ import {
 } from "./generated/prisma/client.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
-import { PrismaClientKnownRequestError } from "./generated/prisma/internal/prismaNamespace.js";
+import {
+  type LogDefinition,
+  type LogLevel,
+  PrismaClientKnownRequestError
+} from "./generated/prisma/internal/prismaNamespace.js";
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) throw new Error("DATABASE_URL is not set");
 
 const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
+  connectionString: databaseUrl,
 });
 
-const prisma = new PrismaClient({ adapter }).$extends({
+const debugPrisma = process.env.DEBUG_PRISMA === "true";
+const log = (debugPrisma ? ['query', 'info', 'warn', 'error'] : []) as (LogLevel | LogDefinition)[];
+
+const prisma = new PrismaClient({ adapter, log }).$extends({
   query: {
     contacts: {
       async $allOperations({ operation, args, query }) {
@@ -103,6 +113,7 @@ const prisma = new PrismaClient({ adapter }).$extends({
 });
 
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
+export * from "./mapper.js";
 
 export function handlePrismaError(err: any) {
   if (err instanceof PrismaClientKnownRequestError) {

@@ -36,13 +36,15 @@
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
     "lucide-solid": "^0.545.0",
-    "monaco-editor": "^0.54.0",
+    "monaco-editor": "^0.55.1",
     "openapi-fetch": "^0.15.0",
+    "openapi-typescript-helpers": "^0.0.15",
     "papaparse": "catalog:",
     "socket.io": "catalog:",
     "solid-js": "^1.9.9",
     "solid-monaco": "^0.3.0",
     "solid-toast": "^0.5.0",
+    "state-local": "^1.0.7",
     "typebox": "catalog:"
   },
   "devDependencies": {
@@ -63,6 +65,7 @@
     "typescript-eslint": "catalog:",
     "vite": "7.1.12",
     "vite-plugin-pwa": "^1.1.0",
-    "vite-plugin-solid": "^2.11.9"
+    "vite-plugin-solid": "^2.11.9",
+    "workbox-window": "^7.4.0"
   }
 }

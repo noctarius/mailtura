@@ -15,3 +15,5 @@ helm-charts
 coverage*
 .yarn
 .vscode/*
+build/
+lib/

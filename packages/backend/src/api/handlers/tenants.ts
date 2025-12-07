@@ -10,7 +10,6 @@ import type {
 } from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
-import { mapTenant } from "../mapper.js";
 import { CreateTenant, UpdateTenant } from "@mailtura/rpcmodel/api/request-response.js";
 import { subscriberListRoutes } from "./subscriberlists.js";
 import { campaignRoutes } from "./campaigns.js";
@@ -18,13 +17,13 @@ import { templateRoutes } from "./templates.js";
 import { userRoutes } from "./users.js";
 import { apiKeyRoutes } from "./apikeys.js";
 import { fileRoutes } from "./files.js";
-import { hasAnyPermission } from "../../auth/index.js";
 import { rolesRoutes } from "./roles.js";
 import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
 import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
-import prisma from "@mailtura/database";
+import prisma, { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { hasAnyPermission } from "@mailtura/rpcmodel/auth/index.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,

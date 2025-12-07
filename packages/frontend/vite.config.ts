@@ -6,7 +6,7 @@ import { VitePWA } from "vite-plugin-pwa";
 import { defineConfig } from "vite";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const monacoEditorDirectory = pathResolve(__dirname, "../../node_modules/monaco-editor");
+const monacoEditorDirectory = pathResolve(__dirname, "node_modules/monaco-editor");
 
 const baseUrl = process.env.DASHBOARD_BASE_URL;
 

@@ -9,10 +9,9 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { mapRole } from "../mapper.js";
 import { CreateRole, UpdateRole } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Role } from "@mailtura/rpcmodel/api/index.js";
-import prisma from "@mailtura/database";
+import prisma, { mapRole } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function rolesRoutes<

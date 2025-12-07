@@ -12,8 +12,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
-import { mapUser } from "../api/mapper.js";
-import prisma from "@mailtura/database";
+import prisma, { mapUser } from "@mailtura/database";
 
 const SignUpEmail = Type.Object({
   email: Type.String({ format: "email" }),

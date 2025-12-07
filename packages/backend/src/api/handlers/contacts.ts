@@ -9,7 +9,6 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { mapContact, mapContactImport } from "../mapper.js";
 import {
   CreateContact,
   CreateContactBatch,
@@ -23,7 +22,7 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { Prisma } from "@mailtura/database";
+import prisma, { mapContact, mapContactImport, Prisma } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function contactRoutes<
@@ -39,7 +38,7 @@ export function contactRoutes<
       schema: {
         tags: ["contacts"],
         querystring: Type.Object({
-          q: Type.String(),
+          q: Type.Optional(Type.String()),
         }),
         response: {
           200: Type.Array(Type.Ref("Contact")),

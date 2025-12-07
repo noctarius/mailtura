@@ -4,8 +4,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { User } from "@mailtura/rpcmodel/api/index.js";
 import { Type } from "typebox";
-import { mapUser } from "../mapper.js";
-import prisma from "@mailtura/database";
+import prisma, { mapUser } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function profileRoutes<

@@ -1,7 +1,6 @@
 import { createMemo } from "solid-js";
 import { useUser } from "../../hooks/useUser.js";
 import { useRolesQuery } from "../../services/roles/use-roles-query.js";
-import { hasPermission } from "@mailtura/backend/src/auth/index.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { CreateUser } from "@mailtura/rpcmodel/api/request-response.js";
@@ -9,6 +8,7 @@ import { userKeys } from "../../services/users/keys.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { SubmitHandler } from "@modular-forms/solid";
 import { Static, Type } from "typebox";
+import { hasPermission } from "@mailtura/rpcmodel/auth/index.js";
 
 const CreateUserForm = Type.Omit(CreateUser, ["permissions"]);
 type CreateUserForm = Static<typeof CreateUserForm>

@@ -1,0 +1,13 @@
+FROM oven/bun:alpine AS base
+WORKDIR /opt/app
+
+FROM base AS development
+RUN mkdir -p /opt/app
+COPY . /opt/app/
+RUN cd /opt/app && bun install --linker hoisted --frozen-lockfile
+RUN apk add openssl
+
+USER bun
+EXPOSE 3000/tcp
+WORKDIR /opt/app/packages/backend
+CMD [ "bun", "run", "dev:docker" ]

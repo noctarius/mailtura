@@ -9,11 +9,10 @@ import { CreateTemplate, PreviewTemplate, UpdateTemplate } from "@mailtura/rpcmo
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
-import { mapTemplate } from "../mapper.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompiler";
-import prisma from "@mailtura/database";
+import prisma, { mapTemplate } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function templateRoutes<

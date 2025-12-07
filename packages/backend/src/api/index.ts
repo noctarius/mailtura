@@ -78,3 +78,12 @@ export function registerRoutes<
   router.route("/profile", profileRoutes);
   router.route("/webhooks", webhookRoutes, false, true);
 }
+
+export class ResponseError extends Error {
+  code?: number;
+
+  constructor(message: any, code?: number) {
+    super(message?.toString() || "Unknown error happened while communication with the backend api.");
+    this.code = code;
+  }
+}

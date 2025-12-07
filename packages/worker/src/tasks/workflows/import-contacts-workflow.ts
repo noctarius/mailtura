@@ -1,5 +1,5 @@
 import { proxyActivities } from "@temporalio/workflow";
-import * as contactImports from "../activities/import-contacts-activity.js";
+import type * as contactImports from "../activities/import-contacts-activity.js";
 import type { ContactImportArguments } from "@mailtura/rpcmodel/tasks/index.js";
 
 const { importContactsBatch } = proxyActivities<typeof contactImports>({

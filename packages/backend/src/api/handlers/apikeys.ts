@@ -9,11 +9,10 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { fromDateTime, mapApiKey, unpackOptionalNullable } from "../mapper.js";
 import { CreateApiKey, UpdateApiKey } from "@mailtura/rpcmodel/api/request-response.js";
 import { generateNewKey } from "../../auth/apiKey.js";
 import type { ApiKey } from "@mailtura/rpcmodel/api/index.js";
-import prisma from "@mailtura/database";
+import prisma, { fromDateTime, mapApiKey, unpackOptionalNullable } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function apiKeyRoutes<

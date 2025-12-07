@@ -26,6 +26,12 @@ const createWorker = async (connection: NativeConnection) => {
     activities: {
       importContactsBatch: importContactsBatch,
     },
+    bundlerOptions: {
+      webpackConfigHook: config => {
+        config.externals = ['@prisma/client', '.prisma/client'];
+        return config;
+      }
+    }
   });
 };
 

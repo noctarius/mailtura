@@ -18,10 +18,10 @@ if (Array.prototype.toSort === undefined) {
 self.MonacoEnvironment = {
   getWorker(_, label) {
     if (label === "html" || label === "handlebars" || label === "razor")
-      return new Worker(new URL("monaco-editor/esm/vs/language/html/html.worker.js?worker", import.meta.url), {
+      return new Worker(new URL("../node_modules/monaco-editor/esm/vs/language/html/html.worker.js?worker", import.meta.url), {
         type: "module",
       });
-    return new Worker(new URL("monaco-editor/esm/vs/editor/editor.worker.js?worker", import.meta.url), {
+    return new Worker(new URL("../node_modules/monaco-editor/esm/vs/editor/editor.worker.js?worker", import.meta.url), {
       type: "module",
     });
   },

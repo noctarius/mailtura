@@ -8,8 +8,7 @@ import papaparse, {
 import type { ContactImportArguments, ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import { CreateContact, CreateContactBatchResponse } from "@mailtura/rpcmodel/api/request-response.js";
 import { log } from "@temporalio/activity";
-import prisma, { ContactImportEntity } from "@mailtura/database";
-import { mapContact } from "@mailtura/backend/src/api/mapper.js";
+import prisma, { ContactImportEntity, mapContact } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 
 const { parse } = papaparse;
@@ -81,12 +80,13 @@ const readContactImport = async (
   tenantId: string,
   contactImportId: string
 ): Promise<ContactImportEntity | undefined> => {
-  const contactImport = await prisma.contact_imports.findUnique({
+  const contactImport = await prisma.contact_imports.findFirst({
     where: {
-      id: contactImportId,
-      tenant_id: tenantId,
+      id: contactImportId.trim(),
+      tenant_id: tenantId.trim(),
     },
   });
+  console.log("Contact import", contactImport, tenantId, contactImportId);
   return contactImport ?? undefined;
 };
 
