@@ -9,3 +9,9 @@ export interface ContactImportArguments {
   import_id: string;
   tenant_id: string;
 }
+
+export interface SendMailArguments {
+  batch_size: number;
+  mail_sending_id: string;
+  tenant_id: string;
+}

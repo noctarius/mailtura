@@ -6,9 +6,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 console.log(`Applying migrations from: ${pathResolve(__dirname, 'migrations')}`);
 
 export default defineConfig({
-  schema: pathResolve(__dirname, 'schema.prisma'),
+  schema: pathResolve(__dirname, 'prisma/schema.prisma'),
   migrations: {
-    path: pathResolve(__dirname, 'migrations'),
+    path: pathResolve(__dirname, 'prisma/migrations'),
   },
   experimental: {
   },

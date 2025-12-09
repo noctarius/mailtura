@@ -4,7 +4,7 @@ import {
   Mail,
   MailContent,
   MailDirectContent,
-} from "@mailtura/rpcmodel/lib/mails/index.js";
+} from "@mailtura/rpcmodel/mails/index.js";
 import { getRpcManager } from "../rpc/index.js";
 
 const rpcManager = getRpcManager();

@@ -27,16 +27,41 @@ export type AggregateMail_sendings = {
 export type Mail_sendingsMinAggregateOutputType = {
   id: string | null
   tenant_id: string | null
+  mail_sender_id: string | null
+  mail_config_id: string | null
+  subject: string | null
+  content_type: string | null
+  content: string | null
+  text_content: string | null
+  template_id: string | null
+  is_template: boolean | null
 }
 
 export type Mail_sendingsMaxAggregateOutputType = {
   id: string | null
   tenant_id: string | null
+  mail_sender_id: string | null
+  mail_config_id: string | null
+  subject: string | null
+  content_type: string | null
+  content: string | null
+  text_content: string | null
+  template_id: string | null
+  is_template: boolean | null
 }
 
 export type Mail_sendingsCountAggregateOutputType = {
   id: number
   tenant_id: number
+  mail_sender_id: number
+  mail_config_id: number
+  subject: number
+  content_type: number
+  content: number
+  text_content: number
+  template_id: number
+  is_template: number
+  substitutions: number
   _all: number
 }
 
@@ -44,16 +69,41 @@ export type Mail_sendingsCountAggregateOutputType = {
 export type Mail_sendingsMinAggregateInputType = {
   id?: true
   tenant_id?: true
+  mail_sender_id?: true
+  mail_config_id?: true
+  subject?: true
+  content_type?: true
+  content?: true
+  text_content?: true
+  template_id?: true
+  is_template?: true
 }
 
 export type Mail_sendingsMaxAggregateInputType = {
   id?: true
   tenant_id?: true
+  mail_sender_id?: true
+  mail_config_id?: true
+  subject?: true
+  content_type?: true
+  content?: true
+  text_content?: true
+  template_id?: true
+  is_template?: true
 }
 
 export type Mail_sendingsCountAggregateInputType = {
   id?: true
   tenant_id?: true
+  mail_sender_id?: true
+  mail_config_id?: true
+  subject?: true
+  content_type?: true
+  content?: true
+  text_content?: true
+  template_id?: true
+  is_template?: true
+  substitutions?: true
   _all?: true
 }
 
@@ -132,6 +182,15 @@ export type mail_sendingsGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 export type Mail_sendingsGroupByOutputType = {
   id: string
   tenant_id: string
+  mail_sender_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content: string | null
+  text_content: string | null
+  template_id: string | null
+  is_template: boolean
+  substitutions: runtime.JsonValue
   _count: Mail_sendingsCountAggregateOutputType | null
   _min: Mail_sendingsMinAggregateOutputType | null
   _max: Mail_sendingsMaxAggregateOutputType | null
@@ -158,11 +217,37 @@ export type mail_sendingsWhereInput = {
   NOT?: Prisma.mail_sendingsWhereInput | Prisma.mail_sendingsWhereInput[]
   id?: Prisma.UuidFilter<"mail_sendings"> | string
   tenant_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_sender_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_config_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  subject?: Prisma.StringFilter<"mail_sendings"> | string
+  content_type?: Prisma.StringFilter<"mail_sendings"> | string
+  content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  text_content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
+  is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
+  substitutions?: Prisma.JsonFilter<"mail_sendings">
+  mail_sender?: Prisma.XOR<Prisma.Mail_sendersScalarRelationFilter, Prisma.mail_sendersWhereInput>
+  mail_config?: Prisma.XOR<Prisma.Mail_configsScalarRelationFilter, Prisma.mail_configsWhereInput>
+  subscriber_lists?: Prisma.Mail_sendings_on_subscriber_listsListRelationFilter
+  mail_receivers?: Prisma.Mail_sending_receiversListRelationFilter
 }
 
 export type mail_sendingsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  mail_sender_id?: Prisma.SortOrder
+  mail_config_id?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  content_type?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_content?: Prisma.SortOrderInput | Prisma.SortOrder
+  template_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_template?: Prisma.SortOrder
+  substitutions?: Prisma.SortOrder
+  mail_sender?: Prisma.mail_sendersOrderByWithRelationInput
+  mail_config?: Prisma.mail_configsOrderByWithRelationInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsOrderByRelationAggregateInput
+  mail_receivers?: Prisma.mail_sending_receiversOrderByRelationAggregateInput
 }
 
 export type mail_sendingsWhereUniqueInput = Prisma.AtLeast<{
@@ -171,11 +256,33 @@ export type mail_sendingsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.mail_sendingsWhereInput[]
   NOT?: Prisma.mail_sendingsWhereInput | Prisma.mail_sendingsWhereInput[]
   tenant_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_sender_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_config_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  subject?: Prisma.StringFilter<"mail_sendings"> | string
+  content_type?: Prisma.StringFilter<"mail_sendings"> | string
+  content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  text_content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
+  is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
+  substitutions?: Prisma.JsonFilter<"mail_sendings">
+  mail_sender?: Prisma.XOR<Prisma.Mail_sendersScalarRelationFilter, Prisma.mail_sendersWhereInput>
+  mail_config?: Prisma.XOR<Prisma.Mail_configsScalarRelationFilter, Prisma.mail_configsWhereInput>
+  subscriber_lists?: Prisma.Mail_sendings_on_subscriber_listsListRelationFilter
+  mail_receivers?: Prisma.Mail_sending_receiversListRelationFilter
 }, "id">
 
 export type mail_sendingsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  mail_sender_id?: Prisma.SortOrder
+  mail_config_id?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  content_type?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
+  text_content?: Prisma.SortOrderInput | Prisma.SortOrder
+  template_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  is_template?: Prisma.SortOrder
+  substitutions?: Prisma.SortOrder
   _count?: Prisma.mail_sendingsCountOrderByAggregateInput
   _max?: Prisma.mail_sendingsMaxOrderByAggregateInput
   _min?: Prisma.mail_sendingsMinOrderByAggregateInput
@@ -187,88 +294,823 @@ export type mail_sendingsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.mail_sendingsScalarWhereWithAggregatesInput | Prisma.mail_sendingsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"mail_sendings"> | string
   tenant_id?: Prisma.UuidWithAggregatesFilter<"mail_sendings"> | string
+  mail_sender_id?: Prisma.UuidWithAggregatesFilter<"mail_sendings"> | string
+  mail_config_id?: Prisma.UuidWithAggregatesFilter<"mail_sendings"> | string
+  subject?: Prisma.StringWithAggregatesFilter<"mail_sendings"> | string
+  content_type?: Prisma.StringWithAggregatesFilter<"mail_sendings"> | string
+  content?: Prisma.StringNullableWithAggregatesFilter<"mail_sendings"> | string | null
+  text_content?: Prisma.StringNullableWithAggregatesFilter<"mail_sendings"> | string | null
+  template_id?: Prisma.UuidNullableWithAggregatesFilter<"mail_sendings"> | string | null
+  is_template?: Prisma.BoolWithAggregatesFilter<"mail_sendings"> | boolean
+  substitutions?: Prisma.JsonWithAggregatesFilter<"mail_sendings">
 }
 
 export type mail_sendingsCreateInput = {
   id?: string
   tenant_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
+  mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
 }
 
 export type mail_sendingsUncheckedCreateInput = {
   id?: string
   tenant_id: string
+  mail_sender_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
 
 export type mail_sendingsUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
+  mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
 }
 
 export type mail_sendingsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
 
 export type mail_sendingsCreateManyInput = {
   id?: string
   tenant_id: string
+  mail_sender_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
 }
 
 export type mail_sendingsUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
 }
 
 export type mail_sendingsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+}
+
+export type Mail_sendingsListRelationFilter = {
+  every?: Prisma.mail_sendingsWhereInput
+  some?: Prisma.mail_sendingsWhereInput
+  none?: Prisma.mail_sendingsWhereInput
+}
+
+export type mail_sendingsOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type mail_sendingsCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  mail_sender_id?: Prisma.SortOrder
+  mail_config_id?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  content_type?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  text_content?: Prisma.SortOrder
+  template_id?: Prisma.SortOrder
+  is_template?: Prisma.SortOrder
+  substitutions?: Prisma.SortOrder
 }
 
 export type mail_sendingsMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  mail_sender_id?: Prisma.SortOrder
+  mail_config_id?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  content_type?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  text_content?: Prisma.SortOrder
+  template_id?: Prisma.SortOrder
+  is_template?: Prisma.SortOrder
 }
 
 export type mail_sendingsMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
+  mail_sender_id?: Prisma.SortOrder
+  mail_config_id?: Prisma.SortOrder
+  subject?: Prisma.SortOrder
+  content_type?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  text_content?: Prisma.SortOrder
+  template_id?: Prisma.SortOrder
+  is_template?: Prisma.SortOrder
 }
 
+export type Mail_sendingsScalarRelationFilter = {
+  is?: Prisma.mail_sendingsWhereInput
+  isNot?: Prisma.mail_sendingsWhereInput
+}
+
+export type mail_sendingsCreateNestedManyWithoutMail_configInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput> | Prisma.mail_sendingsCreateWithoutMail_configInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_configInputEnvelope
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+}
+
+export type mail_sendingsUncheckedCreateNestedManyWithoutMail_configInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput> | Prisma.mail_sendingsCreateWithoutMail_configInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_configInputEnvelope
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+}
+
+export type mail_sendingsUpdateManyWithoutMail_configNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput> | Prisma.mail_sendingsCreateWithoutMail_configInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput[]
+  upsert?: Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_configInput | Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_configInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_configInputEnvelope
+  set?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  disconnect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  delete?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  update?: Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_configInput | Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_configInput[]
+  updateMany?: Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_configInput | Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_configInput[]
+  deleteMany?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+}
+
+export type mail_sendingsUncheckedUpdateManyWithoutMail_configNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput> | Prisma.mail_sendingsCreateWithoutMail_configInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_configInput[]
+  upsert?: Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_configInput | Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_configInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_configInputEnvelope
+  set?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  disconnect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  delete?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  update?: Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_configInput | Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_configInput[]
+  updateMany?: Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_configInput | Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_configInput[]
+  deleteMany?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+}
+
+export type mail_sendingsCreateNestedOneWithoutSubscriber_listsInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedCreateWithoutSubscriber_listsInput>
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutSubscriber_listsInput
+  connect?: Prisma.mail_sendingsWhereUniqueInput
+}
+
+export type mail_sendingsUpdateOneRequiredWithoutSubscriber_listsNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedCreateWithoutSubscriber_listsInput>
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutSubscriber_listsInput
+  upsert?: Prisma.mail_sendingsUpsertWithoutSubscriber_listsInput
+  connect?: Prisma.mail_sendingsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mail_sendingsUpdateToOneWithWhereWithoutSubscriber_listsInput, Prisma.mail_sendingsUpdateWithoutSubscriber_listsInput>, Prisma.mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput>
+}
+
+export type mail_sendingsCreateNestedManyWithoutMail_senderInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput> | Prisma.mail_sendingsCreateWithoutMail_senderInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_senderInputEnvelope
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+}
+
+export type mail_sendingsUncheckedCreateNestedManyWithoutMail_senderInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput> | Prisma.mail_sendingsCreateWithoutMail_senderInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_senderInputEnvelope
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+}
+
+export type mail_sendingsUpdateManyWithoutMail_senderNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput> | Prisma.mail_sendingsCreateWithoutMail_senderInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput[]
+  upsert?: Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_senderInput | Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_senderInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_senderInputEnvelope
+  set?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  disconnect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  delete?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  update?: Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_senderInput | Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_senderInput[]
+  updateMany?: Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_senderInput | Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_senderInput[]
+  deleteMany?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+}
+
+export type mail_sendingsUncheckedUpdateManyWithoutMail_senderNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput> | Prisma.mail_sendingsCreateWithoutMail_senderInput[] | Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput[]
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput | Prisma.mail_sendingsCreateOrConnectWithoutMail_senderInput[]
+  upsert?: Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_senderInput | Prisma.mail_sendingsUpsertWithWhereUniqueWithoutMail_senderInput[]
+  createMany?: Prisma.mail_sendingsCreateManyMail_senderInputEnvelope
+  set?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  disconnect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  delete?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  connect?: Prisma.mail_sendingsWhereUniqueInput | Prisma.mail_sendingsWhereUniqueInput[]
+  update?: Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_senderInput | Prisma.mail_sendingsUpdateWithWhereUniqueWithoutMail_senderInput[]
+  updateMany?: Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_senderInput | Prisma.mail_sendingsUpdateManyWithWhereWithoutMail_senderInput[]
+  deleteMany?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+}
+
+export type mail_sendingsCreateNestedOneWithoutMail_receiversInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_receiversInput>
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_receiversInput
+  connect?: Prisma.mail_sendingsWhereUniqueInput
+}
+
+export type mail_sendingsUpdateOneRequiredWithoutMail_receiversNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_receiversInput>
+  connectOrCreate?: Prisma.mail_sendingsCreateOrConnectWithoutMail_receiversInput
+  upsert?: Prisma.mail_sendingsUpsertWithoutMail_receiversInput
+  connect?: Prisma.mail_sendingsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mail_sendingsUpdateToOneWithWhereWithoutMail_receiversInput, Prisma.mail_sendingsUpdateWithoutMail_receiversInput>, Prisma.mail_sendingsUncheckedUpdateWithoutMail_receiversInput>
+}
+
+export type mail_sendingsCreateWithoutMail_configInput = {
+  id?: string
+  tenant_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsUncheckedCreateWithoutMail_configInput = {
+  id?: string
+  tenant_id: string
+  mail_sender_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsCreateOrConnectWithoutMail_configInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput>
+}
+
+export type mail_sendingsCreateManyMail_configInputEnvelope = {
+  data: Prisma.mail_sendingsCreateManyMail_configInput | Prisma.mail_sendingsCreateManyMail_configInput[]
+  skipDuplicates?: boolean
+}
+
+export type mail_sendingsUpsertWithWhereUniqueWithoutMail_configInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  update: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_configInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_configInput>
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_configInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_configInput>
+}
+
+export type mail_sendingsUpdateWithWhereUniqueWithoutMail_configInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_configInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_configInput>
+}
+
+export type mail_sendingsUpdateManyWithWhereWithoutMail_configInput = {
+  where: Prisma.mail_sendingsScalarWhereInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateManyMutationInput, Prisma.mail_sendingsUncheckedUpdateManyWithoutMail_configInput>
+}
+
+export type mail_sendingsScalarWhereInput = {
+  AND?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+  OR?: Prisma.mail_sendingsScalarWhereInput[]
+  NOT?: Prisma.mail_sendingsScalarWhereInput | Prisma.mail_sendingsScalarWhereInput[]
+  id?: Prisma.UuidFilter<"mail_sendings"> | string
+  tenant_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_sender_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  mail_config_id?: Prisma.UuidFilter<"mail_sendings"> | string
+  subject?: Prisma.StringFilter<"mail_sendings"> | string
+  content_type?: Prisma.StringFilter<"mail_sendings"> | string
+  content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  text_content?: Prisma.StringNullableFilter<"mail_sendings"> | string | null
+  template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
+  is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
+  substitutions?: Prisma.JsonFilter<"mail_sendings">
+}
+
+export type mail_sendingsCreateWithoutSubscriber_listsInput = {
+  id?: string
+  tenant_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
+  mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsUncheckedCreateWithoutSubscriber_listsInput = {
+  id?: string
+  tenant_id: string
+  mail_sender_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsCreateOrConnectWithoutSubscriber_listsInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedCreateWithoutSubscriber_listsInput>
+}
+
+export type mail_sendingsUpsertWithoutSubscriber_listsInput = {
+  update: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput>
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedCreateWithoutSubscriber_listsInput>
+  where?: Prisma.mail_sendingsWhereInput
+}
+
+export type mail_sendingsUpdateToOneWithWhereWithoutSubscriber_listsInput = {
+  where?: Prisma.mail_sendingsWhereInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutSubscriber_listsInput, Prisma.mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput>
+}
+
+export type mail_sendingsUpdateWithoutSubscriber_listsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
+  mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsCreateWithoutMail_senderInput = {
+  id?: string
+  tenant_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsUncheckedCreateWithoutMail_senderInput = {
+  id?: string
+  tenant_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsCreateOrConnectWithoutMail_senderInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput>
+}
+
+export type mail_sendingsCreateManyMail_senderInputEnvelope = {
+  data: Prisma.mail_sendingsCreateManyMail_senderInput | Prisma.mail_sendingsCreateManyMail_senderInput[]
+  skipDuplicates?: boolean
+}
+
+export type mail_sendingsUpsertWithWhereUniqueWithoutMail_senderInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  update: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_senderInput>
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_senderInput>
+}
+
+export type mail_sendingsUpdateWithWhereUniqueWithoutMail_senderInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_senderInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_senderInput>
+}
+
+export type mail_sendingsUpdateManyWithWhereWithoutMail_senderInput = {
+  where: Prisma.mail_sendingsScalarWhereInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateManyMutationInput, Prisma.mail_sendingsUncheckedUpdateManyWithoutMail_senderInput>
+}
+
+export type mail_sendingsCreateWithoutMail_receiversInput = {
+  id?: string
+  tenant_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
+  mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsUncheckedCreateWithoutMail_receiversInput = {
+  id?: string
+  tenant_id: string
+  mail_sender_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
+}
+
+export type mail_sendingsCreateOrConnectWithoutMail_receiversInput = {
+  where: Prisma.mail_sendingsWhereUniqueInput
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_receiversInput>
+}
+
+export type mail_sendingsUpsertWithoutMail_receiversInput = {
+  update: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_receiversInput>
+  create: Prisma.XOR<Prisma.mail_sendingsCreateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedCreateWithoutMail_receiversInput>
+  where?: Prisma.mail_sendingsWhereInput
+}
+
+export type mail_sendingsUpdateToOneWithWhereWithoutMail_receiversInput = {
+  where?: Prisma.mail_sendingsWhereInput
+  data: Prisma.XOR<Prisma.mail_sendingsUpdateWithoutMail_receiversInput, Prisma.mail_sendingsUncheckedUpdateWithoutMail_receiversInput>
+}
+
+export type mail_sendingsUpdateWithoutMail_receiversInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
+  mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateWithoutMail_receiversInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsCreateManyMail_configInput = {
+  id?: string
+  tenant_id: string
+  mail_sender_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+}
+
+export type mail_sendingsUpdateWithoutMail_configInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateWithoutMail_configInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateManyWithoutMail_configInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_sender_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+}
+
+export type mail_sendingsCreateManyMail_senderInput = {
+  id?: string
+  tenant_id: string
+  mail_config_id: string
+  subject: string
+  content_type: string
+  content?: string | null
+  text_content?: string | null
+  template_id?: string | null
+  is_template: boolean
+  substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+}
+
+export type mail_sendingsUpdateWithoutMail_senderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateWithoutMail_senderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
+  mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
+}
+
+export type mail_sendingsUncheckedUpdateManyWithoutMail_senderInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  mail_config_id?: Prisma.StringFieldUpdateOperationsInput | string
+  subject?: Prisma.StringFieldUpdateOperationsInput | string
+  content_type?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  text_content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+}
+
+
+/**
+ * Count Type Mail_sendingsCountOutputType
+ */
+
+export type Mail_sendingsCountOutputType = {
+  subscriber_lists: number
+  mail_receivers: number
+}
+
+export type Mail_sendingsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  subscriber_lists?: boolean | Mail_sendingsCountOutputTypeCountSubscriber_listsArgs
+  mail_receivers?: boolean | Mail_sendingsCountOutputTypeCountMail_receiversArgs
+}
+
+/**
+ * Mail_sendingsCountOutputType without action
+ */
+export type Mail_sendingsCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Mail_sendingsCountOutputType
+   */
+  select?: Prisma.Mail_sendingsCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * Mail_sendingsCountOutputType without action
+ */
+export type Mail_sendingsCountOutputTypeCountSubscriber_listsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.mail_sendings_on_subscriber_listsWhereInput
+}
+
+/**
+ * Mail_sendingsCountOutputType without action
+ */
+export type Mail_sendingsCountOutputTypeCountMail_receiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.mail_sending_receiversWhereInput
+}
 
 
 export type mail_sendingsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenant_id?: boolean
+  mail_sender_id?: boolean
+  mail_config_id?: boolean
+  subject?: boolean
+  content_type?: boolean
+  content?: boolean
+  text_content?: boolean
+  template_id?: boolean
+  is_template?: boolean
+  substitutions?: boolean
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
+  subscriber_lists?: boolean | Prisma.mail_sendings$subscriber_listsArgs<ExtArgs>
+  mail_receivers?: boolean | Prisma.mail_sendings$mail_receiversArgs<ExtArgs>
+  _count?: boolean | Prisma.Mail_sendingsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sendings"]>
 
 export type mail_sendingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenant_id?: boolean
+  mail_sender_id?: boolean
+  mail_config_id?: boolean
+  subject?: boolean
+  content_type?: boolean
+  content?: boolean
+  text_content?: boolean
+  template_id?: boolean
+  is_template?: boolean
+  substitutions?: boolean
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sendings"]>
 
 export type mail_sendingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tenant_id?: boolean
+  mail_sender_id?: boolean
+  mail_config_id?: boolean
+  subject?: boolean
+  content_type?: boolean
+  content?: boolean
+  text_content?: boolean
+  template_id?: boolean
+  is_template?: boolean
+  substitutions?: boolean
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sendings"]>
 
 export type mail_sendingsSelectScalar = {
   id?: boolean
   tenant_id?: boolean
+  mail_sender_id?: boolean
+  mail_config_id?: boolean
+  subject?: boolean
+  content_type?: boolean
+  content?: boolean
+  text_content?: boolean
+  template_id?: boolean
+  is_template?: boolean
+  substitutions?: boolean
 }
 
-export type mail_sendingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id", ExtArgs["result"]["mail_sendings"]>
+export type mail_sendingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "mail_sender_id" | "mail_config_id" | "subject" | "content_type" | "content" | "text_content" | "template_id" | "is_template" | "substitutions", ExtArgs["result"]["mail_sendings"]>
+export type mail_sendingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
+  subscriber_lists?: boolean | Prisma.mail_sendings$subscriber_listsArgs<ExtArgs>
+  mail_receivers?: boolean | Prisma.mail_sendings$mail_receiversArgs<ExtArgs>
+  _count?: boolean | Prisma.Mail_sendingsCountOutputTypeDefaultArgs<ExtArgs>
+}
+export type mail_sendingsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
+}
+export type mail_sendingsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
+  mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
+}
 
 export type $mail_sendingsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "mail_sendings"
-  objects: {}
+  objects: {
+    mail_sender: Prisma.$mail_sendersPayload<ExtArgs>
+    mail_config: Prisma.$mail_configsPayload<ExtArgs>
+    subscriber_lists: Prisma.$mail_sendings_on_subscriber_listsPayload<ExtArgs>[]
+    mail_receivers: Prisma.$mail_sending_receiversPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenant_id: string
+    mail_sender_id: string
+    mail_config_id: string
+    subject: string
+    content_type: string
+    content: string | null
+    text_content: string | null
+    template_id: string | null
+    is_template: boolean
+    substitutions: runtime.JsonValue
   }, ExtArgs["result"]["mail_sendings"]>
   composites: {}
 }
@@ -663,6 +1505,10 @@ readonly fields: mail_sendingsFieldRefs;
  */
 export interface Prisma__mail_sendingsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  mail_sender<T extends Prisma.mail_sendersDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_sendersDefaultArgs<ExtArgs>>): Prisma.Prisma__mail_sendersClient<runtime.Types.Result.GetResult<Prisma.$mail_sendersPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  mail_config<T extends Prisma.mail_configsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_configsDefaultArgs<ExtArgs>>): Prisma.Prisma__mail_configsClient<runtime.Types.Result.GetResult<Prisma.$mail_configsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  subscriber_lists<T extends Prisma.mail_sendings$subscriber_listsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_sendings$subscriber_listsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mail_sendings_on_subscriber_listsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mail_receivers<T extends Prisma.mail_sendings$mail_receiversArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_sendings$mail_receiversArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mail_sending_receiversPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -694,6 +1540,15 @@ export interface Prisma__mail_sendingsClient<T, Null = never, ExtArgs extends ru
 export interface mail_sendingsFieldRefs {
   readonly id: Prisma.FieldRef<"mail_sendings", 'String'>
   readonly tenant_id: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly mail_sender_id: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly mail_config_id: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly subject: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly content_type: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly content: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly text_content: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly template_id: Prisma.FieldRef<"mail_sendings", 'String'>
+  readonly is_template: Prisma.FieldRef<"mail_sendings", 'Boolean'>
+  readonly substitutions: Prisma.FieldRef<"mail_sendings", 'Json'>
 }
     
 
@@ -710,6 +1565,10 @@ export type mail_sendingsFindUniqueArgs<ExtArgs extends runtime.Types.Extensions
    * Omit specific fields from the mail_sendings
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
   /**
    * Filter, which mail_sendings to fetch.
    */
@@ -730,6 +1589,10 @@ export type mail_sendingsFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Ext
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  /**
    * Filter, which mail_sendings to fetch.
    */
   where: Prisma.mail_sendingsWhereUniqueInput
@@ -748,6 +1611,10 @@ export type mail_sendingsFindFirstArgs<ExtArgs extends runtime.Types.Extensions.
    * Omit specific fields from the mail_sendings
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
   /**
    * Filter, which mail_sendings to fetch.
    */
@@ -798,6 +1665,10 @@ export type mail_sendingsFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Exte
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  /**
    * Filter, which mail_sendings to fetch.
    */
   where?: Prisma.mail_sendingsWhereInput
@@ -847,6 +1718,10 @@ export type mail_sendingsFindManyArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  /**
    * Filter, which mail_sendings to fetch.
    */
   where?: Prisma.mail_sendingsWhereInput
@@ -891,6 +1766,10 @@ export type mail_sendingsCreateArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  /**
    * The data needed to create a mail_sendings.
    */
   data: Prisma.XOR<Prisma.mail_sendingsCreateInput, Prisma.mail_sendingsUncheckedCreateInput>
@@ -925,6 +1804,10 @@ export type mail_sendingsCreateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    */
   data: Prisma.mail_sendingsCreateManyInput | Prisma.mail_sendingsCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -939,6 +1822,10 @@ export type mail_sendingsUpdateArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the mail_sendings
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
   /**
    * The data needed to update a mail_sendings.
    */
@@ -992,6 +1879,10 @@ export type mail_sendingsUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.E
    * Limit how many mail_sendings to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1006,6 +1897,10 @@ export type mail_sendingsUpsertArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Omit specific fields from the mail_sendings
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
   /**
    * The filter to search for the mail_sendings to update in case it exists.
    */
@@ -1034,6 +1929,10 @@ export type mail_sendingsDeleteArgs<ExtArgs extends runtime.Types.Extensions.Int
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  /**
    * Filter which mail_sendings to delete.
    */
   where: Prisma.mail_sendingsWhereUniqueInput
@@ -1055,6 +1954,54 @@ export type mail_sendingsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions
 }
 
 /**
+ * mail_sendings.subscriber_lists
+ */
+export type mail_sendings$subscriber_listsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the mail_sendings_on_subscriber_lists
+   */
+  select?: Prisma.mail_sendings_on_subscriber_listsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the mail_sendings_on_subscriber_lists
+   */
+  omit?: Prisma.mail_sendings_on_subscriber_listsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendings_on_subscriber_listsInclude<ExtArgs> | null
+  where?: Prisma.mail_sendings_on_subscriber_listsWhereInput
+  orderBy?: Prisma.mail_sendings_on_subscriber_listsOrderByWithRelationInput | Prisma.mail_sendings_on_subscriber_listsOrderByWithRelationInput[]
+  cursor?: Prisma.mail_sendings_on_subscriber_listsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Mail_sendings_on_subscriber_listsScalarFieldEnum | Prisma.Mail_sendings_on_subscriber_listsScalarFieldEnum[]
+}
+
+/**
+ * mail_sendings.mail_receivers
+ */
+export type mail_sendings$mail_receiversArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the mail_sending_receivers
+   */
+  select?: Prisma.mail_sending_receiversSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the mail_sending_receivers
+   */
+  omit?: Prisma.mail_sending_receiversOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sending_receiversInclude<ExtArgs> | null
+  where?: Prisma.mail_sending_receiversWhereInput
+  orderBy?: Prisma.mail_sending_receiversOrderByWithRelationInput | Prisma.mail_sending_receiversOrderByWithRelationInput[]
+  cursor?: Prisma.mail_sending_receiversWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Mail_sending_receiversScalarFieldEnum | Prisma.Mail_sending_receiversScalarFieldEnum[]
+}
+
+/**
  * mail_sendings without action
  */
 export type mail_sendingsDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1066,4 +2013,8 @@ export type mail_sendingsDefaultArgs<ExtArgs extends runtime.Types.Extensions.In
    * Omit specific fields from the mail_sendings
    */
   omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
 }

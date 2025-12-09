@@ -138,7 +138,22 @@ export type webhooks = Prisma.webhooksModel
  */
 export type mail_sendings = Prisma.mail_sendingsModel
 /**
+ * Model mail_sendings_on_subscriber_lists
+ * 
+ */
+export type mail_sendings_on_subscriber_lists = Prisma.mail_sendings_on_subscriber_listsModel
+/**
  * Model mail_url_proxies
  * 
  */
 export type mail_url_proxies = Prisma.mail_url_proxiesModel
+/**
+ * Model mail_senders
+ * 
+ */
+export type mail_senders = Prisma.mail_sendersModel
+/**
+ * Model mail_sending_receivers
+ * 
+ */
+export type mail_sending_receivers = Prisma.mail_sending_receiversModel

@@ -408,7 +408,10 @@ export const ModelName = {
   mail_logs: 'mail_logs',
   webhooks: 'webhooks',
   mail_sendings: 'mail_sendings',
-  mail_url_proxies: 'mail_url_proxies'
+  mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
+  mail_url_proxies: 'mail_url_proxies',
+  mail_senders: 'mail_senders',
+  mail_sending_receivers: 'mail_sending_receivers'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_url_proxies"
+    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2204,6 +2207,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    mail_sendings_on_subscriber_lists: {
+      payload: Prisma.$mail_sendings_on_subscriber_listsPayload<ExtArgs>
+      fields: Prisma.mail_sendings_on_subscriber_listsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.mail_sendings_on_subscriber_listsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.mail_sendings_on_subscriber_listsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        findFirst: {
+          args: Prisma.mail_sendings_on_subscriber_listsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.mail_sendings_on_subscriber_listsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        findMany: {
+          args: Prisma.mail_sendings_on_subscriber_listsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
+        }
+        create: {
+          args: Prisma.mail_sendings_on_subscriber_listsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        createMany: {
+          args: Prisma.mail_sendings_on_subscriber_listsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.mail_sendings_on_subscriber_listsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
+        }
+        delete: {
+          args: Prisma.mail_sendings_on_subscriber_listsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        update: {
+          args: Prisma.mail_sendings_on_subscriber_listsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        deleteMany: {
+          args: Prisma.mail_sendings_on_subscriber_listsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.mail_sendings_on_subscriber_listsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.mail_sendings_on_subscriber_listsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
+        }
+        upsert: {
+          args: Prisma.mail_sendings_on_subscriber_listsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
+        }
+        aggregate: {
+          args: Prisma.Mail_sendings_on_subscriber_listsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMail_sendings_on_subscriber_lists>
+        }
+        groupBy: {
+          args: Prisma.mail_sendings_on_subscriber_listsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sendings_on_subscriber_listsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.mail_sendings_on_subscriber_listsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sendings_on_subscriber_listsCountAggregateOutputType> | number
+        }
+      }
+    }
     mail_url_proxies: {
       payload: Prisma.$mail_url_proxiesPayload<ExtArgs>
       fields: Prisma.mail_url_proxiesFieldRefs
@@ -2275,6 +2352,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.mail_url_proxiesCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.Mail_url_proxiesCountAggregateOutputType> | number
+        }
+      }
+    }
+    mail_senders: {
+      payload: Prisma.$mail_sendersPayload<ExtArgs>
+      fields: Prisma.mail_sendersFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.mail_sendersFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.mail_sendersFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        findFirst: {
+          args: Prisma.mail_sendersFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.mail_sendersFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        findMany: {
+          args: Prisma.mail_sendersFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>[]
+        }
+        create: {
+          args: Prisma.mail_sendersCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        createMany: {
+          args: Prisma.mail_sendersCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.mail_sendersCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>[]
+        }
+        delete: {
+          args: Prisma.mail_sendersDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        update: {
+          args: Prisma.mail_sendersUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        deleteMany: {
+          args: Prisma.mail_sendersDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.mail_sendersUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.mail_sendersUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>[]
+        }
+        upsert: {
+          args: Prisma.mail_sendersUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendersPayload>
+        }
+        aggregate: {
+          args: Prisma.Mail_sendersAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMail_senders>
+        }
+        groupBy: {
+          args: Prisma.mail_sendersGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sendersGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.mail_sendersCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sendersCountAggregateOutputType> | number
+        }
+      }
+    }
+    mail_sending_receivers: {
+      payload: Prisma.$mail_sending_receiversPayload<ExtArgs>
+      fields: Prisma.mail_sending_receiversFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.mail_sending_receiversFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.mail_sending_receiversFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        findFirst: {
+          args: Prisma.mail_sending_receiversFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.mail_sending_receiversFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        findMany: {
+          args: Prisma.mail_sending_receiversFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>[]
+        }
+        create: {
+          args: Prisma.mail_sending_receiversCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        createMany: {
+          args: Prisma.mail_sending_receiversCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.mail_sending_receiversCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>[]
+        }
+        delete: {
+          args: Prisma.mail_sending_receiversDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        update: {
+          args: Prisma.mail_sending_receiversUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        deleteMany: {
+          args: Prisma.mail_sending_receiversDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.mail_sending_receiversUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.mail_sending_receiversUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>[]
+        }
+        upsert: {
+          args: Prisma.mail_sending_receiversUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sending_receiversPayload>
+        }
+        aggregate: {
+          args: Prisma.Mail_sending_receiversAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateMail_sending_receivers>
+        }
+        groupBy: {
+          args: Prisma.mail_sending_receiversGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sending_receiversGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.mail_sending_receiversCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Mail_sending_receiversCountAggregateOutputType> | number
         }
       }
     }
@@ -2696,10 +2921,27 @@ export type WebhooksScalarFieldEnum = (typeof WebhooksScalarFieldEnum)[keyof typ
 
 export const Mail_sendingsScalarFieldEnum = {
   id: 'id',
-  tenant_id: 'tenant_id'
+  tenant_id: 'tenant_id',
+  mail_sender_id: 'mail_sender_id',
+  mail_config_id: 'mail_config_id',
+  subject: 'subject',
+  content_type: 'content_type',
+  content: 'content',
+  text_content: 'text_content',
+  template_id: 'template_id',
+  is_template: 'is_template',
+  substitutions: 'substitutions'
 } as const
 
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
+
+
+export const Mail_sendings_on_subscriber_listsScalarFieldEnum = {
+  mail_sendings_id: 'mail_sendings_id',
+  subscriber_list_id: 'subscriber_list_id'
+} as const
+
+export type Mail_sendings_on_subscriber_listsScalarFieldEnum = (typeof Mail_sendings_on_subscriber_listsScalarFieldEnum)[keyof typeof Mail_sendings_on_subscriber_listsScalarFieldEnum]
 
 
 export const Mail_url_proxiesScalarFieldEnum = {
@@ -2712,6 +2954,34 @@ export const Mail_url_proxiesScalarFieldEnum = {
 } as const
 
 export type Mail_url_proxiesScalarFieldEnum = (typeof Mail_url_proxiesScalarFieldEnum)[keyof typeof Mail_url_proxiesScalarFieldEnum]
+
+
+export const Mail_sendersScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  email: 'email',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type Mail_sendersScalarFieldEnum = (typeof Mail_sendersScalarFieldEnum)[keyof typeof Mail_sendersScalarFieldEnum]
+
+
+export const Mail_sending_receiversScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  mail_sending_id: 'mail_sending_id',
+  email: 'email',
+  name: 'name',
+  substitutions: 'substitutions',
+  created_at: 'created_at',
+  created_by: 'created_by'
+} as const
+
+export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3081,7 +3351,10 @@ export type GlobalOmitConfig = {
   mail_logs?: Prisma.mail_logsOmit
   webhooks?: Prisma.webhooksOmit
   mail_sendings?: Prisma.mail_sendingsOmit
+  mail_sendings_on_subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsOmit
   mail_url_proxies?: Prisma.mail_url_proxiesOmit
+  mail_senders?: Prisma.mail_sendersOmit
+  mail_sending_receivers?: Prisma.mail_sending_receiversOmit
 }
 
 /* Types for Logging */

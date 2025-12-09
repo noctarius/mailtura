@@ -75,7 +75,10 @@ export const ModelName = {
   mail_logs: 'mail_logs',
   webhooks: 'webhooks',
   mail_sendings: 'mail_sendings',
-  mail_url_proxies: 'mail_url_proxies'
+  mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
+  mail_url_proxies: 'mail_url_proxies',
+  mail_senders: 'mail_senders',
+  mail_sending_receivers: 'mail_sending_receivers'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -473,10 +476,27 @@ export type WebhooksScalarFieldEnum = (typeof WebhooksScalarFieldEnum)[keyof typ
 
 export const Mail_sendingsScalarFieldEnum = {
   id: 'id',
-  tenant_id: 'tenant_id'
+  tenant_id: 'tenant_id',
+  mail_sender_id: 'mail_sender_id',
+  mail_config_id: 'mail_config_id',
+  subject: 'subject',
+  content_type: 'content_type',
+  content: 'content',
+  text_content: 'text_content',
+  template_id: 'template_id',
+  is_template: 'is_template',
+  substitutions: 'substitutions'
 } as const
 
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
+
+
+export const Mail_sendings_on_subscriber_listsScalarFieldEnum = {
+  mail_sendings_id: 'mail_sendings_id',
+  subscriber_list_id: 'subscriber_list_id'
+} as const
+
+export type Mail_sendings_on_subscriber_listsScalarFieldEnum = (typeof Mail_sendings_on_subscriber_listsScalarFieldEnum)[keyof typeof Mail_sendings_on_subscriber_listsScalarFieldEnum]
 
 
 export const Mail_url_proxiesScalarFieldEnum = {
@@ -489,6 +509,34 @@ export const Mail_url_proxiesScalarFieldEnum = {
 } as const
 
 export type Mail_url_proxiesScalarFieldEnum = (typeof Mail_url_proxiesScalarFieldEnum)[keyof typeof Mail_url_proxiesScalarFieldEnum]
+
+
+export const Mail_sendersScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  email: 'email',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type Mail_sendersScalarFieldEnum = (typeof Mail_sendersScalarFieldEnum)[keyof typeof Mail_sendersScalarFieldEnum]
+
+
+export const Mail_sending_receiversScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  mail_sending_id: 'mail_sending_id',
+  email: 'email',
+  name: 'name',
+  substitutions: 'substitutions',
+  created_at: 'created_at',
+  created_by: 'created_by'
+} as const
+
+export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]
 
 
 export const SortOrder = {

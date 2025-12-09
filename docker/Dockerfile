@@ -23,7 +23,8 @@ COPY packages/backend/package.json /temp/prod/packages/backend/
 COPY packages/worker/package.json /temp/prod/packages/worker/
 COPY packages/contentcompiler/package.json /temp/prod/packages/contentcompiler/
 COPY packages/database/package.json /temp/prod/packages/database/
-RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production --filter='!./packages/worker'
+RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile --production \
+                         --filter='!./packages/worker' --filter='!./packages/frontend'
 
 FROM development AS builder
 ENV DASHBOARD_BASE_URL "/dashboard"
@@ -39,13 +40,13 @@ RUN apk add openssl
 COPY --from=production /temp/prod/node_modules node_modules
 RUN rm -rf node_modules/@mailtura/rpcmodel
 COPY --from=builder /temp/dev/packages/rpcmodel node_modules/@mailtura/rpcmodel
-RUN rm -rf node_modules/@mailtura/rpcmodel/node_modules
+RUN rm -rf node_modules/@mailtura/rpcmodel/node_modules node_modules/@mailtura/rpcmodel/src
 RUN rm -rf node_modules/@mailtura/contentcompiler
 COPY --from=builder /temp/dev/packages/contentcompiler node_modules/@mailtura/contentcompiler
-RUN rm -rf node_modules/@mailtura/contentcompiler/node_modules
+RUN rm -rf node_modules/@mailtura/contentcompiler/node_modules node_modules/@mailtura/contentcompiler/src
 RUN rm -rf node_modules/@mailtura/database
 COPY --from=builder /temp/dev/packages/database node_modules/@mailtura/database
-RUN rm -rf node_modules/@mailtura/database/node_modules
+RUN rm -rf node_modules/@mailtura/database/node_modules node_modules/@mailtura/database/src
 COPY --from=builder /temp/dev/packages/frontend/dist public
 COPY --from=builder /temp/dev/packages/backend/dist .
 COPY --from=builder /temp/dev/packages/backend/package.json .

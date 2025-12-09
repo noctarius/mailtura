@@ -6,12 +6,20 @@ import papaparse, {
   type ParseStepResult,
 } from "papaparse";
 import type { ContactImportArguments, ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
-import { CreateContact, CreateContactBatchResponse } from "@mailtura/rpcmodel/api/request-response.js";
 import { log } from "@temporalio/activity";
 import prisma, { ContactImportEntity, mapContact } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
+import { Contact } from "@mailtura/rpcmodel/api/index.js";
+import { CreateContact } from "@mailtura/rpcmodel/api/request-response.js";
 
 const { parse } = papaparse;
+
+interface CreateContactBatchResponse {
+  items: number;
+  added: Contact[];
+  updated: Contact[];
+  skipped: Contact[];
+}
 
 const EMAIL_PATTERN =
   /^[a-z0-9!#$%&'*+=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;

@@ -8,17 +8,13 @@ import {
   ServiceOauth2SmtpAuth,
   SmtpConfig,
   type UsernamePasswordSmtpAuth,
-} from "@mailtura/rpcmodel/lib/mails/index.js";
-import { createTransport as createSmtpTransport } from "nodemailer";
+} from "@mailtura/rpcmodel/mails/index.js";
+import { createTransport as createNodemailerTransport } from "nodemailer";
 import { Address, Options } from "nodemailer/lib/mailer/index.js";
-import Mustache from "mustache";
-import { convert } from "html-to-text";
 import { AbstractTransport, Transport } from "./transport.js";
-import { getRpcManager } from "../rpc/index.js";
+import { createTemplateCompiler } from "@mailtura/contentcompiler";
 
-const rpcManager = getRpcManager();
-
-export function createTransport(config: SmtpConfig, tenantId: string): Transport {
+export function createSmtpTransport(config: SmtpConfig, tenantId: string): Transport {
   return new SmtpTransport(config, tenantId);
 }
 
@@ -31,7 +27,7 @@ class SmtpTransport extends AbstractTransport {
   }
 
   async send(mail: Mail): Promise<number> {
-    const transport = createSmtpTransport({
+    const transport = createNodemailerTransport({
       host: this.#config.host,
       port: this.#config.port,
       secure: this.#config.secure,
@@ -43,8 +39,11 @@ class SmtpTransport extends AbstractTransport {
 
     const from = this.#mapMailAddress(mail.from);
     const content = await this.getTemplateContent(mail.content);
+
+    const templateCompiler = createTemplateCompiler(async () => undefined, "");
     for (const recipient of mail.recipients) {
       const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
+      const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
 
       const mailOptions: Options = {
         from,
@@ -52,17 +51,12 @@ class SmtpTransport extends AbstractTransport {
         cc: this.#mapMailAddresses(recipient.cc),
         bcc: this.#mapMailAddresses(recipient.bcc),
         subject: mail.subject,
+        html: resolvedTemplate.html,
+        text: resolvedTemplate.text,
       };
 
-      mailOptions.html = content.isTemplate ? Mustache.render(content.content, substitutions) : content.content;
-
-      mailOptions.text = content.textContent
-        ? content.isTemplate
-          ? Mustache.render(content.textContent, substitutions)
-          : content.textContent
-        : convert(mailOptions.html, { wordwrap: 120 });
-
       const messageInfo = await transport.sendMail(mailOptions);
+      messageInfo.accepted.forEach(messageId => console.log(`Message ${messageId} accepted`));
     }
 
     return 0;

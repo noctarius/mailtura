@@ -211,6 +211,7 @@ export type mail_configsWhereInput = {
   updated_at?: Prisma.DateTimeNullableFilter<"mail_configs"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"mail_configs"> | string | null
   webhooks?: Prisma.WebhooksListRelationFilter
+  mail_sendings?: Prisma.Mail_sendingsListRelationFilter
 }
 
 export type mail_configsOrderByWithRelationInput = {
@@ -224,6 +225,7 @@ export type mail_configsOrderByWithRelationInput = {
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
   webhooks?: Prisma.webhooksOrderByRelationAggregateInput
+  mail_sendings?: Prisma.mail_sendingsOrderByRelationAggregateInput
 }
 
 export type mail_configsWhereUniqueInput = Prisma.AtLeast<{
@@ -240,6 +242,7 @@ export type mail_configsWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeNullableFilter<"mail_configs"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"mail_configs"> | string | null
   webhooks?: Prisma.WebhooksListRelationFilter
+  mail_sendings?: Prisma.Mail_sendingsListRelationFilter
 }, "id">
 
 export type mail_configsOrderByWithAggregationInput = {
@@ -283,6 +286,7 @@ export type mail_configsCreateInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   webhooks?: Prisma.webhooksCreateNestedManyWithoutMail_configInput
+  mail_sendings?: Prisma.mail_sendingsCreateNestedManyWithoutMail_configInput
 }
 
 export type mail_configsUncheckedCreateInput = {
@@ -296,6 +300,7 @@ export type mail_configsUncheckedCreateInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   webhooks?: Prisma.webhooksUncheckedCreateNestedManyWithoutMail_configInput
+  mail_sendings?: Prisma.mail_sendingsUncheckedCreateNestedManyWithoutMail_configInput
 }
 
 export type mail_configsUpdateInput = {
@@ -309,6 +314,7 @@ export type mail_configsUpdateInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webhooks?: Prisma.webhooksUpdateManyWithoutMail_configNestedInput
+  mail_sendings?: Prisma.mail_sendingsUpdateManyWithoutMail_configNestedInput
 }
 
 export type mail_configsUncheckedUpdateInput = {
@@ -322,6 +328,7 @@ export type mail_configsUncheckedUpdateInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   webhooks?: Prisma.webhooksUncheckedUpdateManyWithoutMail_configNestedInput
+  mail_sendings?: Prisma.mail_sendingsUncheckedUpdateManyWithoutMail_configNestedInput
 }
 
 export type mail_configsCreateManyInput = {
@@ -413,6 +420,20 @@ export type mail_configsUpdateOneRequiredWithoutWebhooksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.mail_configsUpdateToOneWithWhereWithoutWebhooksInput, Prisma.mail_configsUpdateWithoutWebhooksInput>, Prisma.mail_configsUncheckedUpdateWithoutWebhooksInput>
 }
 
+export type mail_configsCreateNestedOneWithoutMail_sendingsInput = {
+  create?: Prisma.XOR<Prisma.mail_configsCreateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedCreateWithoutMail_sendingsInput>
+  connectOrCreate?: Prisma.mail_configsCreateOrConnectWithoutMail_sendingsInput
+  connect?: Prisma.mail_configsWhereUniqueInput
+}
+
+export type mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput = {
+  create?: Prisma.XOR<Prisma.mail_configsCreateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedCreateWithoutMail_sendingsInput>
+  connectOrCreate?: Prisma.mail_configsCreateOrConnectWithoutMail_sendingsInput
+  upsert?: Prisma.mail_configsUpsertWithoutMail_sendingsInput
+  connect?: Prisma.mail_configsWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.mail_configsUpdateToOneWithWhereWithoutMail_sendingsInput, Prisma.mail_configsUpdateWithoutMail_sendingsInput>, Prisma.mail_configsUncheckedUpdateWithoutMail_sendingsInput>
+}
+
 export type mail_configsCreateWithoutWebhooksInput = {
   id?: string
   tenant_id: string
@@ -423,6 +444,7 @@ export type mail_configsCreateWithoutWebhooksInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  mail_sendings?: Prisma.mail_sendingsCreateNestedManyWithoutMail_configInput
 }
 
 export type mail_configsUncheckedCreateWithoutWebhooksInput = {
@@ -435,6 +457,7 @@ export type mail_configsUncheckedCreateWithoutWebhooksInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  mail_sendings?: Prisma.mail_sendingsUncheckedCreateNestedManyWithoutMail_configInput
 }
 
 export type mail_configsCreateOrConnectWithoutWebhooksInput = {
@@ -463,6 +486,7 @@ export type mail_configsUpdateWithoutWebhooksInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mail_sendings?: Prisma.mail_sendingsUpdateManyWithoutMail_configNestedInput
 }
 
 export type mail_configsUncheckedUpdateWithoutWebhooksInput = {
@@ -475,6 +499,75 @@ export type mail_configsUncheckedUpdateWithoutWebhooksInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  mail_sendings?: Prisma.mail_sendingsUncheckedUpdateManyWithoutMail_configNestedInput
+}
+
+export type mail_configsCreateWithoutMail_sendingsInput = {
+  id?: string
+  tenant_id: string
+  name: string
+  type: string
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
+  updated_at?: Date | string | null
+  updated_by?: string | null
+  webhooks?: Prisma.webhooksCreateNestedManyWithoutMail_configInput
+}
+
+export type mail_configsUncheckedCreateWithoutMail_sendingsInput = {
+  id?: string
+  tenant_id: string
+  name: string
+  type: string
+  config: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
+  updated_at?: Date | string | null
+  updated_by?: string | null
+  webhooks?: Prisma.webhooksUncheckedCreateNestedManyWithoutMail_configInput
+}
+
+export type mail_configsCreateOrConnectWithoutMail_sendingsInput = {
+  where: Prisma.mail_configsWhereUniqueInput
+  create: Prisma.XOR<Prisma.mail_configsCreateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedCreateWithoutMail_sendingsInput>
+}
+
+export type mail_configsUpsertWithoutMail_sendingsInput = {
+  update: Prisma.XOR<Prisma.mail_configsUpdateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedUpdateWithoutMail_sendingsInput>
+  create: Prisma.XOR<Prisma.mail_configsCreateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedCreateWithoutMail_sendingsInput>
+  where?: Prisma.mail_configsWhereInput
+}
+
+export type mail_configsUpdateToOneWithWhereWithoutMail_sendingsInput = {
+  where?: Prisma.mail_configsWhereInput
+  data: Prisma.XOR<Prisma.mail_configsUpdateWithoutMail_sendingsInput, Prisma.mail_configsUncheckedUpdateWithoutMail_sendingsInput>
+}
+
+export type mail_configsUpdateWithoutMail_sendingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhooks?: Prisma.webhooksUpdateManyWithoutMail_configNestedInput
+}
+
+export type mail_configsUncheckedUpdateWithoutMail_sendingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  type?: Prisma.StringFieldUpdateOperationsInput | string
+  config?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  webhooks?: Prisma.webhooksUncheckedUpdateManyWithoutMail_configNestedInput
 }
 
 
@@ -484,10 +577,12 @@ export type mail_configsUncheckedUpdateWithoutWebhooksInput = {
 
 export type Mail_configsCountOutputType = {
   webhooks: number
+  mail_sendings: number
 }
 
 export type Mail_configsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   webhooks?: boolean | Mail_configsCountOutputTypeCountWebhooksArgs
+  mail_sendings?: boolean | Mail_configsCountOutputTypeCountMail_sendingsArgs
 }
 
 /**
@@ -507,6 +602,13 @@ export type Mail_configsCountOutputTypeCountWebhooksArgs<ExtArgs extends runtime
   where?: Prisma.webhooksWhereInput
 }
 
+/**
+ * Mail_configsCountOutputType without action
+ */
+export type Mail_configsCountOutputTypeCountMail_sendingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.mail_sendingsWhereInput
+}
+
 
 export type mail_configsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -519,6 +621,7 @@ export type mail_configsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   updated_at?: boolean
   updated_by?: boolean
   webhooks?: boolean | Prisma.mail_configs$webhooksArgs<ExtArgs>
+  mail_sendings?: boolean | Prisma.mail_configs$mail_sendingsArgs<ExtArgs>
   _count?: boolean | Prisma.Mail_configsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_configs"]>
 
@@ -561,6 +664,7 @@ export type mail_configsSelectScalar = {
 export type mail_configsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "name" | "type" | "config" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_configs"]>
 export type mail_configsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   webhooks?: boolean | Prisma.mail_configs$webhooksArgs<ExtArgs>
+  mail_sendings?: boolean | Prisma.mail_configs$mail_sendingsArgs<ExtArgs>
   _count?: boolean | Prisma.Mail_configsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type mail_configsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -570,6 +674,7 @@ export type $mail_configsPayload<ExtArgs extends runtime.Types.Extensions.Intern
   name: "mail_configs"
   objects: {
     webhooks: Prisma.$webhooksPayload<ExtArgs>[]
+    mail_sendings: Prisma.$mail_sendingsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -976,6 +1081,7 @@ readonly fields: mail_configsFieldRefs;
 export interface Prisma__mail_configsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   webhooks<T extends Prisma.mail_configs$webhooksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_configs$webhooksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$webhooksPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  mail_sendings<T extends Prisma.mail_configs$mail_sendingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_configs$mail_sendingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mail_sendingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1432,6 +1538,30 @@ export type mail_configs$webhooksArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.WebhooksScalarFieldEnum | Prisma.WebhooksScalarFieldEnum[]
+}
+
+/**
+ * mail_configs.mail_sendings
+ */
+export type mail_configs$mail_sendingsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the mail_sendings
+   */
+  select?: Prisma.mail_sendingsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the mail_sendings
+   */
+  omit?: Prisma.mail_sendingsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.mail_sendingsInclude<ExtArgs> | null
+  where?: Prisma.mail_sendingsWhereInput
+  orderBy?: Prisma.mail_sendingsOrderByWithRelationInput | Prisma.mail_sendingsOrderByWithRelationInput[]
+  cursor?: Prisma.mail_sendingsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.Mail_sendingsScalarFieldEnum | Prisma.Mail_sendingsScalarFieldEnum[]
 }
 
 /**

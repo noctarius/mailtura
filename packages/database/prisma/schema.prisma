@@ -175,7 +175,8 @@ model subscriber_lists {
   updated_at  DateTime? @db.Timestamptz()
   updated_by  String?
 
-  subscribers subscribers[]
+  subscribers   subscribers[]
+  mail_sendings mail_sendings_on_subscriber_lists[]
 
   @@unique([tenant_id, name])
 }
@@ -413,16 +414,18 @@ model roles {
 }
 
 model mail_configs {
-  id         String     @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id  String     @db.Uuid
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String    @db.Uuid
   name       String
   type       String
-  config     Json       @db.JsonB
-  created_at DateTime   @db.Timestamptz()
+  config     Json      @db.JsonB
+  created_at DateTime  @db.Timestamptz()
   created_by String
-  updated_at DateTime?  @db.Timestamptz()
+  updated_at DateTime? @db.Timestamptz()
   updated_by String?
-  webhooks   webhooks[]
+
+  webhooks      webhooks[]
+  mail_sendings mail_sendings[]
 
   @@index([tenant_id])
 }
@@ -465,8 +468,35 @@ model webhooks {
 }
 
 model mail_sendings {
-  id        String @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id String @db.Uuid
+  id             String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id      String  @db.Uuid
+  mail_sender_id String  @db.Uuid
+  mail_config_id String  @db.Uuid
+  subject        String
+  content_type   String
+  content        String?
+  text_content   String?
+  template_id    String? @db.Uuid
+  is_template    Boolean
+  substitutions  Json    @db.JsonB
+
+  mail_sender mail_senders @relation(fields: [mail_sender_id], references: [id])
+  mail_config mail_configs @relation(fields: [mail_config_id], references: [id])
+
+  subscriber_lists mail_sendings_on_subscriber_lists[]
+  mail_receivers   mail_sending_receivers[]
+
+  @@index([tenant_id])
+}
+
+model mail_sendings_on_subscriber_lists {
+  mail_sendings_id   String @db.Uuid
+  subscriber_list_id String @db.Uuid
+
+  mail_sendings    mail_sendings    @relation(fields: [mail_sendings_id], references: [id])
+  subscriber_lists subscriber_lists @relation(fields: [subscriber_list_id], references: [id])
+
+  @@id([mail_sendings_id, subscriber_list_id])
 }
 
 model mail_url_proxies {
@@ -478,4 +508,34 @@ model mail_url_proxies {
   to         String
 
   @@index([tenant_id, contact_id])
+}
+
+model mail_senders {
+  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id  String    @db.Uuid
+  name       String
+  email      String
+  created_at DateTime  @db.Timestamptz()
+  created_by String
+  updated_at DateTime? @db.Timestamptz()
+  updated_by String?
+
+  mail_sendings mail_sendings[]
+
+  @@index([tenant_id])
+}
+
+model mail_sending_receivers {
+  id              String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id       String   @db.Uuid
+  mail_sending_id String   @db.Uuid
+  email           String
+  name            String
+  substitutions   Json     @db.JsonB
+  created_at      DateTime @db.Timestamptz()
+  created_by      String
+
+  mail_sendings mail_sendings @relation(fields: [mail_sending_id], references: [id])
+
+  @@index([tenant_id])
 }

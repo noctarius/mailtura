@@ -1,15 +1,16 @@
-import { Mail, MailContact, SendgridConfig } from "@mailtura/rpcmodel/lib/mails/index.js";
+import { Mail, MailContact, MailDirectContent, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, Transport } from "./transport.js";
 import { Client } from "@sendgrid/client";
-import Handlebars from "handlebars";
-import { convert } from "html-to-text";
 import { classes } from "@sendgrid/helpers";
+import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 const SendgridMail = classes.Mail;
+type SendgridMail = typeof SendgridMail;
+type MailData = NonNullable<ConstructorParameters<SendgridMail>[0]>;
 
 export type EmailData = { name?: string; email: string };
 
-export function createTransport(config: SendgridConfig, tenantId: string): Transport {
+export function createSendgridTransport(config: SendgridConfig, tenantId: string): Transport {
   return new SendgridTransport(config, tenantId);
 }
 
@@ -31,45 +32,85 @@ class SendgridTransport extends AbstractTransport {
       client.setImpersonateSubuser(this.#config.subuser);
     }
 
-    const from = this.#mapMailAddress(mail.from);
     const content = await this.getTemplateContent(mail.content);
-    const htmlTemplate = Handlebars.com
 
-
-    for (const recipient of mail.recipients) {
-      const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
-
-      const to = this.#mapMailAddresses(recipient.to);
-      const cc = this.#mapMailAddresses(recipient.cc);
-      const bcc = this.#mapMailAddresses(recipient.bcc);
-
-      const html = content.isTemplate ? Handlebars.render(content.content, substitutions) : content.content;
-      const text = content.textContent
-        ? content.isTemplate
-          ? Handlebars.render(content.textContent, substitutions)
-          : content.textContent
-        : convert(html, { wordwrap: 120 });
-
-      const mailData = new SendgridMail();
-      mailData.setFrom(from);
-      mailData.setSubject(mail.subject);
-      mailData.setSubstitutions(substitutions);
-      mailData.addHtmlContent(html);
-      mailData.addTextContent(text);
-      mailData.addPersonalization({
-        to: to ?? [],
-        cc,
-        bcc,
-      });
-
-      const response = await client.createRequest({
-        method: "POST",
-        url: "/v3/mail/send",
-        body: mailData.toJSON(),
-      });
-
+    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const mailData = await this.#createMails(mail, templateCompiler, content);
+    for (const mail of mailData) {
+      try {
+        const [response, body] = await client.request({
+          method: "POST",
+          url: "/v3/mail/send",
+          body: SendgridMail.create(mail).toJSON(),
+        });
+        if (response.statusCode >= 200 && response.statusCode < 300) console.log(response.body);
+      } catch (error: any) {
+        console.error(error);
+      }
     }
-    return 0;
+    return mailData.length === 1
+      ? mailData.reduce((acc, item) => acc + (item.personalizations?.length ?? 0), 0)
+      : mailData.length;
+  }
+
+  async #createMails(mail: Mail, templateCompiler: TemplateCompiler, content: MailDirectContent): Promise<MailData[]> {
+    const hasSubstitutions = mail.recipients.some(
+      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
+    );
+
+    if (!hasSubstitutions) return this.#createJoinedMail(mail, templateCompiler);
+    return this.#createSubstitutedMails(mail, templateCompiler, content);
+  }
+
+  async #createSubstitutedMails(
+    mail: Mail,
+    templateCompiler: TemplateCompiler,
+    content: MailDirectContent
+  ): Promise<MailData[]> {
+    const from = this.#mapMailAddress(mail.from);
+    return Promise.all(
+      mail.recipients.map(async recipient => {
+        const substitutions = this.mergeSubstitutions(
+          content.substitutions,
+          mail.substitutions,
+          recipient.substitutions
+        );
+        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        return {
+          from,
+          subject: mail.subject,
+          html: resolvedTemplate.html,
+          text: resolvedTemplate.text,
+          personalizations: mail.recipients.map(recipient => {
+            return {
+              to: this.#mapMailAddresses(recipient.to) ?? [],
+              cc: this.#mapMailAddresses(recipient.cc),
+              bcc: this.#mapMailAddresses(recipient.bcc),
+            };
+          }),
+        };
+      })
+    );
+  }
+
+  async #createJoinedMail(mail: Mail, templateCompiler: TemplateCompiler): Promise<MailData[]> {
+    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, {});
+    const from = this.#mapMailAddress(mail.from);
+    return [
+      {
+        from,
+        subject: mail.subject,
+        html: resolvedTemplate.html,
+        text: resolvedTemplate.text,
+        personalizations: mail.recipients.map(recipient => {
+          return {
+            to: this.#mapMailAddresses(recipient.to) ?? [],
+            cc: this.#mapMailAddresses(recipient.cc),
+            bcc: this.#mapMailAddresses(recipient.bcc),
+          };
+        }),
+      },
+    ];
   }
 
   #mapMailAddresses(contacts: MailContact | MailContact[] | undefined): EmailData[] | undefined {

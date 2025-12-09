@@ -12,6 +12,9 @@ import {
   type contacts,
   type event_type,
   type files,
+  type mail_configs,
+  type mail_senders,
+  type mail_sending_receivers,
   type mail_sendings,
   type mail_url_proxies,
   PrismaClient,
@@ -156,5 +159,8 @@ export type RoleEntity = roles;
 export type AccountEntity = accounts;
 export type MailSendingEntity = mail_sendings;
 export type MailUrlProxyEntity = mail_url_proxies;
+export type MailSenderEntity = mail_senders;
+export type MailConfigEntity = mail_configs;
+export type MailSendingReceiverEntity = mail_sending_receivers;
 
 export default prisma;
