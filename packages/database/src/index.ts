@@ -22,6 +22,7 @@ import {
   type subscriber_lists,
   type subscriber_status,
   type subscribers,
+  type system_configs,
   type template_properties,
   type templates,
   type tenants,
@@ -115,6 +116,7 @@ const prisma = new PrismaClient({ adapter, log }).$extends({
   },
 });
 
+export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/internal/prismaNamespace.js";
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
 export * from "./mapper.js";
 
@@ -162,5 +164,6 @@ export type MailUrlProxyEntity = mail_url_proxies;
 export type MailSenderEntity = mail_senders;
 export type MailConfigEntity = mail_configs;
 export type MailSendingReceiverEntity = mail_sending_receivers;
+export type SystemConfigEntity = system_configs;
 
 export default prisma;

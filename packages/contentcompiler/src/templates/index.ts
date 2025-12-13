@@ -20,7 +20,12 @@ declare class LiquidErrors extends LiquidError {
 
 const isLiquidErrors = (e: unknown): e is LiquidErrors => e instanceof LiquidError && "errors" in e;
 
-const urlRegex = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*\/?$/g;
+const mergeSubstitutions = (a?: Record<string, string>, b?: Record<string, string>): Record<string, string> => ({
+  ...(a??{}),
+  ...(b??{}),
+});
+
+const urlRegex = /(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\w.-]*)*\/?/g;
 
 type TemplateFunction<T> = (context: T) => string;
 
@@ -75,6 +80,7 @@ export function createTemplateCompiler(templateResolver: TemplateResolver, apiBa
 export function isTemplateError<T>(
   templateOrError: T | { errors: TemplateError[] }
 ): templateOrError is { errors: TemplateError[] } {
+  if (templateOrError === undefined) return false;
   return (
     templateOrError &&
     typeof templateOrError === "object" &&
@@ -141,7 +147,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
   }
 
   #generateProxyUrl(url: string | undefined, position: number, contactId?: string): UrlProxy | undefined {
-    if (!url || url.startsWith("http")) return undefined;
+    if (!url || !url.startsWith("http")) return undefined;
 
     const id = v7();
     const proxyUrl = joinPath(this.#apiBase, "tracking", id);
@@ -229,19 +235,19 @@ class TemplateCompilerImpl implements TemplateCompiler {
     if (cached) return cached;
 
     const compiler = async (): Promise<ApplicableTemplate<T> | { errors: TemplateError[] }> => {
-      if (!template.isTemplate) {
+      if (typeof template.isTemplate === "undefined" || !template.isTemplate) {
         return {
           html: () => template.content,
           text: template.textContent ? () => template.textContent! : undefined,
         };
       }
 
-      const htmlTemplate = this.#compileHtmlTemplate<T>(template.content);
+      const htmlTemplate = this.#compileHtmlTemplate<T>(template.content, template.substitutions);
       if (isTemplateError(htmlTemplate)) {
         return { errors: htmlTemplate.errors };
       }
 
-      const textTemplate = this.#compileTextTemplate<T>(template.textContent);
+      const textTemplate = this.#compileTextTemplate<T>(template.textContent, template.substitutions);
       if (isTemplateError(textTemplate)) {
         return { errors: textTemplate.errors };
       }
@@ -256,15 +262,15 @@ class TemplateCompilerImpl implements TemplateCompiler {
     return result;
   }
 
-  #compileTextTemplate<T extends Record<string, any>>(template?: string) {
+  #compileTextTemplate<T extends Record<string, any>>(template?: string, substitutions?: Record<string, string>) {
     if (!template) return undefined;
     const staging = this.#compileLiquidTemplate(template);
     if (isTemplateError(staging)) return { errors: staging.errors };
     if (!staging) return undefined;
-    return (context: T) => staging.engine.renderSync(staging.template, context);
+    return (context: T) => staging.engine.renderSync(staging.template, mergeSubstitutions(substitutions, context));
   }
 
-  #compileHtmlTemplate<T extends Record<string, any>>(template: string) {
+  #compileHtmlTemplate<T extends Record<string, any>>(template: string, substitutions?: Record<string, string>) {
     // We need to precompile the Liquid template twice to get syntax errors at the correct location
     const liquid = this.#compileLiquidTemplate(template);
     const mjml = this.#compileMjmlTemplate(template);
@@ -278,7 +284,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
 
     const stage1 = this.#compileMjmlTemplate(this.#wrapLiquidLogic(template));
     const stage2 = this.#compileLiquidTemplate(stage1.template);
-    return (context: T) => stage2.engine.renderSync(stage2.template, context ?? {});
+    return (context: T) => stage2.engine.renderSync(stage2.template, mergeSubstitutions(substitutions, context));
   }
 
   #wrapLiquidLogic(template: string): string {

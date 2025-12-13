@@ -79,9 +79,14 @@ export function tenantRoutes<
       permissions: ["manage::tenants"],
     },
     async (request, reply) => {
+      const tenantName = request.body.name;
+      if (!tenantName || tenantName.startsWith("::")) {
+        throw createError(400, "Invalid tenant name");
+      }
+
       const newTenant = await prisma.tenants.create({
         data: {
-          name: request.body.name,
+          name: tenantName,
           created_at: UTC.now().toDate(),
           created_by: "api",
         },
@@ -113,7 +118,7 @@ export function tenantRoutes<
           return reply.status(401 as any).send({ message: "Unauthorized" } as any);
         }
 
-        const canAccessAnyTenant = hasAnyPermission(["manage::tenants", "view::tenants"], { permissions })
+        const canAccessAnyTenant = hasAnyPermission(["manage::tenants", "view::tenants"], { permissions });
         const tenantId = (request.apiKey?.tenant_id || request.user?.tenantId)!;
         if (!canAccessAnyTenant && tenantId !== request.params.tenant_id) {
           return reply.status(404 as any).send({ message: "Tenant not found" } as any);
@@ -156,6 +161,11 @@ export function tenantRoutes<
 
         if (Object.keys(request.body).length === 0) {
           throw createError(400, "No data provided");
+        }
+
+        const tenantName = request.body.name;
+        if (tenantName && tenantName.startsWith("::")) {
+          throw createError(400, "Invalid tenant name");
         }
 
         const oldTenant = await prisma.tenants.findUnique({ where: { id: tenantId } });

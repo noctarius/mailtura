@@ -157,3 +157,8 @@ export type mail_senders = Prisma.mail_sendersModel
  * 
  */
 export type mail_sending_receivers = Prisma.mail_sending_receiversModel
+/**
+ * Model system_configs
+ * 
+ */
+export type system_configs = Prisma.system_configsModel

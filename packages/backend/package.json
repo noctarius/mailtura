@@ -20,6 +20,7 @@
     "@fastify/swagger": "^9.5.2",
     "@fastify/swagger-ui": "^5.2.3",
     "@fastify/type-provider-typebox": "^6.0.0",
+    "@mailtura/contentcompiler": "*",
     "@mailtura/database": "*",
     "@mailtura/rpcmodel": "*",
     "@sendgrid/eventwebhook": "^8.0.0",

@@ -74,7 +74,7 @@ export function installationRoutes<
         // Create Tenant
         const tenant = await tx.tenants.create({
           data: {
-            name: "System",
+            name: "::system::",
             created_at: UTC.now().toDate(),
             created_by: "api",
           },

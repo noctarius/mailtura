@@ -33,6 +33,7 @@ class SendgridTransport extends AbstractTransport {
     }
 
     const content = await this.getTemplateContent(mail.content);
+    console.log(content);
 
     const templateCompiler = createTemplateCompiler(async () => undefined, "");
     const mailData = await this.#createMails(mail, templateCompiler, content);
@@ -94,7 +95,10 @@ class SendgridTransport extends AbstractTransport {
   }
 
   async #createJoinedMail(mail: Mail, templateCompiler: TemplateCompiler): Promise<MailData[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, {});
+    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+    if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
+      throw new Error(resolvedTemplate.errors.join("\n"));
+    }
     const from = this.#mapMailAddress(mail.from);
     return [
       {

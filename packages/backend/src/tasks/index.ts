@@ -36,6 +36,15 @@ const createTaskManager = async () => {
       const description = await handle.describe();
       return description.status;
     },
+    createSendMailJob: async (tenantId: string, mailSendingId: string) => {
+      return client.workflow.start("sendMailWorkflow", {
+        taskQueue: temporalTaskQueue,
+        workflowId: `send-mail-${mailSendingId}`,
+        startDelay: 1,
+        workflowTaskTimeout: "1min",
+        args: [tenantId, mailSendingId],
+      });
+    },
   };
 };
 

@@ -9,6 +9,7 @@ await Bun.build({
       exportReferencedTypes: false
     },
     compilationOptions: {
+      preferredConfigPath: "./tsconfig.json",
       followSymlinks: false
     }
   })],

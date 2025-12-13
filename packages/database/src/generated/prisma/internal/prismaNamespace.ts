@@ -411,7 +411,8 @@ export const ModelName = {
   mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
-  mail_sending_receivers: 'mail_sending_receivers'
+  mail_sending_receivers: 'mail_sending_receivers',
+  system_configs: 'system_configs'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -427,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers"
+    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers" | "system_configs"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2503,6 +2504,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    system_configs: {
+      payload: Prisma.$system_configsPayload<ExtArgs>
+      fields: Prisma.system_configsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.system_configsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.system_configsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        findFirst: {
+          args: Prisma.system_configsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.system_configsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        findMany: {
+          args: Prisma.system_configsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>[]
+        }
+        create: {
+          args: Prisma.system_configsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        createMany: {
+          args: Prisma.system_configsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.system_configsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>[]
+        }
+        delete: {
+          args: Prisma.system_configsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        update: {
+          args: Prisma.system_configsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        deleteMany: {
+          args: Prisma.system_configsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.system_configsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.system_configsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>[]
+        }
+        upsert: {
+          args: Prisma.system_configsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$system_configsPayload>
+        }
+        aggregate: {
+          args: Prisma.System_configsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSystem_configs>
+        }
+        groupBy: {
+          args: Prisma.system_configsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.System_configsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.system_configsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.System_configsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2930,7 +3005,9 @@ export const Mail_sendingsScalarFieldEnum = {
   text_content: 'text_content',
   template_id: 'template_id',
   is_template: 'is_template',
-  substitutions: 'substitutions'
+  substitutions: 'substitutions',
+  created_at: 'created_at',
+  created_by: 'created_by'
 } as const
 
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
@@ -2982,6 +3059,14 @@ export const Mail_sending_receiversScalarFieldEnum = {
 } as const
 
 export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]
+
+
+export const System_configsScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+} as const
+
+export type System_configsScalarFieldEnum = (typeof System_configsScalarFieldEnum)[keyof typeof System_configsScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3355,6 +3440,7 @@ export type GlobalOmitConfig = {
   mail_url_proxies?: Prisma.mail_url_proxiesOmit
   mail_senders?: Prisma.mail_sendersOmit
   mail_sending_receivers?: Prisma.mail_sending_receiversOmit
+  system_configs?: Prisma.system_configsOmit
 }
 
 /* Types for Logging */

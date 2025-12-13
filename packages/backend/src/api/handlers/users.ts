@@ -14,6 +14,7 @@ import { accountRoutes } from "./accounts.js";
 import type { User } from "@mailtura/rpcmodel/api/index.js";
 import prisma, { mapUser } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { sendInviteEmail } from "../../mail/index.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -68,12 +69,17 @@ export function userRoutes<
           first_name: request.body.firstName,
           last_name: request.body.lastName,
           role_id: request.body.roleId,
-          active: true,
+          active: request.body.active,
+          email_verified: !request.body.sendInvitationEmail,
           permissions: request.body.permissions,
           created_at: UTC.now().toDate(),
           created_by: "api",
         },
       });
+
+      if (request.body.sendInvitationEmail) {
+        await sendInviteEmail(newUser);
+      }
 
       return reply.status(201).send(mapUser(newUser));
     }

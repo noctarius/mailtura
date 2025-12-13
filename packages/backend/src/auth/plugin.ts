@@ -9,6 +9,7 @@ import { newPasswordHasher } from "./password-hasher.js";
 import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
 import prisma from "@mailtura/database";
+import { sendMagicLinkEmail } from "../mail/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -80,9 +81,8 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         },
       }),
       magicLink({
-        sendMagicLink: async (user, token) => {
-          // TODO implement magic link sending
-          console.log("Sending magic link to", user.email, "with token", token);
+        sendMagicLink: async (user) => {
+          return sendMagicLinkEmail(user.email, user.token)
         },
       }),
     ],

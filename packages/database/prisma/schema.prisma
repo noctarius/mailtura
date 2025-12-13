@@ -468,17 +468,19 @@ model webhooks {
 }
 
 model mail_sendings {
-  id             String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
-  tenant_id      String  @db.Uuid
-  mail_sender_id String  @db.Uuid
-  mail_config_id String  @db.Uuid
+  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  tenant_id      String   @db.Uuid
+  mail_sender_id String   @db.Uuid
+  mail_config_id String   @db.Uuid
   subject        String
   content_type   String
   content        String?
   text_content   String?
-  template_id    String? @db.Uuid
+  template_id    String?  @db.Uuid
   is_template    Boolean
-  substitutions  Json    @db.JsonB
+  substitutions  Json     @db.JsonB
+  created_at     DateTime @db.Timestamptz()
+  created_by     String
 
   mail_sender mail_senders @relation(fields: [mail_sender_id], references: [id])
   mail_config mail_configs @relation(fields: [mail_config_id], references: [id])
@@ -538,4 +540,9 @@ model mail_sending_receivers {
   mail_sendings mail_sendings @relation(fields: [mail_sending_id], references: [id])
 
   @@index([tenant_id])
+}
+
+model system_configs {
+  key   String @id
+  value Json   @db.JsonB
 }

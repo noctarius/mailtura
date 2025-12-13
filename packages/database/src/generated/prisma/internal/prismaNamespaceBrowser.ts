@@ -78,7 +78,8 @@ export const ModelName = {
   mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
-  mail_sending_receivers: 'mail_sending_receivers'
+  mail_sending_receivers: 'mail_sending_receivers',
+  system_configs: 'system_configs'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -485,7 +486,9 @@ export const Mail_sendingsScalarFieldEnum = {
   text_content: 'text_content',
   template_id: 'template_id',
   is_template: 'is_template',
-  substitutions: 'substitutions'
+  substitutions: 'substitutions',
+  created_at: 'created_at',
+  created_by: 'created_by'
 } as const
 
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
@@ -537,6 +540,14 @@ export const Mail_sending_receiversScalarFieldEnum = {
 } as const
 
 export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]
+
+
+export const System_configsScalarFieldEnum = {
+  key: 'key',
+  value: 'value'
+} as const
+
+export type System_configsScalarFieldEnum = (typeof System_configsScalarFieldEnum)[keyof typeof System_configsScalarFieldEnum]
 
 
 export const SortOrder = {

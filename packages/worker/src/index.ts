@@ -3,6 +3,7 @@ import { importContactsBatch } from "./tasks/activities/import-contacts-activity
 import { fileURLToPath } from "node:url";
 import { dirname } from "node:path";
 import { resolve } from "./helper/resolver.js";
+import { sendMailBatch } from "./tasks/activities/send-mail-activity.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -25,9 +26,15 @@ const createWorker = async (connection: NativeConnection) => {
     workflowsPath: resolve("./tasks/workflows/index"),
     activities: {
       importContactsBatch: importContactsBatch,
+      sendMailBatch: sendMailBatch,
     },
     bundlerOptions: {
       webpackConfigHook: config => {
+        /*config.cache = {
+          type: 'filesystem',
+          cacheDirectory: "/tmp"
+        }*/
+        config.devtool = 'inline-source-map';
         config.externals = ['@prisma/client', '.prisma/client'];
         return config;
       }

@@ -35,6 +35,8 @@ export type Mail_sendingsMinAggregateOutputType = {
   text_content: string | null
   template_id: string | null
   is_template: boolean | null
+  created_at: Date | null
+  created_by: string | null
 }
 
 export type Mail_sendingsMaxAggregateOutputType = {
@@ -48,6 +50,8 @@ export type Mail_sendingsMaxAggregateOutputType = {
   text_content: string | null
   template_id: string | null
   is_template: boolean | null
+  created_at: Date | null
+  created_by: string | null
 }
 
 export type Mail_sendingsCountAggregateOutputType = {
@@ -62,6 +66,8 @@ export type Mail_sendingsCountAggregateOutputType = {
   template_id: number
   is_template: number
   substitutions: number
+  created_at: number
+  created_by: number
   _all: number
 }
 
@@ -77,6 +83,8 @@ export type Mail_sendingsMinAggregateInputType = {
   text_content?: true
   template_id?: true
   is_template?: true
+  created_at?: true
+  created_by?: true
 }
 
 export type Mail_sendingsMaxAggregateInputType = {
@@ -90,6 +98,8 @@ export type Mail_sendingsMaxAggregateInputType = {
   text_content?: true
   template_id?: true
   is_template?: true
+  created_at?: true
+  created_by?: true
 }
 
 export type Mail_sendingsCountAggregateInputType = {
@@ -104,6 +114,8 @@ export type Mail_sendingsCountAggregateInputType = {
   template_id?: true
   is_template?: true
   substitutions?: true
+  created_at?: true
+  created_by?: true
   _all?: true
 }
 
@@ -191,6 +203,8 @@ export type Mail_sendingsGroupByOutputType = {
   template_id: string | null
   is_template: boolean
   substitutions: runtime.JsonValue
+  created_at: Date
+  created_by: string
   _count: Mail_sendingsCountAggregateOutputType | null
   _min: Mail_sendingsMinAggregateOutputType | null
   _max: Mail_sendingsMaxAggregateOutputType | null
@@ -226,6 +240,8 @@ export type mail_sendingsWhereInput = {
   template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
   is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
   substitutions?: Prisma.JsonFilter<"mail_sendings">
+  created_at?: Prisma.DateTimeFilter<"mail_sendings"> | Date | string
+  created_by?: Prisma.StringFilter<"mail_sendings"> | string
   mail_sender?: Prisma.XOR<Prisma.Mail_sendersScalarRelationFilter, Prisma.mail_sendersWhereInput>
   mail_config?: Prisma.XOR<Prisma.Mail_configsScalarRelationFilter, Prisma.mail_configsWhereInput>
   subscriber_lists?: Prisma.Mail_sendings_on_subscriber_listsListRelationFilter
@@ -244,6 +260,8 @@ export type mail_sendingsOrderByWithRelationInput = {
   template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   is_template?: Prisma.SortOrder
   substitutions?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
   mail_sender?: Prisma.mail_sendersOrderByWithRelationInput
   mail_config?: Prisma.mail_configsOrderByWithRelationInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsOrderByRelationAggregateInput
@@ -265,6 +283,8 @@ export type mail_sendingsWhereUniqueInput = Prisma.AtLeast<{
   template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
   is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
   substitutions?: Prisma.JsonFilter<"mail_sendings">
+  created_at?: Prisma.DateTimeFilter<"mail_sendings"> | Date | string
+  created_by?: Prisma.StringFilter<"mail_sendings"> | string
   mail_sender?: Prisma.XOR<Prisma.Mail_sendersScalarRelationFilter, Prisma.mail_sendersWhereInput>
   mail_config?: Prisma.XOR<Prisma.Mail_configsScalarRelationFilter, Prisma.mail_configsWhereInput>
   subscriber_lists?: Prisma.Mail_sendings_on_subscriber_listsListRelationFilter
@@ -283,6 +303,8 @@ export type mail_sendingsOrderByWithAggregationInput = {
   template_id?: Prisma.SortOrderInput | Prisma.SortOrder
   is_template?: Prisma.SortOrder
   substitutions?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
   _count?: Prisma.mail_sendingsCountOrderByAggregateInput
   _max?: Prisma.mail_sendingsMaxOrderByAggregateInput
   _min?: Prisma.mail_sendingsMinOrderByAggregateInput
@@ -303,6 +325,8 @@ export type mail_sendingsScalarWhereWithAggregatesInput = {
   template_id?: Prisma.UuidNullableWithAggregatesFilter<"mail_sendings"> | string | null
   is_template?: Prisma.BoolWithAggregatesFilter<"mail_sendings"> | boolean
   substitutions?: Prisma.JsonWithAggregatesFilter<"mail_sendings">
+  created_at?: Prisma.DateTimeWithAggregatesFilter<"mail_sendings"> | Date | string
+  created_by?: Prisma.StringWithAggregatesFilter<"mail_sendings"> | string
 }
 
 export type mail_sendingsCreateInput = {
@@ -315,6 +339,8 @@ export type mail_sendingsCreateInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
   mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
@@ -333,6 +359,8 @@ export type mail_sendingsUncheckedCreateInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
@@ -347,6 +375,8 @@ export type mail_sendingsUpdateInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
   mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
@@ -365,6 +395,8 @@ export type mail_sendingsUncheckedUpdateInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
@@ -381,6 +413,8 @@ export type mail_sendingsCreateManyInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
 }
 
 export type mail_sendingsUpdateManyMutationInput = {
@@ -393,6 +427,8 @@ export type mail_sendingsUpdateManyMutationInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type mail_sendingsUncheckedUpdateManyInput = {
@@ -407,6 +443,8 @@ export type mail_sendingsUncheckedUpdateManyInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type Mail_sendingsListRelationFilter = {
@@ -431,6 +469,8 @@ export type mail_sendingsCountOrderByAggregateInput = {
   template_id?: Prisma.SortOrder
   is_template?: Prisma.SortOrder
   substitutions?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
 }
 
 export type mail_sendingsMaxOrderByAggregateInput = {
@@ -444,6 +484,8 @@ export type mail_sendingsMaxOrderByAggregateInput = {
   text_content?: Prisma.SortOrder
   template_id?: Prisma.SortOrder
   is_template?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
 }
 
 export type mail_sendingsMinOrderByAggregateInput = {
@@ -457,6 +499,8 @@ export type mail_sendingsMinOrderByAggregateInput = {
   text_content?: Prisma.SortOrder
   template_id?: Prisma.SortOrder
   is_template?: Prisma.SortOrder
+  created_at?: Prisma.SortOrder
+  created_by?: Prisma.SortOrder
 }
 
 export type Mail_sendingsScalarRelationFilter = {
@@ -586,6 +630,8 @@ export type mail_sendingsCreateWithoutMail_configInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
@@ -602,6 +648,8 @@ export type mail_sendingsUncheckedCreateWithoutMail_configInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
@@ -647,6 +695,8 @@ export type mail_sendingsScalarWhereInput = {
   template_id?: Prisma.UuidNullableFilter<"mail_sendings"> | string | null
   is_template?: Prisma.BoolFilter<"mail_sendings"> | boolean
   substitutions?: Prisma.JsonFilter<"mail_sendings">
+  created_at?: Prisma.DateTimeFilter<"mail_sendings"> | Date | string
+  created_by?: Prisma.StringFilter<"mail_sendings"> | string
 }
 
 export type mail_sendingsCreateWithoutSubscriber_listsInput = {
@@ -659,6 +709,8 @@ export type mail_sendingsCreateWithoutSubscriber_listsInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
   mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
@@ -676,6 +728,8 @@ export type mail_sendingsUncheckedCreateWithoutSubscriber_listsInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
 
@@ -705,6 +759,8 @@ export type mail_sendingsUpdateWithoutSubscriber_listsInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
   mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
@@ -722,6 +778,8 @@ export type mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
 
@@ -735,6 +793,8 @@ export type mail_sendingsCreateWithoutMail_senderInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversCreateNestedManyWithoutMail_sendingsInput
@@ -751,6 +811,8 @@ export type mail_sendingsUncheckedCreateWithoutMail_senderInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
@@ -791,6 +853,8 @@ export type mail_sendingsCreateWithoutMail_receiversInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   mail_sender: Prisma.mail_sendersCreateNestedOneWithoutMail_sendingsInput
   mail_config: Prisma.mail_configsCreateNestedOneWithoutMail_sendingsInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsCreateNestedManyWithoutMail_sendingsInput
@@ -808,6 +872,8 @@ export type mail_sendingsUncheckedCreateWithoutMail_receiversInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedCreateNestedManyWithoutMail_sendingsInput
 }
 
@@ -837,6 +903,8 @@ export type mail_sendingsUpdateWithoutMail_receiversInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
   mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
@@ -854,6 +922,8 @@ export type mail_sendingsUncheckedUpdateWithoutMail_receiversInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
 
@@ -868,6 +938,8 @@ export type mail_sendingsCreateManyMail_configInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
 }
 
 export type mail_sendingsUpdateWithoutMail_configInput = {
@@ -880,6 +952,8 @@ export type mail_sendingsUpdateWithoutMail_configInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_sender?: Prisma.mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
@@ -896,6 +970,8 @@ export type mail_sendingsUncheckedUpdateWithoutMail_configInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
@@ -911,6 +987,8 @@ export type mail_sendingsUncheckedUpdateManyWithoutMail_configInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type mail_sendingsCreateManyMail_senderInput = {
@@ -924,6 +1002,8 @@ export type mail_sendingsCreateManyMail_senderInput = {
   template_id?: string | null
   is_template: boolean
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at: Date | string
+  created_by: string
 }
 
 export type mail_sendingsUpdateWithoutMail_senderInput = {
@@ -936,6 +1016,8 @@ export type mail_sendingsUpdateWithoutMail_senderInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   mail_config?: Prisma.mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUpdateManyWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUpdateManyWithoutMail_sendingsNestedInput
@@ -952,6 +1034,8 @@ export type mail_sendingsUncheckedUpdateWithoutMail_senderInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
   subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsUncheckedUpdateManyWithoutMail_sendingsNestedInput
   mail_receivers?: Prisma.mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedInput
 }
@@ -967,6 +1051,8 @@ export type mail_sendingsUncheckedUpdateManyWithoutMail_senderInput = {
   template_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   is_template?: Prisma.BoolFieldUpdateOperationsInput | boolean
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
@@ -1021,6 +1107,8 @@ export type mail_sendingsSelect<ExtArgs extends runtime.Types.Extensions.Interna
   template_id?: boolean
   is_template?: boolean
   substitutions?: boolean
+  created_at?: boolean
+  created_by?: boolean
   mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
   mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
   subscriber_lists?: boolean | Prisma.mail_sendings$subscriber_listsArgs<ExtArgs>
@@ -1040,6 +1128,8 @@ export type mail_sendingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types
   template_id?: boolean
   is_template?: boolean
   substitutions?: boolean
+  created_at?: boolean
+  created_by?: boolean
   mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
   mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sendings"]>
@@ -1056,6 +1146,8 @@ export type mail_sendingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types
   template_id?: boolean
   is_template?: boolean
   substitutions?: boolean
+  created_at?: boolean
+  created_by?: boolean
   mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
   mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sendings"]>
@@ -1072,9 +1164,11 @@ export type mail_sendingsSelectScalar = {
   template_id?: boolean
   is_template?: boolean
   substitutions?: boolean
+  created_at?: boolean
+  created_by?: boolean
 }
 
-export type mail_sendingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "mail_sender_id" | "mail_config_id" | "subject" | "content_type" | "content" | "text_content" | "template_id" | "is_template" | "substitutions", ExtArgs["result"]["mail_sendings"]>
+export type mail_sendingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "mail_sender_id" | "mail_config_id" | "subject" | "content_type" | "content" | "text_content" | "template_id" | "is_template" | "substitutions" | "created_at" | "created_by", ExtArgs["result"]["mail_sendings"]>
 export type mail_sendingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mail_sender?: boolean | Prisma.mail_sendersDefaultArgs<ExtArgs>
   mail_config?: boolean | Prisma.mail_configsDefaultArgs<ExtArgs>
@@ -1111,6 +1205,8 @@ export type $mail_sendingsPayload<ExtArgs extends runtime.Types.Extensions.Inter
     template_id: string | null
     is_template: boolean
     substitutions: runtime.JsonValue
+    created_at: Date
+    created_by: string
   }, ExtArgs["result"]["mail_sendings"]>
   composites: {}
 }
@@ -1549,6 +1645,8 @@ export interface mail_sendingsFieldRefs {
   readonly template_id: Prisma.FieldRef<"mail_sendings", 'String'>
   readonly is_template: Prisma.FieldRef<"mail_sendings", 'Boolean'>
   readonly substitutions: Prisma.FieldRef<"mail_sendings", 'Json'>
+  readonly created_at: Prisma.FieldRef<"mail_sendings", 'DateTime'>
+  readonly created_by: Prisma.FieldRef<"mail_sendings", 'String'>
 }
     
 
