@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/solid-query";
 import { contactsKeys } from "../../services/contacts/keys.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import TableCellChip from "../interfaces/TableCellChip.js";
-import { UiDeleteApprovalDialog } from "../ui/UiDeleteApprovalDialog.js";
+import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
 
 type DeleteContactDialogProps = {
@@ -47,8 +47,9 @@ const DeleteContactDialog = (props: DeleteContactDialogProps) => {
   };
 
   return (
-    <UiDeleteApprovalDialog
+    <UiApprovalDialog
       title={() => "Delete Contact"}
+      submitText={() => "Delete contact"}
       onCancel={props.onClose}
       onClose={props.onClose}
       onConfirm={handleSubmit}

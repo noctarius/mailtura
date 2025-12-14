@@ -40,6 +40,29 @@ export class CustomAuthClient {
     });
   }
 
+  async requestPasswordReset(email: string): Promise<void> {
+    await this.#client.requestPasswordReset({
+      email,
+      fetchOptions: {
+        onSuccess() {
+          window.location.assign("/reset-password-sent");
+        },
+      },
+    });
+  }
+
+  async resetPassword(token: string, newPassword: string): Promise<void> {
+    await this.#client.resetPassword({
+      token,
+      newPassword,
+      fetchOptions: {
+        onSuccess() {
+          window.location.assign("/reset-password-success");
+        },
+      },
+    });
+  }
+
   async getSession() {
     return this.#client.getSession();
   }

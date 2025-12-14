@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/solid-query";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { contactsKeys } from "../../services/contacts/keys.js";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
-import { UiDeleteApprovalDialog } from "../ui/UiDeleteApprovalDialog.js";
+import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
 
 interface DeleteSubscriberListDialogProps {
@@ -42,8 +42,9 @@ export function DeleteSubscriberListDialog(props: DeleteSubscriberListDialogProp
   const subscriberList = () => subscriberLists?.find(item => item.id === props.subscriberListId());
 
   return (
-    <UiDeleteApprovalDialog
+    <UiApprovalDialog
       title={() => "Delete Subscriber List"}
+      submitText={() => "Delete subscriber list"}
       onCancel={props.onClose}
       onClose={props.onClose}
       onConfirm={handleSubmit}

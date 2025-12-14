@@ -1,7 +1,7 @@
 import { useTenantId } from "../../hooks/useTenantId.js";
 import { useDeleteMutation } from "../../services/adapters/useDeleteMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
-import { UiDeleteApprovalDialog } from "../ui/UiDeleteApprovalDialog.js";
+import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
 import { User } from "@mailtura/rpcmodel/api/index.js";
 import { userKeys } from "../../services/users/keys.js";
@@ -27,16 +27,16 @@ const DeleteUserDialog = (props: DeleteUserDialogProps) => {
       onSuccess: async () => {
         await queryClient.invalidateQueries({ queryKey: userKeys.user(tenantId()) });
         props.onClose();
-        toast.success("Contact deleted successfully.");
+        toast.success("User deleted successfully.");
       },
       onError: error => {
-        toast.error(`Error deleting contact: ${error}`);
+        toast.error(`Error deleting user: ${error}`);
       },
     });
   };
 
   return (
-    <UiDeleteApprovalDialog
+    <UiApprovalDialog
       title={() => "Delete User"}
       onCancel={props.onClose}
       onClose={props.onClose}

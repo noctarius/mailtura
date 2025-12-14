@@ -16,6 +16,8 @@ interface AuthContextType {
   hasAnyPermission: (permissions: Permission[]) => boolean;
   hasAllPermissions: (permissions: Permission[]) => boolean;
   switchTenant: (tenantId: string) => Promise<void>;
+  requestPasswordReset: (email: string) => Promise<void>;
+  resetPassword: (token: string, newPassword: string) => Promise<void>;
   isAuthenticated: () => boolean;
   user: () => User | undefined;
   tenant: () => Tenant | undefined;
@@ -174,6 +176,8 @@ export const useAuthProvider = () => {
     hasAnyPermission,
     hasAllPermissions,
     switchTenant,
+    requestPasswordReset: authClient.requestPasswordReset.bind(authClient),
+    resetPassword: authClient.resetPassword.bind(authClient),
   };
 };
 

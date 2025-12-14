@@ -1,9 +1,10 @@
 import { UiDialog } from "./UiDialog.js";
 import { createSignal, JSX } from "solid-js";
 
-interface UiDeleteApprovalDialogProps {
+interface UiApprovalDialogProps {
   title: () => string;
   message: () => JSX.Element;
+  submitText: () => string;
   onConfirm: () => void;
   onCancel: () => void;
   onClose: () => void;
@@ -12,7 +13,7 @@ interface UiDeleteApprovalDialogProps {
   approvalText?: () => string;
 }
 
-export function UiDeleteApprovalDialog(props: UiDeleteApprovalDialogProps) {
+export function UiApprovalDialog(props: UiApprovalDialogProps) {
   const [approval, setApproval] = createSignal("");
   const [error, setError] = createSignal<boolean>(false);
 
@@ -46,7 +47,7 @@ export function UiDeleteApprovalDialog(props: UiDeleteApprovalDialogProps) {
           disabled={props.isPending()}
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
-          Delete Subscriber List
+          {props.submitText()}
         </button>
       </>
     );

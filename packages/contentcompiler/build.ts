@@ -3,16 +3,18 @@ import dts from "bun-plugin-dts";
 export {};
 
 await Bun.build({
-  plugins: [dts({
-    output: {
-      inlineDeclareGlobals: false,
-      exportReferencedTypes: false
-    },
-    compilationOptions: {
-      preferredConfigPath: "./tsconfig.json",
-      followSymlinks: false
-    }
-  })],
+  plugins: [
+    dts({
+      output: {
+        inlineDeclareGlobals: false,
+        exportReferencedTypes: false,
+      },
+      compilationOptions: {
+        preferredConfigPath: "./tsconfig.build.json",
+        followSymlinks: false,
+      },
+    }),
+  ],
   entrypoints: ["./src/index.ts"],
   outdir: "./lib",
   target: "bun",
@@ -20,5 +22,5 @@ await Bun.build({
   sourcemap: "linked",
   packages: "external",
   minify: true,
-  tsconfig: "./tsconfig.json",
+  tsconfig: "./tsconfig.build.json",
 });

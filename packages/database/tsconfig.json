@@ -10,7 +10,6 @@
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "verbatimModuleSyntax": true,
-    "noEmit": true,
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
@@ -26,9 +25,8 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "outDir": "./lib",
-    "types": ["node"]
+    "types": ["node"],
+    "composite": true
   },
-  "references": [
-    { "path": "../rpcmodel" }
-  ]
+  "references": [{ "path": "../rpcmodel" }]
 }

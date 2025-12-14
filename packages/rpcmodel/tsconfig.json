@@ -23,7 +23,8 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "outDir": "lib"
+    "outDir": "lib",
+    "composite": true
   },
-  "include": ["src"],
+  "include": ["src"]
 }

@@ -9,7 +9,7 @@ import { newPasswordHasher } from "./password-hasher.js";
 import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
 import prisma from "@mailtura/database";
-import { sendMagicLinkEmail } from "../mail/index.js";
+import { sendMagicLinkEmail, sendResetPasswordEmail, sendVerificationEmail } from "../mail/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -48,8 +48,18 @@ const createBetterAuth = (options: BetterAuthOptions) => {
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,
+      revokeSessionsOnPasswordReset: true,
       password: newPasswordHasher(),
       autoSignIn: false,
+      sendResetPassword: async ({ user, token }) => {
+        sendResetPasswordEmail(user.email, token);
+      },
+    },
+    emailVerification: {
+      autoSignInAfterVerification: true,
+      sendVerificationEmail: async ({ user, token }) => {
+        sendVerificationEmail(user.email, token);
+      },
     },
     plugins: [
       openAPI({}),
@@ -81,8 +91,8 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         },
       }),
       magicLink({
-        sendMagicLink: async (user) => {
-          return sendMagicLinkEmail(user.email, user.token)
+        sendMagicLink: async ({ email, token }) => {
+          sendMagicLinkEmail(email, token);
         },
       }),
     ],
@@ -131,6 +141,18 @@ const createBetterAuth = (options: BetterAuthOptions) => {
         update: {
           before: async session => {
             session.updatedBy = "api";
+          },
+        },
+      },
+      verification: {
+        create: {
+          before: async verification => {
+            verification.created_by = "api";
+          },
+        },
+        update: {
+          before: async verification => {
+            verification.updated_by = "api";
           },
         },
       },
@@ -258,6 +280,32 @@ const createBetterAuth = (options: BetterAuthOptions) => {
           type: "string",
           required: false,
           returned: true,
+        },
+      },
+    },
+    verification: {
+      modelName: "verifications",
+      fields: {
+        identifier: "identifier",
+        value: "value",
+        expiresAt: "expires_at",
+        createdAt: "created_at",
+        updatedAt: "updated_at",
+      },
+      additionalFields: {
+        createdBy: {
+          fieldName: "created_by",
+          type: "string",
+          input: false,
+          required: true,
+          defaultValue: "api",
+        },
+        updatedBy: {
+          fieldName: "updated_by",
+          type: "string",
+          input: false,
+          required: true,
+          defaultValue: "api",
         },
       },
     },

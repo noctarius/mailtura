@@ -14,6 +14,8 @@ import { useTenantsQuery } from "../../services/tenants/use-tenants-query.js";
 import { getTimeSince } from "../../helpers/time-since.js";
 import { EditUserDrawer } from "../modals/EditUserDrawer.js";
 import { useRolesQuery } from "../../services/roles/use-roles-query.js";
+import ResetPasswordUserDialog from "../modals/ResetPasswordUserDialog.js";
+import LockUnlockUserDialog from "../modals/LockUnlockUserDialog.js";
 
 interface UsersTableProps {
   tenantId: () => string;
@@ -30,6 +32,8 @@ export function UsersTable(props: UsersTableProps) {
 
   const [activeContextMenu, setActiveContextMenu] = createSignal<string | undefined>(undefined);
   const [deleteUser, setDeleteUser] = createSignal<User | undefined>(undefined);
+  const [resetPasswordUser, setResetPasswordUser] = createSignal<User | undefined>(undefined);
+  const [lockUnlockUser, setLockUnlockUser] = createSignal<User | undefined>(undefined);
 
   const getTenantName = (tenantId: string) => {
     return tenantsQuery.data?.find(tenant => tenant.id === tenantId)?.name ?? "Unknown";
@@ -138,6 +142,10 @@ export function UsersTable(props: UsersTableProps) {
     setActiveContextMenu(undefined);
     if (action === "delete") {
       setDeleteUser(item);
+    } else if (action === "reset-password") {
+      setResetPasswordUser(item);
+    } else if (action === "lock" || action === "unlock") {
+      setLockUnlockUser(item);
     }
   };
 
@@ -168,6 +176,18 @@ export function UsersTable(props: UsersTableProps) {
         <DeleteUserDialog
           user={deleteUser}
           onClose={() => setDeleteUser(undefined)}
+        />
+      )}
+      {resetPasswordUser() && (
+        <ResetPasswordUserDialog
+          user={resetPasswordUser}
+          onClose={() => setResetPasswordUser(undefined)}
+        />
+      )}
+      {lockUnlockUser() && (
+        <LockUnlockUserDialog
+          user={lockUnlockUser}
+          onClose={() => setLockUnlockUser(undefined)}
         />
       )}
     </>

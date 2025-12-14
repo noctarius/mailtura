@@ -3,6 +3,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import { getBaseConfig } from "../system/index.js";
 import { getTaskManager } from "../tasks/index.js";
+import { getBaseSystemUrl } from "../helpers/base-system-url.js";
 
 const authSecret = process.env.MAILTURA_AUTH_SECRET;
 if (!authSecret) {
@@ -70,12 +71,7 @@ export async function sendInviteEmail(newUser: UserEntity, callbackUrl?: string)
   if (!callbackUrl) callbackUrl = "/";
   callbackUrl = encodeURIComponent(callbackUrl);
 
-  const baseConfig = await getBaseConfig();
-  if (!baseConfig) throw new Error("Base config not found");
-
-  const port = baseConfig.enableHttps ? baseConfig.httpsPort : baseConfig.httpPort;
-  const baseUrl = `http${baseConfig.enableHttps ? "s" : ""}://${baseConfig.siteAddress}:${port}`;
-
+  const baseUrl = getBaseSystemUrl();
   const url = `${baseUrl}/auth/verify-email?token=${token}&callbackURL=${callbackUrl}`;
 
   const subject = "Welcome to Mailtura!";
@@ -84,6 +80,27 @@ export async function sendInviteEmail(newUser: UserEntity, callbackUrl?: string)
   const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
 
   return sendSystemMail(newUser.email, name, subject, content, textContent, { url: url });
+}
+
+export async function sendVerificationEmail(email: string, token: string) {
+  const user = await prisma.users.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  const baseUrl = getBaseSystemUrl();
+  const url = `${baseUrl}/auth/verify-email?token=${token}`;
+
+  const subject = "Welcome to Mailtura!";
+  const content =
+    '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
+  const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
+
+  const name = user.first_name ?? email;
+  return sendSystemMail(email, name, subject, content, textContent, { url: url });
 }
 
 export async function sendMagicLinkEmail(email: string, token: string) {
@@ -95,12 +112,7 @@ export async function sendMagicLinkEmail(email: string, token: string) {
 
   if (!user) throw new Error("User not found");
 
-  const baseConfig = await getBaseConfig();
-  if (!baseConfig) throw new Error("Base config not found");
-
-  const port = baseConfig.enableHttps ? baseConfig.httpsPort : baseConfig.httpPort;
-  const baseUrl = `http${baseConfig.enableHttps ? "s" : ""}://${baseConfig.siteAddress}:${port}`;
-
+  const baseUrl = getBaseSystemUrl();
   const url = `${baseUrl}/auth/magic-link?token=${token}`;
 
   const subject = "Login to Mailtura!";
@@ -108,6 +120,27 @@ export async function sendMagicLinkEmail(email: string, token: string) {
     '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! Please click the following link to login: <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
   const textContent = `Welcome to Mailtura! Please click the following link to login: ${url}`;
 
-  const name = user.first_name ?? user.email;
+  const name = user.first_name ?? email;
+  return sendSystemMail(email, name, subject, content, textContent, { url: url });
+}
+
+export async function sendResetPasswordEmail(email: string, token: string) {
+  const user = await prisma.users.findUnique({
+    where: {
+      email: email,
+    },
+  });
+
+  if (!user) throw new Error("User not found");
+
+  const baseUrl = getBaseSystemUrl();
+  const url = `${baseUrl}/auth/verify-email?token=${token}`;
+
+  const subject = "Welcome to Mailtura!";
+  const content =
+    '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
+  const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
+
+  const name = user.first_name ?? email;
   return sendSystemMail(email, name, subject, content, textContent, { url: url });
 }

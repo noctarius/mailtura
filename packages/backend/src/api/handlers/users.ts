@@ -41,6 +41,9 @@ export function userRoutes<
         where: {
           tenant_id: tenantId,
         },
+        orderBy: {
+          email: "asc",
+        },
       });
 
       return users.map(mapUser);
