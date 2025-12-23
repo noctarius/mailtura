@@ -6,6 +6,11 @@ describe("query where-clause parser (unit)", () => {
     expect(ast).toEqual({ type: "comparison", field: "name", op: "=", value: "John" });
   });
 
+  test("parses simple string not equality", () => {
+    const ast = parseQueryParameter('name != "John"');
+    expect(ast).toEqual({ type: "comparison", field: "name", op: "!=", value: "John" });
+  });
+
   test("parses single quote text", () => {
     const ast = parseQueryParameter("name = 'John'");
     expect(ast).toEqual({ type: "comparison", field: "name", op: "=", value: "John" });
@@ -39,6 +44,11 @@ describe("query where-clause parser (unit)", () => {
   test("parses null value", () => {
     const ast = parseQueryParameter("deletedAt = null");
     expect(ast).toEqual({ type: "comparison", field: "deletedAt", op: "=", value: null });
+  });
+
+  test("parses not null value", () => {
+    const ast = parseQueryParameter("deletedAt != null");
+    expect(ast).toEqual({ type: "comparison", field: "deletedAt", op: "!=", value: null });
   });
 
   test("parses IN values", () => {

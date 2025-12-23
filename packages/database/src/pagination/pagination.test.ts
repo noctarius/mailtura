@@ -275,7 +275,7 @@ const skipPages = async (
   nextCursor?: string
 ) => {
   for (let i = 0; i < skipPages; i++) {
-    const page: Awaited<ReturnType<typeof withPagination>> = await withPagination(
+    const page = await withPagination(
       prisma.contacts,
       {
         where: {
@@ -306,7 +306,7 @@ const rewindPages = async (
   previousCursor?: string
 ) => {
   for (let i = 0; i < rewindPages; i++) {
-    const page: Awaited<ReturnType<typeof withPagination>> = await withPagination(
+    const page = await withPagination(
       prisma.contacts,
       {
         where: {

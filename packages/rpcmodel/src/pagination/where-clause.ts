@@ -2,8 +2,12 @@ import type { AstNode } from "./where-clause-parser.js";
 import type { Cursor } from "./pagination.js";
 import { transformAstToFilter, type WhereFilter } from "./where-clause-transformer.js";
 
-export function whereClause<T extends WhereFilter<T>>(ast?: AstNode, cursor?: Cursor): T {
-  const baseWhereClause = ast ? transformAstToFilter<T>(ast) : ({} as T);
+export function whereClause<T extends WhereFilter<T>>(
+  ast?: AstNode,
+  cursor?: Cursor,
+  ...blockedProperties: string[]
+): T {
+  const baseWhereClause = ast ? transformAstToFilter<T>(ast, blockedProperties ?? []) : ({} as T);
   if (cursor && cursor.id) {
     const operator = paginationOperator(cursor);
     if (Array.isArray(cursor.id)) {

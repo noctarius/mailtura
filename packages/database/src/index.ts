@@ -35,89 +35,97 @@ import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import {
   type LogDefinition,
   type LogLevel,
-  PrismaClientKnownRequestError
+  PrismaClientKnownRequestError,
 } from "./generated/prisma/internal/prismaNamespace.js";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) throw new Error("DATABASE_URL is not set");
 
-const adapter = new PrismaPg({
-  connectionString: databaseUrl,
-});
-
 const debugPrisma = process.env.DEBUG_PRISMA === "true";
-const log = (debugPrisma ? ['query', 'info', 'warn', 'error'] : []) as (LogLevel | LogDefinition)[];
+const log = (debugPrisma ? ["query", "info", "warn", "error"] : []) as (LogLevel | LogDefinition)[];
 
-const prisma = new PrismaClient({ adapter, log }).$extends({
-  query: {
-    contacts: {
-      async $allOperations({ operation, args, query }) {
-        if (
-          operation !== "findUnique" &&
-          operation !== "findMany" &&
-          operation !== "findFirst" &&
-          operation !== "findFirstOrThrow" &&
-          operation !== "findUniqueOrThrow"
-        ) {
-          return query(args);
-        }
-
-        args.include = {
-          ...args.include,
-          _count: {
-            ...(typeof args.include?._count === "object" ? args.include?._count : {}),
-            select: {
-              ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
-                ? args.include?._count.select
-                : {}),
-              bounces: true,
-              unsubscribes: true,
-            },
-          },
-          subscribers: {
-            select: {
-              subscriber_list_id: true,
-            },
-            where: {
-              status: "Subscribed",
-            },
-          },
-        };
-        return query(args);
+export const newPrismaClient = (adapter: PrismaPg) => {
+  return new PrismaClient({ adapter, log }).$extends({
+    model: {
+      $allModels: {
+        blocked<T>(this: T) {
+          return undefined;
+        },
       },
     },
-    subscriber_lists: {
-      async $allOperations({ operation, args, query }) {
-        if (
-          operation !== "findUnique" &&
-          operation !== "findMany" &&
-          operation !== "findFirst" &&
-          operation !== "findFirstOrThrow" &&
-          operation !== "findUniqueOrThrow"
-        ) {
-          return query(args);
-        }
+    query: {
+      contacts: {
+        async $allOperations({ operation, args, query }) {
+          if (
+            operation !== "findUnique" &&
+            operation !== "findMany" &&
+            operation !== "findFirst" &&
+            operation !== "findFirstOrThrow" &&
+            operation !== "findUniqueOrThrow"
+          ) {
+            return query(args);
+          }
 
-        args.include = {
-          ...args.include,
-          _count: {
-            ...(typeof args.include?._count === "object" ? args.include?._count : {}),
-            select: {
-              ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
-                ? args.include?._count.select
-                : {}),
-              subscribers: true,
+          args.include = {
+            ...args.include,
+            _count: {
+              ...(typeof args.include?._count === "object" ? args.include?._count : {}),
+              select: {
+                ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
+                  ? args.include?._count.select
+                  : {}),
+                bounces: true,
+                unsubscribes: true,
+              },
             },
-          },
-        };
-        return query(args);
+            subscribers: {
+              select: {
+                subscriber_list_id: true,
+              },
+              where: {
+                status: "Subscribed",
+              },
+            },
+          };
+          return query(args);
+        },
+      },
+      subscriber_lists: {
+        async $allOperations({ operation, args, query }) {
+          if (
+            operation !== "findUnique" &&
+            operation !== "findMany" &&
+            operation !== "findFirst" &&
+            operation !== "findFirstOrThrow" &&
+            operation !== "findUniqueOrThrow"
+          ) {
+            return query(args);
+          }
+
+          args.include = {
+            ...args.include,
+            _count: {
+              ...(typeof args.include?._count === "object" ? args.include?._count : {}),
+              select: {
+                ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
+                  ? args.include?._count.select
+                  : {}),
+                subscribers: true,
+              },
+            },
+          };
+          return query(args);
+        },
       },
     },
-  },
-});
+  });
+};
+
+export const prisma = newPrismaClient(new PrismaPg({ databaseUrl }));
 
 export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/internal/prismaNamespace.js";
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
+export { withPagination } from "./pagination/index.js";
 export * from "./mapper.js";
 
 export function handlePrismaError(err: any) {
@@ -166,4 +174,5 @@ export type MailConfigEntity = mail_configs;
 export type MailSendingReceiverEntity = mail_sending_receivers;
 export type SystemConfigEntity = system_configs;
 
+export type prisma = typeof prisma;
 export default prisma;

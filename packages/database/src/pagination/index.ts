@@ -10,26 +10,23 @@ import {
   parseSortParameter,
   whereClause,
 } from "@mailtura/rpcmodel/pagination/index.js";
-import { parseQueryParameter } from "@mailtura/rpcmodel/api/where-clause-parser.js";
-import type { PrismaPromise } from "../generated/prisma/internal/prismaNamespace.js";
+import { parseQueryParameter } from "@mailtura/rpcmodel/pagination/where-clause-parser.js";
+import type { Args, PrismaPromise, Result } from "../generated/prisma/internal/prismaNamespace.js";
 import { sortClause } from "@mailtura/rpcmodel/pagination/sort-clause.js";
 
-type PrismaDelegate = {
+type Delegate = {
   findMany: (...args: any[]) => Promise<any>;
   count: (...args: any[]) => PrismaPromise<number | {}>;
 };
 
-type FindManyArgs<T extends PrismaDelegate> = Parameters<T["findMany"]>[0];
-type CountArgs<T extends PrismaDelegate> = Parameters<T["count"]>[0];
+type Model<T> = T extends Delegate ? T : never;
 
-type FindManyResult<T extends PrismaDelegate> = Awaited<ReturnType<T["findMany"]>>;
-
-export async function withPagination<Model extends PrismaDelegate>(
-  model: Model,
-  args: FindManyArgs<Model>,
+export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, "findMany">>(
+  model: Model<T>,
+  args: A,
   queryParams: PaginationQueryParameters
 ): Promise<{
-  data: FindManyResult<Model>;
+  data: Result<T, A, "findMany">;
   metadata: PaginationMetadata;
 }> {
   // Potentially parsed query syntax tree
@@ -45,15 +42,15 @@ export async function withPagination<Model extends PrismaDelegate>(
   const needsReverse = cursor?.type === "last" || cursor?.type === "previous";
 
   // Building the query where clause
-  const where = whereClause<any>(query, cursor);
+  const where = whereClause<any>(query, cursor, "tenant_id");
   const orderBy = sortClause(sort, cursor);
-  console.log(orderBy);
+
   // Load total items count
   const totalItems = (await model.count({
     where: {
       ...(args?.where ?? {}),
     },
-  } as CountArgs<Model>)) as number;
+  })) as number;
 
   const remaining = totalItems % pageSize;
   const limit = Math.min(pageSize, remaining === 0 ? pageSize : remaining);
