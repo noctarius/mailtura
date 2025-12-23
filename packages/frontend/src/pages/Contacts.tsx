@@ -1,6 +1,6 @@
 import { Funnel, List, Loader, Minus, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
-import { createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
 import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
 import CreateContactDialog from "../components/modals/CreateContactDialog.js";
@@ -9,6 +9,7 @@ import { useTenantId } from "../hooks/useTenantId.js";
 import { ContactsTable } from "../components/interfaces/ContactsTable.js";
 import { ImportContactsDialog } from "../components/modals/ImportContactsDialog.js";
 import { DeleteSubscriberListDialog } from "../components/modals/DeleteSubscriberListDialog.js";
+import { debounce } from "lodash";
 
 const Contacts = () => {
   const [contactsTable, setContactsTable] = createSignal<HTMLDivElement>();
@@ -25,7 +26,19 @@ const Contacts = () => {
   const [deleteSubscriberList, setDeleteSubscriberList] = createSignal<string | undefined>(undefined);
   const [showListRemovalConfirmation, setShowListRemovalConfirmation] = createSignal(false);
 
-  const contactsQuery = useContactsQuery({ tenantId });
+  const updateSearchTerm = debounce((searchTerm: string) => setSearchTerm(searchTerm), 250);
+
+  const filterQuery = createMemo(() => {
+    const filterTerm = searchTerm();
+    if (filterTerm.trim().length === 0) return undefined;
+    return `email ILIKE "%${filterTerm}%" OR first_name ILIKE "%${filterTerm}%" OR last_name ILIKE "%${filterTerm}%"`;
+  });
+
+  createEffect(() => {
+    console.log(filterQuery());
+  });
+
+  const contactsQuery = useContactsQuery({ tenantId, query: filterQuery, cursor: () => undefined });
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
   const subscribersQuery = useSubscribersQuery({ tenantId, subscriber_list_id: selectedList });
 
@@ -43,10 +56,11 @@ const Contacts = () => {
 
   const filteredContacts = createMemo(() =>
     (contactsQuery.data || []).filter(contact => {
-      const matchesSearch =
+      console.log("Filtering...");
+      /*const matchesSearch =
         contact.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
         contact.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
-        contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
+        contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());*/
 
       // Filter selected subscribers
       const isSubscribed =
@@ -57,7 +71,7 @@ const Contacts = () => {
 
       const matchesStatus = selectedStatus() === "all" || contact.status === selectedStatus();
 
-      return matchesSearch && isSubscribed && matchesStatus;
+      return /*matchesSearch &&*/ isSubscribed && matchesStatus;
     })
   );
 
@@ -162,7 +176,7 @@ const Contacts = () => {
                   type="text"
                   placeholder="Search contacts..."
                   value={searchTerm()}
-                  onChange={e => setSearchTerm(e.target.value)}
+                  onInput={e => updateSearchTerm(e.target.value)}
                   class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80"
                 />
               </div>

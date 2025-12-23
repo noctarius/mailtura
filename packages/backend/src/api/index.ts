@@ -38,6 +38,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { tenantRoutes } from "./handlers/tenants.js";
 import { profileRoutes } from "./handlers/profile.js";
 import { webhookRoutes } from "./handlers/webhooks/index.js";
+import { PaginationMetadata } from "@mailtura/rpcmodel/pagination/index.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ErrorResponse);
@@ -65,6 +66,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(File);
   app.addSchema(Role);
   app.addSchema(Account);
+  app.addSchema(PaginationMetadata);
 }
 
 export function registerRoutes<

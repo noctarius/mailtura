@@ -240,7 +240,13 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    page?: number;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -255,7 +261,12 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Contact"][];
+                        "application/json": {
+                            data: components["schemas"]["Contact"][];
+                            metadata: {
+                                next?: string;
+                            };
+                        };
                     };
                 };
                 /** @description An error response */

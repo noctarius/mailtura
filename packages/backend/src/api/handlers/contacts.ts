@@ -22,8 +22,9 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapContact, mapContactImport, Prisma } from "@mailtura/database";
+import prisma, { mapContact, mapContactImport, Prisma, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -32,16 +33,21 @@ export function contactRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: Contact[]; Querystring: { q?: string } }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: Contact[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["contacts"],
-        querystring: Type.Object({
-          q: Type.Optional(Type.String()),
-        }),
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("Contact")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("Contact")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -49,12 +55,20 @@ export function contactRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const contacts = await prisma.contacts.findMany({
-        where: {
-          tenant_id: tenantId,
+      const page = await withPagination(
+        prisma.contacts,
+        {
+          where: {
+            tenant_id: tenantId,
+          },
         },
-      });
-      return contacts.map(mapContact);
+        request.query
+      );
+
+      return {
+        data: page.data.map(mapContact),
+        metadata: page.metadata,
+      };
     }
   );
 

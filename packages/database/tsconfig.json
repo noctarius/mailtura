@@ -25,7 +25,6 @@
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
     "outDir": "./lib",
-    "types": ["node"],
     "composite": true
   },
   "references": [{ "path": "../rpcmodel" }]

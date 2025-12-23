@@ -86,6 +86,41 @@ describe("query where-clause parser (unit)", () => {
     });
   });
 
+  test("parses two OR logicals", () => {
+    const ast = parseQueryParameter('country = "US" OR country = "CA" OR country = "IN"');
+    expect(ast).toEqual({
+      type: "logical",
+      op: "OR",
+      left: {
+        type: "logical",
+        op: "OR",
+        left: { type: "comparison", field: "country", op: "=", value: "US" },
+        right: { type: "comparison", field: "country", op: "=", value: "CA" },
+      },
+      right: { type: "comparison", field: "country", op: "=", value: "IN" },
+    });
+  });
+
+  test("parses more OR logicals", () => {
+    const ast = parseQueryParameter('country = "US" OR country = "CA" OR country = "IN" OR country = "DE"');
+    expect(ast).toEqual({
+      type: "logical",
+      op: "OR",
+      left: {
+        type: "logical",
+        op: "OR",
+        left: {
+          type: "logical",
+          op: "OR",
+          left: { type: "comparison", field: "country", op: "=", value: "US" },
+          right: { type: "comparison", field: "country", op: "=", value: "CA" },
+        },
+        right: { type: "comparison", field: "country", op: "=", value: "IN" },
+      },
+      right: { type: "comparison", field: "country", op: "=", value: "DE" },
+    });
+  });
+
   test("parses NOT unary", () => {
     const ast = parseQueryParameter("NOT active = true");
     expect(ast).toEqual({

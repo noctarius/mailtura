@@ -522,16 +522,14 @@ export const Account = Type.Object(
 
 export type Account = Static<typeof Account>;
 
-export const MailSender = Type.Object(
-  {
-    id: Type.String({ format: "uuid" }),
-    name: Type.String(),
-    email: Type.String({ format: "email" }),
-    createdAt: Type.String({ format: "date-time" }),
-    createdBy: Type.String(),
-    updatedAt: Type.Optional(Type.String({ format: "date-time" })),
-    updatedBy: Type.Optional(Type.String()),
-  }
-)
+export const MailSender = Type.Object({
+  id: Type.String({ format: "uuid" }),
+  name: Type.String(),
+  email: Type.String({ format: "email" }),
+  createdAt: Type.String({ format: "date-time" }),
+  createdBy: Type.String(),
+  updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+  updatedBy: Type.Optional(Type.String()),
+});
 
 export type MailSender = Static<typeof MailSender>;

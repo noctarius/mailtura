@@ -15,9 +15,10 @@
     "build": "tsc -p ./tsconfig.build.json",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "bun test"
   },
   "dependencies": {
+    "cbor-x": "^1.6.0",
     "moment-timezone": "^0.6.0",
     "typebox": "catalog:"
   },

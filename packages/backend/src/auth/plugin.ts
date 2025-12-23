@@ -44,7 +44,7 @@ export default auth;
 const createBetterAuth = (options: BetterAuthOptions) => {
   return betterAuth({
     ...options,
-    database: mailturaAdapter({ debugLogs: true }),
+    database: mailturaAdapter({ debugLogs: false }),
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,
