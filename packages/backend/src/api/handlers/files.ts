@@ -10,7 +10,7 @@ import type { Router } from "../../router/index.js";
 import { File } from "@mailtura/rpcmodel/api/index.js";
 import { Type } from "typebox";
 import prisma, { mapFile } from "@mailtura/database";
-import {createError} from "@mailtura/rpcmodel/api/errors.js";
+import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function fileRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -111,7 +111,7 @@ export function fileRoutes<
           throw createError(404, "File not found");
         }
 
-        return file.data
+        return file.data;
       }
     );
 

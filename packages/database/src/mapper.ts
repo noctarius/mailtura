@@ -31,6 +31,7 @@ import type {
   Unsubscribe,
   User,
 } from "@mailtura/rpcmodel/api/index.js";
+import type { template_properties } from "./generated/prisma/client.js";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null
@@ -105,19 +106,23 @@ export function mapContact(contact: PotentiallyCountedContact): Contact {
   };
 }
 
-export function mapTemplate(template: TemplateEntity): Template {
+type PotentiallyPropertiesTemplate = TemplateEntity & {
+  template_properties?: template_properties[];
+};
+export function mapTemplate(template: PotentiallyPropertiesTemplate): Template {
   return {
     id: template.id,
     name: template.name,
     content: template.content,
-    properties: template.properties.map(property => {
-      return {
-        id: property.id,
-        name: property.name,
-        type: property.type,
-        default_value: property.default_value,
-      };
-    }),
+    properties:
+      template.template_properties?.map(property => {
+        return {
+          id: property.id,
+          name: property.name,
+          type: property.type,
+          default_value: property.default_value,
+        };
+      }) ?? [],
     createdAt: mapDateTime(template.created_at),
     createdBy: template.created_by,
     updatedAt: mapDateTime(template.updated_at),

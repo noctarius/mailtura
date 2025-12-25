@@ -136,7 +136,6 @@ export function webhookRoutes<
       const event = JSON.parse(payload.toString("utf-8")) as SendgridEvent;
       switch (event.event) {
         case "bounce":
-
       }
 
       console.log("Sendgrid webhook payload:", payload);

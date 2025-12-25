@@ -11,8 +11,9 @@ import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateCampaign, UpdateCampaign } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Campaign, CampaignStatus } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { fromDateTime, mapCampaign, unpackOptionalNullable } from "@mailtura/database";
+import prisma, { fromDateTime, mapCampaign, unpackOptionalNullable, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function campaignRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -21,13 +22,21 @@ export function campaignRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: Campaign[] }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: Campaign[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["campaigns"],
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("Campaign")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("Campaign")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -35,13 +44,20 @@ export function campaignRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const campaigns = await prisma.campaigns.findMany({
-        where: {
-          tenant_id: tenantId,
+      const page = await withPagination(
+        prisma.campaigns,
+        {
+          where: {
+            tenant_id: tenantId,
+          },
         },
-      });
+        request.query
+      );
 
-      return campaigns.map(mapCampaign);
+      return {
+        data: page.data.map(mapCampaign),
+        metadata: page.metadata,
+      };
     }
   );
 

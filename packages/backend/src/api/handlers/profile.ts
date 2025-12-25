@@ -1,4 +1,9 @@
-import type { RawReplyDefaultExpression, RawRequestDefaultExpression, RawServerBase, RawServerDefault } from "fastify/types/utils.js";
+import type {
+  RawReplyDefaultExpression,
+  RawRequestDefaultExpression,
+  RawServerBase,
+  RawServerDefault,
+} from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
@@ -20,8 +25,8 @@ export function profileRoutes<
       schema: {
         tags: ["profile"],
         response: {
-           200: Type.Ref("User"),
-           401: Type.Ref("ErrorResponse"),
+          200: Type.Ref("User"),
+          401: Type.Ref("ErrorResponse"),
         },
       },
     },
@@ -34,7 +39,7 @@ export function profileRoutes<
       const userDetails = await prisma.users.findUnique({
         where: {
           id: user.id,
-        }
+        },
       });
 
       if (!userDetails) {
@@ -43,5 +48,5 @@ export function profileRoutes<
 
       return reply.status(200).send(mapUser(userDetails));
     }
-  )
+  );
 }

@@ -11,8 +11,9 @@ import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateRole, UpdateRole } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Role } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapRole } from "@mailtura/database";
+import prisma, { mapRole, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function rolesRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -21,13 +22,21 @@ export function rolesRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: Role[] }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: Role[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["roles"],
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("Role")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("Role")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -35,13 +44,20 @@ export function rolesRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const roles = await prisma.roles.findMany({
-        where: {
-          tenant_id: tenantId,
+      const page = await withPagination(
+        prisma.roles,
+        {
+          where: {
+            tenant_id: tenantId,
+          },
         },
-      });
+        request.query
+      );
 
-      return roles.map(mapRole);
+      return {
+        data: page.data.map(mapRole),
+        metadata: page.metadata,
+      };
     }
   );
 

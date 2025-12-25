@@ -12,8 +12,9 @@ import { Type } from "typebox";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompiler";
-import prisma, { mapTemplate } from "@mailtura/database";
+import prisma, { mapTemplate, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -22,29 +23,41 @@ export function templateRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: Template[] }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: Template[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["templates"],
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("Template")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("Template")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
     },
     async request => {
       const tenantId = request.params.tenant_id;
-      const templates = await prisma.templates.findMany({
-        where: {
-          tenant_id: tenantId,
+      const page = await withPagination(
+        prisma.templates,
+        {
+          where: {
+            tenant_id: tenantId,
+          },
         },
-        include: {
-          properties: true,
-        },
-      });
+        request.query
+      );
 
-      return templates.map(mapTemplate);
+      return {
+        data: page.data.map(mapTemplate),
+        metadata: page.metadata,
+      };
     }
   );
 
@@ -68,16 +81,19 @@ export function templateRoutes<
           name: request.body.name,
           description: request.body.description,
           content: request.body.content,
-          properties: {
-            create: request.body.properties.map(property => {
-              return {
-                tenant_id: tenantId,
-                name: property.name,
-                type: property.type,
-                default_value: property.default_value,
-              };
-            }),
-          },
+          // Only create properties when they are provided; the field is optional in the request model
+          properties: request.body.properties
+            ? {
+                create: request.body.properties.map(property => {
+                  return {
+                    tenant_id: tenantId,
+                    name: property.name,
+                    type: property.type,
+                    default_value: property.default_value,
+                  };
+                }),
+              }
+            : undefined,
           created_at: UTC.now().toDate(),
           created_by: "api",
         },

@@ -117,6 +117,33 @@ export const newPrismaClient = (adapter: PrismaPg) => {
           return query(args);
         },
       },
+      templates: {
+        async $allOperations({ operation, args, query }) {
+          if (
+            operation !== "findUnique" &&
+            operation !== "findMany" &&
+            operation !== "findFirst" &&
+            operation !== "findFirstOrThrow" &&
+            operation !== "findUniqueOrThrow"
+          ) {
+            return query(args);
+          }
+
+          args.include = {
+            ...args.include,
+            _count: {
+              ...(typeof args.include?._count === "object" ? args.include?._count : {}),
+              select: {
+                ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
+                  ? args.include?._count.select
+                  : {}),
+                properties: true,
+              },
+            },
+          };
+          return query(args);
+        },
+      },
     },
   });
 };
@@ -162,7 +189,7 @@ export type UnsubscribeSourceEnum = unsubscribe_source;
 export type UnsubscribeEntity = unsubscribes;
 export type UserEntity = users;
 export type ApiKeyEntity = api_keys;
-export type TemplateEntity = templates & { properties: template_properties[] };
+export type TemplateEntity = templates & { template_properties?: template_properties[] };
 export type ContactImportEntity = contact_imports;
 export type FileEntity = files;
 export type RoleEntity = roles;

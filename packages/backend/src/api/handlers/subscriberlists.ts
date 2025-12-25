@@ -11,8 +11,9 @@ import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateSubscriberList, UpdateSubscriberList } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Subscriber, SubscriberList } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapSubscriber, mapSubscriberList, unpackOptionalNullable } from "@mailtura/database";
+import prisma, { mapSubscriber, mapSubscriberList, unpackOptionalNullable, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function subscriberListRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -21,13 +22,21 @@ export function subscriberListRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: SubscriberList[] }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: SubscriberList[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["subscriber-lists"],
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("SubscriberList")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("SubscriberList")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -35,23 +44,20 @@ export function subscriberListRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const subscriberLists = await prisma.subscriber_lists.findMany({
-        relationLoadStrategy: "join",
-        where: {
-          tenant_id: tenantId,
-          subscribers: {
-            every: {
-              tenant_id: tenantId,
-              status: "Subscribed",
-            },
+      const page = await withPagination(
+        prisma.subscriber_lists,
+        {
+          where: {
+            tenant_id: tenantId,
           },
         },
-        orderBy: {
-          created_at: "desc",
-        },
-      });
+        request.query
+      );
 
-      return subscriberLists.map(mapSubscriberList);
+      return {
+        data: page.data.map(mapSubscriberList),
+        metadata: page.metadata,
+      };
     }
   );
 

@@ -11,8 +11,9 @@ import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateBounce } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Bounce } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { fromDateTime, mapBounce } from "@mailtura/database";
+import prisma, { fromDateTime, mapBounce, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
 export function bouncesRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -21,13 +22,21 @@ export function bouncesRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  router.get<{ Params: { tenant_id: string }; Reply: Bounce[] }>(
+  router.get<{
+    Params: { tenant_id: string };
+    Reply: { data: Bounce[]; metadata: PaginationMetadata };
+    Querystring: PaginationQueryParameters;
+  }>(
     "/",
     {
       schema: {
         tags: ["suppressions"],
+        querystring: PaginationQueryParameters,
         response: {
-          200: Type.Array(Type.Ref("Bounce")),
+          200: Type.Object({
+            data: Type.Array(Type.Ref("Bounce")),
+            metadata: Type.Ref("PaginationMetadata"),
+          }),
           401: Type.Ref("ErrorResponse"),
         },
       },
@@ -35,13 +44,20 @@ export function bouncesRoutes<
     async request => {
       const tenantId = request.params.tenant_id;
 
-      const bounces = await prisma.bounces.findMany({
-        where: {
-          tenant_id: tenantId,
+      const page = await withPagination(
+        prisma.bounces,
+        {
+          where: {
+            tenant_id: tenantId,
+          },
         },
-      });
+        request.query
+      );
 
-      return bounces.map(mapBounce);
+      return {
+        data: page.data.map(mapBounce),
+        metadata: page.metadata,
+      };
     }
   );
 
