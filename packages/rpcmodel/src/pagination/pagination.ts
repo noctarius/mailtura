@@ -13,6 +13,21 @@ interface PaginationToken {
   t: "n" | "p" | "c" | "f" | "l";
 }
 
+const toPageIdentifier = (item: PageItem, orderBy?: OrderBy) => {
+  if (!orderBy || Object.keys(orderBy).length === 0) return item.id;
+  return {
+    ...(orderBy ? { _order: orderBy } : {}),
+    ...Object.keys(orderBy!).reduce((acc, key) => ({ ...acc, [key]: item[key] }), {} as any),
+    id: item.id,
+  };
+};
+
+export type SortOrder = "asc" | "desc";
+
+export type OrderBy = Record<string, SortOrder>;
+
+export type PageItem = Record<string, any> & { id: string };
+
 export interface Cursor {
   id?: string | { [key: string]: string | number | boolean };
   page: number;
@@ -58,7 +73,7 @@ export const PaginationMetadata = Type.Object(
 
 export type PaginationMetadata = Static<typeof PaginationMetadata>;
 
-export function newFirstPageCursor(items: { id: string }[], currentPage: number, pageSize: number, totalItems: number) {
+export function newFirstPageCursor(pageSize: number, totalItems: number) {
   const pages = Math.ceil(totalItems / pageSize);
   const cursor: Cursor = {
     page: 1,
@@ -69,7 +84,7 @@ export function newFirstPageCursor(items: { id: string }[], currentPage: number,
   return encodePaginationToken(cursor);
 }
 
-export function newLastPageCursor(items: { id: string }[], pageSize: number, totalItems: number) {
+export function newLastPageCursor(pageSize: number, totalItems: number) {
   const pages = Math.ceil(totalItems / pageSize);
   const cursor: Cursor = {
     page: pages,
@@ -81,14 +96,16 @@ export function newLastPageCursor(items: { id: string }[], pageSize: number, tot
 }
 
 export function newCurrentPageCursor(
-  items: { id: string }[],
+  items: Array<PageItem>,
   currentPage: number,
   pageSize: number,
-  totalItems: number
+  totalItems: number,
+  orderBy?: OrderBy
 ) {
   const pages = Math.ceil(totalItems / pageSize);
+  const first = items[0]!;
   const cursor: Cursor = {
-    id: items[0]!.id,
+    id: toPageIdentifier(first, orderBy),
     page: currentPage,
     pageSize,
     pages,
@@ -97,11 +114,25 @@ export function newCurrentPageCursor(
   return encodePaginationToken(cursor);
 }
 
-export function newNextPageCursor(items: { id: string }[], currentPage: number, pageSize: number, totalItems: number) {
+export function newNextPageCursor(
+  items: Array<PageItem>,
+  currentPage: number,
+  pageSize: number,
+  totalItems: number,
+  orderBy?: OrderBy
+) {
   const pages = Math.ceil(totalItems / pageSize);
   if (currentPage === pages) return undefined;
+  const last = items[items.length - 1]!;
   const cursor: Cursor = {
-    id: items[items.length - 1]!.id,
+    id:
+      !orderBy || Object.keys(orderBy).length === 0
+        ? last.id
+        : {
+            ...(orderBy ? { _order: orderBy } : {}),
+            ...Object.keys(orderBy).reduce((acc, key) => ({ ...acc, [key]: last[key] }), {} as any),
+            id: last.id,
+          },
     page: currentPage + 1,
     pageSize,
     pages,
@@ -111,14 +142,16 @@ export function newNextPageCursor(items: { id: string }[], currentPage: number, 
 }
 
 export function newPreviousPageCursor(
-  items: { id: string }[],
+  items: Array<PageItem>,
   currentPage: number,
   pageSize: number,
-  totalItems: number
+  totalItems: number,
+  orderBy?: OrderBy
 ) {
   if (currentPage === 1) return undefined;
+  const first = items[0]!;
   const cursor: Cursor = {
-    id: items[0]!.id,
+    id: toPageIdentifier(first, orderBy),
     page: currentPage - 1,
     pageSize,
     pages: Math.ceil(totalItems / pageSize),

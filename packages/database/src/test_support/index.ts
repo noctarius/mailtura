@@ -4,6 +4,10 @@ import { readdirSync } from "fs";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export type Prisma = import("../index.ts").prisma;
 

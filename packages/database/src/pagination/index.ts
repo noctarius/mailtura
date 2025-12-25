@@ -43,7 +43,17 @@ export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, 
 
   // Building the query where clause
   const where = whereClause<any>(query, cursor, "tenant_id");
-  const orderBy = sortClause(sort, cursor);
+
+  // Base (forward) order used for cursors; query order may be reversed for previous/last
+  const baseOrderBy = sortClause(sort, undefined);
+  const orderByRecord = sortClause(sort, cursor);
+  const orderKeys = Object.keys(orderByRecord);
+  const orderBy: any =
+    orderKeys.length <= 1
+      ? orderKeys.length === 1
+        ? { [orderKeys[0]!]: orderByRecord[orderKeys[0]!] }
+        : undefined
+      : orderKeys.map(k => ({ [k]: orderByRecord[k]! }));
 
   // Load total items count
   const totalItems = (await model.count({
@@ -76,11 +86,11 @@ export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, 
       currentPage,
       pageSize,
       pages: Math.ceil(totalItems / pageSize),
-      currentCursor: newCurrentPageCursor(page, currentPage, pageSize, totalItems),
-      nextCursor: newNextPageCursor(page, currentPage, pageSize, totalItems),
-      previousCursor: newPreviousPageCursor(page, currentPage, pageSize, totalItems),
-      firstCursor: newFirstPageCursor(page, currentPage, pageSize, totalItems),
-      lastCursor: newLastPageCursor(page, pageSize, totalItems),
+      currentCursor: newCurrentPageCursor(page as any, currentPage, pageSize, totalItems, baseOrderBy),
+      nextCursor: newNextPageCursor(page as any, currentPage, pageSize, totalItems, baseOrderBy),
+      previousCursor: newPreviousPageCursor(page as any, currentPage, pageSize, totalItems, baseOrderBy),
+      firstCursor: newFirstPageCursor(pageSize, totalItems),
+      lastCursor: newLastPageCursor(pageSize, totalItems),
     },
   };
 }

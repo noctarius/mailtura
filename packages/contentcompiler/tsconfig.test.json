@@ -1,10 +1,19 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "verbatimModuleSyntax": false,
-    "types": ["jest"]
+    "isolatedModules": true,
+    "emitDecoratorMetadata": false,
+    "composite": false,
+    "types": ["jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@mailtura/rpcmodel/*": ["../rpcmodel/src/*"]
+    }
   },
-  "include": ["test"]
+  "include": ["test/**/*.ts"]
 }
