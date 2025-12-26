@@ -222,11 +222,25 @@ export function userRoutes<
           throw createError(404, "User not found");
         }
 
-        await prisma.users.delete({
-          where: {
-            id: userId,
-            tenant_id: tenantId,
-          },
+        await prisma.$transaction(async tx => {
+          await tx.accounts.deleteMany({
+            where: {
+              user_id: userId,
+            },
+          });
+
+          await tx.sessions.deleteMany({
+            where: {
+              user_id: userId,
+            },
+          });
+
+          await tx.users.delete({
+            where: {
+              id: userId,
+              tenant_id: tenantId,
+            },
+          });
         });
 
         return reply.status(204).send();
