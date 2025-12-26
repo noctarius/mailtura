@@ -1,6 +1,6 @@
 import { Funnel, List, Minus, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
-import { createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
 import CreateContactDialog from "../components/modals/CreateContactDialog.js";
 import CreateSubscriberListDialog from "../components/modals/CreateSubscriberListDialog.js";
@@ -52,6 +52,11 @@ const Contacts = () => {
       query = `${query ?? ""} subscriptions CONTAINS '${selectedList()}'`;
     }
     return query;
+  });
+
+  createEffect(() => {
+    filterQuery();
+    setPageCursor(undefined);
   });
 
   const contactsCountQuery = useContactsCountQuery({ tenantId });

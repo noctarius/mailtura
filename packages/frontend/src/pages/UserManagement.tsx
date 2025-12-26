@@ -1,5 +1,5 @@
 import { Funnel, Plus, Search, User as UserIcon } from "lucide-solid";
-import { createMemo, createSignal } from "solid-js";
+import { createEffect, createMemo, createSignal } from "solid-js";
 import { useUsersQuery } from "../services/users/use-users-query.js";
 import { useTenantId } from "../hooks/useTenantId.js";
 import { useParams } from "@solidjs/router";
@@ -29,6 +29,11 @@ const UserManagement = () => {
     const filterTerm = searchTerm();
     if (filterTerm.trim().length === 0) return undefined;
     return `email ILIKE "%${filterTerm}%" OR firstName ILIKE "%${filterTerm}%" OR lastName ILIKE "%${filterTerm}%"`;
+  });
+
+  createEffect(() => {
+    filterQuery();
+    setPageCursor(undefined);
   });
 
   const usersQuery = useUsersQuery({ tenantId: selectedTenantId, query: filterQuery, cursor: pageCursor });

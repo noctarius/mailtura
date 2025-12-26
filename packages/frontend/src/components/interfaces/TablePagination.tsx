@@ -36,6 +36,7 @@ export function TablePagination(props: TablePaginationProps) {
       >
         &lt;
       </button>
+      <span>Page {props.pagination()?.currentPage ?? 1}</span>
       <button
         class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 disabled:bg-gray-100 disabled:border-gray-200 disabled:border transition-colors flex items-center space-x-2"
         onClick={() => props.onPageChange(nextCursor())}
