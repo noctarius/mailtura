@@ -160,20 +160,20 @@ const createContacts = async (
         },
       });
 
-      for (const listId of contact.listIds) {
+      for (const subscription of contact.subscriptions) {
         await tx.subscribers.upsert({
           where: {
             tenant_id_contact_id_subscriber_list_id: {
               tenant_id: tenantId,
               contact_id: newContact.id,
-              subscriber_list_id: listId,
+              subscriber_list_id: subscription,
             },
           },
           create: {
             tenant_id: tenantId,
             contact_id: newContact.id,
             status: "Subscribed",
-            subscriber_list_id: listId,
+            subscriber_list_id: subscription,
             subscribed_at: UTC.now().toDate(),
             created_at: UTC.now().toDate(),
             created_by: "api",
@@ -238,7 +238,7 @@ export async function importContactsBatch(args: ContactImportArguments): Promise
       email: row.email,
       firstName: row.first_name,
       lastName: row.last_name,
-      listIds: parameters.list_ids,
+      subscriptions: parameters.subscriptions,
     };
   });
 

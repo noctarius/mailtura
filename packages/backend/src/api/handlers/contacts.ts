@@ -504,7 +504,7 @@ export function contactImportRoutes<
 
         const parameters: ContactImportParameters & { [key: string]: Prisma.InputJsonValue } = {
           file_id: newFile.id,
-          list_ids: request.body.parameters.listIds,
+          subscriptions: request.body.parameters.listIds,
           mapping,
         };
 

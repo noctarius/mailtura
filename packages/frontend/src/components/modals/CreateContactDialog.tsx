@@ -51,13 +51,13 @@ const CreateContactDialog = ({ onClose }: CreateContactDialogProps) => {
         label: "Last Name",
         type: "text",
       },
-      listIds: {
+      subscriptions: {
         label: "Subscription",
         type: "checkbox",
         options: subscriberListOptions,
       },
     },
-    ["email", "firstName", "lastName", "listIds"]
+    ["email", "firstName", "lastName", "subscriptions"]
   );
 
   const newSubscriberListForm = createFormSpec<typeof CreateSubscriberList>(
@@ -98,8 +98,8 @@ const CreateContactDialog = ({ onClose }: CreateContactDialogProps) => {
         onSuccess: async () => {
           await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
           await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-          for (const listId of values.listIds) {
-            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });
+          for (const subscription of values.subscriptions) {
+            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), subscription) });
           }
           onClose();
           toast.success("Contact added successfully!");

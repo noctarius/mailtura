@@ -1,6 +1,6 @@
 export interface ContactImportParameters {
   file_id: string;
-  list_ids: string[];
+  subscriptions: string[];
   mapping: [target: string, source: string][];
 }
 
