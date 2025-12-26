@@ -1,8 +1,7 @@
-import { Funnel, List, Loader, Minus, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
+import { Funnel, List, Minus, Plus, Search, Upload, UserPlus, Users } from "lucide-solid";
 import { useContactsQuery } from "../services/contacts/use-contacts-query.js";
-import { createEffect, createMemo, createSignal } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
-import { useSubscribersQuery } from "../services/subscriber-lists/use-subscribers-query.js";
 import CreateContactDialog from "../components/modals/CreateContactDialog.js";
 import CreateSubscriberListDialog from "../components/modals/CreateSubscriberListDialog.js";
 import { useTenantId } from "../hooks/useTenantId.js";
@@ -10,6 +9,9 @@ import { ContactsTable } from "../components/interfaces/ContactsTable.js";
 import { ImportContactsDialog } from "../components/modals/ImportContactsDialog.js";
 import { DeleteSubscriberListDialog } from "../components/modals/DeleteSubscriberListDialog.js";
 import { debounce } from "lodash";
+import { TableLoading } from "../components/interfaces/TableLoading.js";
+import { useContactsCountQuery } from "../services/contacts/use-contacts-count-query.js";
+import { TablePagination } from "../components/interfaces/TablePagination.js";
 
 const Contacts = () => {
   const [contactsTable, setContactsTable] = createSignal<HTMLDivElement>();
@@ -25,22 +27,36 @@ const Contacts = () => {
   const [listRemovalActive, setListRemovalActive] = createSignal(false);
   const [deleteSubscriberList, setDeleteSubscriberList] = createSignal<string | undefined>(undefined);
   const [showListRemovalConfirmation, setShowListRemovalConfirmation] = createSignal(false);
+  const [pageCursor, setPageCursor] = createSignal<string | undefined>(undefined);
 
   const updateSearchTerm = debounce((searchTerm: string) => setSearchTerm(searchTerm), 250);
 
   const filterQuery = createMemo(() => {
+    let query = undefined;
     const filterTerm = searchTerm();
-    if (filterTerm.trim().length === 0) return undefined;
-    return `email ILIKE "%${filterTerm}%" OR first_name ILIKE "%${filterTerm}%" OR last_name ILIKE "%${filterTerm}%"`;
+    if (filterTerm.trim().length > 0) {
+      query = `email ILIKE "%${filterTerm}%" OR firstName ILIKE "%${filterTerm}%" OR lastName ILIKE "%${filterTerm}%"`;
+    }
+    if (selectedStatus() !== "all") {
+      if (query) query = `(${query}) AND `;
+      if (selectedStatus() === "Bounced") {
+        query = `${query ?? ""}bounces > 0`;
+      } else if (selectedStatus() === "Unsubscribed") {
+        query = `${query ?? ""}unsubscribes > 0`;
+      } else {
+        query = `${query ?? ""}(bounces = 0 AND unsubscribes = 0)`;
+      }
+    }
+    if (selectedList() !== "all") {
+      if (query) query = `(${query}) AND `;
+      query = `${query ?? ""} subscriptions CONTAINS '${selectedList()}'`;
+    }
+    return query;
   });
 
-  createEffect(() => {
-    console.log(filterQuery());
-  });
-
-  const contactsQuery = useContactsQuery({ tenantId, query: filterQuery, cursor: () => undefined });
+  const contactsCountQuery = useContactsCountQuery({ tenantId });
+  const contactsQuery = useContactsQuery({ tenantId, query: filterQuery, cursor: pageCursor });
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
-  const subscribersQuery = useSubscribersQuery({ tenantId, subscriber_list_id: selectedList });
 
   const subscriberLists = createMemo(() => {
     return [
@@ -48,32 +64,11 @@ const Contacts = () => {
         id: "all",
         name: "All Contacts",
         description: "All contacts",
-        contactCount: contactsQuery.data?.length || 0,
+        contactCount: contactsCountQuery.data?.count || 0,
       },
       ...(subscriberListsQuery.data || []).toSort((a, b) => a.name.localeCompare(b.name)),
     ];
   });
-
-  const filteredContacts = createMemo(() =>
-    (contactsQuery.data || []).filter(contact => {
-      console.log("Filtering...");
-      /*const matchesSearch =
-        contact.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
-        contact.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
-        contact.lastName?.toLowerCase().includes(searchTerm().toLowerCase());*/
-
-      // Filter selected subscribers
-      const isSubscribed =
-        selectedList() === "all" ||
-        (subscribersQuery.data || []).some(
-          subscriber => subscriber.contactId === contact.id && subscriber.status === "Subscribed"
-        );
-
-      const matchesStatus = selectedStatus() === "all" || contact.status === selectedStatus();
-
-      return /*matchesSearch &&*/ isSubscribed && matchesStatus;
-    })
-  );
 
   const handleListRemovalClick = (event: Event, subscriberListId: string) => {
     event.stopPropagation();
@@ -197,58 +192,40 @@ const Contacts = () => {
             </div>
 
             <div class="text-sm text-gray-600">
-              {filteredContacts.length} of {contactsQuery.data?.length || 0} contacts
+              {contactsQuery.data?.metadata.totalItems ?? 0} of {contactsCountQuery.data?.count || 0} contacts
             </div>
           </div>
         </div>
 
         {/* Contacts Table */}
-        <div class="p-8 flex flex-1 flex-col min-h-0">
+        <div class="pl-8 pr-8 pt-8 pb-3 flex flex-1 flex-col min-h-0 relative">
           {contactsQuery.isLoading ? (
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
-              <div class="flex flex-col items-center justify-center space-y-4">
-                <div class="relative">
-                  <Loader class="w-8 h-8 text-blue-600 animate-spin" />
-                </div>
-                <div class="text-center">
-                  <h3 class="text-lg font-medium text-gray-900 mb-2">Loading Contacts</h3>
-                  <p class="text-gray-600">Please wait while we fetch your contact data...</p>
-                </div>
-                {/* Loading skeleton */}
-                <div class="w-full max-w-4xl mt-8 space-y-4">
-                  {[...Array(5)].map(() => (
-                    <div class="animate-pulse">
-                      <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                        <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-                        <div class="flex-1 space-y-2">
-                          <div class="h-4 bg-gray-300 rounded w-1/4"></div>
-                          <div class="h-3 bg-gray-300 rounded w-1/3"></div>
-                        </div>
-                        <div class="flex space-x-2">
-                          <div class="h-6 bg-gray-300 rounded-full w-16"></div>
-                          <div class="h-6 bg-gray-300 rounded-full w-20"></div>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
+            <TableLoading
+              title="Loading Contacts"
+              text="Please wait while we fetch your contact data..."
+            />
+          ) : (contactsQuery.data?.data.length ?? 0 > 0) ? (
+            <>
+              <div class="flex flex-row flex-grow min-h-0 relative">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
+                  <div
+                    ref={setContactsTable}
+                    class="overflow-auto relative rounded-xl min-h-100 scroll-smooth"
+                  >
+                    {contactsTable() && (
+                      <ContactsTable
+                        data={() => contactsQuery.data?.data ?? []}
+                        target={contactsTable()!}
+                      />
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : filteredContacts().length > 0 ? (
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
-              <div
-                ref={setContactsTable}
-                class="overflow-auto relative rounded-xl"
-                style={{ "scroll-behavior": "smooth", "min-height": "100%" }}
-              >
-                {contactsTable() && (
-                  <ContactsTable
-                    data={filteredContacts}
-                    target={contactsTable()!}
-                  />
-                )}
-              </div>
-            </div>
+              <TablePagination
+                pagination={() => contactsQuery.data?.metadata}
+                onPageChange={setPageCursor}
+              />
+            </>
           ) : (
             <div class="text-center py-12">
               <Users class="w-12 h-12 text-gray-400 mx-auto mb-4" />

@@ -57,7 +57,7 @@ export default function ContextMenu<Item>(props: ContextMenuProps<Item>) {
               <button
                 disabled={item.disabled ? item.disabled() : false}
                 onClick={() => props.onAction(props.item, item.action)}
-                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center space-x-2"
+                class="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 disabled:text-gray-300 flex items-center space-x-2"
               >
                 {Icon && <Icon class="w-4 h-4" />}
                 <span>{item.label}</span>

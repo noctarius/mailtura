@@ -1,10 +1,13 @@
-import { Funnel, Loader, Plus, Search, User as UserIcon } from "lucide-solid";
+import { Funnel, Plus, Search, User as UserIcon } from "lucide-solid";
 import { createMemo, createSignal } from "solid-js";
 import { useUsersQuery } from "../services/users/use-users-query.js";
 import { useTenantId } from "../hooks/useTenantId.js";
 import { useParams } from "@solidjs/router";
 import { CreateUserDialog } from "../components/modals/CreateUserDialog.js";
 import { UsersTable } from "../components/interfaces/UsersTable.js";
+import { TableLoading } from "../components/interfaces/TableLoading.js";
+import { debounce } from "lodash";
+import { TablePagination } from "../components/interfaces/TablePagination.js";
 
 const UserManagement = () => {
   const [usersTable, setUsersTable] = createSignal<HTMLDivElement>();
@@ -18,23 +21,32 @@ const UserManagement = () => {
   const [selectedRole, setSelectedRole] = createSignal("all");
   const [selectedStatus, setSelectedStatus] = createSignal("all");
   const [showCreateModal, setShowCreateModal] = createSignal(false);
+  const [pageCursor, setPageCursor] = createSignal<string | undefined>(undefined);
 
-  const usersQuery = useUsersQuery({ tenantId: selectedTenantId });
+  const updateSearchTerm = debounce((searchTerm: string) => setSearchTerm(searchTerm), 250);
+
+  const filterQuery = createMemo(() => {
+    const filterTerm = searchTerm();
+    if (filterTerm.trim().length === 0) return undefined;
+    return `email ILIKE "%${filterTerm}%" OR firstName ILIKE "%${filterTerm}%" OR lastName ILIKE "%${filterTerm}%"`;
+  });
+
+  const usersQuery = useUsersQuery({ tenantId: selectedTenantId, query: filterQuery, cursor: pageCursor });
 
   const filteredUsers = createMemo(() => {
-    if (!usersQuery.data) return [];
-    return usersQuery.data.filter(user => {
-      const matchesSearch =
-        user.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
-        user.firstName?.toLowerCase().includes(searchTerm().toLowerCase()) ||
-        user.lastName?.toLowerCase().includes(searchTerm().toLowerCase());
+    if (!usersQuery.data?.data) return [];
+    return usersQuery.data?.data.filter(user => {
       const matchesRole = selectedRole() === "all" || user.roleId === selectedRole();
       const matchesStatus =
         selectedStatus() === "all" ||
         (selectedStatus() === "active" && user.active) ||
         (selectedStatus() === "inactive" && !user.active);
-      return matchesSearch && matchesRole && matchesStatus;
+      return matchesRole && matchesStatus;
     });
+  });
+
+  const pagination = createMemo(() => {
+    return usersQuery.data?.metadata;
   });
 
   return (
@@ -66,7 +78,7 @@ const UserManagement = () => {
                 type="text"
                 placeholder="Search users..."
                 value={searchTerm()}
-                onChange={e => setSearchTerm(e.target.value)}
+                onChange={e => updateSearchTerm(e.target.value)}
                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80"
               />
             </div>
@@ -98,59 +110,41 @@ const UserManagement = () => {
           </div>
 
           <div class="text-sm text-gray-600">
-            {filteredUsers().length} of {usersQuery.data?.length} users
+            {filteredUsers().length} of {usersQuery.data?.data.length} users
           </div>
         </div>
       </div>
 
       {/* Users Table */}
-      <div class="flex-1 overflow-auto p-8">
+      <div class="pl-8 pr-8 pt-8 pb-3 flex flex-1 flex-col min-h-0">
         {usersQuery.isLoading ? (
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-12">
-            <div class="flex flex-col items-center justify-center space-y-4">
-              <div class="relative">
-                <Loader class="w-8 h-8 text-blue-600 animate-spin" />
-              </div>
-              <div class="text-center">
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Loading Users</h3>
-                <p class="text-gray-600">Please wait while we fetch your user data...</p>
-              </div>
-              {/* Loading skeleton */}
-              <div class="w-full max-w-4xl mt-8 space-y-4">
-                {[...Array(5)].map(() => (
-                  <div class="animate-pulse">
-                    <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
-                      <div class="w-10 h-10 bg-gray-300 rounded-full"></div>
-                      <div class="flex-1 space-y-2">
-                        <div class="h-4 bg-gray-300 rounded w-1/4"></div>
-                        <div class="h-3 bg-gray-300 rounded w-1/3"></div>
-                      </div>
-                      <div class="flex space-x-2">
-                        <div class="h-6 bg-gray-300 rounded-full w-16"></div>
-                        <div class="h-6 bg-gray-300 rounded-full w-20"></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          <TableLoading
+            title="Loading Users"
+            text="Please wait while we fetch your user data..."
+          />
         ) : filteredUsers().length > 0 ? (
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
-            <div
-              ref={setUsersTable}
-              class="overflow-auto relative rounded-xl"
-              style={{ "scroll-behavior": "smooth", "min-height": "100%" }}
-            >
-              {usersTable() && selectedTenantId() !== undefined && (
-                <UsersTable
-                  tenantId={() => selectedTenantId()!}
-                  data={filteredUsers}
-                  target={usersTable()!}
-                />
-              )}
+          <>
+            <div class="flex flex-row min-h-0 relative">
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
+                <div
+                  ref={setUsersTable}
+                  class="overflow-auto relative rounded-xl min-h-100 scroll-smooth"
+                >
+                  {usersTable() && selectedTenantId() !== undefined && (
+                    <UsersTable
+                      tenantId={() => selectedTenantId()!}
+                      data={filteredUsers}
+                      target={usersTable()!}
+                    />
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
+            <TablePagination
+              pagination={pagination}
+              onPageChange={setPageCursor}
+            />
+          </>
         ) : (
           <div class="text-center py-12">
             <UserIcon class="w-12 h-12 text-gray-400 mx-auto mb-4" />

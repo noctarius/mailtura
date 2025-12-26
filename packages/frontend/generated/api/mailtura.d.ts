@@ -242,7 +242,6 @@ export interface paths {
             parameters: {
                 query?: {
                     cursor?: string;
-                    page?: number;
                     limit?: number;
                     query?: string;
                     sort?: string;
@@ -263,9 +262,7 @@ export interface paths {
                     content: {
                         "application/json": {
                             data: components["schemas"]["Contact"][];
-                            metadata: {
-                                next?: string;
-                            };
+                            metadata: components["schemas"]["PaginationMetadata"];
                         };
                     };
                 };
@@ -297,7 +294,7 @@ export interface paths {
                         email: string;
                         firstName?: string;
                         lastName?: string;
-                        listIds: string[];
+                        subscriptions: string[];
                     };
                 };
             };
@@ -322,6 +319,54 @@ export interface paths {
                 };
             };
         };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/contacts/count/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            count: number;
+                        };
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -354,7 +399,7 @@ export interface paths {
                             email: string;
                             firstName?: string;
                             lastName?: string;
-                            listIds: string[];
+                            subscriptions: string[];
                         }[];
                         upsert: boolean;
                     };
@@ -376,7 +421,7 @@ export interface paths {
                                 email: string;
                                 firstName?: string;
                                 lastName?: string;
-                                listIds: string[];
+                                subscriptions: string[];
                                 status: string;
                                 /** Format: date-time */
                                 createdAt: string;
@@ -392,7 +437,7 @@ export interface paths {
                                 email: string;
                                 firstName?: string;
                                 lastName?: string;
-                                listIds: string[];
+                                subscriptions: string[];
                                 status: string;
                                 /** Format: date-time */
                                 createdAt: string;
@@ -408,7 +453,7 @@ export interface paths {
                                 email: string;
                                 firstName?: string;
                                 lastName?: string;
-                                listIds: string[];
+                                subscriptions: string[];
                                 status: string;
                                 /** Format: date-time */
                                 createdAt: string;
@@ -500,7 +545,7 @@ export interface paths {
                     "application/json": {
                         firstName?: string;
                         lastName?: string;
-                        listIds?: string[];
+                        subscriptions?: string[];
                     };
                 };
             };
@@ -790,7 +835,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -805,7 +855,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Template"][];
+                        "application/json": {
+                            data: components["schemas"]["Template"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -1088,7 +1141,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -1103,7 +1161,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Campaign"][];
+                        "application/json": {
+                            data: components["schemas"]["Campaign"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -1328,7 +1389,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -1343,7 +1409,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["SubscriberList"][];
+                        "application/json": {
+                            data: components["schemas"]["SubscriberList"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -1619,7 +1688,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -1634,7 +1708,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["User"][];
+                        "application/json": {
+                            data: components["schemas"]["User"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -2348,7 +2425,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -2363,7 +2445,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Role"][];
+                        "application/json": {
+                            data: components["schemas"]["Role"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -2583,7 +2668,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -2598,7 +2688,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Unsubscribe"][];
+                        "application/json": {
+                            data: components["schemas"]["Unsubscribe"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -2822,7 +2915,12 @@ export interface paths {
         };
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
                 header?: never;
                 path: {
                     tenant_id: string;
@@ -2837,7 +2935,10 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/json": components["schemas"]["Bounce"][];
+                        "application/json": {
+                            data: components["schemas"]["Bounce"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
                     };
                 };
                 /** @description An error response */
@@ -3070,7 +3171,7 @@ export interface components {
             email: string;
             firstName?: string;
             lastName?: string;
-            listIds: string[];
+            subscriptions: string[];
             status: string;
             /** Format: date-time */
             createdAt: string;
@@ -3143,7 +3244,7 @@ export interface components {
                 email: string;
                 firstName?: string;
                 lastName?: string;
-                listIds: string[];
+                subscriptions: string[];
                 status: string;
                 /** Format: date-time */
                 createdAt: string;
@@ -3450,6 +3551,18 @@ export interface components {
             /** Format: date-time */
             updatedAt?: string;
             updatedBy?: string;
+        };
+        /** @description Pagination metadata */
+        PaginationMetadata: {
+            pageSize?: number;
+            pages?: number;
+            currentPage?: number;
+            totalItems?: number;
+            nextCursor?: string;
+            previousCursor?: string;
+            firstCursor?: string;
+            lastCursor?: string;
+            currentCursor?: string;
         };
     };
     responses: never;

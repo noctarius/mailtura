@@ -5,6 +5,7 @@ import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
 import { User } from "@mailtura/rpcmodel/api/index.js";
 import { userKeys } from "../../services/users/keys.js";
+import { useUser } from "../../hooks/useUser.js";
 
 type DeleteUserDialogProps = {
   user: () => User | undefined;
@@ -14,6 +15,7 @@ type DeleteUserDialogProps = {
 const DeleteUserDialog = (props: DeleteUserDialogProps) => {
   const queryClient = useQueryClient();
   const tenantId = useTenantId();
+  const currentUser = useUser();
 
   const deleteUser = useDeleteMutation("/api/v1/tenants/{tenant_id}/users/{user_id}/", {
     tenant_id: tenantId,
@@ -22,6 +24,10 @@ const DeleteUserDialog = (props: DeleteUserDialogProps) => {
 
   const handleSubmit = async () => {
     if (!props.user()) return;
+    if (props.user()?.id === currentUser()?.id) {
+      toast.error("You cannot delete yourself.");
+      return;
+    }
 
     deleteUser.mutate({
       onSuccess: async () => {
@@ -38,6 +44,7 @@ const DeleteUserDialog = (props: DeleteUserDialogProps) => {
   return (
     <UiApprovalDialog
       title={() => "Delete User"}
+      submitText={() => "Delete user"}
       onCancel={props.onClose}
       onClose={props.onClose}
       onConfirm={handleSubmit}

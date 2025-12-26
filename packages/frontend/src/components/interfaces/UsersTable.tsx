@@ -16,6 +16,7 @@ import { EditUserDrawer } from "../modals/EditUserDrawer.js";
 import { useRolesQuery } from "../../services/roles/use-roles-query.js";
 import ResetPasswordUserDialog from "../modals/ResetPasswordUserDialog.js";
 import LockUnlockUserDialog from "../modals/LockUnlockUserDialog.js";
+import { useUser } from "../../hooks/useUser.js";
 
 interface UsersTableProps {
   tenantId: () => string;
@@ -206,6 +207,7 @@ function UsersActions(props: UsersActionsProps) {
   const [ellipsisRef, setEllipsisRef] = createSignal<HTMLButtonElement | undefined>(undefined);
   const [editOpen, setEditOpen] = createSignal(false);
   const isActive = createSelector(props.activeContextMenu);
+  const user = useUser();
 
   return (
     <>
@@ -236,7 +238,7 @@ function UsersActions(props: UsersActionsProps) {
             }}
             target={ellipsisRef}
             item={props.item}
-            actions={() => createContextMenu(props.item)}
+            actions={() => createContextMenu(props.item, user())}
             onAction={props.onContextMenuAction}
           />
         ) : null}
@@ -250,12 +252,13 @@ function UsersActions(props: UsersActionsProps) {
   );
 }
 
-const createContextMenu = (user: User): ContextMenuAction[] => {
+const createContextMenu = (user: User, currentUser?: User): ContextMenuAction[] => {
   const contextMenuActions: ContextMenuAction[] = [
     {
       action: "delete",
       icon: Trash2,
       label: "Delete Contact",
+      disabled: () => user.id === currentUser?.id,
     },
     {
       action: "reset-password",
