@@ -10,6 +10,7 @@ import {
   type campaigns,
   type contact_imports,
   type contacts,
+  type contacts_with_subscriptions,
   type event_type,
   type files,
   type mail_configs,
@@ -148,7 +149,7 @@ export const newPrismaClient = (adapter: PrismaPg) => {
   });
 };
 
-export const prisma = newPrismaClient(new PrismaPg({ databaseUrl }));
+export const prisma = newPrismaClient(new PrismaPg({ connectionString: databaseUrl }));
 
 export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/internal/prismaNamespace.js";
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
@@ -174,6 +175,7 @@ export function handlePrismaError(err: any) {
 
 export type TenantEntity = tenants;
 export type ContactEntity = contacts & { _count?: { bounces?: number; unsubscribes?: number } };
+export type ContactsWithSubscriptionsEntity = contacts_with_subscriptions;
 export type CampaignStatusEnum = campaign_status;
 export type CampaignTypeEnum = campaign_type;
 export type CampaignEntity = campaigns;

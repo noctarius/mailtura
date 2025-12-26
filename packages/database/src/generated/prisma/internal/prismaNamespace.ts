@@ -412,7 +412,8 @@ export const ModelName = {
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
   mail_sending_receivers: 'mail_sending_receivers',
-  system_configs: 'system_configs'
+  system_configs: 'system_configs',
+  contacts_with_subscriptions: 'contacts_with_subscriptions'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers" | "system_configs"
+    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers" | "system_configs" | "contacts_with_subscriptions"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2578,6 +2579,36 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    contacts_with_subscriptions: {
+      payload: Prisma.$contacts_with_subscriptionsPayload<ExtArgs>
+      fields: Prisma.contacts_with_subscriptionsFieldRefs
+      operations: {
+        findFirst: {
+          args: Prisma.contacts_with_subscriptionsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$contacts_with_subscriptionsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.contacts_with_subscriptionsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$contacts_with_subscriptionsPayload>
+        }
+        findMany: {
+          args: Prisma.contacts_with_subscriptionsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$contacts_with_subscriptionsPayload>[]
+        }
+        aggregate: {
+          args: Prisma.Contacts_with_subscriptionsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateContacts_with_subscriptions>
+        }
+        groupBy: {
+          args: Prisma.contacts_with_subscriptionsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Contacts_with_subscriptionsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.contacts_with_subscriptionsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Contacts_with_subscriptionsCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -3069,6 +3100,24 @@ export const System_configsScalarFieldEnum = {
 export type System_configsScalarFieldEnum = (typeof System_configsScalarFieldEnum)[keyof typeof System_configsScalarFieldEnum]
 
 
+export const Contacts_with_subscriptionsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  email: 'email',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by',
+  subscriptions: 'subscriptions',
+  bounces: 'bounces',
+  unsubscribes: 'unsubscribes'
+} as const
+
+export type Contacts_with_subscriptionsScalarFieldEnum = (typeof Contacts_with_subscriptionsScalarFieldEnum)[keyof typeof Contacts_with_subscriptionsScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3441,6 +3490,7 @@ export type GlobalOmitConfig = {
   mail_senders?: Prisma.mail_sendersOmit
   mail_sending_receivers?: Prisma.mail_sending_receiversOmit
   system_configs?: Prisma.system_configsOmit
+  contacts_with_subscriptions?: Prisma.contacts_with_subscriptionsOmit
 }
 
 /* Types for Logging */

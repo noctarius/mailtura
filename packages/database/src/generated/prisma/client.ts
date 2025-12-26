@@ -184,3 +184,8 @@ export type mail_sending_receivers = Prisma.mail_sending_receiversModel
  * 
  */
 export type system_configs = Prisma.system_configsModel
+/**
+ * Model contacts_with_subscriptions
+ * 
+ */
+export type contacts_with_subscriptions = Prisma.contacts_with_subscriptionsModel

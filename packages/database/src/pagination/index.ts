@@ -38,10 +38,11 @@ export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, 
 
   // Current page data
   const currentPage = cursor?.page ?? 1;
-  const pageSize = cursor?.pageSize ?? queryParams.limit ?? 100;
+  const pageSize = Math.min(cursor?.pageSize ?? queryParams.limit ?? 100, 1000);
   const needsReverse = cursor?.type === "last" || cursor?.type === "previous";
 
   // Building the query where clause
+  const baseWhere = whereClause<any>(query, undefined, "tenant_id");
   const where = whereClause<any>(query, cursor, "tenant_id");
 
   // Base (forward) order used for cursors; query order may be reversed for previous/last
@@ -59,10 +60,25 @@ export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, 
   const totalItems = (await model.count({
     where: {
       ...(args?.where ?? {}),
+      ...baseWhere,
     },
   })) as number;
 
-  const remaining = totalItems % pageSize;
+  if (totalItems === 0) {
+    return {
+      data: [] as unknown as Result<T, A, "findMany">,
+      metadata: {
+        totalItems: 0,
+        currentPage: 1,
+        pageSize,
+        pages: 1,
+        firstCursor: newFirstPageCursor(pageSize, totalItems),
+        lastCursor: newLastPageCursor(pageSize, totalItems),
+      },
+    };
+  }
+
+  const remaining = cursor?.type === "last" ? totalItems % pageSize : pageSize;
   const limit = Math.min(pageSize, remaining === 0 ? pageSize : remaining);
 
   // Query the current page
@@ -75,6 +91,20 @@ export async function withPagination<T, A extends Args<T, "findMany"> = Args<T, 
     orderBy,
     take: limit,
   });
+
+  if (page.length === 0) {
+    return {
+      data: [] as unknown as Result<T, A, "findMany">,
+      metadata: {
+        totalItems,
+        currentPage,
+        pageSize,
+        pages: Math.ceil(totalItems / pageSize),
+        firstCursor: newFirstPageCursor(pageSize, totalItems),
+        lastCursor: newLastPageCursor(pageSize, totalItems),
+      },
+    };
+  }
 
   // For last and previous cursors, we need to reverse the data to get the correct order
   if (needsReverse) page.reverse();

@@ -22,7 +22,13 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapContact, mapContactImport, Prisma, withPagination } from "@mailtura/database";
+import prisma, {
+  mapContact,
+  mapContactImport,
+  mapContactsWithSubscriptions,
+  Prisma,
+  withPagination,
+} from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
@@ -56,7 +62,7 @@ export function contactRoutes<
       const tenantId = request.params.tenant_id;
 
       const page = await withPagination(
-        prisma.contacts,
+        prisma.contacts_with_subscriptions,
         {
           where: {
             tenant_id: tenantId,
@@ -66,7 +72,7 @@ export function contactRoutes<
       );
 
       return {
-        data: page.data.map(mapContact),
+        data: page.data.map(mapContactsWithSubscriptions),
         metadata: page.metadata,
       };
     }
@@ -99,13 +105,13 @@ export function contactRoutes<
           },
         });
 
-        for (const listId of request.body.listIds) {
+        for (const subscription of request.body.subscriptions) {
           await tx.subscribers.create({
             data: {
               tenant_id: tenantId,
               contact_id: newContact.id,
               status: "Subscribed",
-              subscriber_list_id: listId,
+              subscriber_list_id: subscription,
               subscribed_at: UTC.now().toDate(),
               created_at: UTC.now().toDate(),
               created_by: "api",
@@ -115,6 +121,24 @@ export function contactRoutes<
 
         return reply.status(201).send(mapContact(newContact));
       });
+    }
+  );
+
+  router.get<{ Params: { tenant_id: string }; Reply: { count: number } }>(
+    "/count/",
+    {
+      schema: {
+        tags: ["contacts"],
+        response: {
+          200: Type.Object({ count: Type.Number() }),
+          401: Type.Ref("ErrorResponse"),
+        },
+      },
+    },
+    async request => {
+      const tenantId = request.params.tenant_id;
+      const count = await prisma.contacts.count({ where: { tenant_id: tenantId } });
+      return { count };
     }
   );
 
@@ -180,20 +204,20 @@ export function contactRoutes<
             },
           });
 
-          for (const listId of contact.listIds) {
+          for (const subscription of contact.subscriptions) {
             await tx.subscribers.upsert({
               where: {
                 tenant_id_contact_id_subscriber_list_id: {
                   tenant_id: tenantId,
                   contact_id: newContact.id,
-                  subscriber_list_id: listId,
+                  subscriber_list_id: subscription,
                 },
               },
               create: {
                 tenant_id: tenantId,
                 contact_id: newContact.id,
                 status: "Subscribed",
-                subscriber_list_id: listId,
+                subscriber_list_id: subscription,
                 subscribed_at: UTC.now().toDate(),
                 created_at: UTC.now().toDate(),
                 created_by: "api",
@@ -287,11 +311,13 @@ export function contactRoutes<
         }
 
         const oldMappedContact = mapContact(oldContact);
-        const newListIds = request.body.listIds;
-        const oldListIds = oldMappedContact.listIds;
+        const newSubscriptions = request.body.subscriptions;
+        const oldSubscriptions = oldMappedContact.subscriptions;
 
-        const listsToAdd = newListIds?.filter(listId => !oldListIds.includes(listId)) || [];
-        const listsToRemove = oldListIds.filter(listId => newListIds && !newListIds.includes(listId));
+        const listsToAdd = newSubscriptions?.filter(subscription => !oldSubscriptions.includes(subscription)) || [];
+        const listsToRemove = oldSubscriptions.filter(
+          subscription => newSubscriptions && !newSubscriptions.includes(subscription)
+        );
 
         return prisma.$transaction(async tx => {
           if (listsToAdd.length > 0) {

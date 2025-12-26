@@ -47,7 +47,7 @@ export const Contact = //
       }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
-      listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
+      subscriptions: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
       status: Type.String(),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),

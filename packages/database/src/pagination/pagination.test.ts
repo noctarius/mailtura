@@ -11,7 +11,7 @@ const letters = "abcdefghijklmnopqrstuvwxyz";
 
 const createTestContacts = (): contacts[] => {
   const tenantId = randomUUID();
-  return Array.from({ length: 100 }, (_, i) => {
+  return Array.from({ length: 101 }, (_, i) => {
     const letter = 99 - i;
     const emailFirstLetter = letters[Math.floor(letter / 26)]!;
     const emailSecondLetter = letters[letter % 26]!;
@@ -38,7 +38,7 @@ const skipPages = async (
 ) => {
   for (let i = 0; i < skipPages; i++) {
     const page = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -66,7 +66,7 @@ const rewindPages = async (
 ) => {
   for (let i = 0; i < rewindPages; i++) {
     const page = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -106,7 +106,7 @@ describe("Pagination unit tests", () => {
 
   test("should request the next page with next cursor", async () => {
     const page = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -124,7 +124,7 @@ describe("Pagination unit tests", () => {
     expect(page.data[9]?.first_name).toEqual("first-9");
 
     const page2 = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -147,7 +147,7 @@ describe("Pagination unit tests", () => {
     const page = await skipPages(prisma, 4, 10);
 
     const firstPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -169,7 +169,7 @@ describe("Pagination unit tests", () => {
     const page = await skipPages(prisma, 4, 10);
 
     const lastPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -182,16 +182,15 @@ describe("Pagination unit tests", () => {
     );
 
     expect(lastPage).toBeDefined();
-    expect(lastPage.data.length).toEqual(10);
-    expect(lastPage.data[0]?.first_name).toEqual("first-90");
-    expect(lastPage.data[9]?.first_name).toEqual("first-99");
+    expect(lastPage.data.length).toEqual(1);
+    expect(lastPage.data[0]?.first_name).toEqual("first-100");
   });
 
   test("should return last page with remaining items < pageSize", async () => {
     const page = await skipPages(prisma, 4, 10);
 
     const lastPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { not: { startsWith: "first-0" } },
@@ -204,15 +203,15 @@ describe("Pagination unit tests", () => {
     );
 
     expect(lastPage).toBeDefined();
-    expect(lastPage.data.length).toEqual(9);
+    expect(lastPage.data.length).toEqual(10);
     expect(lastPage.data[0]?.first_name).toEqual("first-91");
-    expect(lastPage.data[8]?.first_name).toEqual("first-99");
+    expect(lastPage.data[9]?.first_name).toEqual("first-100");
   });
 
   test("should return previous page from previous cursor", async () => {
     const page = await skipPages(prisma, 4, 10);
     const previousPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -230,7 +229,7 @@ describe("Pagination unit tests", () => {
     expect(previousPage.data[9]?.first_name).toEqual("first-29");
 
     const previousPage2 = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -251,7 +250,7 @@ describe("Pagination unit tests", () => {
   test("should return next page from next cursor after previous cursor (ensuring consistency)", async () => {
     const page = await skipPages(prisma, 4, 10);
     const previousPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -269,7 +268,7 @@ describe("Pagination unit tests", () => {
     expect(previousPage.data[9]?.first_name).toEqual("first-29");
 
     const nextPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -289,7 +288,7 @@ describe("Pagination unit tests", () => {
 
   test("should request the next page with next cursor according to sorting", async () => {
     const page = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -308,7 +307,7 @@ describe("Pagination unit tests", () => {
     expect(page.data[9]?.first_name).toEqual("first-90");
 
     const page2 = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },
@@ -335,7 +334,7 @@ describe("Pagination unit tests", () => {
 
     const previous = page?.metadata.previousCursor;
     const previousPage = await withPagination(
-      prisma.contacts,
+      prisma.contacts_with_subscriptions,
       {
         where: {
           first_name: { startsWith: "first" },

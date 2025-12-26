@@ -6,6 +6,7 @@ import type {
   CampaignEntity,
   ContactEntity,
   ContactImportEntity,
+  ContactsWithSubscriptionsEntity,
   FileEntity,
   RoleEntity,
   SubscriberEntity,
@@ -97,8 +98,23 @@ export function mapContact(contact: PotentiallyCountedContact): Contact {
     email: contact.email,
     firstName: contact.first_name ?? undefined,
     lastName: contact.last_name ?? undefined,
-    listIds: hasSubscribers(contact) ? contact.subscribers.map(subscriber => subscriber.subscriber_list_id) : [],
+    subscriptions: hasSubscribers(contact) ? contact.subscribers.map(subscriber => subscriber.subscriber_list_id) : [],
     status: status,
+    createdAt: mapDateTime(contact.created_at),
+    createdBy: contact.created_by,
+    updatedAt: mapDateTime(contact.updated_at),
+    updatedBy: contact.updated_by ?? undefined,
+  };
+}
+
+export function mapContactsWithSubscriptions(contact: ContactsWithSubscriptionsEntity): Contact {
+  return {
+    id: contact.id,
+    email: contact.email,
+    firstName: contact.first_name ?? undefined,
+    lastName: contact.last_name ?? undefined,
+    subscriptions: contact.subscriptions,
+    status: contact.bounces > 0 || contact.unsubscribes > 0 ? "Unsubscribed" : "Subscribed",
     createdAt: mapDateTime(contact.created_at),
     createdBy: contact.created_by,
     updatedAt: mapDateTime(contact.updated_at),

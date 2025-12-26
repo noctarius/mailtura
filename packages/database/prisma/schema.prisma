@@ -3,7 +3,7 @@ generator client {
   output          = "../src/generated/prisma"
   moduleFormat    = "esm"
   runtime         = "nodejs"
-  previewFeatures = ["postgresqlExtensions", "relationJoins"]
+  previewFeatures = ["postgresqlExtensions", "relationJoins", "views"]
 }
 
 datasource db {
@@ -545,4 +545,19 @@ model mail_sending_receivers {
 model system_configs {
   key   String @id
   value Json   @db.JsonB
+}
+
+view contacts_with_subscriptions {
+  id            String    @db.Uuid
+  tenant_id     String    @db.Uuid
+  email         String
+  first_name    String?
+  last_name     String?
+  created_at    DateTime  @db.Timestamptz()
+  created_by    String
+  updated_at    DateTime? @db.Timestamptz()
+  updated_by    String?
+  subscriptions String[]  @db.Uuid
+  bounces       Int
+  unsubscribes  Int
 }

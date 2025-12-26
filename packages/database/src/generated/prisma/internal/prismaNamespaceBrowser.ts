@@ -79,7 +79,8 @@ export const ModelName = {
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
   mail_sending_receivers: 'mail_sending_receivers',
-  system_configs: 'system_configs'
+  system_configs: 'system_configs',
+  contacts_with_subscriptions: 'contacts_with_subscriptions'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -548,6 +549,24 @@ export const System_configsScalarFieldEnum = {
 } as const
 
 export type System_configsScalarFieldEnum = (typeof System_configsScalarFieldEnum)[keyof typeof System_configsScalarFieldEnum]
+
+
+export const Contacts_with_subscriptionsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  email: 'email',
+  first_name: 'first_name',
+  last_name: 'last_name',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by',
+  subscriptions: 'subscriptions',
+  bounces: 'bounces',
+  unsubscribes: 'unsubscribes'
+} as const
+
+export type Contacts_with_subscriptionsScalarFieldEnum = (typeof Contacts_with_subscriptionsScalarFieldEnum)[keyof typeof Contacts_with_subscriptionsScalarFieldEnum]
 
 
 export const SortOrder = {
