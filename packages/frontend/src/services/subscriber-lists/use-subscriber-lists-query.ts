@@ -12,8 +12,9 @@ interface SubscriberListsQueryProps {
 export function useSubscriberListsQuery({ tenantId, query, cursor, limit }: SubscriberListsQueryProps) {
   const client = useApi();
 
+  const pageSize = limit?.() ?? 100;
   return useQuery(() => ({
-    queryKey: subscriberListKeys.lists(tenantId(), query?.(), cursor?.(), limit?.()),
+    queryKey: subscriberListKeys.lists(tenantId(), query?.(), cursor?.(), pageSize),
     queryFn: async () => {
       if (!tenantId()) return;
       const response = await client.GET("/api/v1/tenants/{tenant_id}/lists/", {
@@ -22,7 +23,7 @@ export function useSubscriberListsQuery({ tenantId, query, cursor, limit }: Subs
             tenant_id: tenantId()!,
           },
           query: {
-            limit: limit?.() ?? 100,
+            limit: pageSize,
             query: query?.(),
             cursor: cursor?.(),
           },
