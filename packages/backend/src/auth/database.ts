@@ -220,7 +220,7 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
       supportsBooleans: true,
       supportsNumericIds: false,
       transaction: cb => {
-        return (prisma as PrismaClientInternal).$transaction(tx => {
+        return (prisma as unknown as PrismaClientInternal).$transaction(tx => {
           const adapter = createAdapterFactory({
             config: adapterOptions!.config,
             adapter: createDatabaseAdapter(tx as any),
