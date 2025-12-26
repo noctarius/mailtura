@@ -82,6 +82,9 @@ const astNodeToComparison = <T extends WhereFilter<T>>(node: ComparisonNode, blo
     case "IN":
       condition = { in: node.value };
       break;
+    case "CONTAINS":
+      condition = { has: node.value };
+      break;
     case "LIKE":
       condition = { contains: node.value };
       break;

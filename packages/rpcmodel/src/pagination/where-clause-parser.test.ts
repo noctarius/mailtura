@@ -51,6 +51,11 @@ describe("query where-clause parser (unit)", () => {
     expect(ast).toEqual({ type: "comparison", field: "deletedAt", op: "!=", value: null });
   });
 
+  test("parses CONTAINS values", () => {
+    const ast = parseQueryParameter("name CONTAINS 'Jane'");
+    expect(ast).toEqual({ type: "comparison", field: "name", op: "CONTAINS", value: "Jane" });
+  });
+
   test("parses IN values", () => {
     const ast = parseQueryParameter("name IN('John', 'Jane')");
     expect(ast).toEqual({ type: "comparison", field: "name", op: "IN", value: ["John", "Jane"] });
