@@ -11,6 +11,7 @@ import {
   UnsubscribeSource,
   User,
 } from "./index.js";
+import { MailContent, MailRecipient } from "../mails/index.js";
 
 type Nullable<T extends TSchema> = ReturnType<
   typeof Type.Optional<ReturnType<typeof Type.Union<[T, ReturnType<typeof Type.Null>]>>>
@@ -111,6 +112,40 @@ export const UpdateTenant = //
   Type.Partial(Type.Omit(Tenant, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]));
 
 export type UpdateTenant = Static<typeof UpdateTenant>;
+
+export const CreateSingleSend = //
+  Type.Object(
+    {
+      mailConfigId: Type.String({ format: "uuid" }),
+      mailSenderId: Type.String({ format: "uuid" }),
+      subject: Type.String(),
+      content: MailContent,
+      // Either provide explicit recipients or subscriber list ids
+      recipients: Type.Optional(Type.Array(MailRecipient, { minItems: 1 })),
+      subscriberListIds: Type.Optional(Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true })),
+      substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
+    },
+    {
+      $id: "CreateSingleSend",
+      description:
+        "Create a single email send using either direct or template content and either explicit recipients or subscriber lists.",
+    }
+  );
+
+export type CreateSingleSend = Static<typeof CreateSingleSend>;
+
+export const CreateSingleSendResponse = Type.Object(
+  {
+    id: Type.String({ format: "uuid" }),
+  },
+  {
+    $id: "CreateSingleSendResponse",
+    description: "Response for creating a single send",
+    additionalProperties: false,
+  }
+);
+
+export type CreateSingleSendResponse = Static<typeof CreateSingleSendResponse>;
 
 export const CreateCampaign = //
   Type.Omit(Campaign, [

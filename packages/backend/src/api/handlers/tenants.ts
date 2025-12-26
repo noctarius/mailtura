@@ -20,6 +20,7 @@ import { fileRoutes } from "./files.js";
 import { rolesRoutes } from "./roles.js";
 import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
+import { mailRoutes } from "./mails.js";
 import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
 import prisma, { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
@@ -230,6 +231,7 @@ export function tenantRoutes<
     subRouter.route("/campaigns", campaignRoutes);
     subRouter.route("/lists", subscriberListRoutes);
     subRouter.route("/users", userRoutes);
+    subRouter.route("/mails", mailRoutes);
     subRouter.route("/api-keys", apiKeyRoutes);
     subRouter.route("/files", fileRoutes);
     subRouter.route("/roles", rolesRoutes);

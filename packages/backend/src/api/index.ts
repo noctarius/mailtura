@@ -39,6 +39,14 @@ import { tenantRoutes } from "./handlers/tenants.js";
 import { profileRoutes } from "./handlers/profile.js";
 import { webhookRoutes } from "./handlers/webhooks/index.js";
 import { PaginationMetadata } from "@mailtura/rpcmodel/pagination/index.js";
+import {
+  Mail,
+  MailContact,
+  MailContent,
+  MailDirectContent,
+  MailRecipient,
+  MailTemplatedContent,
+} from "@mailtura/rpcmodel/mails/index.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ErrorResponse);
@@ -67,6 +75,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(Role);
   app.addSchema(Account);
   app.addSchema(PaginationMetadata);
+  app.addSchema(Mail);
 }
 
 export function registerRoutes<

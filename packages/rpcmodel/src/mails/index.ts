@@ -114,48 +114,79 @@ export const MailContact = Type.Object({
 
 export type MailContact = Static<typeof MailContact>;
 
-export const MailDirectContent = Type.Object({
-  content: Type.String(),
-  textContent: Type.Optional(Type.String()),
-  isTemplate: Type.Optional(Type.Boolean()),
-  substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
-});
+export const MailDirectContent = Type.Object(
+  {
+    content: Type.String(),
+    textContent: Type.Optional(Type.String()),
+    isTemplate: Type.Optional(Type.Boolean()),
+    substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
+  },
+  {
+    $id: "MailDirectContent",
+    description: "Direct mail content",
+    additionalProperties: false,
+  }
+);
 
 export type MailDirectContent = Static<typeof MailDirectContent>;
 
-export const MailTemplatedContent = Type.Object({
-  templateId: Type.String(),
-});
+export const MailTemplatedContent = Type.Object(
+  {
+    templateId: Type.String(),
+  },
+  {
+    $id: "MailTemplatedContent",
+    description: "Templated mail content",
+    additionalProperties: false,
+  }
+);
 
 export type MailTemplatedContent = Static<typeof MailTemplatedContent>;
 
-export const MailContent = Type.Intersect([
-  Type.Object({ type: Type.Enum(["direct", "template"]) }),
-  Type.Union([MailDirectContent, MailTemplatedContent]),
-]);
+export const MailContent = Type.Intersect(
+  [Type.Object({ type: Type.Enum(["direct", "template"]) }), Type.Union([MailDirectContent, MailTemplatedContent])],
+  {
+    $id: "MailContent",
+    description: "Mail content",
+  }
+);
 
 export type MailContent = Static<typeof MailContent>;
 
-export const MailRecipient = Type.Object({
-  to: Type.Union([MailContact, Type.Array(MailContact)]),
-  cc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
-  bcc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
-  replyTo: Type.Optional(MailContact),
-  substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
-});
+export const MailRecipient = Type.Object(
+  {
+    to: Type.Union([MailContact, Type.Array(MailContact)]),
+    cc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
+    bcc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
+    replyTo: Type.Optional(MailContact),
+    substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
+  },
+  {
+    $id: "MailRecipient",
+    description: "Mail recipient",
+    additionalProperties: false,
+  }
+);
 
 export type MailRecipient = Static<typeof MailRecipient>;
 
-export const Mail = Type.Object({
-  from: MailContact,
-  subject: Type.String(),
-  content: MailContent,
-  recipients: Type.Array(MailRecipient),
-  substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
-  features: Type.Object({
-    trackOpens: Type.Optional(Type.Boolean()),
-    trackClicks: Type.Optional(Type.Boolean()),
-  }),
-});
+export const Mail = Type.Object(
+  {
+    from: MailContact,
+    subject: Type.String(),
+    content: MailContent,
+    recipients: Type.Array(MailRecipient),
+    substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
+    features: Type.Object({
+      trackOpens: Type.Optional(Type.Boolean()),
+      trackClicks: Type.Optional(Type.Boolean()),
+    }),
+  },
+  {
+    $id: "Mail",
+    description: "Mail",
+    additionalProperties: false,
+  }
+);
 
 export type Mail = Static<typeof Mail>;
