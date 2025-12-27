@@ -90,24 +90,32 @@ const Bounces = () => {
       </div>
 
       {/* Bounces Table */}
-      <div class="flex-1 overflow-auto p-8">
+      <div class="pl-8 pr-8 pt-8 pb-3 flex flex-1 flex-col min-h-0">
         {bouncesQuery.isLoading ? (
           <TableLoading
             title="Loading bounces"
             text="Please wait while we load the latest bounces..."
           />
         ) : (
-          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            <div
-              ref={setBouncesTable}
-              class="overflow-x-auto"
-            >
-              <BouncesTable
-                data={() => bouncesQuery.data?.data || []}
-                target={bouncesTable()!}
-              />
+          <>
+            <div class="flex flex-row min-h-0 relative">
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
+                <div
+                  ref={setBouncesTable}
+                  class="overflow-x-auto"
+                >
+                  <BouncesTable
+                    data={() => bouncesQuery.data?.data || []}
+                    target={bouncesTable()!}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
+            <TablePagination
+              pagination={() => bouncesQuery.data?.metadata}
+              onPageChange={setPageCursor}
+            />
+          </>
         )}
 
         {bouncesQuery.data?.data?.length === 0 && !bouncesQuery.isLoading && (
@@ -121,11 +129,6 @@ const Bounces = () => {
             </p>
           </div>
         )}
-
-        <TablePagination
-          pagination={() => bouncesQuery.data?.metadata}
-          onPageChange={setPageCursor}
-        />
       </div>
     </div>
   );

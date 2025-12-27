@@ -169,6 +169,30 @@ export const newPrismaClient = (adapter: PrismaPg) => {
           });
         },
       },
+      unsubscribes: {
+        async $allOperations({ operation, args, query }) {
+          if (
+            operation !== "findUnique" &&
+            operation !== "findMany" &&
+            operation !== "findFirst" &&
+            operation !== "findFirstOrThrow" &&
+            operation !== "findUniqueOrThrow"
+          ) {
+            return query(args);
+          }
+
+          return query({
+            ...args,
+            include: {
+              contacts: {
+                select: {
+                  email: true,
+                },
+              },
+            },
+          });
+        },
+      },
     },
   });
 };

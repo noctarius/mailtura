@@ -298,6 +298,7 @@ export const Unsubscribe = //
     {
       id: Type.String({ format: "uuid" }),
       contactId: Type.String({ format: "uuid" }),
+      email: Type.Optional(Type.String({ format: "email" })),
       source: UnsubscribeSource,
       unsubscribedAt: Type.String({ format: "date-time" }),
       global: Type.Boolean(),

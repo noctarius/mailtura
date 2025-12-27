@@ -277,10 +277,12 @@ export function mapRole(role: RoleEntity): Role {
   };
 }
 
-export function mapUnsubscribe(unsubscribe: UnsubscribeEntity): Unsubscribe {
+type PotentiallyEmailUnsubscribe = UnsubscribeEntity & { contacts?: { email?: string } };
+export function mapUnsubscribe(unsubscribe: PotentiallyEmailUnsubscribe): Unsubscribe {
   return {
     id: unsubscribe.id,
     contactId: unsubscribe.contact_id,
+    email: unsubscribe?.contacts?.email ?? undefined,
     source: unsubscribe.source ?? undefined,
     global: unsubscribe.global ?? false,
     listIds: unsubscribe.list_ids,

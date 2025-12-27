@@ -1,108 +1,66 @@
-import { Download, Funnel, List, Mail, Plus, Search, Trash2 } from "lucide-solid";
-import TableCellChip from "../components/interfaces/TableCellChip.tsx";
-import { formatDateTime } from "../helpers/format-date-time.ts";
-import { getUnsubscribeSourceIcon } from "../helpers/chip-icons.js";
-import { createSignal } from "solid-js";
-
-interface ListUnsubscribe {
-  id: number;
-  email: string;
-  unsubscribedAt: string;
-  lists: Array<{
-    name: string;
-    unsubscribedAt: string;
-  }>;
-  source: string;
-}
+import { Download, Funnel, List, Plus, Search } from "lucide-solid";
+import { createMemo, createSignal } from "solid-js";
+import { debounce } from "lodash";
+import { useTenantId } from "../hooks/useTenantId.js";
+import { useSubscriberListsQuery } from "../services/subscriber-lists/use-subscriber-lists-query.js";
+import { useListUnsubscribesQuery } from "../services/unsubscribes/use-list-unsubscribes-query.js";
+import { TableLoading } from "../components/interfaces/TableLoading.js";
+import { TablePagination } from "../components/interfaces/TablePagination.js";
+import { ListUnsubscribesTable } from "../components/interfaces/ListUnsubscribesTable.js";
 
 const ListUnsubscribes = () => {
+  const [tableTarget, setTableTarget] = createSignal<HTMLDivElement>();
+
+  const tenantId = useTenantId();
+
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedList, setSelectedList] = createSignal("all");
   const [selectedSource, setSelectedSource] = createSignal("all");
+  const [pageCursor, setPageCursor] = createSignal<string | undefined>(undefined);
 
-  const listUnsubscribes: ListUnsubscribe[] = [
-    {
-      id: 1,
-      email: "john.doe@example.com",
-      unsubscribedAt: "2024-01-25 14:30:00", // Most recent unsubscribe
-      lists: [
-        { name: "Newsletter Subscribers", unsubscribedAt: "2024-01-25 14:30:00" },
-        { name: "Product Updates", unsubscribedAt: "2024-01-20 10:15:00" },
-      ],
-      source: "Unsubscribe Link",
-    },
-    {
-      id: 2,
-      email: "jane.smith@example.com",
-      unsubscribedAt: "2024-01-24 09:15:00",
-      lists: [{ name: "Product Updates", unsubscribedAt: "2024-01-24 09:15:00" }],
-      source: "Manual Addition",
-    },
-    {
-      id: 3,
-      email: "bob.wilson@example.com",
-      unsubscribedAt: "2024-01-23 16:45:00",
-      lists: [
-        { name: "Newsletter Subscribers", unsubscribedAt: "2024-01-23 16:45:00" },
-        { name: "VIP Members", unsubscribedAt: "2024-01-18 14:20:00" },
-        { name: "Trial Users", unsubscribedAt: "2024-01-15 09:30:00" },
-      ],
-      source: "Unsubscribe Link",
-    },
-    {
-      id: 4,
-      email: "alice.brown@example.com",
-      unsubscribedAt: "2024-01-22 11:20:00",
-      lists: [{ name: "VIP Members", unsubscribedAt: "2024-01-22 11:20:00" }],
-      source: "API Request",
-    },
-    {
-      id: 5,
-      email: "charlie.davis@example.com",
-      unsubscribedAt: "2024-01-21 08:30:00",
-      lists: [
-        { name: "Trial Users", unsubscribedAt: "2024-01-21 08:30:00" },
-        { name: "Newsletter Subscribers", unsubscribedAt: "2024-01-19 16:45:00" },
-      ],
-      source: "Unsubscribe Link",
-    },
-    {
-      id: 6,
-      email: "emma.johnson@example.com",
-      unsubscribedAt: "2024-01-20 15:10:00",
-      lists: [{ name: "Product Updates", unsubscribedAt: "2024-01-20 15:10:00" }],
-      source: "Manual Addition",
-    },
-    {
-      id: 7,
-      email: "david.lee@example.com",
-      unsubscribedAt: "2024-01-19 12:45:00",
-      lists: [{ name: "Newsletter Subscribers", unsubscribedAt: "2024-01-19 12:45:00" }],
-      source: "Unsubscribe Link",
-    },
-    {
-      id: 8,
-      email: "sarah.white@example.com",
-      unsubscribedAt: "2024-01-18 10:20:00",
-      lists: [
-        { name: "Customers", unsubscribedAt: "2024-01-18 10:20:00" },
-        { name: "VIP Members", unsubscribedAt: "2024-01-16 11:30:00" },
-      ],
-      source: "API Request",
-    },
-  ];
+  const updateSearchTerm = debounce((v: string) => setSearchTerm(v), 250);
 
-  const lists = Array.from(new Set(listUnsubscribes.flatMap(item => item.lists.map(list => list.name))));
-  const sources = Array.from(new Set(listUnsubscribes.map(item => item.source)));
-
-  const filteredUnsubscribes = listUnsubscribes.filter(item => {
-    const matchesSearch =
-      item.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
-      item.lists.some(list => list.name.toLowerCase().includes(searchTerm().toLowerCase()));
-    const matchesList = selectedList() === "all" || item.lists.some(list => list.name === selectedList());
-    const matchesSource = selectedSource() === "all" || item.source === selectedSource();
-    return matchesSearch && matchesList && matchesSource;
+  const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
+  const listNameById = createMemo(() => {
+    const map = new Map<string, string>();
+    (subscriberListsQuery.data || []).forEach(l => map.set(l.id, l.name));
+    return map;
   });
+
+  const toEnumSource = (label: string) => {
+    switch (label) {
+      case "Unsubscribe Link":
+        return "UnsubscribeLink";
+      case "Manual Addition":
+        return "ManualAddition";
+      case "API Request":
+        return "Api";
+      case "Bounce":
+        return "Bounce";
+      case "Other":
+        return "Other";
+      default:
+        return undefined;
+    }
+  };
+
+  const filterQuery = createMemo(() => {
+    let query = "global = false" as string | undefined; // list unsubscribes only
+    const filterTerm = searchTerm();
+    if (filterTerm.trim().length > 0) {
+      query = `${query} AND contactId ILIKE "%${filterTerm}%"`;
+    }
+    if (selectedList() !== "all") {
+      query = `${query} AND listIds CONTAINS '${selectedList()}'`;
+    }
+    if (selectedSource() !== "all") {
+      const enumSource = toEnumSource(selectedSource());
+      if (enumSource) query = `${query} AND source = '${enumSource}'`;
+    }
+    return query;
+  });
+
+  const unsubscribesQuery = useListUnsubscribesQuery({ tenantId, query: filterQuery, cursor: pageCursor });
 
   return (
     <div class="h-full flex flex-col bg-gray-50">
@@ -136,7 +94,7 @@ const ListUnsubscribes = () => {
                 type="text"
                 placeholder="Search email addresses or lists..."
                 value={searchTerm()}
-                onChange={e => setSearchTerm(e.target.value)}
+                onInput={e => updateSearchTerm(e.currentTarget.value)}
                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-80"
               />
             </div>
@@ -145,102 +103,80 @@ const ListUnsubscribes = () => {
               <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedList()}
-                onChange={e => setSelectedList(e.target.value)}
+                onInput={e => setSelectedList(e.currentTarget.value)}
                 class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Lists</option>
-                {lists.map(list => (
-                  <option value={list}>{list}</option>
-                ))}
+                {(subscriberListsQuery.data || [])
+                  .toSort((a, b) => a.name.localeCompare(b.name))
+                  .map(list => (
+                    <option value={list.id}>{list.name}</option>
+                  ))}
               </select>
 
               <select
                 value={selectedSource()}
-                onChange={e => setSelectedSource(e.target.value)}
+                onInput={e => setSelectedSource(e.currentTarget.value)}
                 class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Sources</option>
-                {sources.map(source => (
-                  <option value={source}>{source}</option>
-                ))}
+                <option value="Unsubscribe Link">Unsubscribe Link</option>
+                <option value="Manual Addition">Manual Addition</option>
+                <option value="API Request">API Request</option>
+                <option value="Bounce">Bounce</option>
+                <option value="Other">Other</option>
               </select>
             </div>
           </div>
 
           <div class="text-sm text-gray-600">
-            {filteredUnsubscribes.length} of {listUnsubscribes.length} unsubscribes
+            {unsubscribesQuery.data?.metadata?.totalItems ?? 0} total unsubscribes
           </div>
         </div>
       </div>
 
       {/* Unsubscribes Table */}
-      <div class="flex-1 overflow-auto p-8">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Email Address</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">List</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Source</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                {filteredUnsubscribes.map(item => (
-                  <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                          <Mail class="w-4 h-4 text-orange-600" />
-                        </div>
-                        <span class="font-medium text-gray-900">{item.email}</span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="space-y-1">
-                        {item.lists.map(list => (
-                          <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                              <List class="w-3 h-3 text-gray-400" />
-                              <span class="text-sm text-gray-900">{list.name}</span>
-                            </div>
-                            <span class="text-xs text-gray-500">{formatDateTime(list.unsubscribedAt)}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <TableCellChip
-                        value={item.source}
-                        bgColor={"bg-gray-100"}
-                        textColor={"text-gray-800"}
-                        icon={getUnsubscribeSourceIcon(item.source)}
-                      />
-                    </td>
-                    <td class="py-4 px-6">
-                      <button class="p-2 text-gray-400 hover:text-red-600 transition-colors">
-                        <Trash2 class="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {filteredUnsubscribes.length === 0 && (
-          <div class="text-center py-12">
-            <List class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 class="text-lg font-medium text-gray-900 mb-2">No list unsubscribes found</h3>
-            <p class="text-gray-600 mb-6">
-              {searchTerm() || selectedList() !== "all" || selectedSource() !== "all"
-                ? "Try adjusting your search or filter criteria."
-                : "List-specific unsubscribes will appear here when users opt out of specific lists."}
-            </p>
-          </div>
+      <div class="pl-8 pr-8 pt-8 pb-3 flex flex-1 flex-col min-h-0">
+        {unsubscribesQuery.isLoading ? (
+          <TableLoading
+            title="Loading list unsubscribes"
+            text="Please wait while we load the latest unsubscribes..."
+          />
+        ) : (
+          <>
+            <div class="flex flex-row min-h-0 relative">
+              <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex flex-1 flex-col min-h-0">
+                <div
+                  ref={setTableTarget}
+                  class="overflow-x-auto"
+                >
+                  <ListUnsubscribesTable
+                    data={() => (unsubscribesQuery.data?.data || []).filter(u => (u.listIds?.length || 0) > 0)}
+                    listName={id => listNameById().get(id) || id}
+                    target={tableTarget()!}
+                  />
+                </div>
+              </div>
+            </div>
+            <TablePagination
+              pagination={() => unsubscribesQuery.data?.metadata}
+              onPageChange={setPageCursor}
+            />
+          </>
         )}
+
+        {(unsubscribesQuery.data?.data || []).filter(u => (u.listIds?.length || 0) > 0).length === 0 &&
+          !unsubscribesQuery.isLoading && (
+            <div class="text-center py-12">
+              <List class="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 class="text-lg font-medium text-gray-900 mb-2">No list unsubscribes found</h3>
+              <p class="text-gray-600 mb-6">
+                {searchTerm() || selectedList() !== "all" || selectedSource() !== "all"
+                  ? "Try adjusting your search or filter criteria."
+                  : "List-specific unsubscribes will appear here when users opt out of specific lists."}
+              </p>
+            </div>
+          )}
       </div>
     </div>
   );
