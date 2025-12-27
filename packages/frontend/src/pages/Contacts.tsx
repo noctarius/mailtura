@@ -228,7 +228,7 @@ const Contacts = () => {
               </div>
               <TablePagination
                 pagination={() => contactsQuery.data?.metadata}
-                onPageChange={setPageCursor}
+                onPageChange={cursor => setPageCursor(cursor)}
               />
             </>
           ) : (

@@ -3,7 +3,7 @@ import TableCellChip from "./TableCellChip.js";
 import { Calendar, Ellipsis, Trash2, UserMinus } from "lucide-solid";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { getStatusBgColor, getStatusTextColor } from "./ContactsTable.utils.js";
-import { VirtualizedTable } from "./VirtualizedTable.js";
+import { DataTable } from "./DataTable.js";
 import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";
 import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
@@ -41,23 +41,25 @@ export function ContactsTable(props: ContactsTableProps) {
     return [
       {
         id: "contact",
-        header: "Contact",
+        header: () => "Contact",
         cell: info => (
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 min-h-10 min-w-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <p class="text-blue-600 font-medium overflow-clip-ellipsis">
-                {info.row.original.firstName && info.row.original.lastName
-                  ? info.row.original.firstName[0].toUpperCase() + info.row.original.lastName[0].toUpperCase()
-                  : info.row.original.email[0].toUpperCase()}
-              </p>
-            </div>
-            <div>
-              <div class="font-medium text-gray-900">
-                {info.row.original.firstName} {info.row.original.lastName}
+          <>
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 min-h-10 min-w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <p class="text-blue-600 font-medium overflow-clip-ellipsis">
+                  {info.row.original.firstName && info.row.original.lastName
+                    ? info.row.original.firstName[0].toUpperCase() + info.row.original.lastName[0].toUpperCase()
+                    : info.row.original.email[0].toUpperCase()}
+                </p>
               </div>
-              <div class="text-sm text-gray-500">{info.row.original.email}</div>
+              <div>
+                <div class="font-medium text-gray-900">
+                  {info.row.original.firstName} {info.row.original.lastName}
+                </div>
+                <div class="text-sm text-gray-500">{info.row.original.email}</div>
+              </div>
             </div>
-          </div>
+          </>
         ),
         minSize: 300,
         enableSorting: true,
@@ -67,25 +69,29 @@ export function ContactsTable(props: ContactsTableProps) {
         id: "status",
         header: () => "Status",
         cell: info => (
-          <div class="pt-2 pm-2">
-            <TableCellChip
-              value={info.row.original.status}
-              bgColor={getStatusBgColor(info.row.original.status)}
-              textColor={getStatusTextColor(info.row.original.status)}
-            />
-          </div>
+          <>
+            <div class="pt-2 pm-2">
+              <TableCellChip
+                value={info.row.original.status}
+                bgColor={getStatusBgColor(info.row.original.status)}
+                textColor={getStatusTextColor(info.row.original.status)}
+              />
+            </div>
+          </>
         ),
       },
       {
         id: "lastUpdate",
         header: () => "Last Update",
         cell: info => (
-          <div class="flex items-center space-x-2 p-2">
-            <Calendar class="w-4 h-4 text-gray-400" />
-            <span class="text-sm text-gray-900">
-              {formatDateTime(info.row.original.updatedAt ?? info.row.original.createdAt)}
-            </span>
-          </div>
+          <>
+            <div class="flex items-center space-x-2 p-2">
+              <Calendar class="w-4 h-4 text-gray-400" />
+              <span class="text-sm text-gray-900">
+                {formatDateTime(info.row.original.updatedAt ?? info.row.original.createdAt)}
+              </span>
+            </div>
+          </>
         ),
       },
       {
@@ -93,13 +99,15 @@ export function ContactsTable(props: ContactsTableProps) {
         header: () => "Actions",
         cell: info =>
           canManageContacts() && (
-            <ContactsActions
-              item={info.row.original}
-              onClick={handleContextMenu}
-              activeContextMenu={activeContextMenu}
-              setActiveContextMenu={setActiveContextMenu}
-              onContextMenuAction={handleContextMenuAction}
-            />
+            <>
+              <ContactsActions
+                item={info.row.original}
+                onClick={handleContextMenu}
+                activeContextMenu={activeContextMenu}
+                setActiveContextMenu={setActiveContextMenu}
+                onContextMenuAction={handleContextMenuAction}
+              />
+            </>
           ),
       },
     ];
@@ -130,7 +138,7 @@ export function ContactsTable(props: ContactsTableProps) {
 
   return (
     <>
-      <VirtualizedTable
+      <DataTable
         data={props.data}
         target={props.target}
         columnsDefinitions={contactsTableColumns}

@@ -2,7 +2,7 @@ import { User } from "@mailtura/rpcmodel/api/index.js";
 import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { useAuth } from "../../hooks/useAuth.js";
 import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";
-import { VirtualizedTable } from "./VirtualizedTable.js";
+import { DataTable } from "./DataTable.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
 import { Building2, Calendar, Ellipsis, Mail, Mailbox, RefreshCcwIcon, Shield, ShieldBan, Trash2 } from "lucide-solid";
 import DeleteUserDialog from "../modals/DeleteUserDialog.js";
@@ -46,23 +46,25 @@ export function UsersTable(props: UsersTableProps) {
         id: "user",
         header: () => "User",
         cell: info => (
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 min-h-10 min-w-10 bg-blue-100 rounded-full flex items-center justify-center">
-              <span class="text-blue-600 font-medium">
-                {info.row.original.firstName?.charAt(0)}
-                {info.row.original.lastName?.charAt(0)}
-              </span>
-            </div>
-            <div>
-              <div class="font-medium text-gray-900">
-                {info.row.original.firstName} {info.row.original.lastName}
+          <>
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 min-h-10 min-w-10 bg-blue-100 rounded-full flex items-center justify-center">
+                <span class="text-blue-600 font-medium">
+                  {info.row.original.firstName?.charAt(0)}
+                  {info.row.original.lastName?.charAt(0)}
+                </span>
               </div>
-              <div class="text-sm text-gray-500 flex items-center space-x-1">
-                <Mail class="w-3 h-3" />
-                <span>{info.row.original.email}</span>
+              <div>
+                <div class="font-medium text-gray-900">
+                  {info.row.original.firstName} {info.row.original.lastName}
+                </div>
+                <div class="text-sm text-gray-500 flex items-center space-x-1">
+                  <Mail class="w-3 h-3" />
+                  <span>{info.row.original.email}</span>
+                </div>
               </div>
             </div>
-          </div>
+          </>
         ),
       },
       {
@@ -71,12 +73,14 @@ export function UsersTable(props: UsersTableProps) {
         cell: info => {
           const role = (rolesQuery.data || []).find(role => role.id === info.row.original.roleId);
           return (
-            <TableCellChip
-              icon={<Shield class="w-3 h-3" />}
-              value={role?.name.replace("_", " ") ?? ""}
-              textColor={getRoleTextColor(role?.name ?? "")}
-              bgColor={getRoleBgColor(role?.name ?? "")}
-            />
+            <>
+              <TableCellChip
+                icon={<Shield class="w-3 h-3" />}
+                value={role?.name.replace("_", " ") ?? ""}
+                textColor={getRoleTextColor(role?.name ?? "")}
+                bgColor={getRoleBgColor(role?.name ?? "")}
+              />
+            </>
           );
         },
       },
@@ -84,42 +88,50 @@ export function UsersTable(props: UsersTableProps) {
         id: "tenant",
         header: () => "Tenant",
         cell: info => (
-          <div class="flex items-center space-x-2">
-            <Building2 class="w-4 h-4 text-gray-400" />
-            <span class="text-sm text-gray-900 capitalize">{getTenantName(info.row.original.tenantId)}</span>
-          </div>
+          <>
+            <div class="flex items-center space-x-2">
+              <Building2 class="w-4 h-4 text-gray-400" />
+              <span class="text-sm text-gray-900 capitalize">{getTenantName(info.row.original.tenantId)}</span>
+            </div>
+          </>
         ),
       },
       {
         id: "status",
         header: () => "Status",
         cell: info => (
-          <TableCellChip
-            value={info.row.original.active ? "Active" : "Inactive"}
-            textColor={getStatusTextColor(info.row.original.active)}
-            bgColor={getStatusBgColor(info.row.original.active)}
-          />
+          <>
+            <TableCellChip
+              value={info.row.original.active ? "Active" : "Inactive"}
+              textColor={getStatusTextColor(info.row.original.active)}
+              bgColor={getStatusBgColor(info.row.original.active)}
+            />
+          </>
         ),
       },
       {
         id: "lastLogin",
         header: () => "Last Login",
         cell: info => (
-          <span class="text-sm text-gray-900">
-            {info.row.original.lastLoginAt ? getTimeSince(info.row.original.lastLoginAt) : "Never"}
-          </span>
+          <>
+            <span class="text-sm text-gray-900">
+              {info.row.original.lastLoginAt ? getTimeSince(info.row.original.lastLoginAt) : "Never"}
+            </span>
+          </>
         ),
       },
       {
         id: "lastUpdate",
         header: () => "Last Update",
         cell: info => (
-          <div class="flex items-center space-x-2 p-2">
-            <Calendar class="w-4 h-4 text-gray-400" />
-            <span class="text-sm text-gray-900">
-              {formatDateTime(info.row.original.updatedAt ?? info.row.original.createdAt)}
-            </span>
-          </div>
+          <>
+            <div class="flex items-center space-x-2 p-2">
+              <Calendar class="w-4 h-4 text-gray-400" />
+              <span class="text-sm text-gray-900">
+                {formatDateTime(info.row.original.updatedAt ?? info.row.original.createdAt)}
+              </span>
+            </div>
+          </>
         ),
       },
       {
@@ -127,13 +139,15 @@ export function UsersTable(props: UsersTableProps) {
         header: () => "Actions",
         cell: info =>
           canManageUsers() && (
-            <UsersActions
-              item={info.row.original}
-              onClick={handleContextMenu}
-              activeContextMenu={activeContextMenu}
-              setActiveContextMenu={setActiveContextMenu}
-              onContextMenuAction={handleContextMenuAction}
-            />
+            <>
+              <UsersActions
+                item={info.row.original}
+                onClick={handleContextMenu}
+                activeContextMenu={activeContextMenu}
+                setActiveContextMenu={setActiveContextMenu}
+                onContextMenuAction={handleContextMenuAction}
+              />
+            </>
           ),
       },
     ];
@@ -168,7 +182,7 @@ export function UsersTable(props: UsersTableProps) {
 
   return (
     <>
-      <VirtualizedTable
+      <DataTable
         data={props.data}
         columnsDefinitions={usersTableColumns}
         target={props.target}
