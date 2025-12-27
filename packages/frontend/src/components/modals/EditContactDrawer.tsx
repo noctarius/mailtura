@@ -69,17 +69,17 @@ function ContactEditForm(props: ContactEditFormProps) {
         label: "Last Name",
         type: "text",
       },
-      listIds: {
+      subscriptions: {
         label: "Subscription",
         type: "checkbox",
         options: subscriberListOptions,
       },
     },
-    ["firstName", "lastName", "listIds"],
+    ["firstName", "lastName", "subscriptions"],
     {
       firstName: props.contact().firstName,
       lastName: props.contact().lastName,
-      listIds: props.contact().listIds,
+      subscriptions: props.contact().subscriptions,
     }
   );
 
@@ -102,8 +102,8 @@ function ContactEditForm(props: ContactEditFormProps) {
         onSuccess: async () => {
           await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
           await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-          for (const listId of values.listIds || []) {
-            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), listId) });
+          for (const subscription of values.subscriptions || []) {
+            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), subscription) });
           }
           props.onClose();
           resolve(undefined);
