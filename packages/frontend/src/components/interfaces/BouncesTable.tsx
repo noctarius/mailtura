@@ -5,33 +5,12 @@ import { DataTable } from "./DataTable.js";
 import TableCellChip from "./TableCellChip.js";
 import { Calendar, Mail, Trash2, TriangleAlert } from "lucide-solid";
 import { formatDateTime } from "../../helpers/format-date-time.js";
+import { getBounceTypeBgColor, getBounceTypeTextColor } from "./BouncesTable.utils.js";
 
 interface BouncesTableProps {
   data: () => Bounce[];
   target: HTMLDivElement;
 }
-
-const getBounceTypeBgColor = (type: string) => {
-  switch (type) {
-    case "Hard":
-      return "bg-red-100";
-    case "Soft":
-      return "bg-yellow-100";
-    default:
-      return "bg-gray-100";
-  }
-};
-
-const getBounceTypeTextColor = (type: string) => {
-  switch (type) {
-    case "Hard":
-      return "text-red-800";
-    case "Soft":
-      return "text-yellow-800";
-    default:
-      return "text-gray-800";
-  }
-};
 
 export function BouncesTable(props: BouncesTableProps) {
   const columns = createMemo<ColumnDef<Bounce, any>[]>(() => [
