@@ -320,6 +320,6 @@ export const UpdateUnsubscribe = Type.Object({
 export type UpdateUnsubscribe = Static<typeof UpdateUnsubscribe>;
 
 export const CreateBounce = //
-  Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]);
+  Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "email"]);
 
 export type CreateBounce = Static<typeof CreateBounce>;

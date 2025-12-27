@@ -202,6 +202,7 @@ export const Bounce = //
     {
       id: Type.String({ format: "uuid" }),
       contactId: Type.String({ format: "uuid" }),
+      email: Type.Optional(Type.String({ format: "email" })),
       bouncedAt: Type.String({ format: "date-time" }),
       reason: Type.String(),
       bounceType: BounceType,

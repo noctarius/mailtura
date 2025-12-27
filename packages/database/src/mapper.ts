@@ -292,11 +292,13 @@ export function mapUnsubscribe(unsubscribe: UnsubscribeEntity): Unsubscribe {
   };
 }
 
-export function mapBounce(bounce: BounceEntity): Bounce {
+type PotentiallyEmailBounce = BounceEntity & { contacts?: { email?: string } };
+export function mapBounce(bounce: PotentiallyEmailBounce): Bounce {
   return {
     id: bounce.id,
     reason: bounce.reason,
     contactId: bounce.contact_id,
+    email: bounce?.contacts?.email ?? undefined,
     bouncedAt: mapDateTime(bounce.bounced_at),
     bounceType: bounce.bounce_type,
     createdAt: mapDateTime(bounce.created_at),

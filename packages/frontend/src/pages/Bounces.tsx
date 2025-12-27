@@ -1,117 +1,38 @@
-import { Calendar, Download, Funnel, Mail, Plus, Search, Trash2, TriangleAlert } from "lucide-solid";
-import TableCellChip from "../components/interfaces/TableCellChip.tsx";
-import { TailwindBgColor } from "../helpers/tailwind-bg-colors.ts";
-import { TailwindTextColor } from "../helpers/tailwind-text-colors.ts";
-import { getTimeSince } from "../helpers/time-since.ts";
-import { formatDateTime } from "../helpers/format-date-time.ts";
-import { createSignal } from "solid-js";
-
-interface Bounce {
-  id: number;
-  email: string;
-  bouncedAt: string;
-  reason: string;
-  bounceType: "hard" | "soft";
-  campaignName?: string;
-}
+import { Download, Funnel, Plus, Search, TriangleAlert } from "lucide-solid";
+import { createMemo, createSignal } from "solid-js";
+import { BouncesTable } from "../components/interfaces/BouncesTable.js";
+import { TableLoading } from "../components/interfaces/TableLoading.js";
+import { TablePagination } from "../components/interfaces/TablePagination.js";
+import { useTenantId } from "../hooks/useTenantId.js";
+import { debounce } from "lodash";
+import { useBouncesQuery } from "../services/bounces/use-bounces-query.js";
 
 const Bounces = () => {
+  const [bouncesTable, setBouncesTable] = createSignal<HTMLDivElement>();
+
+  const tenantId = useTenantId();
+
   const [searchTerm, setSearchTerm] = createSignal("");
   const [selectedType, setSelectedType] = createSignal("all");
-  const [selectedCampaign, setSelectedCampaign] = createSignal("all");
+  const [pageCursor, setPageCursor] = createSignal<string | undefined>(undefined);
 
-  const bounces: Bounce[] = [
-    {
-      id: 1,
-      email: "invalid@nonexistentdomain.com",
-      bouncedAt: "2024-01-25 14:30:00",
-      reason: "Domain does not exist",
-      bounceType: "hard",
-    },
-    {
-      id: 2,
-      email: "full.mailbox@example.com",
-      bouncedAt: "2024-01-24 09:15:00",
-      reason: "Mailbox full",
-      bounceType: "soft",
-    },
-    {
-      id: 3,
-      email: "blocked@spamfilter.com",
-      bouncedAt: "2024-01-23 16:45:00",
-      reason: "Blocked by spam filter",
-      bounceType: "soft",
-    },
-    {
-      id: 4,
-      email: "nouser@example.com",
-      bouncedAt: "2024-01-22 11:20:00",
-      reason: "User unknown",
-      bounceType: "hard",
-    },
-    {
-      id: 5,
-      email: "temporary.issue@example.com",
-      bouncedAt: "2024-01-21 08:30:00",
-      reason: "Temporary delivery failure",
-      bounceType: "soft",
-    },
-    {
-      id: 6,
-      email: "disabled@oldcompany.com",
-      bouncedAt: "2024-01-20 15:10:00",
-      reason: "Account disabled",
-      bounceType: "hard",
-    },
-    {
-      id: 7,
-      email: "quota.exceeded@example.com",
-      bouncedAt: "2024-01-19 12:45:00",
-      reason: "Quota exceeded",
-      bounceType: "soft",
-    },
-    {
-      id: 8,
-      email: "invalid.format@",
-      bouncedAt: "2024-01-18 10:20:00",
-      reason: "Invalid email format",
-      bounceType: "hard",
-    },
-  ];
+  const updateSearchTerm = debounce((v: string) => setSearchTerm(v), 250);
 
-  const campaigns = Array.from(new Set(bounces.map(bounce => bounce.campaignName).filter(Boolean)));
-
-  const getBounceTypeBgColor = (type: string): TailwindBgColor => {
-    switch (type) {
-      case "hard":
-        return "bg-red-100";
-      case "soft":
-        return "bg-yellow-100";
-      default:
-        return "bg-gray-100";
+  const filterQuery = createMemo(() => {
+    let query = undefined as string | undefined;
+    const filterTerm = searchTerm();
+    if (filterTerm.trim().length > 0) {
+      query = `reason ILIKE "%${filterTerm}%"`;
     }
-  };
-
-  const getBounceTypeTextColor = (type: string): TailwindTextColor => {
-    switch (type) {
-      case "hard":
-        return "text-red-800";
-      case "soft":
-        return "text-yellow-800";
-      default:
-        return "text-gray-800";
+    if (selectedType() !== "all") {
+      if (query) query = `(${query}) AND `;
+      const type = selectedType() === "hard" ? "Hard" : "Soft";
+      query = `${query ?? ""}bounceType = '${type}'`;
     }
-  };
-
-  const filteredBounces = bounces.filter(bounce => {
-    const matchesSearch =
-      bounce.email.toLowerCase().includes(searchTerm().toLowerCase()) ||
-      bounce.reason.toLowerCase().includes(searchTerm().toLowerCase()) ||
-      (bounce.campaignName && bounce.campaignName.toLowerCase().includes(searchTerm().toLowerCase()));
-    const matchesType = selectedType() === "all" || bounce.bounceType === selectedType();
-    const matchesCampaign = selectedCampaign() === "all" || bounce.campaignName === selectedCampaign();
-    return matchesSearch && matchesType && matchesCampaign;
+    return query;
   });
+
+  const bouncesQuery = useBouncesQuery({ tenantId, query: filterQuery, cursor: pageCursor });
 
   return (
     <div class="h-full flex flex-col bg-gray-50">
@@ -143,9 +64,9 @@ const Bounces = () => {
               <Search class="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search email addresses, reasons, or campaigns..."
+                placeholder="Search reasons..."
                 value={searchTerm()}
-                onChange={e => setSearchTerm(e.target.value)}
+                onInput={e => updateSearchTerm(e.currentTarget.value)}
                 class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent w-96"
               />
             </div>
@@ -154,105 +75,57 @@ const Bounces = () => {
               <Funnel class="w-5 h-5 text-gray-400" />
               <select
                 value={selectedType()}
-                onChange={e => setSelectedType(e.target.value)}
+                onInput={e => setSelectedType(e.currentTarget.value)}
                 class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All Types</option>
                 <option value="hard">Hard Bounces</option>
                 <option value="soft">Soft Bounces</option>
               </select>
-
-              <select
-                value={selectedCampaign()}
-                onChange={e => setSelectedCampaign(e.target.value)}
-                class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="all">All Campaigns</option>
-                {campaigns.map(campaign => (
-                  <option value={campaign}>{campaign}</option>
-                ))}
-              </select>
             </div>
           </div>
 
-          <div class="text-sm text-gray-600">
-            {filteredBounces.length} of {bounces.length} bounces
-          </div>
+          <div class="text-sm text-gray-600">{bouncesQuery.data?.metadata?.totalItems ?? 0} total bounces</div>
         </div>
       </div>
 
       {/* Bounces Table */}
       <div class="flex-1 overflow-auto p-8">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50 border-b border-gray-200">
-                <tr>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Email Address</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Bounce Type</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Reason</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Bounced Date</th>
-                  <th class="text-left py-4 px-6 font-semibold text-gray-900">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-gray-200">
-                {filteredBounces.map(bounce => (
-                  <tr class="hover:bg-gray-50 transition-colors">
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-3">
-                        <div
-                          class={`w-8 h-8 rounded-full flex items-center justify-center ${bounce.bounceType === "hard" ? "bg-red-100" : "bg-yellow-100"}`}
-                        >
-                          <Mail
-                            class={`w-4 h-4 ${bounce.bounceType === "hard" ? "text-red-600" : "text-yellow-600"}`}
-                          />
-                        </div>
-                        <span class="font-medium text-gray-900">{bounce.email}</span>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <TableCellChip
-                        value={`${bounce.bounceType} Bounce`}
-                        bgColor={getBounceTypeBgColor(bounce.bounceType)}
-                        textColor={getBounceTypeTextColor(bounce.bounceType)}
-                        icon={<TriangleAlert class="w-3 h-3" />}
-                      />
-                    </td>
-                    <td class="py-4 px-6">
-                      <span class="text-sm text-gray-900">{bounce.reason}</span>
-                    </td>
-                    <td class="py-4 px-6">
-                      <div class="flex items-center space-x-2">
-                        <Calendar class="w-4 h-4 text-gray-400" />
-                        <div>
-                          <div class="text-sm text-gray-900">{formatDateTime(bounce.bouncedAt)}</div>
-                          <div class="text-xs text-gray-500">{getTimeSince(bounce.bouncedAt)}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td class="py-4 px-6">
-                      <button class="p-2 text-gray-400 hover:text-red-600 transition-colors">
-                        <Trash2 class="w-4 h-4" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {bouncesQuery.isLoading ? (
+          <TableLoading
+            title="Loading bounces"
+            text="Please wait while we load the latest bounces..."
+          />
+        ) : (
+          <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div
+              ref={setBouncesTable}
+              class="overflow-x-auto"
+            >
+              <BouncesTable
+                data={() => bouncesQuery.data?.data || []}
+                target={bouncesTable()!}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
-        {filteredBounces.length === 0 && (
+        {bouncesQuery.data?.data?.length === 0 && !bouncesQuery.isLoading && (
           <div class="text-center py-12">
             <TriangleAlert class="w-12 h-12 text-gray-400 mx-auto mb-4" />
             <h3 class="text-lg font-medium text-gray-900 mb-2">No bounces found</h3>
             <p class="text-gray-600 mb-6">
-              {searchTerm() || selectedType() !== "all" || selectedCampaign() !== "all"
+              {searchTerm() || selectedType() !== "all"
                 ? "Try adjusting your search or filter criteria."
                 : "Email bounces will appear here when delivery failures occur."}
             </p>
           </div>
         )}
+
+        <TablePagination
+          pagination={() => bouncesQuery.data?.metadata}
+          onPageChange={setPageCursor}
+        />
       </div>
     </div>
   );
