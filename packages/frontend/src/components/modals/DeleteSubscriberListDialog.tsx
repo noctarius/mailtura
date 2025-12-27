@@ -1,8 +1,6 @@
 import { useDeleteMutation } from "../../services/adapters/useDeleteMutation.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
 import { useQueryClient } from "@tanstack/solid-query";
-import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
-import { contactsKeys } from "../../services/contacts/keys.js";
 import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-subscriber-lists-query.js";
 import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
@@ -28,8 +26,8 @@ export function DeleteSubscriberListDialog(props: DeleteSubscriberListDialogProp
 
     deleteSubscriberLists.mutate({
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
-        await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
+        await queryClient.invalidateQueries({ queryKey: ["lists", tenantId()] });
+        await queryClient.invalidateQueries({ queryKey: ["contacts", tenantId()] });
         props.onClose();
         toast.success("Subscriber list deleted successfully.");
       },

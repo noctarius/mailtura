@@ -4,8 +4,6 @@ import { useTenantId } from "../../hooks/useTenantId.js";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { useDeleteMutation } from "../../services/adapters/useDeleteMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
-import { contactsKeys } from "../../services/contacts/keys.js";
-import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import TableCellChip from "../interfaces/TableCellChip.js";
 import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
@@ -22,7 +20,7 @@ const DeleteContactDialog = (props: DeleteContactDialogProps) => {
   const subscriberListsQuery = useSubscriberListsQuery({ tenantId });
   const subscriberLists = () =>
     (subscriberListsQuery.data || [])
-      .filter(item => props.contact()?.listIds.includes(item.id))
+      .filter(item => props.contact()?.subscriptions.includes(item.id))
       .toSort((a, b) => a.name.localeCompare(b.name));
 
   const deleteContact = useDeleteMutation("/api/v1/tenants/{tenant_id}/contacts/{contact_id}/", {
@@ -35,8 +33,8 @@ const DeleteContactDialog = (props: DeleteContactDialogProps) => {
 
     deleteContact.mutate({
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
-        await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
+        await queryClient.invalidateQueries({ queryKey: ["lists", tenantId()] });
+        await queryClient.invalidateQueries({ queryKey: ["contacts", tenantId()] });
         props.onClose();
         toast.success("Contact deleted successfully.");
       },

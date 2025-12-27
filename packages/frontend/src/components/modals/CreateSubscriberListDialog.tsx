@@ -1,7 +1,6 @@
 import { CreateSubscriberList } from "@mailtura/rpcmodel/api/request-response.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
-import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { UiForm } from "../../forms/UiForm.js";
@@ -43,7 +42,7 @@ const CreateSubscriberListDialog = ({ onClose }: CreateSubscriberListDialogProps
     return new Promise((resolve, reject) => {
       createSubscriberList.mutate(values, {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
+          await queryClient.invalidateQueries({ queryKey: ["lists", tenantId()] });
           onClose();
           toast.success("Subscriber list created successfully!");
           resolve(undefined);

@@ -7,11 +7,9 @@ import { createMemo } from "solid-js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { UpdateContact } from "@mailtura/rpcmodel/api/request-response.js";
 import { useUpdateMutation } from "../../services/adapters/useUpdateMutation.js";
-import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
-import { contactsKeys } from "../../services/contacts/keys.js";
 
 interface EditContactDrawerProps {
   contact: () => Contact;
@@ -100,11 +98,8 @@ function ContactEditForm(props: ContactEditFormProps) {
     return new Promise((resolve, reject) => {
       updateContact.mutate(values, {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
-          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-          for (const subscription of values.subscriptions || []) {
-            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), subscription) });
-          }
+          await queryClient.invalidateQueries({ queryKey: ["lists", tenantId()] });
+          await queryClient.invalidateQueries({ queryKey: ["contacts", tenantId()] });
           props.onClose();
           resolve(undefined);
         },

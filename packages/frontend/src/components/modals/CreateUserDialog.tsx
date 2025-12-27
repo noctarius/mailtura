@@ -4,14 +4,14 @@ import { useRolesQuery } from "../../services/roles/use-roles-query.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { createFormSpec, FormSubmitHandler } from "../../forms/index.js";
 import { CreateUser } from "@mailtura/rpcmodel/api/request-response.js";
-import { userKeys } from "../../services/users/keys.js";
 import { useQueryClient } from "@tanstack/solid-query";
 import { SubmitHandler } from "@modular-forms/solid";
 import { Static, Type } from "typebox";
 import { hasPermission } from "@mailtura/rpcmodel/auth/index.js";
+import { toast } from "solid-toast";
 
 const CreateUserForm = Type.Omit(CreateUser, ["permissions"]);
-type CreateUserForm = Static<typeof CreateUserForm>
+type CreateUserForm = Static<typeof CreateUserForm>;
 
 type CreateUserDialogProps = {
   tenantId: () => string;
@@ -100,12 +100,13 @@ export function CreateUserDialog(props: CreateUserDialogProps) {
         },
         {
           onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: userKeys.users(props.tenantId()) });
+            await queryClient.invalidateQueries({ queryKey: ["users", props.tenantId()] });
             props.onClose();
+            toast.success("User created successfully!");
             resolve(undefined);
           },
           onError: error => {
-            console.error("Error updating user:", error);
+            toast.error(`Error updating user: ${error}`);
             reject(error);
           },
         }

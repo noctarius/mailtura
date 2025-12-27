@@ -4,7 +4,6 @@ import { useSubscriberListsQuery } from "../../services/subscriber-lists/use-sub
 import { CreateContact, CreateSubscriberList } from "@mailtura/rpcmodel/api/request-response.js";
 import { useCreateMutation } from "../../services/adapters/useCreateMutation.js";
 import { useQueryClient } from "@tanstack/solid-query";
-import { contactsKeys } from "../../services/contacts/keys.js";
 import { subscriberListKeys } from "../../services/subscriber-lists/keys.js";
 import { useTenantId } from "../../hooks/useTenantId.js";
 import { UiButton } from "../ui/UiButton.js";
@@ -96,11 +95,8 @@ const CreateContactDialog = ({ onClose }: CreateContactDialogProps) => {
     return new Promise((resolve, reject) => {
       createContact.mutate(values, {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: contactsKeys.contacts(tenantId()) });
-          await queryClient.invalidateQueries({ queryKey: subscriberListKeys.lists(tenantId()) });
-          for (const subscription of values.subscriptions) {
-            await queryClient.invalidateQueries({ queryKey: subscriberListKeys.subscribers(tenantId(), subscription) });
-          }
+          await queryClient.invalidateQueries({ queryKey: ["lists", tenantId()] });
+          await queryClient.invalidateQueries({ queryKey: ["contacts", tenantId()] });
           onClose();
           toast.success("Contact added successfully!");
           resolve(undefined);

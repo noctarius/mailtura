@@ -4,7 +4,6 @@ import { useQueryClient } from "@tanstack/solid-query";
 import { UiApprovalDialog } from "../ui/UiApprovalDialog.js";
 import { toast } from "solid-toast";
 import { User } from "@mailtura/rpcmodel/api/index.js";
-import { userKeys } from "../../services/users/keys.js";
 import { useUser } from "../../hooks/useUser.js";
 
 type DeleteUserDialogProps = {
@@ -31,7 +30,7 @@ const DeleteUserDialog = (props: DeleteUserDialogProps) => {
 
     deleteUser.mutate({
       onSuccess: async () => {
-        await queryClient.invalidateQueries({ queryKey: userKeys.user(tenantId()) });
+        await queryClient.invalidateQueries({ queryKey: ["users", tenantId()] });
         props.onClose();
         toast.success("User deleted successfully.");
       },

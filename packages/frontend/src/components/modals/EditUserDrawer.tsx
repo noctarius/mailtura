@@ -8,7 +8,6 @@ import { useUpdateMutation } from "../../services/adapters/useUpdateMutation.js"
 import { UiForm } from "../../forms/UiForm.js";
 import { UiButton } from "../ui/UiButton.js";
 import { User } from "@mailtura/rpcmodel/api/index.js";
-import { userKeys } from "../../services/users/keys.js";
 import { useRolesQuery } from "../../services/roles/use-roles-query.js";
 import { createMemo } from "solid-js";
 
@@ -97,7 +96,7 @@ function UserEditForm(props: UserEditFormProps) {
     return new Promise((resolve, reject) => {
       updateUser.mutate(values, {
         onSuccess: async () => {
-          await queryClient.invalidateQueries({ queryKey: userKeys.users(tenantId()) });
+          await queryClient.invalidateQueries({ queryKey: ["users", tenantId()] });
           props.onClose();
           resolve(undefined);
         },
