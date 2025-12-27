@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "bun test",
-    "test-nodejs": "NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test-nodejs": "NODE_OPTIONS=--experimental-vm-modules npx jest",
+    "generate-prisma": "node_modules/.bin/prisma generate"
   },
   "dependencies": {
     "@mailtura/rpcmodel": "*",
@@ -41,6 +42,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.10.1",
     "bun-plugin-dts": "^0.3.0",
+    "dotenv": "^17.2.3",
     "eslint": "catalog:",
     "jest": "^29.7.0",
     "prisma": "^7.1.0",

@@ -1,18 +1,18 @@
 import { defineConfig, env } from "prisma/config";
 import { dirname, resolve as pathResolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import "dotenv/config";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-console.log(`Applying migrations from: ${pathResolve(__dirname, 'migrations')}`);
+console.log(`Applying migrations from: ${pathResolve(__dirname, "migrations")}`);
 
 export default defineConfig({
-  schema: pathResolve(__dirname, 'prisma/schema.prisma'),
+  schema: pathResolve(__dirname, "prisma/schema.prisma"),
   migrations: {
-    path: pathResolve(__dirname, 'prisma/migrations'),
+    path: pathResolve(__dirname, "prisma/migrations"),
   },
-  experimental: {
-  },
+  experimental: {},
   datasource: {
-    url: env("DATABASE_URL")
-  }
+    url: env("DATABASE_URL"),
+  },
 });
