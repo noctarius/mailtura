@@ -154,7 +154,7 @@ export function registerCustomAuthRoutes<
         // Create and send verification email
         const token = await createEmailVerificationToken(auth.options.secret!, email, void 0, 60 * 5);
         const url = `${auth.options.baseURL}/api/v1/auth/verify-email?token=${token}&callbackURL=${request.body.callbackURL || "/"}`;
-        await sendInviteEmail(user, url);
+        await sendInviteEmail(router.context().taskManager, user, url);
 
         return reply.status(201).send(mapUser(user));
       });

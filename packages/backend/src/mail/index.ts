@@ -2,15 +2,13 @@ import prisma, { type UserEntity } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import { getBaseConfig } from "../system/index.js";
-import { getTaskManager } from "../tasks/index.js";
 import { getBaseSystemUrl } from "../helpers/base-system-url.js";
+import type { TaskManager } from "../tasks/index.js";
 
 const authSecret = process.env.MAILTURA_AUTH_SECRET;
 if (!authSecret) {
   throw new Error("MAILTURA_AUTH_SECRET environment variable not set");
 }
-
-const taskManager = getTaskManager();
 
 const getSystemMailConfig = async () => {
   const baseConfig = await getBaseConfig();
@@ -25,6 +23,7 @@ const getSystemMailConfig = async () => {
 };
 
 export async function sendSystemMail(
+  taskManager: TaskManager,
   email: string,
   name: string,
   subject: string,
@@ -64,7 +63,7 @@ export async function sendSystemMail(
   await taskManager.createSendMailJob(mailSending.tenant_id, mailSending.id);
 }
 
-export async function sendInviteEmail(newUser: UserEntity, callbackUrl?: string) {
+export async function sendInviteEmail(taskManager: TaskManager, newUser: UserEntity, callbackUrl?: string) {
   const name = newUser.first_name ?? newUser.email;
   const token = await createEmailVerificationToken(authSecret!, newUser.email);
 
@@ -79,10 +78,10 @@ export async function sendInviteEmail(newUser: UserEntity, callbackUrl?: string)
     '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
   const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
 
-  return sendSystemMail(newUser.email, name, subject, content, textContent, { url: url });
+  return sendSystemMail(taskManager, newUser.email, name, subject, content, textContent, { url: url });
 }
 
-export async function sendVerificationEmail(email: string, token: string) {
+export async function sendVerificationEmail(taskManager: TaskManager, email: string, token: string) {
   const user = await prisma.users.findUnique({
     where: {
       email: email,
@@ -100,10 +99,10 @@ export async function sendVerificationEmail(email: string, token: string) {
   const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
 
   const name = user.first_name ?? email;
-  return sendSystemMail(email, name, subject, content, textContent, { url: url });
+  return sendSystemMail(taskManager, email, name, subject, content, textContent, { url: url });
 }
 
-export async function sendMagicLinkEmail(email: string, token: string) {
+export async function sendMagicLinkEmail(taskManager: TaskManager, email: string, token: string) {
   const user = await prisma.users.findUnique({
     where: {
       email: email,
@@ -121,10 +120,10 @@ export async function sendMagicLinkEmail(email: string, token: string) {
   const textContent = `Welcome to Mailtura! Please click the following link to login: ${url}`;
 
   const name = user.first_name ?? email;
-  return sendSystemMail(email, name, subject, content, textContent, { url: url });
+  return sendSystemMail(taskManager, email, name, subject, content, textContent, { url: url });
 }
 
-export async function sendResetPasswordEmail(email: string, token: string) {
+export async function sendResetPasswordEmail(taskManager: TaskManager, email: string, token: string) {
   const user = await prisma.users.findUnique({
     where: {
       email: email,
@@ -142,5 +141,5 @@ export async function sendResetPasswordEmail(email: string, token: string) {
   const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
 
   const name = user.first_name ?? email;
-  return sendSystemMail(email, name, subject, content, textContent, { url: url });
+  return sendSystemMail(taskManager, email, name, subject, content, textContent, { url: url });
 }

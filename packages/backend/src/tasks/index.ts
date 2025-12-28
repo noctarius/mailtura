@@ -3,14 +3,20 @@ import { Client, Connection } from "@temporalio/client";
 const temporalAddress = process.env.TEMPORAL_ADDRESS;
 const temporalTaskQueue = process.env.TEMPORAL_TASK_QUEUE;
 
-if (!temporalAddress) throw new Error("TEMPORAL_ADDRESS is not set");
-if (!temporalTaskQueue) throw new Error("TEMPORAL_TASK_QUEUE is not set");
-
 const createClient = async (connection: Connection) => {
   return new Client({ connection });
 };
 
-const createTaskManager = async () => {
+export interface TaskManager {
+  shutdown: () => Promise<void>;
+  createImportContactsJob: (tenantId: string, contactImportId: string) => Promise<any>;
+  getImportContactsJobStatus: (contactImportId: string) => Promise<any>;
+  createSendMailJob: (tenantId: string, mailSendingId: string) => Promise<any>;
+}
+
+export const createTemporalTaskManager = async (): Promise<TaskManager> => {
+  if (!temporalAddress) throw new Error("TEMPORAL_ADDRESS is not set");
+  if (!temporalTaskQueue) throw new Error("TEMPORAL_TASK_QUEUE is not set");
   const connection = await Connection.connect({
     address: temporalAddress,
   });
@@ -48,9 +54,31 @@ const createTaskManager = async () => {
   };
 };
 
-const taskManager = await createTaskManager();
-console.log("Task manager started");
-
-export function getTaskManager() {
-  return taskManager;
+export function createLazyTemporalTaskManager(): TaskManager {
+  let inner: Promise<TaskManager> | undefined;
+  const ensure = async () => {
+    if (!inner) {
+      inner = createTemporalTaskManager();
+      console.log("Task manager (Temporal) starting lazily...");
+    }
+    return inner;
+  };
+  return {
+    shutdown: async () => {
+      const mgr = await ensure();
+      await mgr.shutdown();
+    },
+    createImportContactsJob: async (tenantId: string, contactImportId: string) => {
+      const mgr = await ensure();
+      return mgr.createImportContactsJob(tenantId, contactImportId);
+    },
+    getImportContactsJobStatus: async (contactImportId: string) => {
+      const mgr = await ensure();
+      return mgr.getImportContactsJobStatus(contactImportId);
+    },
+    createSendMailJob: async (tenantId: string, mailSendingId: string) => {
+      const mgr = await ensure();
+      return mgr.createSendMailJob(tenantId, mailSendingId);
+    },
+  };
 }

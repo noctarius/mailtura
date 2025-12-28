@@ -18,9 +18,6 @@ import {
 } from "@mailtura/rpcmodel/api/request-response.js";
 import { isDirectContent, isTemplatedContent } from "@mailtura/rpcmodel/mails/index.js";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
-import { getTaskManager } from "../../tasks/index.js";
-
-const taskManager = getTaskManager();
 
 export function mailRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -129,7 +126,7 @@ export function mailRoutes<
         data,
       });
 
-      await taskManager.createSendMailJob(tenantId, mailSending.id);
+      await router.context().taskManager.createSendMailJob(tenantId, mailSending.id);
 
       const response: CreateSingleSendResponseType = { id: mailSending.id };
       return reply.status(201).send(response);

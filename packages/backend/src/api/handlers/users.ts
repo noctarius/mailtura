@@ -94,7 +94,7 @@ export function userRoutes<
       });
 
       if (request.body.sendInvitationEmail) {
-        await sendInviteEmail(newUser);
+        await sendInviteEmail(router.context().taskManager, newUser);
       }
 
       return reply.status(201).send(mapUser(newUser));

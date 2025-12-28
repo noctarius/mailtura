@@ -10,6 +10,7 @@ import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
 import prisma from "@mailtura/database";
 import { sendMagicLinkEmail, sendResetPasswordEmail, sendVerificationEmail } from "../mail/index.js";
+import type { ServerContext } from "../context/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -19,9 +20,9 @@ declare module "fastify" {
 
 export type AuthOptions = Partial<BetterAuthOptions>;
 
-const auth = fastifyPlugin<AuthOptions>(
-  async (fastify: FastifyInstance, options: BetterAuthOptions) => {
-    const auth = createBetterAuth(options);
+const auth = fastifyPlugin<AuthOptions & { context: ServerContext }>(
+  async (fastify: FastifyInstance, options: BetterAuthOptions & { context: ServerContext }) => {
+    const auth = createBetterAuth(options, options.context);
 
     fastify.decorate("auth", auth);
     fastify.register(app => {
@@ -34,14 +35,16 @@ const auth = fastifyPlugin<AuthOptions>(
     });
 
     // Register custom routes
-    createRouter(fastify, true).route("/api/v1/auth", router => registerCustomAuthRoutes(router, auth));
+    createRouter(fastify, options.context, true).route("/api/v1/auth", router =>
+      registerCustomAuthRoutes(router, auth)
+    );
   },
   { name: "auth" }
 );
 
 export default auth;
 
-const createBetterAuth = (options: BetterAuthOptions) => {
+const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) => {
   return betterAuth({
     ...options,
     database: mailturaAdapter({ debugLogs: false }),
@@ -52,13 +55,13 @@ const createBetterAuth = (options: BetterAuthOptions) => {
       password: newPasswordHasher(),
       autoSignIn: false,
       sendResetPassword: async ({ user, token }) => {
-        sendResetPasswordEmail(user.email, token);
+        sendResetPasswordEmail(context.taskManager, user.email, token);
       },
     },
     emailVerification: {
       autoSignInAfterVerification: true,
       sendVerificationEmail: async ({ user, token }) => {
-        sendVerificationEmail(user.email, token);
+        sendVerificationEmail(context.taskManager, user.email, token);
       },
     },
     plugins: [
@@ -92,7 +95,7 @@ const createBetterAuth = (options: BetterAuthOptions) => {
       }),
       magicLink({
         sendMagicLink: async ({ email, token }) => {
-          sendMagicLinkEmail(email, token);
+          sendMagicLinkEmail(context.taskManager, email, token);
         },
       }),
     ],

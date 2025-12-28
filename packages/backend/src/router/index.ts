@@ -17,6 +17,7 @@ import type { User } from "@mailtura/rpcmodel/api/index.js";
 import { hasAllPermissions, type Permission } from "@mailtura/rpcmodel/auth/index.js";
 import { validateApiKey } from "../auth/apiKey.js";
 import type { ApiKeyEntity } from "@mailtura/database";
+import type { ServerContext } from "../context/index.js";
 
 declare module "fastify" {
   interface FastifyRequest {
@@ -201,6 +202,7 @@ export interface Router<
     requiresAuth?: boolean,
     parseBody?: boolean
   ): void;
+  context(): ServerContext;
 }
 
 export function createRouter<
@@ -211,6 +213,7 @@ export function createRouter<
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(
   app: FastifyInstance<RawServer, RawRequest, RawReply, Logger, TypeProvider>,
+  context: ServerContext,
   requiresAuth: boolean = false
 ): Router<RawServer, RawRequest, RawReply, TypeProvider, Logger> {
   const maybeAuthMiddleware = <
@@ -307,7 +310,7 @@ export function createRouter<
             fastify.addContentTypeParser("application/json", { parseAs: "buffer" }, (_, body, done) => {
               done(null, typeof body === "string" ? Buffer.from(body) : (body as Buffer));
             });
-          const subRouter = createRouter(fastify, requiresAuth);
+          const subRouter = createRouter(fastify, context, requiresAuth);
           callback(subRouter as any);
           return fastify;
         },
@@ -316,5 +319,6 @@ export function createRouter<
         }
       );
     },
+    context: () => context,
   };
 }

@@ -13,7 +13,9 @@ import * as path from "node:path";
 import "./tasks/index.js";
 import { requiresInstallation } from "./helpers/requires-installation.js";
 import { installationRoutes } from "./api/handlers/installation.js";
-import { handlePrismaError } from "@mailtura/database";
+import { handlePrismaError, prisma } from "@mailtura/database";
+import { createLazyTemporalTaskManager } from "./tasks/index.js";
+import type { ServerContext } from "./context/index.js";
 
 const app = Fastify()
   .register(Multipart, {
@@ -117,13 +119,17 @@ app.register(SocketIo, {
   },
 });
 
+const taskManager = createLazyTemporalTaskManager();
+const context: ServerContext = { prisma, taskManager };
+
 app.register(Auth, {
   basePath: "/api/v1/auth",
+  context,
 });
 
-const router = createRouter(app);
-router.route("/api/v1", registerRoutes);
+const router = createRouter(app, context);
 
+router.route("/api/v1", registerRoutes);
 if (await requiresInstallation()) {
   console.info("Installation required, enabling installation routes.");
   router.route("/api/v1/install", installationRoutes);

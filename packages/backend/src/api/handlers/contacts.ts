@@ -17,7 +17,6 @@ import {
   UpdateContact,
   UpdateContactImport,
 } from "@mailtura/rpcmodel/api/request-response.js";
-import { getTaskManager } from "../../tasks/index.js";
 import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
@@ -521,8 +520,7 @@ export function contactImportRoutes<
           },
         });
 
-        const taskManager = getTaskManager();
-        const handle = await taskManager.createImportContactsJob(tenantId, contactImport.id);
+        const handle = await router.context().taskManager.createImportContactsJob(tenantId, contactImport.id);
         console.log("Created import contacts job", handle);
 
         return reply.status(201).send(mapContactImport(contactImport));
