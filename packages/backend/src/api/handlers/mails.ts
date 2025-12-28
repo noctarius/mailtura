@@ -8,7 +8,7 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import prisma, { Prisma } from "@mailtura/database";
+import { Prisma } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import {
   CreateSingleSend,
@@ -26,6 +26,7 @@ export function mailRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.post<{
     Params: { tenant_id: string };
     Body: CreateSingleSendType;

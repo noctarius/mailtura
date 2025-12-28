@@ -22,7 +22,7 @@ import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
 import { mailRoutes } from "./mails.js";
 import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapTenant } from "@mailtura/database";
+import { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { hasAnyPermission } from "@mailtura/rpcmodel/auth/index.js";
 
@@ -33,6 +33,7 @@ export function tenantRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Reply: Tenant[] }>(
     "/",
     {

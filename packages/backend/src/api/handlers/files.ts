@@ -9,7 +9,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { File } from "@mailtura/rpcmodel/api/index.js";
 import { Type } from "typebox";
-import prisma, { mapFile } from "@mailtura/database";
+import { mapFile } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function fileRoutes<
@@ -19,6 +19,7 @@ export function fileRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Params: { tenant_id: string }; Reply: File[] }>(
     "/",
     {

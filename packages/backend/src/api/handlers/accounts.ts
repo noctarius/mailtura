@@ -9,7 +9,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Type } from "typebox";
 import type { Account } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapAccount } from "@mailtura/database";
+import { mapAccount } from "@mailtura/database";
 
 export function accountRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -18,6 +18,7 @@ export function accountRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Params: { tenant_id: string; user_id: string }; Reply: Account[] }>(
     "/",
     {

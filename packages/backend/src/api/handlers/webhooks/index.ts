@@ -10,7 +10,7 @@ import type { Router } from "../../../router/index.js";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import type { SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { Cacheable } from "cacheable";
-import prisma from "@mailtura/database";
+// prisma is accessed via router.context().prisma
 import { ResponseError } from "../../index.js";
 
 /**
@@ -71,26 +71,6 @@ export type SendgridEvent =
 const verifier = new EventWebhook();
 const configCache = new Cacheable();
 
-const getMailConfig = configCache.wrap(
-  async (mailConfigId: string) => {
-    const mailConfig = await prisma.mail_configs.findUnique({
-      where: {
-        id: mailConfigId,
-      },
-    });
-
-    if (!mailConfig) {
-      throw new ResponseError(`Mail config for webhook ${mailConfigId} not found`, 404);
-    }
-
-    if (mailConfig.type !== "sendgrid") {
-      throw new ResponseError(`Mail config for webhook ${mailConfigId} is not a Sendgrid mail config`, 400);
-    }
-    return mailConfig.config as SendgridConfig;
-  },
-  { ttl: 5 * 60 }
-);
-
 export function webhookRoutes<
   RawServer extends RawServerBase = RawServerDefault,
   RawRequest extends RawRequestDefaultExpression<RawServer> = RawRequestDefaultExpression<RawServer>,
@@ -98,6 +78,26 @@ export function webhookRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
+  const getMailConfig = configCache.wrap(
+    async (mailConfigId: string) => {
+      const mailConfig = await prisma.mail_configs.findUnique({
+        where: {
+          id: mailConfigId,
+        },
+      });
+
+      if (!mailConfig) {
+        throw new ResponseError(`Mail config for webhook ${mailConfigId} not found`, 404);
+      }
+
+      if (mailConfig.type !== "sendgrid") {
+        throw new ResponseError(`Mail config for webhook ${mailConfigId} is not a Sendgrid mail config`, 400);
+      }
+      return mailConfig.config as SendgridConfig;
+    },
+    { ttl: 5 * 60 }
+  );
   router.post<{ Params: { webhook_id: string } }>(
     "/sendgrid/:webhook_id",
     {

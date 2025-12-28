@@ -12,7 +12,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateUser, UpdateUser } from "@mailtura/rpcmodel/api/request-response.js";
 import { accountRoutes } from "./accounts.js";
 import type { User } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapUser, withPagination } from "@mailtura/database";
+import { mapUser, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { sendInviteEmail } from "../../mail/index.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
@@ -24,6 +24,7 @@ export function userRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: User[]; metadata: PaginationMetadata };

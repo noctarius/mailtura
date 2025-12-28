@@ -21,13 +21,7 @@ import type { MultipartFile } from "@fastify/multipart";
 import { parseMultipartFieldsToBody } from "../../helpers/extract-multipart-fields-to-body.js";
 import type { ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
-import prisma, {
-  mapContact,
-  mapContactImport,
-  mapContactsWithSubscriptions,
-  Prisma,
-  withPagination,
-} from "@mailtura/database";
+import { mapContact, mapContactImport, mapContactsWithSubscriptions, Prisma, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
@@ -38,6 +32,7 @@ export function contactRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: Contact[]; metadata: PaginationMetadata };
@@ -426,6 +421,7 @@ export function contactImportRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Params: { tenant_id: string }; Reply: ContactImport[]; Querystring: { all: boolean | unknown } }>(
     "/",
     {

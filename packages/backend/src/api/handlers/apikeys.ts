@@ -12,7 +12,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateApiKey, UpdateApiKey } from "@mailtura/rpcmodel/api/request-response.js";
 import { generateNewKey } from "../../auth/apiKey.js";
 import type { ApiKey } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { fromDateTime, mapApiKey, unpackOptionalNullable } from "@mailtura/database";
+import { fromDateTime, mapApiKey, unpackOptionalNullable } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function apiKeyRoutes<
@@ -22,6 +22,7 @@ export function apiKeyRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Params: { tenant_id: string }; Reply: ApiKey[] }>(
     "/",
     {

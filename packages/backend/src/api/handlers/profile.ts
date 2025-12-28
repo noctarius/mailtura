@@ -9,7 +9,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { User } from "@mailtura/rpcmodel/api/index.js";
 import { Type } from "typebox";
-import prisma, { mapUser } from "@mailtura/database";
+import { mapUser } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
 export function profileRoutes<
@@ -19,6 +19,7 @@ export function profileRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{ Reply: User }>(
     "/",
     {

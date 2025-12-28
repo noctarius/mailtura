@@ -12,7 +12,6 @@ import { type Static, Type } from "typebox";
 import { requiresInstallation } from "../../helpers/requires-installation.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
-import prisma from "@mailtura/database";
 
 const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),
@@ -42,6 +41,7 @@ export function installationRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get(
     "/",
     {

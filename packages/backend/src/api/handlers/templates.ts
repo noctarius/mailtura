@@ -12,7 +12,7 @@ import { Type } from "typebox";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompiler";
-import prisma, { mapTemplate, withPagination } from "@mailtura/database";
+import { mapTemplate, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
@@ -23,6 +23,7 @@ export function templateRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: Template[]; metadata: PaginationMetadata };
@@ -162,7 +163,7 @@ export function templateRoutes<
           },
         },
       },
-      async (request, reply) => {
+      async request => {
         const tenantId = request.params.tenant_id;
         const templateId = request.params.template_id;
 

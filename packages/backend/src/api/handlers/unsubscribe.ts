@@ -11,7 +11,7 @@ import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateUnsubscribe, UpdateUnsubscribe } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
-import prisma, { mapUnsubscribe, withPagination } from "@mailtura/database";
+import { mapUnsubscribe, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
 
@@ -22,6 +22,7 @@ export function unsubscribeRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
+  const prisma = router.context().prisma;
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: Unsubscribe[]; metadata: PaginationMetadata };
