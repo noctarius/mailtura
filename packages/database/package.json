@@ -45,7 +45,7 @@
     "dotenv": "^17.2.3",
     "eslint": "catalog:",
     "jest": "^29.7.0",
-    "prisma": "^7.1.0",
+    "prisma": "^7.2.0",
     "testcontainers": "^11.10.0",
     "ts-jest": "^29.4.6",
     "typescript": "catalog:",
