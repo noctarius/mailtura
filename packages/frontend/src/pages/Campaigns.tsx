@@ -87,7 +87,7 @@ const Campaigns = () => {
   };
 
   const campaigns = createMemo(() =>
-    (campaignQuery.data || []).map(campaign => {
+    (campaignQuery.data?.data || []).map(campaign => {
       const campaignRate = campaignsRates.find(rate => rate.id === campaign.id);
       return {
         ...campaign,
