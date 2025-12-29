@@ -216,6 +216,7 @@ export function createRouter<
   context: ServerContext,
   requiresAuth: boolean = false
 ): Router<RawServer, RawRequest, RawReply, TypeProvider, Logger> {
+  const { prisma } = context;
   const maybeAuthMiddleware = <
     RouteGeneric extends RouteGenericInterface = RouteGenericInterface,
     ContextConfig = ContextConfigDefault,
@@ -248,7 +249,7 @@ export function createRouter<
       preHandler: async (request, reply) => {
         const headerApiKey = request.headers["x-api-key"];
         if (typeof headerApiKey === "string") {
-          const apiKey = await validateApiKey(headerApiKey);
+          const apiKey = await validateApiKey(prisma, headerApiKey);
           if (!apiKey) {
             return reply.status(401 as any).send({ message: "Unauthorized" } as any);
           }
@@ -321,4 +322,13 @@ export function createRouter<
     },
     context: () => context,
   };
+}
+
+export class ResponseError extends Error {
+  code?: number;
+
+  constructor(message: any, code?: number) {
+    super(message?.toString() || "Unknown error happened while communication with the backend api.");
+    this.code = code;
+  }
 }

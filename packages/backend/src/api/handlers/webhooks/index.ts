@@ -6,12 +6,11 @@ import type {
 } from "fastify/types/utils.js";
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
-import type { Router } from "../../../router/index.js";
+import { ResponseError, type Router } from "../../../router/index.js";
 import { EventWebhook } from "@sendgrid/eventwebhook";
 import type { SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { Cacheable } from "cacheable";
 // prisma is accessed via router.context().prisma
-import { ResponseError } from "../../index.js";
 
 /**
  * Thanks to https://gist.github.com/rndD/bbcde87f397e85b5c95b3e3c7b95cd4a 🙏

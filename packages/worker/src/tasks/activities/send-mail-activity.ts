@@ -1,9 +1,13 @@
 import type { SendMailArguments } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
-import prisma, { MailSendingEntity, MailSendingReceiverEntity } from "@mailtura/database";
+import { MailSendingEntity, MailSendingReceiverEntity, newPrismaClient, PrismaType } from "@mailtura/database";
 import { newMailTransport } from "../../mails/index.js";
 import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error("DATABASE_URL is not set");
 
 type MailSending = MailSendingEntity & {
   mail_receivers: MailSendingReceiverEntity[];
@@ -11,6 +15,8 @@ type MailSending = MailSendingEntity & {
 };
 
 export async function sendMailBatch(args: SendMailArguments): Promise<number> {
+  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+
   const mailSendingId = args.mail_sending_id;
   const tenantId = args.tenant_id;
   const batchSize = args.batch_size;
@@ -53,7 +59,7 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
     throw new Error(`Mail transport not found for mail sending ${mailSendingId} on tenant ${tenantId}`);
   }
 
-  const recipients = await mapReceivers(mailSending, 0, batchSize);
+  const recipients = await mapReceivers(prisma, mailSending, 0, batchSize);
   await transport.send({
     from,
     subject: mailSending.subject,
@@ -65,7 +71,12 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
   return 0;
 }
 
-const mapReceivers = async (mailSending: MailSending, offset: number, batchSize: number): Promise<MailRecipient[]> => {
+const mapReceivers = async (
+  prisma: PrismaType,
+  mailSending: MailSending,
+  offset: number,
+  batchSize: number
+): Promise<MailRecipient[]> => {
   const receivers = mailSending.mail_receivers;
   if (receivers && receivers.length > 0) {
     return receivers.map(receiver => ({
@@ -85,6 +96,13 @@ const mapReceivers = async (mailSending: MailSending, offset: number, batchSize:
         some: {
           subscriber_list_id: {
             in: subscriberLists.map(list => list.subscriber_list_id),
+          },
+        },
+      },
+      unsubscribes: {
+        none: {
+          list_ids: {
+            hasEvery: subscriberLists.map(list => list.subscriber_list_id),
           },
         },
       },

@@ -22,7 +22,7 @@ export function subscriberListRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: SubscriberList[]; metadata: PaginationMetadata };
@@ -249,7 +249,7 @@ function subscribersRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get<{
     Params: { tenant_id: string; subscriber_list_id: string };
     Reply: Subscriber[];

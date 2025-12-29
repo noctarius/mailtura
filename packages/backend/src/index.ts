@@ -12,9 +12,13 @@ import * as path from "node:path";
 import "./tasks/index.js";
 import { requiresInstallation } from "./helpers/requires-installation.js";
 import { installationRoutes } from "./api/handlers/installation.js";
-import { handlePrismaError, prisma } from "@mailtura/database";
+import { handlePrismaError, newPrismaClient } from "@mailtura/database";
 import { createLazyTemporalTaskManager } from "./tasks/index.js";
 import type { ServerContext } from "./context/index.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error("DATABASE_URL is not set");
 
 const app = Fastify()
   .register(Multipart, {
@@ -44,82 +48,85 @@ const app = Fastify()
 // Register schema types
 registerModelSchema(app);
 
-await app.register(cors, {
-  origin: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-});
+(async function main() {
+  await app.register(cors, {
+    origin: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  });
 
-await app.register(Swagger, {
-  refResolver: {
-    buildLocalReference: ref => {
-      return ref["$id"] as string;
+  await app.register(Swagger, {
+    refResolver: {
+      buildLocalReference: ref => {
+        return ref["$id"] as string;
+      },
     },
-  },
-  openapi: {
-    openapi: "3.0.0",
-    info: {
-      title: "Mailtura API",
-      description: "The OpenAPI specification for the Mailtura API to send emails, track opens, clicks, and more.",
-      version: "1.0.0",
-    },
-    components: {
-      securitySchemes: {
-        apiKey: {
-          type: "apiKey",
-          in: "header",
-          name: "x-api-key",
+    openapi: {
+      openapi: "3.0.0",
+      info: {
+        title: "Mailtura API",
+        description: "The OpenAPI specification for the Mailtura API to send emails, track opens, clicks, and more.",
+        version: "1.0.0",
+      },
+      components: {
+        securitySchemes: {
+          apiKey: {
+            type: "apiKey",
+            in: "header",
+            name: "x-api-key",
+          },
         },
       },
+      security: [
+        {
+          apiKey: [],
+        },
+      ],
     },
-    security: [
-      {
-        apiKey: [],
-      },
-    ],
-  },
-});
+  });
 
-await app.register(SwaggerUi, {
-  routePrefix: "/docs",
-  uiConfig: {
-    showExtensions: true,
-    urls: [
-      {
-        url: "/docs/json",
-        name: "Mailtura API",
-      },
-    ],
-    docExpansion: "list",
-    deepLinking: true,
-    tagsSorter: (a, b) => (b === "tenants" ? 1 : a.localeCompare(b)),
-  },
-});
+  await app.register(SwaggerUi, {
+    routePrefix: "/docs",
+    uiConfig: {
+      showExtensions: true,
+      urls: [
+        {
+          url: "/docs/json",
+          name: "Mailtura API",
+        },
+      ],
+      docExpansion: "list",
+      deepLinking: true,
+      tagsSorter: (a, b) => (b === "tenants" ? 1 : a.localeCompare(b)),
+    },
+  });
 
-const currentPath = import.meta.dir;
-console.info(`Mounting ${path.join(currentPath, "public")} as /dashboard`);
-app.register(Static, {
-  root: path.join(currentPath, "public"),
-  prefix: "/dashboard/",
-  index: "index.html",
-});
+  const currentPath = import.meta.dir;
+  console.info(`Mounting ${path.join(currentPath, "public")} as /dashboard`);
+  app.register(Static, {
+    root: path.join(currentPath, "public"),
+    prefix: "/dashboard/",
+    index: "index.html",
+  });
 
-const taskManager = createLazyTemporalTaskManager();
-const context: ServerContext = { prisma, taskManager };
+  const taskManager = createLazyTemporalTaskManager();
+  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+  const context: ServerContext = { prisma, taskManager };
 
-app.register(Auth, {
-  basePath: "/api/v1/auth",
-  context,
-});
+  app.register(Auth, {
+    basePath: "/api/v1/auth",
+    context,
+  });
 
-const router = createRouter(app, context);
+  const router = createRouter(app, context);
 
-router.route("/api/v1", registerRoutes);
-if (await requiresInstallation()) {
-  console.info("Installation required, enabling installation routes.");
-  router.route("/api/v1/install", installationRoutes);
-}
+  router.route("/api/v1", registerRoutes);
+  if (await requiresInstallation(prisma)) {
+    console.info("Installation required, enabling installation routes.");
+    router.route("/api/v1/install", installationRoutes);
+  }
 
-console.info("Starting server at :3000...");
-await app.listen({ host: "0.0.0.0", port: 3000 });
+  console.info("Starting server at :3000...");
+  await app.listen({ host: "0.0.0.0", port: 3000 });
+})();

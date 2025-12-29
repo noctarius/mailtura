@@ -41,7 +41,7 @@ export function installationRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get(
     "/",
     {
@@ -50,7 +50,7 @@ export function installationRoutes<
       },
     },
     async (_, reply) => {
-      if (!(await requiresInstallation())) {
+      if (!(await requiresInstallation(prisma))) {
         return reply.status(500).send({ installation: "Finished" });
       }
       return reply.send({ installation: "required" });
@@ -66,7 +66,7 @@ export function installationRoutes<
       },
     },
     async (request, reply) => {
-      if (!(await requiresInstallation())) {
+      if (!(await requiresInstallation(prisma))) {
         return reply.status(500).send({ installation: "Finished" });
       }
 

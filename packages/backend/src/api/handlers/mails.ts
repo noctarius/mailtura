@@ -26,7 +26,7 @@ export function mailRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma, taskManager } = router.context();
   router.post<{
     Params: { tenant_id: string };
     Body: CreateSingleSendType;
@@ -127,7 +127,7 @@ export function mailRoutes<
         data,
       });
 
-      await router.context().taskManager.createSendMailJob(tenantId, mailSending.id);
+      await taskManager.createSendMailJob(tenantId, mailSending.id);
 
       const response: CreateSingleSendResponseType = { id: mailSending.id };
       return reply.status(201).send(response);

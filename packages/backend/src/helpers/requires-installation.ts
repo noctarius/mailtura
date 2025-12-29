@@ -1,6 +1,6 @@
-import prisma from "@mailtura/database";
+import { type PrismaType } from "@mailtura/database";
 
-export async function requiresInstallation() {
-  const tenantCount = await prisma.tenants.count()
-  return tenantCount === 0
+export async function requiresInstallation(prisma: PrismaType) {
+  const tenantCount = await prisma.tenants.count();
+  return tenantCount === 0;
 }

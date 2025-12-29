@@ -5,11 +5,10 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { readFileSync } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { newPrismaClient } from "../index.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-export type Prisma = import("../index.ts").prisma;
 
 export async function setupDatabase() {
   console.log("Starting postgres container...");
@@ -25,8 +24,7 @@ export async function setupDatabase() {
   const adapter = new PrismaPg({ connectionString });
   await runMigrations(adapter);
 
-  const namespace = (await import("../index.js")) as any;
-  const prisma: import("../index.ts").prisma = (namespace as any).newPrismaClient(adapter);
+  const prisma = newPrismaClient(adapter);
   return { prisma, container: postgresContainer };
 }
 

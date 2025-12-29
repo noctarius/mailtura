@@ -19,7 +19,7 @@ export function profileRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get<{ Reply: User }>(
     "/",
     {

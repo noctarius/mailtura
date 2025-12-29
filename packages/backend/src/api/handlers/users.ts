@@ -24,7 +24,7 @@ export function userRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma, taskManager } = router.context();
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: User[]; metadata: PaginationMetadata };
@@ -95,7 +95,7 @@ export function userRoutes<
       });
 
       if (request.body.sendInvitationEmail) {
-        await sendInviteEmail(router.context().taskManager, newUser);
+        await sendInviteEmail(prisma, taskManager, newUser);
       }
 
       return reply.status(201).send(mapUser(newUser));

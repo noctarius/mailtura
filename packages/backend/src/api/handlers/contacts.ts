@@ -32,7 +32,7 @@ export function contactRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: Contact[]; metadata: PaginationMetadata };
@@ -421,7 +421,7 @@ export function contactImportRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma, taskManager } = router.context();
   router.get<{ Params: { tenant_id: string }; Reply: ContactImport[]; Querystring: { all: boolean | unknown } }>(
     "/",
     {
@@ -516,7 +516,7 @@ export function contactImportRoutes<
           },
         });
 
-        const handle = await router.context().taskManager.createImportContactsJob(tenantId, contactImport.id);
+        const handle = await taskManager.createImportContactsJob(tenantId, contactImport.id);
         console.log("Created import contacts job", handle);
 
         return reply.status(201).send(mapContactImport(contactImport));

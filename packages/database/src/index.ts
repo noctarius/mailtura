@@ -39,9 +39,6 @@ import {
   PrismaClientKnownRequestError,
 } from "./generated/prisma/internal/prismaNamespace.js";
 
-const databaseUrl = process.env.DATABASE_URL;
-if (!databaseUrl) throw new Error("DATABASE_URL is not set");
-
 const debugPrisma = process.env.DEBUG_PRISMA === "true";
 const log = (debugPrisma ? ["query", "info", "warn", "error"] : []) as (LogLevel | LogDefinition)[];
 
@@ -197,7 +194,7 @@ export const newPrismaClient = (adapter: PrismaPg) => {
   });
 };
 
-export const prisma = newPrismaClient(new PrismaPg({ connectionString: databaseUrl }));
+export type PrismaType = ReturnType<typeof newPrismaClient>;
 
 export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/internal/prismaNamespace.js";
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
@@ -251,5 +248,4 @@ export type MailConfigEntity = mail_configs;
 export type MailSendingReceiverEntity = mail_sending_receivers;
 export type SystemConfigEntity = system_configs;
 
-export type prisma = typeof prisma;
-export default prisma;
+export default {};

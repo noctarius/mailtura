@@ -12,7 +12,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
-import prisma, { mapUser } from "@mailtura/database";
+import { mapUser } from "@mailtura/database";
 import { sendInviteEmail } from "../mail/index.js";
 
 const SignUpEmail = Type.Object({
@@ -34,6 +34,7 @@ export function registerCustomAuthRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>, auth: Auth) {
+  const prisma = router.context().prisma;
   router.post<{ Body: SignUpEmail }>(
     "/sign-up/email",
     {
@@ -154,7 +155,7 @@ export function registerCustomAuthRoutes<
         // Create and send verification email
         const token = await createEmailVerificationToken(auth.options.secret!, email, void 0, 60 * 5);
         const url = `${auth.options.baseURL}/api/v1/auth/verify-email?token=${token}&callbackURL=${request.body.callbackURL || "/"}`;
-        await sendInviteEmail(router.context().taskManager, user, url);
+        await sendInviteEmail(prisma, router.context().taskManager, user, url);
 
         return reply.status(201).send(mapUser(user));
       });

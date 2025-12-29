@@ -1,0 +1,43 @@
+import * as esbuild from "esbuild";
+import { resolve } from "path";
+import Bun from "bun";
+
+export {};
+
+const nativeNodeModulesPlugin = {
+  name: "patched-modules",
+  setup(build) {
+    console.log("Setting up native node modules plugin...");
+    // If a ".node" file is imported within a module in the "file" namespace, resolve
+    // it to an absolute path and put it into the "node-file" virtual namespace.
+    build.onResolve({ filter: /html-minifier/, namespace: "file" }, args => {
+      console.log(args);
+      return {
+        path: resolve(import.meta.dir, "patches", args.path, "index.js"),
+        namespace: "file",
+      };
+    });
+  },
+};
+
+console.log("Building intermediate via esbuild...");
+await esbuild.build({
+  bundle: true,
+  plugins: [nativeNodeModulesPlugin],
+  entryPoints: ["./src/index.ts"],
+  outfile: "./build/index.js",
+  format: "esm",
+  platform: "node",
+  sourcemap: "linked",
+  external: ["*"],
+});
+
+console.log("Compiling final binary via Bun...");
+await Bun.build({
+  entrypoints: ["./src/index.ts"],
+  outdir: "./dist",
+  target: "bun",
+  env: "disable",
+  sourcemap: "linked",
+  external: ["*"],
+});

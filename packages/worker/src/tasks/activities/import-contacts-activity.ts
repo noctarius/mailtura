@@ -7,10 +7,14 @@ import papaparse, {
 } from "papaparse";
 import type { ContactImportArguments, ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
-import prisma, { ContactImportEntity, mapContact } from "@mailtura/database";
+import { ContactImportEntity, mapContact, newPrismaClient, PrismaType } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { CreateContact } from "@mailtura/rpcmodel/api/request-response.js";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const connectionString = process.env.DATABASE_URL;
+if (!connectionString) throw new Error("DATABASE_URL is not set");
 
 const { parse } = papaparse;
 
@@ -85,6 +89,7 @@ const parser = <T extends { email: string | undefined }>(
 };
 
 const readContactImport = async (
+  prisma: PrismaType,
   tenantId: string,
   contactImportId: string
 ): Promise<ContactImportEntity | undefined> => {
@@ -98,7 +103,7 @@ const readContactImport = async (
   return contactImport ?? undefined;
 };
 
-const readFileContent = async (tenantId: string, fileId: string): Promise<Buffer | undefined> => {
+const readFileContent = async (prisma: PrismaType, tenantId: string, fileId: string): Promise<Buffer | undefined> => {
   const file = await prisma.files.findUnique({
     where: {
       id: fileId,
@@ -109,6 +114,7 @@ const readFileContent = async (tenantId: string, fileId: string): Promise<Buffer
 };
 
 const createContacts = async (
+  prisma: PrismaType,
   tenantId: string,
   contacts: CreateContact[],
   upsert: boolean = true
@@ -192,7 +198,13 @@ const createContacts = async (
   });
 };
 
-const updateContactImport = async (tenantId: string, contactImportId: string, records: number, finished: boolean) => {
+const updateContactImport = async (
+  prisma: PrismaType,
+  tenantId: string,
+  contactImportId: string,
+  records: number,
+  finished: boolean
+) => {
   return await prisma.contact_imports.update({
     where: {
       id: contactImportId,
@@ -206,12 +218,14 @@ const updateContactImport = async (tenantId: string, contactImportId: string, re
 };
 
 export async function importContactsBatch(args: ContactImportArguments): Promise<number> {
+  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+
   const contactImportId = args.import_id;
   const tenantId = args.tenant_id;
   const batchSize = args.batch_size;
   log.info(`Importing contacts batch for import ${contactImportId} on tenant ${tenantId} with batch size ${batchSize}`);
 
-  const contactImport = await readContactImport(tenantId, contactImportId);
+  const contactImport = await readContactImport(prisma, tenantId, contactImportId);
   if (!contactImport) {
     throw new Error(`Contact import not found: ${contactImportId}`);
   }
@@ -221,7 +235,7 @@ export async function importContactsBatch(args: ContactImportArguments): Promise
     `Importing contacts batch for import ${contactImportId} on tenant ${tenantId} with params ${JSON.stringify(parameters)}`
   );
 
-  const fileContent = await readFileContent(tenantId, parameters.file_id);
+  const fileContent = await readFileContent(prisma, tenantId, parameters.file_id);
   if (!fileContent) {
     throw new Error(`File not found: ${parameters.file_id}`);
   }
@@ -242,10 +256,11 @@ export async function importContactsBatch(args: ContactImportArguments): Promise
     };
   });
 
-  const result = await createContacts(tenantId, contacts);
+  const result = await createContacts(prisma, tenantId, contacts);
   log.debug(JSON.stringify(result, null, 2));
 
   await updateContactImport(
+    prisma,
     tenantId,
     contactImportId,
     contactImport.records + contacts.length,

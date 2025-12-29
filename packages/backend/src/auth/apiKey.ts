@@ -1,9 +1,9 @@
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { Instant } from "@mailtura/rpcmodel/time/Instant.js";
 import { createHash, getRandomValues } from "node:crypto";
-import prisma, { type ApiKeyEntity } from "@mailtura/database";
+import { type ApiKeyEntity, type PrismaType } from "@mailtura/database";
 
-export async function validateApiKey(headerApiKey: string): Promise<false | ApiKeyEntity> {
+export async function validateApiKey(prisma: PrismaType, headerApiKey: string): Promise<false | ApiKeyEntity> {
   const apiKey = await prisma.api_keys.findUnique({
     where: {
       key: headerApiKey,

@@ -23,7 +23,7 @@ export function templateRoutes<
   TypeProvider extends FastifyTypeProvider = FastifyTypeProviderDefault,
   Logger extends FastifyBaseLogger = FastifyBaseLogger,
 >(router: Router<RawServer, RawRequest, RawReply, TypeProvider, Logger>) {
-  const prisma = router.context().prisma;
+  const { prisma } = router.context();
   router.get<{
     Params: { tenant_id: string };
     Reply: { data: Template[]; metadata: PaginationMetadata };

@@ -15,6 +15,7 @@
     "@mailtura/contentcompiler": "*",
     "@mailtura/database": "*",
     "@mailtura/rpcmodel": "*",
+    "@prisma/adapter-pg": "^7.2.0",
     "@sendgrid/client": "^8.1.6",
     "@sendgrid/helpers": "^8.0.0",
     "@sendgrid/mail": "^8.1.6",

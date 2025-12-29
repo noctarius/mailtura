@@ -8,7 +8,6 @@ import { registerAuthHandler } from "./handler.js";
 import { newPasswordHasher } from "./password-hasher.js";
 import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
-import prisma from "@mailtura/database";
 import { sendMagicLinkEmail, sendResetPasswordEmail, sendVerificationEmail } from "../mail/index.js";
 import type { ServerContext } from "../context/index.js";
 
@@ -55,13 +54,13 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
       password: newPasswordHasher(),
       autoSignIn: false,
       sendResetPassword: async ({ user, token }) => {
-        sendResetPasswordEmail(context.taskManager, user.email, token);
+        sendResetPasswordEmail(context.prisma, context.taskManager, user.email, token);
       },
     },
     emailVerification: {
       autoSignInAfterVerification: true,
       sendVerificationEmail: async ({ user, token }) => {
-        sendVerificationEmail(context.taskManager, user.email, token);
+        sendVerificationEmail(context.prisma, context.taskManager, user.email, token);
       },
     },
     plugins: [
@@ -95,7 +94,7 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
       }),
       magicLink({
         sendMagicLink: async ({ email, token }) => {
-          sendMagicLinkEmail(context.taskManager, email, token);
+          sendMagicLinkEmail(context.prisma, context.taskManager, email, token);
         },
       }),
     ],
@@ -131,7 +130,7 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
             session.updatedBy = "api";
           },
           after: async session => {
-            await prisma.users.update({
+            await context.prisma.users.update({
               where: {
                 id: session.userId,
               },

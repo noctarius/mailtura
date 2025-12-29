@@ -39,14 +39,7 @@ import { tenantRoutes } from "./handlers/tenants.js";
 import { profileRoutes } from "./handlers/profile.js";
 import { webhookRoutes } from "./handlers/webhooks/index.js";
 import { PaginationMetadata } from "@mailtura/rpcmodel/pagination/index.js";
-import {
-  Mail,
-  MailContact,
-  MailContent,
-  MailDirectContent,
-  MailRecipient,
-  MailTemplatedContent,
-} from "@mailtura/rpcmodel/mails/index.js";
+import { Mail } from "@mailtura/rpcmodel/mails/index.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ErrorResponse);
@@ -88,13 +81,4 @@ export function registerRoutes<
   router.route("/tenants", tenantRoutes);
   router.route("/profile", profileRoutes);
   router.route("/webhooks", webhookRoutes, false, true);
-}
-
-export class ResponseError extends Error {
-  code?: number;
-
-  constructor(message: any, code?: number) {
-    super(message?.toString() || "Unknown error happened while communication with the backend api.");
-    this.code = code;
-  }
 }
