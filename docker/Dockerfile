@@ -13,7 +13,6 @@ COPY --chown=bun:bun packages/contentcompiler/package.json /temp/dev/packages/co
 COPY --chown=bun:bun packages/database/package.json /temp/dev/packages/database/
 RUN cd /temp/dev && bun install --frozen-lockfile
 COPY --chown=bun:bun eslint.config.js /temp/dev/
-COPY --chown=bun:bun packages /temp/dev/packages
 
 FROM base AS production-mailtura-core
 USER bun
@@ -55,29 +54,35 @@ RUN ls -lah /temp/prod
 
 FROM development AS builder-rpc-model
 USER bun
+COPY --chown=bun:bun packages/rpcmodel /temp/dev/packages/rpcmodel/
 RUN echo Building rpcmodel... && cd /temp/dev/packages/rpcmodel && bun run build
 
 FROM builder-rpc-model AS builder-database
 USER bun
+COPY --chown=bun:bun packages/database /temp/dev/packages/database/
 RUN echo Building database... && cd /temp/dev/packages/database && bun run build
 
 FROM builder-rpc-model AS builder-contentcompiler
 USER bun
+COPY --chown=bun:bun packages/contentcompiler /temp/dev/packages/contentcompiler/
 RUN echo Building contentcompiler... && cd /temp/dev/packages/contentcompiler && bun run build
 
 FROM builder-database AS builder-backend
 USER bun
-COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler packages/contentcompiler
+COPY --chown=bun:bun packages/backend /temp/dev/packages/backend/
+COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler /temp/dev/packages/contentcompiler
 RUN echo Building backend... && cd /temp/dev/packages/backend && bun run build
 
 FROM builder-rpc-model AS builder-frontend
 USER bun
 ENV DASHBOARD_BASE_URL "/dashboard"
+COPY --chown=bun:bun packages/frontend /temp/dev/packages/frontend/
 RUN echo Building frontend... && cd /temp/dev/packages/frontend && bun run build
 
 FROM builder-database AS builder-worker
 USER bun
-COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler packages/contentcompiler
+COPY --chown=bun:bun packages/worker /temp/dev/packages/worker/
+COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler /temp/dev/packages/contentcompiler
 RUN echo Building worker... && cd /temp/dev/packages/worker && bun run build
 
 
