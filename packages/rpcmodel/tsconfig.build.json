@@ -1,6 +1,8 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "composite": false
-  }
+    "composite": false,
+    "types": ["node"]
+  },
+  "exclude": ["**/**.test.ts"]
 }

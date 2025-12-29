@@ -25,6 +25,7 @@
   "devDependencies": {
     "@eslint/js": "catalog:",
     "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.1",
     "eslint": "catalog:",
     "jest": "^29.7.0",
     "ts-jest": "^29.4.6",
