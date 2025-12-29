@@ -1,6 +1,17 @@
 name: mailtura
 
 services:
+  init-container:
+    container_name: init-container
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.init
+    environment:
+      - 'DATABASE_URL=postgres://mailtura:mailtura@postgresql:5432/postgres'
+    depends_on:
+      postgresql:
+        condition: service_healthy
+
   mailtura:
     container_name: mailtura
     build:
@@ -9,8 +20,8 @@ services:
     ports:
       - '3000:3000'
     depends_on:
-      postgresql:
-        condition: service_healthy
+      init-container:
+        condition: service_completed_successfully
     environment:
       - 'DATABASE_URL=postgres://mailtura:mailtura@postgresql:5432/postgres'
       - 'TEMPORAL_ADDRESS=temporal:7233'
@@ -55,8 +66,8 @@ services:
     ports:
       - '7233:7233'
     depends_on:
-      postgresql:
-        condition: service_healthy
+      init-container:
+        condition: service_completed_successfully
     environment:
       - 'DB=postgres12'
       - 'DB_PORT=5432'

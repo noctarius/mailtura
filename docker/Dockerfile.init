@@ -1,0 +1,9 @@
+FROM oven/bun:alpine
+
+WORKDIR /opt
+
+COPY docker/init.sh init.sh
+COPY packages/database/prisma prisma
+COPY packages/database/prisma.config.ts prisma.config.ts
+
+ENTRYPOINT [ "/opt/init.sh" ]

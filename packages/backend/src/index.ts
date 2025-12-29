@@ -4,7 +4,6 @@ import Swagger from "@fastify/swagger";
 import Multipart from "@fastify/multipart";
 import SwaggerUi from "@fastify/swagger-ui";
 import Static from "@fastify/static";
-import SocketIo from "./api/socketio/plugin.js";
 import Auth from "./auth/plugin.js";
 import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
 import registerModelSchema, { registerRoutes } from "./api/index.js";
@@ -104,19 +103,6 @@ app.register(Static, {
   root: path.join(currentPath, "public"),
   prefix: "/dashboard/",
   index: "index.html",
-});
-
-app.register(SocketIo, {
-  path: "/api/v1/socket.io",
-  cleanupEmptyChildNamespaces: true,
-  addTrailingSlash: true,
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-    credentials: true,
-    maxAge: 86400,
-  },
 });
 
 const taskManager = createLazyTemporalTaskManager();

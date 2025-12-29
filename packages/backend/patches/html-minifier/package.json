@@ -1,0 +1,5 @@
+{
+  "name": "html-minifier",
+  "version": "4.0.0",
+  "main": "index.js"
+}
