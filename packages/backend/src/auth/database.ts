@@ -6,9 +6,9 @@ import {
   type DBAdapterDebugLogOption,
 } from "better-auth/adapters";
 import { BetterAuthError, type BetterAuthOptions, type Where } from "better-auth";
-import prisma, { PrismaClient } from "@mailtura/database";
+import { PrismaClient, type PrismaType } from "@mailtura/database";
 
-type PrismaClientInternal = PrismaClient & {
+type PrismaClientInternal = PrismaType & {
   $transaction: (callback: (db: PrismaClient) => Promise<any> | any) => Promise<any>;
 } & {
   [model: string]: {
@@ -24,16 +24,15 @@ type PrismaClientInternal = PrismaClient & {
 
 interface MailturaAdapterConfig {
   debugLogs?: DBAdapterDebugLogOption;
+  prisma: PrismaType;
 }
 
-export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
+export const mailturaAdapter = (config: MailturaAdapterConfig) => {
   let authOptions: BetterAuthOptions | null = null;
 
   const createDatabaseAdapter =
-    (prisma: PrismaClient): AdapterFactoryCustomizeAdapterCreator =>
+    (prisma: PrismaClientInternal): AdapterFactoryCustomizeAdapterCreator =>
     ({ getFieldName }) => {
-      const db = prisma as PrismaClientInternal;
-
       const convertSelect = (select?: string[] | undefined, model?: string | undefined) => {
         if (!select || !model) return undefined;
         return select.reduce((prev, cur) => {
@@ -110,37 +109,37 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
 
       return {
         async create({ model, data: values, select }) {
-          if (!db[model]) {
+          if (!prisma[model]) {
             throw new BetterAuthError(
               `Model ${model} does not exist in the database. If you haven't generated the Prisma client, you need to run 'npx prisma generate'`
             );
           }
-          return await db[model]!.create({
+          return await prisma[model]!.create({
             data: values,
             select: convertSelect(select, model),
           });
         },
         async findOne({ model, where, select }) {
           const whereClause = convertWhereClause(model, where);
-          if (!db[model]) {
+          if (!prisma[model]) {
             throw new BetterAuthError(
               `Model ${model} does not exist in the database. If you haven't generated the Prisma client, you need to run 'npx prisma generate'`
             );
           }
-          return await db[model]!.findFirst({
+          return await prisma[model]!.findFirst({
             where: whereClause,
             select: convertSelect(select, model),
           });
         },
         async findMany({ model, where, limit, offset, sortBy }) {
           const whereClause = convertWhereClause(model, where);
-          if (!db[model]) {
+          if (!prisma[model]) {
             throw new BetterAuthError(
               `Model ${model} does not exist in the database. If you haven't generated the Prisma client, you need to run 'npx prisma generate'`
             );
           }
 
-          return (await db[model]!.findMany({
+          return (await prisma[model]!.findMany({
             where: whereClause,
             take: limit || 100,
             skip: offset || 0,
@@ -155,30 +154,30 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
         },
         async count({ model, where }) {
           const whereClause = convertWhereClause(model, where);
-          if (!db[model]) {
+          if (!prisma[model]) {
             throw new BetterAuthError(
               `Model ${model} does not exist in the database. If you haven't generated the Prisma client, you need to run 'npx prisma generate'`
             );
           }
-          return await db[model]!.count({
+          return await prisma[model]!.count({
             where: whereClause,
           });
         },
         async update({ model, where, update }) {
-          if (!db[model]) {
+          if (!prisma[model]) {
             throw new BetterAuthError(
               `Model ${model} does not exist in the database. If you haven't generated the Prisma client, you need to run 'npx prisma generate'`
             );
           }
           const whereClause = convertWhereClause(model, where);
-          return await db[model]!.update({
+          return await prisma[model]!.update({
             where: whereClause,
             data: update,
           });
         },
         async updateMany({ model, where, update }) {
           const whereClause = convertWhereClause(model, where);
-          const result = await db[model]!.updateMany({
+          const result = await prisma[model]!.updateMany({
             where: whereClause,
             data: update,
           });
@@ -187,7 +186,7 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
         async delete({ model, where }) {
           const whereClause = convertWhereClause(model, where);
           try {
-            await db[model]!.delete({
+            await prisma[model]!.delete({
               where: whereClause,
             });
           } catch (e: any) {
@@ -199,7 +198,7 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
         },
         async deleteMany({ model, where }) {
           const whereClause = convertWhereClause(model, where);
-          const result = await db[model]!.deleteMany({
+          const result = await prisma[model]!.deleteMany({
             where: whereClause,
           });
           return result ? (result.count as number) : 0;
@@ -220,7 +219,7 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
       supportsBooleans: true,
       supportsNumericIds: false,
       transaction: cb => {
-        return (prisma as unknown as PrismaClientInternal).$transaction(tx => {
+        return config.prisma.$transaction(tx => {
           const adapter = createAdapterFactory({
             config: adapterOptions!.config,
             adapter: createDatabaseAdapter(tx as any),
@@ -229,7 +228,7 @@ export const mailturaAdapter = (config: MailturaAdapterConfig = {}) => {
         });
       },
     },
-    adapter: createDatabaseAdapter(prisma as any),
+    adapter: createDatabaseAdapter(config.prisma as any),
   };
 
   const adapter = createAdapterFactory(adapterOptions);

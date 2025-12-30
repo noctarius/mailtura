@@ -46,7 +46,7 @@ export default auth;
 const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) => {
   return betterAuth({
     ...options,
-    database: mailturaAdapter({ debugLogs: false }),
+    database: mailturaAdapter({ debugLogs: false, prisma: context.prisma }),
     emailAndPassword: {
       enabled: true,
       requireEmailVerification: false,
