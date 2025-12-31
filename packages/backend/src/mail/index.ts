@@ -76,7 +76,7 @@ export async function sendInviteEmail(
   if (!callbackUrl) callbackUrl = "/";
   callbackUrl = encodeURIComponent(callbackUrl);
 
-  const baseUrl = getBaseSystemUrl(prisma);
+  const baseUrl = await getBaseSystemUrl(prisma);
   const url = `${baseUrl}/auth/verify-email?token=${token}&callbackURL=${callbackUrl}`;
 
   const subject = "Welcome to Mailtura!";
@@ -101,7 +101,7 @@ export async function sendVerificationEmail(
 
   if (!user) throw new Error("User not found");
 
-  const baseUrl = getBaseSystemUrl(prisma);
+  const baseUrl = await getBaseSystemUrl(prisma);
   const url = `${baseUrl}/auth/verify-email?token=${token}`;
 
   const subject = "Welcome to Mailtura!";
@@ -122,7 +122,7 @@ export async function sendMagicLinkEmail(prisma: PrismaType, taskManager: TaskMa
 
   if (!user) throw new Error("User not found");
 
-  const baseUrl = getBaseSystemUrl(prisma);
+  const baseUrl = await getBaseSystemUrl(prisma);
   const url = `${baseUrl}/auth/magic-link?token=${token}`;
 
   const subject = "Login to Mailtura!";
@@ -148,12 +148,12 @@ export async function sendResetPasswordEmail(
 
   if (!user) throw new Error("User not found");
 
-  const baseUrl = getBaseSystemUrl(prisma);
+  const baseUrl = await getBaseSystemUrl(prisma);
   const url = `${baseUrl}/auth/verify-email?token=${token}`;
 
   const subject = "Welcome to Mailtura!";
   const content =
-    '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
+    '<mjml><mj-body><mj-section><mj-column><mj-text>Welcome to Mailtura! A password reset was requested for your account. <a href="{{url}}">{{url}}</a></mj-text></mj-column></mj-section></mj-body></mjml>';
   const textContent = `Welcome to Mailtura! Your account has been created. Please click the link below to activate your account. ${url}`;
 
   const name = user.first_name ?? email;
