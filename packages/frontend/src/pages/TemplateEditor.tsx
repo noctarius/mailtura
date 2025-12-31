@@ -9,14 +9,16 @@ const Templates = () => {
   const [selectedTemplate, setSelectedTemplate] = createSignal("welcome");
   const [htmlContent, setHtmlContent] = createSignal(`<mjml>
     <mj-body>
+        {% for contact in contacts %}
         <mj-section>
             <mj-column>
-                <mj-text>{{firstName}}</mj-text>
+                <mj-text>{{contact.firstName}}</mj-text>
             </mj-column>
             <mj-column>
-                <mj-text>{{lastName}}</mj-text>
+                <mj-text>{{contact.lastName}}</mj-text>
             </mj-column>
         </mj-section>
+        {% endfor %}
     </mj-body>
 </mjml>`);
 
