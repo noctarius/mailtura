@@ -49,61 +49,118 @@ export const ServiceOauth2SmtpAuth = Type.Object({
 
 export type ServiceOauth2SmtpAuth = Static<typeof ServiceOauth2SmtpAuth>;
 
-export const SmtpAuth = Type.Intersect([
-  Type.Object({ type: Type.Enum(["usernamePassword", "clientOauth2", "serviceOauth2"]) }),
-  Type.Union([UsernamePasswordSmtpAuth, ClientOauth2SmtpAuth, ServiceOauth2SmtpAuth]),
-]);
+export const SmtpAuth = Type.Intersect(
+  [
+    Type.Object({ type: Type.Enum(["usernamePassword", "clientOauth2", "serviceOauth2"]) }),
+    Type.Union([UsernamePasswordSmtpAuth, ClientOauth2SmtpAuth, ServiceOauth2SmtpAuth]),
+  ],
+  {
+    $id: "SmtpAuth",
+    description: "SMTP authentication",
+    type: "object",
+    additionalProperties: false,
+  }
+);
 
 export type SmtpAuth = Static<typeof SmtpAuth>;
 
-export const SmtpConfig = Type.Object({
-  host: Type.String(),
-  port: Type.Integer({ minimum: 1, maximum: 65535 }),
-  secure: Type.Boolean(),
-  maxConnections: Type.Integer({ minimum: 1 }),
-  maxMessages: Type.Integer({ minimum: 1 }),
-  auth: SmtpAuth,
-});
+export const SmtpConfig = Type.Object(
+  {
+    host: Type.String(),
+    port: Type.Integer({ minimum: 1, maximum: 65535 }),
+    secure: Type.Boolean(),
+    maxConnections: Type.Integer({ minimum: 1 }),
+    maxMessages: Type.Integer({ minimum: 1 }),
+    auth: SmtpAuth,
+  },
+  {
+    $id: "SmtpConfig",
+    description: "SMTP configuration",
+    additionalProperties: false,
+  }
+);
 
 export type SmtpConfig = Static<typeof SmtpConfig>;
 
-export const SendgridConfig = Type.Object({
-  apiKey: Type.String(),
-  region: Type.Optional(Type.Union([Type.Literal("global"), Type.Literal("eu")])),
-  username: Type.Optional(Type.String()),
-  subuser: Type.Optional(Type.String()),
-  verificationKey: Type.String(),
-});
+export const SendgridConfig = Type.Object(
+  {
+    apiKey: Type.String(),
+    region: Type.Optional(Type.Union([Type.Literal("global"), Type.Literal("eu")])),
+    username: Type.Optional(Type.String()),
+    subuser: Type.Optional(Type.String()),
+    verificationKey: Type.String(),
+  },
+  {
+    $id: "SendgridConfig",
+    description: "Sendgrid configuration",
+    additionalProperties: false,
+  }
+);
 
 export type SendgridConfig = Static<typeof SendgridConfig>;
 
-export const MailgunConfig = Type.Object({
-  domain: Type.String(),
-  apiKey: Type.String(),
-});
+export const MailgunConfig = Type.Object(
+  {
+    domain: Type.String(),
+    apiKey: Type.String(),
+  },
+  {
+    $id: "MailgunConfig",
+    description: "Mailgun configuration",
+    additionalProperties: false,
+  }
+);
 
 export type MailgunConfig = Static<typeof MailgunConfig>;
 
-export const MailchimpConfig = Type.Object({
-  apiKey: Type.String(),
-});
+export const MailchimpConfig = Type.Object(
+  {
+    apiKey: Type.String(),
+  },
+  {
+    $id: "MailchimpConfig",
+    description: "Mailchimp configuration",
+    additionalProperties: false,
+  }
+);
 
 export type MailchimpConfig = Static<typeof MailchimpConfig>;
 
-export const MailjetConfig = Type.Object({
-  apiKey: Type.String(),
-  apiSecret: Type.String(),
-});
+export const MailjetConfig = Type.Object(
+  {
+    apiKey: Type.String(),
+    apiSecret: Type.String(),
+  },
+  {
+    $id: "MailjetConfig",
+    description: "Mailjet configuration",
+    additionalProperties: false,
+  }
+);
 
 export type MailjetConfig = Static<typeof MailjetConfig>;
 
-export const MailConfig = Type.Intersect([
-  Type.Object({
-    name: Type.String(),
-    type: Type.Enum(["smtp", "sendgrid", "mailgun", "mailchimp", "mailjet"]),
-  }),
-  Type.Union([SmtpConfig, SendgridConfig, MailgunConfig, MailchimpConfig, MailjetConfig]),
-]);
+export const MailConfig = Type.Intersect(
+  [
+    Type.Object({
+      id: Type.String({ format: "uuid" }),
+      tenant_id: Type.Optional(Type.String({ format: "uuid" })),
+      name: Type.String(),
+      type: Type.Enum(["smtp", "sendgrid", "mailgun", "mailchimp", "mailjet"]),
+      createdAt: Type.Optional(Type.String({ format: "date-time" })),
+      createdBy: Type.Optional(Type.String()),
+      updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+      updatedBy: Type.Optional(Type.String()),
+    }),
+    Type.Union([SmtpConfig, SendgridConfig, MailgunConfig, MailchimpConfig, MailjetConfig]),
+  ],
+  {
+    $id: "MailConfig",
+    description: "Mail configuration",
+    type: "object",
+    additionalProperties: false,
+  }
+);
 
 export type MailConfig = Static<typeof MailConfig>;
 
@@ -148,6 +205,8 @@ export const MailContent = Type.Intersect(
   {
     $id: "MailContent",
     description: "Mail content",
+    type: "object",
+    additionalProperties: false,
   }
 );
 

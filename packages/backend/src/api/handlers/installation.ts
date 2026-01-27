@@ -20,10 +20,16 @@ const UserEmail = Type.Object({
   lastName: Type.String(),
 });
 
-const Installation = Type.Object({
-  user: UserEmail,
-  systemMail: MailConfig,
-});
+const Installation = Type.Object(
+  {
+    user: UserEmail,
+    systemMail: MailConfig,
+  },
+  {
+    type: "object",
+    additionalProperties: false,
+  }
+);
 
 type Installation = Static<typeof Installation>;
 

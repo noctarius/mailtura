@@ -15,6 +15,7 @@ import type {
   TenantEntity,
   UnsubscribeEntity,
   UserEntity,
+  MailConfigEntity,
 } from "./index.js";
 import type {
   Account,
@@ -33,6 +34,7 @@ import type {
   User,
 } from "@mailtura/rpcmodel/api/index.js";
 import type { template_properties } from "./generated/prisma/client.js";
+import type { MailConfig } from "@mailtura/rpcmodel/mails/index.js";
 
 export function mapDateTime<T extends Date, R extends string>(
   date: T | undefined | null
@@ -321,5 +323,31 @@ export function mapAccount(account: AccountEntity): Account {
     createdBy: account.created_by,
     updatedAt: mapDateTime(account.updated_at),
     updatedBy: account.updated_by ?? undefined,
+  };
+}
+
+export function mapMailConfig(mailConfig: MailConfigEntity): MailConfig {
+  return {
+    id: mailConfig.id,
+    tenant_id: mailConfig.tenant_id,
+    name: mailConfig.name,
+    type: mailConfig.type as any,
+    host: (mailConfig.config as any).host,
+    port: (mailConfig.config as any).port,
+    secure: (mailConfig.config as any).secure,
+    maxConnections: (mailConfig.config as any).maxConnections,
+    maxMessages: (mailConfig.config as any).maxMessages,
+    auth: (mailConfig.config as any).auth,
+    apiKey: (mailConfig.config as any).apiKey,
+    region: (mailConfig.config as any).region,
+    username: (mailConfig.config as any).username,
+    subuser: (mailConfig.config as any).subuser,
+    verificationKey: (mailConfig.config as any).verificationKey,
+    domain: (mailConfig.config as any).domain,
+    apiSecret: (mailConfig.config as any).apiSecret,
+    createdAt: mapDateTime(mailConfig.created_at),
+    createdBy: mailConfig.created_by,
+    updatedAt: mapDateTime(mailConfig.updated_at),
+    updatedBy: mailConfig.updated_by ?? undefined,
   };
 }

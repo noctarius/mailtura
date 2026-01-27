@@ -11,7 +11,15 @@ import {
   UnsubscribeSource,
   User,
 } from "./index.js";
-import { MailContent, MailRecipient } from "../mails/index.js";
+import {
+  MailchimpConfig,
+  MailContent,
+  MailgunConfig,
+  MailjetConfig,
+  MailRecipient,
+  SendgridConfig,
+  SmtpConfig,
+} from "../mails/index.js";
 
 type Nullable<T extends TSchema> = ReturnType<
   typeof Type.Optional<ReturnType<typeof Type.Union<[T, ReturnType<typeof Type.Null>]>>>
@@ -79,6 +87,7 @@ export const UpdateTemplate = //
   Type.Partial(Type.Omit(Template, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"]), {
     $id: "UpdateTemplate",
     description: "An update template request",
+    type: "object",
     additionalProperties: false,
   });
 
@@ -93,6 +102,7 @@ export const PreviewTemplate = //
     {
       $id: "PreviewTemplate",
       description: "A preview template request",
+      type: "object",
       additionalProperties: false,
     }
   );
@@ -103,6 +113,7 @@ export const CreateTenant = //
   Type.Omit(Tenant, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy"], {
     $id: "CreateTenant",
     description: "A create tenant request",
+    type: "object",
     additionalProperties: false,
   });
 
@@ -129,6 +140,8 @@ export const CreateSingleSend = //
       $id: "CreateSingleSend",
       description:
         "Create a single email send using either direct or template content and either explicit recipients or subscriber lists.",
+      type: "object",
+      additionalProperties: false,
     }
   );
 
@@ -141,6 +154,7 @@ export const CreateSingleSendResponse = Type.Object(
   {
     $id: "CreateSingleSendResponse",
     description: "Response for creating a single send",
+    type: "object",
     additionalProperties: false,
   }
 );
@@ -253,6 +267,7 @@ export const CreateApiKey = //
   Type.Omit(ApiKey, ["id", "key", "createdAt", "createdBy", "updatedAt", "updatedBy", "active", "lastUsedAt"], {
     $id: "CreateApiKey",
     description: "A create API key request",
+    type: "object",
     additionalProperties: false,
   });
 
@@ -323,3 +338,69 @@ export const CreateBounce = //
   Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "email"]);
 
 export type CreateBounce = Static<typeof CreateBounce>;
+
+export const MailConfigOptions = Type.Union([
+  Type.Object(
+    {
+      type: Type.Literal("smtp"),
+      config: SmtpConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+  Type.Object(
+    {
+      type: Type.Literal("sendgrid"),
+      config: SendgridConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+  Type.Object(
+    {
+      type: Type.Literal("mailgun"),
+      config: MailgunConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+  Type.Object(
+    {
+      type: Type.Literal("mailchimp"),
+      config: MailchimpConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+  Type.Object(
+    {
+      type: Type.Literal("mailjet"),
+      config: MailjetConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+]);
+
+export type MailConfigOptions = Static<typeof MailConfigOptions>;
+
+export const CreateMailConfig = Type.Intersect([
+  Type.Object({
+    name: Type.String(),
+  }),
+  MailConfigOptions,
+]);
+
+export type CreateMailConfig = Static<typeof CreateMailConfig>;
+
+export const UpdateMailConfig = Type.Union([
+  Type.Intersect([
+    Type.Object({
+      name: Type.Optional(Type.String()),
+    }),
+    MailConfigOptions,
+  ]),
+  Type.Object(
+    {
+      name: Type.String(),
+    },
+    { type: "object", additionalProperties: false }
+  ),
+]);
+
+export type UpdateMailConfig = Static<typeof UpdateMailConfig>;

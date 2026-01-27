@@ -21,6 +21,7 @@ import { rolesRoutes } from "./roles.js";
 import { bouncesRoutes } from "./bounces.js";
 import { unsubscribeRoutes } from "./unsubscribe.js";
 import { mailRoutes } from "./mails.js";
+import { mailConfigRoutes } from "./mailconfigs.js";
 import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
 import { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
@@ -238,5 +239,6 @@ export function tenantRoutes<
     subRouter.route("/roles", rolesRoutes);
     subRouter.route("/suppressions/unsubscribes", unsubscribeRoutes);
     subRouter.route("/suppressions/bounces", bouncesRoutes);
+    subRouter.route("/mail-configs", mailConfigRoutes);
   });
 }

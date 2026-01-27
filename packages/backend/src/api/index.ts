@@ -26,20 +26,20 @@ import {
   UnsubscribeSource,
   User,
 } from "@mailtura/rpcmodel/api/index.js";
-import { type Router } from "../router/index.js";
+import { Mail, MailConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { PaginationMetadata } from "@mailtura/rpcmodel/pagination/index.js";
+import type { Router } from "../router/index.js";
+import type { FastifyBaseLogger } from "fastify/types/logger.js";
+import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type {
   RawReplyDefaultExpression,
   RawRequestDefaultExpression,
   RawServerBase,
   RawServerDefault,
 } from "fastify/types/utils.js";
-import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
-import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import { tenantRoutes } from "./handlers/tenants.js";
 import { profileRoutes } from "./handlers/profile.js";
 import { webhookRoutes } from "./handlers/webhooks/index.js";
-import { PaginationMetadata } from "@mailtura/rpcmodel/pagination/index.js";
-import { Mail } from "@mailtura/rpcmodel/mails/index.js";
 
 export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(ErrorResponse);
@@ -69,6 +69,7 @@ export default function registerModelSchema(app: FastifyInstance) {
   app.addSchema(Account);
   app.addSchema(PaginationMetadata);
   app.addSchema(Mail);
+  app.addSchema(MailConfig);
 }
 
 export function registerRoutes<
