@@ -2,7 +2,8 @@ import { MailConfigEntity } from "@mailtura/database";
 import { createSmtpTransport } from "./smtp.js";
 import { createSendgridTransport } from "./sendgrid.js";
 import { createMailjetTransport } from "./mailjet.js";
-import { MailjetConfig, SendgridConfig, SmtpConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { createMailgunTransport } from "./mailgun.js";
+import { MailgunConfig, MailjetConfig, SendgridConfig, SmtpConfig } from "@mailtura/rpcmodel/mails/index.js";
 
 export function newMailTransport(mailConfig: MailConfigEntity) {
   const tenantId = mailConfig.tenant_id;
@@ -18,6 +19,10 @@ export function newMailTransport(mailConfig: MailConfigEntity) {
     case "mailjet": {
       const config = mailConfig.config as MailjetConfig;
       return createMailjetTransport(config, tenantId);
+    }
+    case "mailgun": {
+      const config = mailConfig.config as MailgunConfig;
+      return createMailgunTransport(config, tenantId);
     }
   }
 }

@@ -7,8 +7,7 @@ import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompi
 const SendgridMail = classes.Mail;
 type SendgridMail = typeof SendgridMail;
 type MailData = NonNullable<ConstructorParameters<SendgridMail>[0]>;
-
-export type EmailData = { name?: string; email: string };
+type EmailData = NonNullable<MailData["from"]>;
 
 export function createSendgridTransport(config: SendgridConfig, tenantId: string): Transport {
   return new SendgridTransport(config, tenantId);
@@ -45,7 +44,7 @@ class SendgridTransport extends AbstractTransport {
           body: SendgridMail.create(mail).toJSON(),
         });
         if (response.statusCode >= 200 && response.statusCode < 300) console.log(response.body);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error(error);
       }
     }

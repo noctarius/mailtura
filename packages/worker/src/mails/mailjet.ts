@@ -3,7 +3,9 @@ import { AbstractTransport, Transport } from "./transport.js";
 import { Client, SendEmailV3_1 } from "node-mailjet";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
-export type EmailData = { Name?: string; Email: string };
+type SendEmailV3_1_Body = Parameters<ReturnType<Client["post"]>["request"]>[0];
+type SendEmailV3_1_Message = SendEmailV3_1_Body extends { Messages: (infer M)[] } ? M : never;
+export type EmailData = SendEmailV3_1.EmailAddressTo;
 
 export function createMailjetTransport(config: MailjetConfig, tenantId: string): Transport {
   return new MailjetTransport(config, tenantId);
@@ -33,7 +35,7 @@ class MailjetTransport extends AbstractTransport {
         Messages: messages,
       });
       console.log(result.body);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
     }
 
@@ -44,7 +46,7 @@ class MailjetTransport extends AbstractTransport {
     mail: Mail,
     templateCompiler: TemplateCompiler,
     content: MailDirectContent
-  ): Promise<SendEmailV3_1.Message[]> {
+  ): Promise<SendEmailV3_1_Message[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
@@ -57,7 +59,7 @@ class MailjetTransport extends AbstractTransport {
     mail: Mail,
     templateCompiler: TemplateCompiler,
     content: MailDirectContent
-  ): Promise<SendEmailV3_1.Message[]> {
+  ): Promise<SendEmailV3_1_Message[]> {
     const from = this.#mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
@@ -75,12 +77,12 @@ class MailjetTransport extends AbstractTransport {
           Subject: mail.subject,
           HTMLPart: resolvedTemplate.html,
           TextPart: resolvedTemplate.text,
-        };
+        } as SendEmailV3_1_Message;
       })
     );
   }
 
-  async #createJoinedMessages(mail: Mail, templateCompiler: TemplateCompiler): Promise<SendEmailV3_1.Message[]> {
+  async #createJoinedMessages(mail: Mail, templateCompiler: TemplateCompiler): Promise<SendEmailV3_1_Message[]> {
     const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
@@ -95,7 +97,7 @@ class MailjetTransport extends AbstractTransport {
         Subject: mail.subject,
         HTMLPart: resolvedTemplate.html,
         TextPart: resolvedTemplate.text,
-      },
+      } as SendEmailV3_1_Message,
     ];
   }
 
