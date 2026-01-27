@@ -140,19 +140,35 @@ export const MailjetConfig = Type.Object(
 
 export type MailjetConfig = Static<typeof MailjetConfig>;
 
+export const SesConfig = Type.Object(
+  {
+    region: Type.String(),
+    accessKeyId: Type.String(),
+    secretAccessKey: Type.String(),
+    sessionToken: Type.Optional(Type.String()),
+  },
+  {
+    $id: "SesConfig",
+    description: "Amazon SES configuration",
+    additionalProperties: false,
+  }
+);
+
+export type SesConfig = Static<typeof SesConfig>;
+
 export const MailConfig = Type.Intersect(
   [
     Type.Object({
       id: Type.String({ format: "uuid" }),
       tenant_id: Type.Optional(Type.String({ format: "uuid" })),
       name: Type.String(),
-      type: Type.Enum(["smtp", "sendgrid", "mailgun", "mailchimp", "mailjet"]),
+      type: Type.Enum(["smtp", "sendgrid", "mailgun", "mailchimp", "mailjet", "ses"]),
       createdAt: Type.Optional(Type.String({ format: "date-time" })),
       createdBy: Type.Optional(Type.String()),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),
       updatedBy: Type.Optional(Type.String()),
     }),
-    Type.Union([SmtpConfig, SendgridConfig, MailgunConfig, MailchimpConfig, MailjetConfig]),
+    Type.Union([SmtpConfig, SendgridConfig, MailgunConfig, MailchimpConfig, MailjetConfig, SesConfig]),
   ],
   {
     $id: "MailConfig",

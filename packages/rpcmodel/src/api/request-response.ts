@@ -18,6 +18,7 @@ import {
   MailjetConfig,
   MailRecipient,
   SendgridConfig,
+  SesConfig,
   SmtpConfig,
 } from "../mails/index.js";
 
@@ -372,6 +373,13 @@ export const MailConfigOptions = Type.Union([
     {
       type: Type.Literal("mailjet"),
       config: MailjetConfig,
+    },
+    { type: "object", additionalProperties: false }
+  ),
+  Type.Object(
+    {
+      type: Type.Literal("ses"),
+      config: SesConfig,
     },
     { type: "object", additionalProperties: false }
   ),

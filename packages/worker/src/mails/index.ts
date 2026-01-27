@@ -4,11 +4,13 @@ import { createSendgridTransport } from "./sendgrid.js";
 import { createMailjetTransport } from "./mailjet.js";
 import { createMailgunTransport } from "./mailgun.js";
 import { createMailchimpTransport } from "./mailchimp.js";
+import { createSesTransport } from "./ses.js";
 import {
   MailchimpConfig,
   MailgunConfig,
   MailjetConfig,
   SendgridConfig,
+  SesConfig,
   SmtpConfig,
 } from "@mailtura/rpcmodel/mails/index.js";
 
@@ -34,6 +36,10 @@ export function newMailTransport(mailConfig: MailConfigEntity) {
     case "mailchimp": {
       const config = mailConfig.config as MailchimpConfig;
       return createMailchimpTransport(config, tenantId);
+    }
+    case "ses": {
+      const config = mailConfig.config as SesConfig;
+      return createSesTransport(config, tenantId);
     }
   }
 }
