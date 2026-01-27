@@ -24,6 +24,7 @@
     "@temporalio/worker": "catalog:",
     "@temporalio/workflow": "catalog:",
     "node-html-parser": "^7.0.1",
+    "node-mailjet": "^6.0.11",
     "nodemailer": "^7.0.11",
     "papaparse": "^5.5.3",
     "sanitize-html": "^2.17.0",
