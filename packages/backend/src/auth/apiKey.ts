@@ -23,7 +23,7 @@ export async function validateApiKey(prisma: PrismaType, headerApiKey: string): 
 }
 
 export function generateNewKey(generatedAt: Instant) {
-  const randomKey = getRandomValues(new Uint8Array(64)).toBase64();
+  const randomKey = Buffer.from(getRandomValues(new Uint8Array(64))).toString("base64");
   const checksum = createHash("sha512").update(randomKey).update(generatedAt.formatIsoTime()).digest("base64");
   return `mk.${randomKey}.${checksum}`;
 }

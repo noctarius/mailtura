@@ -34,11 +34,11 @@ const createWorker = async (connection: NativeConnection) => {
           type: 'filesystem',
           cacheDirectory: "/tmp"
         }*/
-        config.devtool = 'inline-source-map';
-        config.externals = ['@prisma/client', '.prisma/client'];
+        config.devtool = "inline-source-map";
+        config.externals = ["@prisma/client", ".prisma/client"];
         return config;
-      }
-    }
+      },
+    },
   });
 };
 
