@@ -11,7 +11,7 @@
     "preview": "bunx --bun vite preview",
     "typecheck": "tsc --noEmit -p tsconfig.app.json",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:openapi": "npx openapi-typescript http://localhost:3000/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
+    "build:openapi": "npx openapi-typescript http://localhost:3333/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
   },
   "dependencies": {
     "@better-auth/passkey": "^1.4.3",

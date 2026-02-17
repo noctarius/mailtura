@@ -1982,6 +1982,123 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/mails/single-send": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            /** @description Create a single email send using either direct or template content and either explicit recipients or subscriber lists. */
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        mailConfigId: string;
+                        /** Format: uuid */
+                        mailSenderId: string;
+                        subject: string;
+                        /** @description Mail content */
+                        content: {
+                            /** @enum {unknown} */
+                            type: "direct" | "template";
+                        } & ({
+                            content: string;
+                            textContent?: string;
+                            isTemplate?: boolean;
+                            substitutions?: {
+                                [key: string]: string;
+                            };
+                        } | {
+                            templateId: string;
+                        });
+                        recipients?: {
+                            to: {
+                                email: string;
+                                name?: string;
+                            } | {
+                                email: string;
+                                name?: string;
+                            }[];
+                            cc?: {
+                                email: string;
+                                name?: string;
+                            } | {
+                                email: string;
+                                name?: string;
+                            }[];
+                            bcc?: {
+                                email: string;
+                                name?: string;
+                            } | {
+                                email: string;
+                                name?: string;
+                            }[];
+                            replyTo?: {
+                                email: string;
+                                name?: string;
+                            };
+                            substitutions?: {
+                                [key: string]: string;
+                            };
+                        }[];
+                        subscriberListIds?: string[];
+                        substitutions?: {
+                            [key: string]: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description Response for creating a single send */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            /** Format: uuid */
+                            id: string;
+                        };
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/api-keys/": {
         parameters: {
             query?: never;
@@ -3099,6 +3216,403 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/mail-configs/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    cursor?: string;
+                    limit?: number;
+                    query?: string;
+                    sort?: string;
+                };
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data: components["schemas"]["MailConfig"][];
+                            metadata: components["schemas"]["PaginationMetadata"];
+                        };
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /** @enum {string} */
+                        type: "smtp";
+                        /** @description SMTP configuration */
+                        config: {
+                            host: string;
+                            port: number;
+                            secure: boolean;
+                            maxConnections: number;
+                            maxMessages: number;
+                            /** @description SMTP authentication */
+                            auth: {
+                                /** @enum {unknown} */
+                                type: "usernamePassword" | "clientOauth2" | "serviceOauth2";
+                            } & ({
+                                username: string;
+                                password: string;
+                            } | {
+                                username: string;
+                                clientId: string;
+                                clientSecret: string;
+                                accessToken?: string;
+                                refreshToken?: string;
+                                expiresAt: number;
+                                accessUrl?: string;
+                            } | {
+                                username: string;
+                                serviceClient: string;
+                                privateKeyId: string;
+                            });
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "sendgrid";
+                        /** @description Sendgrid configuration */
+                        config: {
+                            apiKey: string;
+                            region?: "global" | "eu";
+                            username?: string;
+                            subuser?: string;
+                            verificationKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailgun";
+                        /** @description Mailgun configuration */
+                        config: {
+                            domain: string;
+                            apiKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailchimp";
+                        /** @description Mailchimp configuration */
+                        config: {
+                            apiKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailjet";
+                        /** @description Mailjet configuration */
+                        config: {
+                            apiKey: string;
+                            apiSecret: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "ses";
+                        /** @description Amazon SES configuration */
+                        config: {
+                            region: string;
+                            accessKeyId: string;
+                            secretAccessKey: string;
+                            sessionToken?: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description Mail configuration */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MailConfig"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/tenants/{tenant_id}/mail-configs/{mail_config_id}/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    mail_config_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Mail configuration */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MailConfig"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    mail_config_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: {
+                content: {
+                    "application/json": {
+                        name: string;
+                        /** @enum {string} */
+                        type: "smtp";
+                        /** @description SMTP configuration */
+                        config: {
+                            host: string;
+                            port: number;
+                            secure: boolean;
+                            maxConnections: number;
+                            maxMessages: number;
+                            /** @description SMTP authentication */
+                            auth: {
+                                /** @enum {unknown} */
+                                type: "usernamePassword" | "clientOauth2" | "serviceOauth2";
+                            } & ({
+                                username: string;
+                                password: string;
+                            } | {
+                                username: string;
+                                clientId: string;
+                                clientSecret: string;
+                                accessToken?: string;
+                                refreshToken?: string;
+                                expiresAt: number;
+                                accessUrl?: string;
+                            } | {
+                                username: string;
+                                serviceClient: string;
+                                privateKeyId: string;
+                            });
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "sendgrid";
+                        /** @description Sendgrid configuration */
+                        config: {
+                            apiKey: string;
+                            region?: "global" | "eu";
+                            username?: string;
+                            subuser?: string;
+                            verificationKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailgun";
+                        /** @description Mailgun configuration */
+                        config: {
+                            domain: string;
+                            apiKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailchimp";
+                        /** @description Mailchimp configuration */
+                        config: {
+                            apiKey: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "mailjet";
+                        /** @description Mailjet configuration */
+                        config: {
+                            apiKey: string;
+                            apiSecret: string;
+                        };
+                    } | {
+                        name: string;
+                        /** @enum {string} */
+                        type: "ses";
+                        /** @description Amazon SES configuration */
+                        config: {
+                            region: string;
+                            accessKeyId: string;
+                            secretAccessKey: string;
+                            sessionToken?: string;
+                        };
+                    };
+                };
+            };
+            responses: {
+                /** @description Mail configuration */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["MailConfig"];
+                    };
+                };
+                /** @description An error response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    tenant_id: string;
+                    mail_config_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+                /** @description An error response */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/profile/": {
         parameters: {
             query?: never;
@@ -3321,6 +3835,8 @@ export interface components {
             id: string;
             /** Format: uuid */
             contactId: string;
+            /** Format: email */
+            email?: string;
             /** Format: date-time */
             bouncedAt: string;
             reason: string;
@@ -3388,6 +3904,8 @@ export interface components {
             id: string;
             /** Format: uuid */
             contactId: string;
+            /** Format: email */
+            email?: string;
             /**
              * @description The source of an unsubscribe
              * @default Email
@@ -3563,6 +4081,261 @@ export interface components {
             firstCursor?: string;
             lastCursor?: string;
             currentCursor?: string;
+        };
+        /** @description Mail */
+        Mail: {
+            from: {
+                email: string;
+                name?: string;
+            };
+            subject: string;
+            /** @description Mail content */
+            content: {
+                /** @enum {unknown} */
+                type: "direct" | "template";
+            } & ({
+                content: string;
+                textContent?: string;
+                isTemplate?: boolean;
+                substitutions?: {
+                    [key: string]: string;
+                };
+            } | {
+                templateId: string;
+            });
+            recipients: {
+                to: {
+                    email: string;
+                    name?: string;
+                } | {
+                    email: string;
+                    name?: string;
+                }[];
+                cc?: {
+                    email: string;
+                    name?: string;
+                } | {
+                    email: string;
+                    name?: string;
+                }[];
+                bcc?: {
+                    email: string;
+                    name?: string;
+                } | {
+                    email: string;
+                    name?: string;
+                }[];
+                replyTo?: {
+                    email: string;
+                    name?: string;
+                };
+                substitutions?: {
+                    [key: string]: string;
+                };
+            }[];
+            substitutions?: {
+                [key: string]: string;
+            };
+            features: {
+                trackOpens?: boolean;
+                trackClicks?: boolean;
+            };
+        };
+        /** @description Mail content */
+        MailContent: {
+            /** @enum {unknown} */
+            type: "direct" | "template";
+        } & ({
+            content: string;
+            textContent?: string;
+            isTemplate?: boolean;
+            substitutions?: {
+                [key: string]: string;
+            };
+        } | {
+            templateId: string;
+        });
+        /** @description Direct mail content */
+        MailDirectContent: {
+            content: string;
+            textContent?: string;
+            isTemplate?: boolean;
+            substitutions?: {
+                [key: string]: string;
+            };
+        };
+        /** @description Templated mail content */
+        MailTemplatedContent: {
+            templateId: string;
+        };
+        /** @description Mail recipient */
+        MailRecipient: {
+            to: {
+                email: string;
+                name?: string;
+            } | {
+                email: string;
+                name?: string;
+            }[];
+            cc?: {
+                email: string;
+                name?: string;
+            } | {
+                email: string;
+                name?: string;
+            }[];
+            bcc?: {
+                email: string;
+                name?: string;
+            } | {
+                email: string;
+                name?: string;
+            }[];
+            replyTo?: {
+                email: string;
+                name?: string;
+            };
+            substitutions?: {
+                [key: string]: string;
+            };
+        };
+        /** @description Mail configuration */
+        MailConfig: {
+            /** Format: uuid */
+            id: string;
+            /** Format: uuid */
+            tenant_id?: string;
+            name: string;
+            /** @enum {unknown} */
+            type: "smtp" | "sendgrid" | "mailgun" | "mailchimp" | "mailjet" | "ses";
+            /** Format: date-time */
+            createdAt?: string;
+            createdBy?: string;
+            /** Format: date-time */
+            updatedAt?: string;
+            updatedBy?: string;
+        } & ({
+            host: string;
+            port: number;
+            secure: boolean;
+            maxConnections: number;
+            maxMessages: number;
+            /** @description SMTP authentication */
+            auth: {
+                /** @enum {unknown} */
+                type: "usernamePassword" | "clientOauth2" | "serviceOauth2";
+            } & ({
+                username: string;
+                password: string;
+            } | {
+                username: string;
+                clientId: string;
+                clientSecret: string;
+                accessToken?: string;
+                refreshToken?: string;
+                expiresAt: number;
+                accessUrl?: string;
+            } | {
+                username: string;
+                serviceClient: string;
+                privateKeyId: string;
+            });
+        } | {
+            apiKey: string;
+            region?: "global" | "eu";
+            username?: string;
+            subuser?: string;
+            verificationKey: string;
+        } | {
+            domain: string;
+            apiKey: string;
+        } | {
+            apiKey: string;
+        } | {
+            apiKey: string;
+            apiSecret: string;
+        } | {
+            region: string;
+            accessKeyId: string;
+            secretAccessKey: string;
+            sessionToken?: string;
+        });
+        /** @description SMTP configuration */
+        SmtpConfig: {
+            host: string;
+            port: number;
+            secure: boolean;
+            maxConnections: number;
+            maxMessages: number;
+            /** @description SMTP authentication */
+            auth: {
+                /** @enum {unknown} */
+                type: "usernamePassword" | "clientOauth2" | "serviceOauth2";
+            } & ({
+                username: string;
+                password: string;
+            } | {
+                username: string;
+                clientId: string;
+                clientSecret: string;
+                accessToken?: string;
+                refreshToken?: string;
+                expiresAt: number;
+                accessUrl?: string;
+            } | {
+                username: string;
+                serviceClient: string;
+                privateKeyId: string;
+            });
+        };
+        /** @description SMTP authentication */
+        SmtpAuth: {
+            /** @enum {unknown} */
+            type: "usernamePassword" | "clientOauth2" | "serviceOauth2";
+        } & ({
+            username: string;
+            password: string;
+        } | {
+            username: string;
+            clientId: string;
+            clientSecret: string;
+            accessToken?: string;
+            refreshToken?: string;
+            expiresAt: number;
+            accessUrl?: string;
+        } | {
+            username: string;
+            serviceClient: string;
+            privateKeyId: string;
+        });
+        /** @description Sendgrid configuration */
+        SendgridConfig: {
+            apiKey: string;
+            region?: "global" | "eu";
+            username?: string;
+            subuser?: string;
+            verificationKey: string;
+        };
+        /** @description Mailgun configuration */
+        MailgunConfig: {
+            domain: string;
+            apiKey: string;
+        };
+        /** @description Mailchimp configuration */
+        MailchimpConfig: {
+            apiKey: string;
+        };
+        /** @description Mailjet configuration */
+        MailjetConfig: {
+            apiKey: string;
+            apiSecret: string;
+        };
+        /** @description Amazon SES configuration */
+        SesConfig: {
+            region: string;
+            accessKeyId: string;
+            secretAccessKey: string;
+            sessionToken?: string;
         };
     };
     responses: never;
