@@ -393,7 +393,7 @@ const ApiKeyManagement = () => {
             <p class="text-gray-600 mb-6">
               {searchTerm() || selectedStatus() !== "all"
                 ? "Try adjusting your search or filter criteria."
-                : "Create your first API key to start using the EmailFlow API."}
+                : "Create your first API key to start using the Mailtura API."}
             </p>
             <button
               onClick={() => setShowCreateModal(true)}

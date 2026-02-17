@@ -7,11 +7,12 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
-import { MailConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { type Static, Type } from "typebox";
 import { requiresInstallation } from "../../helpers/requires-installation.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
+import { CreateMailConfig } from "@mailtura/rpcmodel/api/request-response.js";
+import { Prisma } from "@mailtura/database";
 
 const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),
@@ -23,7 +24,7 @@ const UserEmail = Type.Object({
 const Installation = Type.Object(
   {
     user: UserEmail,
-    systemMail: MailConfig,
+    systemMail: CreateMailConfig,
   },
   {
     type: "object",
@@ -34,11 +35,6 @@ const Installation = Type.Object(
 type Installation = Static<typeof Installation>;
 
 const passwordHasher = newPasswordHasher();
-
-const filterMailSettings = (mailSettings: MailConfig) => {
-  const { name, type, ...rest } = mailSettings;
-  return rest;
-};
 
 export function installationRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -57,7 +53,7 @@ export function installationRoutes<
     },
     async (_, reply) => {
       if (!(await requiresInstallation(prisma))) {
-        return reply.status(500).send({ installation: "Finished" });
+        return reply.status(500).send({ installation: "finished" });
       }
       return reply.send({ installation: "required" });
     }
@@ -73,7 +69,7 @@ export function installationRoutes<
     },
     async (request, reply) => {
       if (!(await requiresInstallation(prisma))) {
-        return reply.status(500).send({ installation: "Finished" });
+        return reply.status(500).send({ installation: "finished" });
       }
 
       return prisma.$transaction(async tx => {
@@ -197,9 +193,9 @@ export function installationRoutes<
         await tx.mail_configs.create({
           data: {
             tenant_id: tenant.id,
-            name: "System",
+            name: request.body.systemMail.name,
             type: request.body.systemMail.type,
-            config: filterMailSettings(request.body.systemMail),
+            config: request.body.systemMail.config as Prisma.InputJsonValue,
             created_at: UTC.now().toDate(),
             created_by: "api",
           },

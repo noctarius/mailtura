@@ -1,4 +1,4 @@
-import { createEffect, createSignal, lazy, onCleanup, ParentComponent } from "solid-js";
+import { createEffect, createSignal, lazy, onCleanup, onMount, ParentComponent } from "solid-js";
 import { Navigate, Route, Router } from "@solidjs/router";
 import Sidebar from "./components/interfaces/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -10,6 +10,8 @@ import SignIn from "./pages/SignIn.js";
 import { toast, Toaster } from "solid-toast";
 import { AuthGuard } from "./components/interfaces/AuthGuard.js";
 import { useRegisterSW } from "virtual:pwa-register/solid";
+import { API_URL } from "./constants.js";
+import InstallationSetup from "./pages/InstallationSetup.js";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const AppLayout: ParentComponent = props => {
 function AppContent() {
   const auth = useAuth();
   const [authView, setAuthView] = createSignal<"signin" | "signup">("signin");
+  const [isInstallationCheckLoading, setIsInstallationCheckLoading] = createSignal(true);
+  const [isInstallationRequired, setIsInstallationRequired] = createSignal(false);
 
   const Campaigns = lazy(() => import("./pages/Campaigns.js"));
   const TemplateEditor = lazy(() => import("./pages/TemplateEditor.js"));
@@ -82,10 +86,40 @@ function AppContent() {
     setNeedRefresh(false);
   });
 
+  onMount(async () => {
+    try {
+      const response = await fetch(new URL("api/v1/install", API_URL), {
+        credentials: "include",
+      });
+
+      if (response.status === 404) {
+        setIsInstallationRequired(false);
+        return;
+      }
+
+      if (!response.ok) {
+        setIsInstallationRequired(false);
+        return;
+      }
+
+      const payload = (await response.json()) as { installation?: "required" | "finished" };
+      const installationRequired = payload.installation === "required";
+
+      setIsInstallationRequired(installationRequired);
+      if (installationRequired) {
+        setAuthView("signup");
+      }
+    } catch {
+      setIsInstallationRequired(false);
+    } finally {
+      setIsInstallationCheckLoading(false);
+    }
+  });
+
   return (
     <>
       <Toaster />
-      {auth.isLoading() ? (
+      {isInstallationCheckLoading() || auth.isLoading() ? (
         <div class="min-h-screen bg-gray-50 flex items-center justify-center">
           <div class="text-center">
             <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -93,7 +127,14 @@ function AppContent() {
           </div>
         </div>
       ) : !auth.isAuthenticated() ? (
-        authView() === "signin" ? (
+        isInstallationRequired() ? (
+          <InstallationSetup
+            onInstalled={() => {
+              setIsInstallationRequired(false);
+              setAuthView("signin");
+            }}
+          />
+        ) : authView() === "signin" ? (
           <SignIn onSwitchToSignUp={() => setAuthView("signup")} />
         ) : (
           <SignUp onSwitchToSignIn={() => setAuthView("signin")} />

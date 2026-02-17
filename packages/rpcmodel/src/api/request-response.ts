@@ -343,6 +343,7 @@ export type CreateBounce = Static<typeof CreateBounce>;
 export const MailConfigOptions = Type.Union([
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("smtp"),
       config: SmtpConfig,
     },
@@ -350,6 +351,7 @@ export const MailConfigOptions = Type.Union([
   ),
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("sendgrid"),
       config: SendgridConfig,
     },
@@ -357,6 +359,7 @@ export const MailConfigOptions = Type.Union([
   ),
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("mailgun"),
       config: MailgunConfig,
     },
@@ -364,6 +367,7 @@ export const MailConfigOptions = Type.Union([
   ),
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("mailchimp"),
       config: MailchimpConfig,
     },
@@ -371,6 +375,7 @@ export const MailConfigOptions = Type.Union([
   ),
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("mailjet"),
       config: MailjetConfig,
     },
@@ -378,6 +383,7 @@ export const MailConfigOptions = Type.Union([
   ),
   Type.Object(
     {
+      name: Type.String(),
       type: Type.Literal("ses"),
       config: SesConfig,
     },
@@ -387,28 +393,10 @@ export const MailConfigOptions = Type.Union([
 
 export type MailConfigOptions = Static<typeof MailConfigOptions>;
 
-export const CreateMailConfig = Type.Intersect([
-  Type.Object({
-    name: Type.String(),
-  }),
-  MailConfigOptions,
-]);
+export const CreateMailConfig = Type.Union([MailConfigOptions]);
 
 export type CreateMailConfig = Static<typeof CreateMailConfig>;
 
-export const UpdateMailConfig = Type.Union([
-  Type.Intersect([
-    Type.Object({
-      name: Type.Optional(Type.String()),
-    }),
-    MailConfigOptions,
-  ]),
-  Type.Object(
-    {
-      name: Type.String(),
-    },
-    { type: "object", additionalProperties: false }
-  ),
-]);
+export const UpdateMailConfig = Type.Union([MailConfigOptions]);
 
 export type UpdateMailConfig = Static<typeof UpdateMailConfig>;

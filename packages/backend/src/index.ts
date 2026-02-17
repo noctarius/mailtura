@@ -127,9 +127,9 @@ registerModelSchema(app);
   router.route("/api/v1", registerRoutes);
   if (await requiresInstallation(prisma)) {
     console.info("Installation required, enabling installation routes.");
-    router.route("/api/v1/install", installationRoutes);
+    router.route("/api/v1/install", installationRoutes, false);
   }
 
-  console.info("Starting server at :3000...");
-  await app.listen({ host: "0.0.0.0", port: 3000 });
+  console.info("Starting server at :3333...");
+  await app.listen({ host: "0.0.0.0", port: 3333 });
 })();

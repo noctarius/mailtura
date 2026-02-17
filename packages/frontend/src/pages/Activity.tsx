@@ -38,7 +38,7 @@ const Activity = () => {
       lastEventType: "clicked",
       opens: 3,
       clicks: 2,
-      subject: "Welcome to EmailFlow!",
+      subject: "Welcome to Mailtura!",
     },
     {
       id: 2,
