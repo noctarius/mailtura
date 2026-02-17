@@ -535,3 +535,9 @@ export const MailSender = Type.Object({
 });
 
 export type MailSender = Static<typeof MailSender>;
+
+export const SystemConfig = Type.Object({
+  apiBase: Type.String(),
+});
+
+export type SystemConfig = Static<typeof SystemConfig>;

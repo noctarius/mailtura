@@ -6,8 +6,14 @@ import {
   MailDirectContent,
 } from "@mailtura/rpcmodel/mails/index.js";
 import { getRpcManager } from "../rpc/index.js";
+import { createTemplateCompiler, TemplateResolver } from "@mailtura/contentcompiler";
 
 const rpcManager = getRpcManager();
+
+export interface TransportConfig {
+  apiBase: string;
+  templateResolver: TemplateResolver;
+}
 
 export interface Transport {
   send(mail: Mail): Promise<number>;
@@ -15,9 +21,11 @@ export interface Transport {
 
 export abstract class AbstractTransport implements Transport {
   readonly #tenantId: string;
+  readonly #transportConfig: TransportConfig;
 
-  protected constructor(tenantId: string) {
+  protected constructor(tenantId: string, transportConfig: TransportConfig) {
     this.#tenantId = tenantId;
+    this.#transportConfig = transportConfig;
   }
 
   protected async getTemplateContent(content: MailContent): Promise<MailDirectContent> {
@@ -47,5 +55,9 @@ export abstract class AbstractTransport implements Transport {
       ...(mailSubstitutions ?? {}),
       ...(recipientSubstitutions ?? {}),
     };
+  }
+
+  protected createContentCompiler() {
+    return createTemplateCompiler(this.#transportConfig.templateResolver, this.#transportConfig.apiBase);
   }
 }

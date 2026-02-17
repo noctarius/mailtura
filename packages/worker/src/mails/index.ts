@@ -1,10 +1,10 @@
 import { MailConfigEntity } from "@mailtura/database";
-import { createSmtpTransport } from "./smtp.js";
-import { createSendgridTransport } from "./sendgrid.js";
-import { createMailjetTransport } from "./mailjet.js";
-import { createMailgunTransport } from "./mailgun.js";
-import { createMailchimpTransport } from "./mailchimp.js";
-import { createSesTransport } from "./ses.js";
+import { SmtpTransport } from "./smtp.js";
+import { SendgridTransport } from "./sendgrid.js";
+import { MailjetTransport } from "./mailjet.js";
+import { MailgunTransport } from "./mailgun.js";
+import { MailchimpTransport } from "./mailchimp.js";
+import { SesTransport } from "./ses.js";
 import {
   MailchimpConfig,
   MailgunConfig,
@@ -13,33 +13,34 @@ import {
   SesConfig,
   SmtpConfig,
 } from "@mailtura/rpcmodel/mails/index.js";
+import { TransportConfig } from "./transport.js";
 
-export function newMailTransport(mailConfig: MailConfigEntity) {
+export function newMailTransport(mailConfig: MailConfigEntity, transportConfig: TransportConfig) {
   const tenantId = mailConfig.tenant_id;
   switch (mailConfig.type) {
     case "smtp": {
       const config = mailConfig.config as SmtpConfig;
-      return createSmtpTransport(config, tenantId);
+      return new SmtpTransport(config, tenantId, transportConfig);
     }
     case "sendgrid": {
       const config = mailConfig.config as SendgridConfig;
-      return createSendgridTransport(config, tenantId);
+      return new SendgridTransport(config, tenantId, transportConfig);
     }
     case "mailjet": {
       const config = mailConfig.config as MailjetConfig;
-      return createMailjetTransport(config, tenantId);
+      return new MailjetTransport(config, tenantId, transportConfig);
     }
     case "mailgun": {
       const config = mailConfig.config as MailgunConfig;
-      return createMailgunTransport(config, tenantId);
+      return new MailgunTransport(config, tenantId, transportConfig);
     }
     case "mailchimp": {
       const config = mailConfig.config as MailchimpConfig;
-      return createMailchimpTransport(config, tenantId);
+      return new MailchimpTransport(config, tenantId, transportConfig);
     }
     case "ses": {
       const config = mailConfig.config as SesConfig;
-      return createSesTransport(config, tenantId);
+      return new SesTransport(config, tenantId, transportConfig);
     }
   }
 }

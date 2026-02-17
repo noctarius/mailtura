@@ -1,10 +1,18 @@
 import type { SendMailArguments } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
-import { MailSendingEntity, MailSendingReceiverEntity, newPrismaClient, PrismaType } from "@mailtura/database";
+import {
+  MailSendingEntity,
+  MailSendingReceiverEntity,
+  mapTemplate,
+  newPrismaClient,
+  PrismaType,
+} from "@mailtura/database";
 import { newMailTransport } from "../../mails/index.js";
 import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { PrismaPg } from "@prisma/adapter-pg";
+import { getSystemConfig } from "../../helper/system-config.js";
+import { TransportConfig } from "../../mails/transport.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -54,7 +62,17 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
     email: mailSender.email,
   };
 
-  const transport = newMailTransport(mailConfig);
+  const systemConfig = await getSystemConfig(prisma);
+  const transportConfig: TransportConfig = {
+    apiBase: systemConfig.apiBase,
+    templateResolver: async templateId => {
+      const template = await prisma.templates.findUnique({ where: { id: templateId } });
+      if (!template) return undefined;
+      return mapTemplate(template);
+    },
+  };
+
+  const transport = newMailTransport(mailConfig, transportConfig);
   if (!transport) {
     throw new Error(`Mail transport not found for mail sending ${mailSendingId} on tenant ${tenantId}`);
   }

@@ -1,5 +1,5 @@
 import { Mail, MailContact, MailDirectContent, MailjetConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { AbstractTransport, TransportConfig } from "./transport.js";
 import type { SendEmailV3_1 } from "node-mailjet";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 import { createRequire } from "node:module";
@@ -22,15 +22,11 @@ const Mailjet = require("node-mailjet") as {
 type SendEmailV3_1_Message = SendEmailV3_1.Message;
 export type EmailData = SendEmailV3_1.EmailAddressTo;
 
-export function createMailjetTransport(config: MailjetConfig, tenantId: string): Transport {
-  return new MailjetTransport(config, tenantId);
-}
-
-class MailjetTransport extends AbstractTransport {
+export class MailjetTransport extends AbstractTransport {
   readonly #config: MailjetConfig;
 
-  constructor(config: MailjetConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: MailjetConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -39,7 +35,7 @@ class MailjetTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     const messages = await this.#createMessages(mail, templateCompiler, content);
 
     try {

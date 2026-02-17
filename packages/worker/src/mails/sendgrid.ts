@@ -1,5 +1,5 @@
 import { Mail, MailContact, MailDirectContent, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { AbstractTransport, TransportConfig } from "./transport.js";
 import { Client } from "@sendgrid/client";
 import { classes } from "@sendgrid/helpers";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
@@ -9,15 +9,11 @@ type SendgridMail = typeof SendgridMail;
 type MailData = NonNullable<ConstructorParameters<SendgridMail>[0]>;
 type EmailData = NonNullable<MailData["from"]>;
 
-export function createSendgridTransport(config: SendgridConfig, tenantId: string): Transport {
-  return new SendgridTransport(config, tenantId);
-}
-
-class SendgridTransport extends AbstractTransport {
+export class SendgridTransport extends AbstractTransport {
   readonly #config: SendgridConfig;
 
-  constructor(config: SendgridConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: SendgridConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -32,9 +28,8 @@ class SendgridTransport extends AbstractTransport {
     }
 
     const content = await this.getTemplateContent(mail.content);
-    console.log(content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     const mailData = await this.#createMails(mail, templateCompiler, content);
     for (const mail of mailData) {
       try {

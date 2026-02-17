@@ -1,20 +1,16 @@
-import { Mail, MailContact, MailDirectContent, MailchimpConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { Mail, MailchimpConfig, MailContact, MailDirectContent } from "@mailtura/rpcmodel/mails/index.js";
+import { AbstractTransport, TransportConfig } from "./transport.js";
 import mailchimp from "@mailchimp/mailchimp_transactional";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 type MailchimpClient = ReturnType<typeof mailchimp>;
 type Message = Parameters<MailchimpClient["messages"]["send"]>[0]["message"];
 
-export function createMailchimpTransport(config: MailchimpConfig, tenantId: string): Transport {
-  return new MailchimpTransport(config, tenantId);
-}
-
-class MailchimpTransport extends AbstractTransport {
+export class MailchimpTransport extends AbstractTransport {
   readonly #config: MailchimpConfig;
 
-  constructor(config: MailchimpConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: MailchimpConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -23,7 +19,7 @@ class MailchimpTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     const messages = await this.#createMessages(mail, templateCompiler, content);
 
     for (const message of messages) {

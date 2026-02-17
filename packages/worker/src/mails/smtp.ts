@@ -11,18 +11,14 @@ import {
 } from "@mailtura/rpcmodel/mails/index.js";
 import { createTransport as createNodemailerTransport } from "nodemailer";
 import { Address, Options } from "nodemailer/lib/mailer/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { AbstractTransport, TransportConfig } from "./transport.js";
 import { createTemplateCompiler } from "@mailtura/contentcompiler";
 
-export function createSmtpTransport(config: SmtpConfig, tenantId: string): Transport {
-  return new SmtpTransport(config, tenantId);
-}
-
-class SmtpTransport extends AbstractTransport {
+export class SmtpTransport extends AbstractTransport {
   readonly #config: SmtpConfig;
 
-  constructor(config: SmtpConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: SmtpConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -40,7 +36,7 @@ class SmtpTransport extends AbstractTransport {
     const from = this.#mapMailAddress(mail.from);
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     for (const recipient of mail.recipients) {
       const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
       const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);

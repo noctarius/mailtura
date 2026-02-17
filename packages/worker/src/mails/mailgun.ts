@@ -1,20 +1,16 @@
 import { Mail, MailContact, MailDirectContent, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { AbstractTransport, TransportConfig } from "./transport.js";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 type MailgunMessageData = Parameters<ReturnType<Mailgun["client"]>["messages"]["create"]>[1];
 
-export function createMailgunTransport(config: MailgunConfig, tenantId: string): Transport {
-  return new MailgunTransport(config, tenantId);
-}
-
-class MailgunTransport extends AbstractTransport {
+export class MailgunTransport extends AbstractTransport {
   readonly #config: MailgunConfig;
 
-  constructor(config: MailgunConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: MailgunConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -27,7 +23,7 @@ class MailgunTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     const messages = await this.#createMessages(mail, templateCompiler, content);
 
     for (const message of messages) {

@@ -1,19 +1,15 @@
 import { Mail, MailContact, MailDirectContent, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport } from "./transport.js";
+import { AbstractTransport, Transport, TransportConfig } from "./transport.js";
 import { SendEmailCommand, SESClient, SendEmailCommandInput } from "@aws-sdk/client-ses";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 type SendEmailRequest = SendEmailCommandInput;
 
-export function createSesTransport(config: SesConfig, tenantId: string): Transport {
-  return new SesTransport(config, tenantId);
-}
-
-class SesTransport extends AbstractTransport {
+export class SesTransport extends AbstractTransport {
   readonly #config: SesConfig;
 
-  constructor(config: SesConfig, tenantId: string) {
-    super(tenantId);
+  constructor(config: SesConfig, tenantId: string, transportConfig: TransportConfig) {
+    super(tenantId, transportConfig);
     this.#config = config;
   }
 
@@ -29,7 +25,7 @@ class SesTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = createTemplateCompiler(async () => undefined, "");
+    const templateCompiler = this.createContentCompiler();
     const requests = await this.#createRequests(mail, templateCompiler, content);
 
     for (const request of requests) {
