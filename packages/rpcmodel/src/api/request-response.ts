@@ -135,7 +135,7 @@ export const CreateSingleSend = //
       // Either provide explicit recipients or subscriber list ids
       recipients: Type.Optional(Type.Array(MailRecipient, { minItems: 1 })),
       subscriberListIds: Type.Optional(Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true })),
-      substitutions: Type.Optional(Type.Record(Type.String(), Type.String())),
+      substitutions: Type.Optional(Type.Record(Type.String(), Type.Any())),
     },
     {
       $id: "CreateSingleSend",

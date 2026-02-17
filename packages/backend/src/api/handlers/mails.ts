@@ -10,12 +10,7 @@ import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { Prisma } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import {
-  CreateSingleSend,
-  type CreateSingleSend as CreateSingleSendType,
-  CreateSingleSendResponse,
-  type CreateSingleSendResponse as CreateSingleSendResponseType,
-} from "@mailtura/rpcmodel/api/request-response.js";
+import { CreateSingleSend, CreateSingleSendResponse } from "@mailtura/rpcmodel/api/request-response.js";
 import { isDirectContent, isTemplatedContent } from "@mailtura/rpcmodel/mails/index.js";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 
@@ -29,8 +24,8 @@ export function mailRoutes<
   const { prisma, taskManager } = router.context();
   router.post<{
     Params: { tenant_id: string };
-    Body: CreateSingleSendType;
-    Reply: CreateSingleSendResponseType;
+    Body: CreateSingleSend;
+    Reply: CreateSingleSendResponse;
   }>(
     "/single-send",
     {
@@ -46,7 +41,7 @@ export function mailRoutes<
     },
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
-
+      console.log(JSON.stringify(request.body, null, 2));
       const { mailConfigId, mailSenderId, subject, content, recipients, subscriberListIds, substitutions } =
         request.body;
 
@@ -85,7 +80,7 @@ export function mailRoutes<
         created_at: UTC.now().toDate(),
         created_by: "api",
       };
-
+      console.log(content.type);
       if (isDirectContent(content)) {
         data.content = content.content;
         data.text_content = content.textContent ?? null;
@@ -129,7 +124,7 @@ export function mailRoutes<
 
       await taskManager.createSendMailJob(tenantId, mailSending.id);
 
-      const response: CreateSingleSendResponseType = { id: mailSending.id };
+      const response: CreateSingleSendResponse = { id: mailSending.id };
       return reply.status(201).send(response);
     }
   );
