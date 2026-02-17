@@ -1,10 +1,25 @@
 import { Mail, MailContact, MailDirectContent, MailjetConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, Transport } from "./transport.js";
-import { Client, SendEmailV3_1 } from "node-mailjet";
+import type { SendEmailV3_1 } from "node-mailjet";
 import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
+import { createRequire } from "node:module";
 
-type SendEmailV3_1_Body = Parameters<ReturnType<Client["post"]>["request"]>[0];
-type SendEmailV3_1_Message = SendEmailV3_1_Body extends { Messages: (infer M)[] } ? M : never;
+const require = createRequire(import.meta.url);
+const Mailjet = require("node-mailjet") as {
+  apiConnect: (
+    apiKey: string,
+    apiSecret: string
+  ) => {
+    post: (
+      resource: string,
+      config?: { version?: string }
+    ) => {
+      request: (body: SendEmailV3_1.Body) => Promise<{ body: unknown }>;
+    };
+  };
+};
+
+type SendEmailV3_1_Message = SendEmailV3_1.Message;
 export type EmailData = SendEmailV3_1.EmailAddressTo;
 
 export function createMailjetTransport(config: MailjetConfig, tenantId: string): Transport {
@@ -20,10 +35,7 @@ class MailjetTransport extends AbstractTransport {
   }
 
   async send(mail: Mail): Promise<number> {
-    const mailjet = new Client({
-      apiKey: this.#config.apiKey,
-      apiSecret: this.#config.apiSecret,
-    });
+    const mailjet = Mailjet.apiConnect(this.#config.apiKey, this.#config.apiSecret);
 
     const content = await this.getTemplateContent(mail.content);
 
@@ -31,9 +43,8 @@ class MailjetTransport extends AbstractTransport {
     const messages = await this.#createMessages(mail, templateCompiler, content);
 
     try {
-      const result = await mailjet.post("send", { version: "v3.1" }).request({
-        Messages: messages,
-      });
+      const payload = { Messages: messages } as SendEmailV3_1.Body;
+      const result = await mailjet.post("send", { version: "v3.1" }).request(payload);
       console.log(result.body);
     } catch (error: unknown) {
       console.error(error);
