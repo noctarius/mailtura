@@ -7,11 +7,10 @@ import papaparse, {
 } from "papaparse";
 import type { ContactImportArguments, ContactImportParameters } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
-import { ContactImportEntity, mapContact, newPrismaClient, PrismaType } from "@mailtura/database";
+import { ContactImportEntity, mapContact, newPrismaClient, newPrismaPg, PrismaType } from "@mailtura/database";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { CreateContact } from "@mailtura/rpcmodel/api/request-response.js";
-import { PrismaPg } from "@prisma/adapter-pg";
 import uuidv7 from "../../helper/uuidv7.js";
 
 const connectionString = process.env.DATABASE_URL;
@@ -221,7 +220,7 @@ const updateContactImport = async (
 };
 
 export async function importContactsBatch(args: ContactImportArguments): Promise<number> {
-  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+  const prisma = newPrismaClient(newPrismaPg(connectionString!));
 
   const contactImportId = args.import_id;
   const tenantId = args.tenant_id;

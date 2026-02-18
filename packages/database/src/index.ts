@@ -42,7 +42,16 @@ import {
 const debugPrisma = process.env.DEBUG_PRISMA === "true";
 const log = (debugPrisma ? ["query", "info", "warn", "error"] : []) as (LogLevel | LogDefinition)[];
 
-export const newPrismaClient = (adapter: PrismaPg) => {
+export function newPrismaPg(connectionString: string) {
+  if (connectionString.indexOf("schema=") !== -1) {
+    const schema = /schema=([^& ]+)/.exec(connectionString)?.[1] ?? "public";
+    return new PrismaPg({ connectionString, schema });
+  }
+
+  return new PrismaPg({ connectionString });
+}
+
+export function newPrismaClient(adapter: PrismaPg) {
   return new PrismaClient({ adapter, log }).$extends({
     model: {
       $allModels: {
@@ -192,7 +201,7 @@ export const newPrismaClient = (adapter: PrismaPg) => {
       },
     },
   });
-};
+}
 
 export type PrismaType = ReturnType<typeof newPrismaClient>;
 

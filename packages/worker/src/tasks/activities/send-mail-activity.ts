@@ -5,12 +5,12 @@ import {
   MailSendingReceiverEntity,
   mapTemplate,
   newPrismaClient,
+  newPrismaPg,
   PrismaType,
 } from "@mailtura/database";
 import { newMailTransport } from "../../mails/index.js";
 import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { getSystemConfig } from "../../helper/system-config.js";
 import { TransportConfig } from "../../mails/transport.js";
 
@@ -23,7 +23,7 @@ type MailSending = MailSendingEntity & {
 };
 
 export async function sendMailBatch(args: SendMailArguments): Promise<number> {
-  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+  const prisma = newPrismaClient(newPrismaPg(connectionString!));
 
   const mailSendingId = args.mail_sending_id;
   const tenantId = args.tenant_id;
