@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "template_properties" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "templates_id" UUID,
     "name" TEXT NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE "template_properties" (
 
 -- CreateTable
 CREATE TABLE "templates" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,

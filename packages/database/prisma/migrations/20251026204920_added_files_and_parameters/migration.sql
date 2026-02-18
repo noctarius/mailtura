@@ -9,7 +9,7 @@ ALTER TABLE "contact_imports" ADD COLUMN     "parameters" JSONB NOT NULL;
 
 -- CreateTable
 CREATE TABLE "files" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "data" BYTEA NOT NULL,

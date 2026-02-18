@@ -12,7 +12,7 @@ DROP TABLE "public"."subscriber_list";
 
 -- CreateTable
 CREATE TABLE "subscriber_lists" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,

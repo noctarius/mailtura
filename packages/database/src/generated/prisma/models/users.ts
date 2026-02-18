@@ -369,7 +369,7 @@ export type usersScalarWhereWithAggregatesInput = {
 }
 
 export type usersCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -392,7 +392,7 @@ export type usersCreateInput = {
 }
 
 export type usersUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -461,7 +461,7 @@ export type usersUncheckedUpdateInput = {
 }
 
 export type usersCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -706,7 +706,7 @@ export type usersUncheckedUpdateManyWithoutRolesNestedInput = {
 }
 
 export type usersCreateWithoutAccountsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -728,7 +728,7 @@ export type usersCreateWithoutAccountsInput = {
 }
 
 export type usersUncheckedCreateWithoutAccountsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -810,7 +810,7 @@ export type usersUncheckedUpdateWithoutAccountsInput = {
 }
 
 export type usersCreateWithoutTwo_factorsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -832,7 +832,7 @@ export type usersCreateWithoutTwo_factorsInput = {
 }
 
 export type usersUncheckedCreateWithoutTwo_factorsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -914,7 +914,7 @@ export type usersUncheckedUpdateWithoutTwo_factorsInput = {
 }
 
 export type usersCreateWithoutPasskeysInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -936,7 +936,7 @@ export type usersCreateWithoutPasskeysInput = {
 }
 
 export type usersUncheckedCreateWithoutPasskeysInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -1018,7 +1018,7 @@ export type usersUncheckedUpdateWithoutPasskeysInput = {
 }
 
 export type usersCreateWithoutSessionsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -1040,7 +1040,7 @@ export type usersCreateWithoutSessionsInput = {
 }
 
 export type usersUncheckedCreateWithoutSessionsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -1122,7 +1122,7 @@ export type usersUncheckedUpdateWithoutSessionsInput = {
 }
 
 export type usersCreateWithoutRolesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -1144,7 +1144,7 @@ export type usersCreateWithoutRolesInput = {
 }
 
 export type usersUncheckedCreateWithoutRolesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -1214,7 +1214,7 @@ export type usersScalarWhereInput = {
 }
 
 export type usersCreateManyRolesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null

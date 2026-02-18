@@ -404,7 +404,7 @@ export type activitiesScalarWhereWithAggregatesInput = {
 }
 
 export type activitiesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -423,7 +423,7 @@ export type activitiesCreateInput = {
 }
 
 export type activitiesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -480,7 +480,7 @@ export type activitiesUncheckedUpdateInput = {
 }
 
 export type activitiesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -704,7 +704,7 @@ export type Enumevent_typeFieldUpdateOperationsInput = {
 }
 
 export type activitiesCreateWithoutReceiversInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -722,7 +722,7 @@ export type activitiesCreateWithoutReceiversInput = {
 }
 
 export type activitiesUncheckedCreateWithoutReceiversInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -788,7 +788,7 @@ export type activitiesScalarWhereInput = {
 }
 
 export type activitiesCreateWithoutCampaignsInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -806,7 +806,7 @@ export type activitiesCreateWithoutCampaignsInput = {
 }
 
 export type activitiesUncheckedCreateWithoutCampaignsInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -850,7 +850,7 @@ export type activitiesUpdateManyWithWhereWithoutCampaignsInput = {
 }
 
 export type activitiesCreateManyReceiversInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string
@@ -922,7 +922,7 @@ export type activitiesUncheckedUpdateManyWithoutReceiversInput = {
 }
 
 export type activitiesCreateManyCampaignsInput = {
-  id?: string
+  id: string
   tenant_id: string
   send_name: string
   subject: string

@@ -290,7 +290,7 @@ export type contactsScalarWhereWithAggregatesInput = {
 }
 
 export type contactsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -307,7 +307,7 @@ export type contactsCreateInput = {
 }
 
 export type contactsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -358,7 +358,7 @@ export type contactsUncheckedUpdateInput = {
 }
 
 export type contactsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -510,7 +510,7 @@ export type contactsUpdateOneRequiredWithoutMail_logsNestedInput = {
 }
 
 export type contactsCreateWithoutActivitiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -526,7 +526,7 @@ export type contactsCreateWithoutActivitiesInput = {
 }
 
 export type contactsUncheckedCreateWithoutActivitiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -590,7 +590,7 @@ export type contactsUncheckedUpdateWithoutActivitiesInput = {
 }
 
 export type contactsCreateWithoutBouncesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -606,7 +606,7 @@ export type contactsCreateWithoutBouncesInput = {
 }
 
 export type contactsUncheckedCreateWithoutBouncesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -670,7 +670,7 @@ export type contactsUncheckedUpdateWithoutBouncesInput = {
 }
 
 export type contactsCreateWithoutSubscribersInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -686,7 +686,7 @@ export type contactsCreateWithoutSubscribersInput = {
 }
 
 export type contactsUncheckedCreateWithoutSubscribersInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -750,7 +750,7 @@ export type contactsUncheckedUpdateWithoutSubscribersInput = {
 }
 
 export type contactsCreateWithoutUnsubscribesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -766,7 +766,7 @@ export type contactsCreateWithoutUnsubscribesInput = {
 }
 
 export type contactsUncheckedCreateWithoutUnsubscribesInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -830,7 +830,7 @@ export type contactsUncheckedUpdateWithoutUnsubscribesInput = {
 }
 
 export type contactsCreateWithoutMail_logsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null
@@ -846,7 +846,7 @@ export type contactsCreateWithoutMail_logsInput = {
 }
 
 export type contactsUncheckedCreateWithoutMail_logsInput = {
-  id?: string
+  id: string
   tenant_id: string
   email: string
   first_name?: string | null

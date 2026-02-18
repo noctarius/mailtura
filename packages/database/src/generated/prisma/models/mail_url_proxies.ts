@@ -274,7 +274,7 @@ export type mail_url_proxiesScalarWhereWithAggregatesInput = {
 }
 
 export type mail_url_proxiesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   contact_id?: string | null
   position: number
@@ -283,7 +283,7 @@ export type mail_url_proxiesCreateInput = {
 }
 
 export type mail_url_proxiesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   contact_id?: string | null
   position: number
@@ -310,7 +310,7 @@ export type mail_url_proxiesUncheckedUpdateInput = {
 }
 
 export type mail_url_proxiesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   contact_id?: string | null
   position: number

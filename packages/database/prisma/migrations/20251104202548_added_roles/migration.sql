@@ -12,7 +12,7 @@ ADD COLUMN     "role_id" UUID NOT NULL;
 
 -- CreateTable
 CREATE TABLE "roles" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "permissions" TEXT[],

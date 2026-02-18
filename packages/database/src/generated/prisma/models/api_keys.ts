@@ -306,7 +306,7 @@ export type api_keysScalarWhereWithAggregatesInput = {
 }
 
 export type api_keysCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   key: string
@@ -321,7 +321,7 @@ export type api_keysCreateInput = {
 }
 
 export type api_keysUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   key: string
@@ -366,7 +366,7 @@ export type api_keysUncheckedUpdateInput = {
 }
 
 export type api_keysCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   key: string

@@ -262,7 +262,7 @@ export type filesScalarWhereWithAggregatesInput = {
 }
 
 export type filesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   data: runtime.Bytes
@@ -273,7 +273,7 @@ export type filesCreateInput = {
 }
 
 export type filesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   data: runtime.Bytes
@@ -306,7 +306,7 @@ export type filesUncheckedUpdateInput = {
 }
 
 export type filesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   data: runtime.Bytes

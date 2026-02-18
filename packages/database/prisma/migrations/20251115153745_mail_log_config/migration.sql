@@ -3,7 +3,7 @@ CREATE TYPE "mail_log_status" AS ENUM ('Delivered', 'Pending', 'Scheduled', 'Bou
 
 -- CreateTable
 CREATE TABLE "mail_logs" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "contact_id" UUID NOT NULL,
     "provider_id" TEXT NOT NULL,

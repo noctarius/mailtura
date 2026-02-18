@@ -5,7 +5,7 @@ ADD COLUMN     "two_factor_enabled" BOOLEAN;
 
 -- CreateTable
 CREATE TABLE "accounts" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "user_id" UUID NOT NULL,
     "account_id" UUID NOT NULL,
     "provider_id" UUID NOT NULL,
@@ -26,7 +26,7 @@ CREATE TABLE "accounts" (
 
 -- CreateTable
 CREATE TABLE "verifications" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "identifier" TEXT NOT NULL,
     "value" TEXT NOT NULL,
     "expires_at" TIMESTAMPTZ NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE "verifications" (
 
 -- CreateTable
 CREATE TABLE "two_factors" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "user_id" UUID NOT NULL,
     "secret" TEXT,
     "backup_codes" TEXT,
@@ -50,7 +50,7 @@ CREATE TABLE "two_factors" (
 
 -- CreateTable
 CREATE TABLE "passkeys" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "name" TEXT,
     "public_key" TEXT NOT NULL,
     "user_id" UUID NOT NULL,

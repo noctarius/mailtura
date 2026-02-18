@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "webhooks" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "mail_config_id" UUID NOT NULL,
     "provider_id" TEXT NOT NULL,

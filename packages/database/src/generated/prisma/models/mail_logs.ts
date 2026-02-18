@@ -354,7 +354,7 @@ export type mail_logsScalarWhereWithAggregatesInput = {
 }
 
 export type mail_logsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
   provider_mail_id: string
@@ -369,7 +369,7 @@ export type mail_logsCreateInput = {
 }
 
 export type mail_logsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   contact_id: string
   provider_id: string
@@ -414,7 +414,7 @@ export type mail_logsUncheckedUpdateInput = {
 }
 
 export type mail_logsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   contact_id: string
   provider_id: string
@@ -574,7 +574,7 @@ export type Enummail_log_statusFieldUpdateOperationsInput = {
 }
 
 export type mail_logsCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
   provider_mail_id: string
@@ -588,7 +588,7 @@ export type mail_logsCreateWithoutContactsInput = {
 }
 
 export type mail_logsUncheckedCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
   provider_mail_id: string
@@ -646,7 +646,7 @@ export type mail_logsScalarWhereInput = {
 }
 
 export type mail_logsCreateManyContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
   provider_mail_id: string

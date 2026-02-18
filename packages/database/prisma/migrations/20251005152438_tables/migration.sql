@@ -21,7 +21,7 @@ CREATE TYPE "UnsubscribeSource" AS ENUM ('UnsubscribeLink', 'ManualAddition', 'B
 
 -- CreateTable
 CREATE TABLE "Contact" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "email" TEXT NOT NULL,
     "first_name" TEXT,
     "last_name" TEXT,
@@ -33,7 +33,7 @@ CREATE TABLE "Contact" (
 
 -- CreateTable
 CREATE TABLE "Campaign" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "status" "CampaignStatus" NOT NULL,
     "type" "CampaignType" NOT NULL,
@@ -55,7 +55,7 @@ CREATE TABLE "Campaign" (
 
 -- CreateTable
 CREATE TABLE "Activity" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "send_name" TEXT NOT NULL,
     "subject" TEXT NOT NULL,
     "status" "ActivityStatus" NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE "Activity" (
 
 -- CreateTable
 CREATE TABLE "Bounce" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "bounced_at" TIMESTAMP(3) NOT NULL,
     "reason" TEXT NOT NULL,
     "bounce_type" "BounceType" NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE "Bounce" (
 
 -- CreateTable
 CREATE TABLE "Subscriber" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "status" "SubscriberStatus" NOT NULL,
     "subscribed_at" TIMESTAMP(3) NOT NULL,
     "contact_id" UUID NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE "Subscriber" (
 
 -- CreateTable
 CREATE TABLE "SubscriberList" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "contact_ids" UUID[],
@@ -104,7 +104,7 @@ CREATE TABLE "SubscriberList" (
 
 -- CreateTable
 CREATE TABLE "UnsubscribedList" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "unsubscribed_at" TIMESTAMP(3) NOT NULL,
     "subscriber_list_id" UUID NOT NULL,
 
@@ -113,7 +113,7 @@ CREATE TABLE "UnsubscribedList" (
 
 -- CreateTable
 CREATE TABLE "Unsubscribe" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "unsubscribed_at" TIMESTAMP(3) NOT NULL,
     "global" BOOLEAN NOT NULL,
     "list_ids" TEXT[],

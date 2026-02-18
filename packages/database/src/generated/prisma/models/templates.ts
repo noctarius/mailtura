@@ -277,7 +277,7 @@ export type templatesScalarWhereWithAggregatesInput = {
 }
 
 export type templatesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -290,7 +290,7 @@ export type templatesCreateInput = {
 }
 
 export type templatesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -329,7 +329,7 @@ export type templatesUncheckedUpdateInput = {
 }
 
 export type templatesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -422,7 +422,7 @@ export type templatesUpdateOneWithoutPropertiesNestedInput = {
 }
 
 export type templatesCreateWithoutPropertiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -434,7 +434,7 @@ export type templatesCreateWithoutPropertiesInput = {
 }
 
 export type templatesUncheckedCreateWithoutPropertiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null

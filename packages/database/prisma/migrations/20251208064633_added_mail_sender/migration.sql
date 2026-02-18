@@ -9,7 +9,7 @@ DROP TABLE "mail_sender";
 
 -- CreateTable
 CREATE TABLE "mail_senders" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "email" TEXT NOT NULL,

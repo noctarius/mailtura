@@ -290,7 +290,7 @@ export type bouncesScalarWhereWithAggregatesInput = {
 }
 
 export type bouncesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string
@@ -303,7 +303,7 @@ export type bouncesCreateInput = {
 }
 
 export type bouncesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string
@@ -342,7 +342,7 @@ export type bouncesUncheckedUpdateInput = {
 }
 
 export type bouncesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string
@@ -480,7 +480,7 @@ export type Enumbounce_typeFieldUpdateOperationsInput = {
 }
 
 export type bouncesCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string
@@ -492,7 +492,7 @@ export type bouncesCreateWithoutContactsInput = {
 }
 
 export type bouncesUncheckedCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string
@@ -546,7 +546,7 @@ export type bouncesScalarWhereInput = {
 }
 
 export type bouncesCreateManyContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   bounced_at: Date | string
   reason: string

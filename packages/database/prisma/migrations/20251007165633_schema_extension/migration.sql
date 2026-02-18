@@ -86,7 +86,7 @@ DROP TABLE "public"."UnsubscribedList";
 
 -- CreateTable
 CREATE TABLE "SubscriberListContacts" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "subscriber_list_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "created_by" TEXT NOT NULL,

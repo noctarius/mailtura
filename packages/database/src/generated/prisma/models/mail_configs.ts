@@ -276,7 +276,7 @@ export type mail_configsScalarWhereWithAggregatesInput = {
 }
 
 export type mail_configsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -290,7 +290,7 @@ export type mail_configsCreateInput = {
 }
 
 export type mail_configsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -332,7 +332,7 @@ export type mail_configsUncheckedUpdateInput = {
 }
 
 export type mail_configsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -435,7 +435,7 @@ export type mail_configsUpdateOneRequiredWithoutMail_sendingsNestedInput = {
 }
 
 export type mail_configsCreateWithoutWebhooksInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -448,7 +448,7 @@ export type mail_configsCreateWithoutWebhooksInput = {
 }
 
 export type mail_configsUncheckedCreateWithoutWebhooksInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -503,7 +503,7 @@ export type mail_configsUncheckedUpdateWithoutWebhooksInput = {
 }
 
 export type mail_configsCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string
@@ -516,7 +516,7 @@ export type mail_configsCreateWithoutMail_sendingsInput = {
 }
 
 export type mail_configsUncheckedCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   type: string

@@ -112,7 +112,7 @@ DROP TYPE "public"."UnsubscribeSource";
 
 -- CreateTable
 CREATE TABLE "tenants" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "created_by" TEXT NOT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE "tenants" (
 
 -- CreateTable
 CREATE TABLE "contacts" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "email" TEXT NOT NULL,
     "first_name" TEXT,
@@ -142,7 +142,7 @@ CREATE TABLE "contacts" (
 
 -- CreateTable
 CREATE TABLE "campaigns" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "status" "campaign_status" NOT NULL,
@@ -159,7 +159,7 @@ CREATE TABLE "campaigns" (
 
 -- CreateTable
 CREATE TABLE "activities" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "send_name" TEXT NOT NULL,
     "subject" TEXT NOT NULL,
@@ -181,7 +181,7 @@ CREATE TABLE "activities" (
 
 -- CreateTable
 CREATE TABLE "bounces" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "bounced_at" TIMESTAMP(3) NOT NULL,
     "reason" TEXT NOT NULL,
@@ -197,7 +197,7 @@ CREATE TABLE "bounces" (
 
 -- CreateTable
 CREATE TABLE "subscribers" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "status" "subscriber_status" NOT NULL,
     "subscribed_at" TIMESTAMP(3) NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE "subscribers" (
 
 -- CreateTable
 CREATE TABLE "subscriber_list" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "description" TEXT,
@@ -226,7 +226,7 @@ CREATE TABLE "subscriber_list" (
 
 -- CreateTable
 CREATE TABLE "subscriber_list_contacts" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "subscriber_list_id" UUID NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
@@ -239,7 +239,7 @@ CREATE TABLE "subscriber_list_contacts" (
 
 -- CreateTable
 CREATE TABLE "unsubscribes" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "source" "unsubscribe_source" NOT NULL,
     "unsubscribed_at" TIMESTAMP(3) NOT NULL,
@@ -256,7 +256,7 @@ CREATE TABLE "unsubscribes" (
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "email" TEXT NOT NULL,
     "first_name" TEXT,
@@ -275,7 +275,7 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "api_keys" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "key" TEXT NOT NULL,
