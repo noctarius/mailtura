@@ -57,6 +57,7 @@ helm upgrade --install mailtura helm/mailtura \
 - `stackgres.credentials.superuser.*`: StackGres superuser credentials used by Mailtura and Temporal.
 - `temporal.web.enabled`: Enables Temporal UI.
 - `temporal.server.config.persistence.*`: SQL persistence configuration.
+- `temporal.server.config.namespaces.*`: Namespace bootstrap configuration for Temporal.
 
 When `stackgres.enabled=true`, this chart enforces Temporal SQL persistence to:
 - host: `stackgres.cluster.name`
@@ -75,3 +76,6 @@ The chart creates one Kubernetes Secret with runtime env vars and injects it int
 
 If `env.temporal.address` is empty and `temporal.enabled=true`, the chart defaults it to `temporal-frontend:7233` (or `<temporal.fullnameOverride>-frontend:7233`).
 If `env.apiBaseUrl` is empty, the chart defaults it to `http://<mailtura-service>:3000/api/v1`.
+
+By default, this chart enables Temporal namespace creation (`temporal.server.config.namespaces.create=true`) and creates the `default` namespace.
+If you change `env.temporal.namespace`, also set `temporal.server.config.namespaces.namespace` to include that namespace name.

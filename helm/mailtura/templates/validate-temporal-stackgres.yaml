@@ -22,3 +22,17 @@
 {{- fail "Invalid configuration: temporal.server.config.persistence.visibility.sql.schema must be temporal when stackgres.enabled=true" -}}
 {{- end -}}
 {{- end -}}
+
+{{- if and .Values.temporal.enabled .Values.temporal.server.config.namespaces.create -}}
+{{- $mailturaNamespace := .Values.env.temporal.namespace | toString -}}
+{{- $namespaces := .Values.temporal.server.config.namespaces.namespace | default list -}}
+{{- $found := dict "value" false -}}
+{{- range $ns := $namespaces -}}
+{{- if eq (($ns.name | default "") | toString) $mailturaNamespace -}}
+{{- $_ := set $found "value" true -}}
+{{- end -}}
+{{- end -}}
+{{- if not $found.value -}}
+{{- fail (printf "Invalid configuration: env.temporal.namespace (%s) must be present in temporal.server.config.namespaces.namespace when temporal.server.config.namespaces.create=true" $mailturaNamespace) -}}
+{{- end -}}
+{{- end -}}

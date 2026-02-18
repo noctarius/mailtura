@@ -9,7 +9,7 @@ mailtura:
     pullPolicy: Always
   service:
     type: ClusterIP
-    port: 3000
+    port: 3333
   resources: {}
   podAnnotations: {}
   podLabels: {}
@@ -85,6 +85,11 @@ temporal:
   server:
     replicaCount: 1
     config:
+      namespaces:
+        create: true
+        namespace:
+          - name: "default"
+            retention: 3d
       persistence:
         default:
           driver: "sql"
