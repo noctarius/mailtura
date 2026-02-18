@@ -1,19 +1,10 @@
-import dts from "bun-plugin-dts";
+import { rm } from "node:fs/promises";
 
 export {};
 
-await Bun.build({
-  plugins: [
-    dts({
-      output: {
-        exportReferencedTypes: false,
-      },
-      compilationOptions: {
-        preferredConfigPath: "./tsconfig.build.json",
-        followSymlinks: false,
-      },
-    }),
-  ],
+await rm("./lib", { recursive: true, force: true });
+
+const result = await Bun.build({
   entrypoints: ["./src/index.ts"],
   outdir: "./lib",
   target: "bun",
@@ -23,3 +14,12 @@ await Bun.build({
   minify: true,
   tsconfig: "./tsconfig.build.json",
 });
+
+if (!result.success) {
+  for (const log of result.logs) {
+    console.error(log);
+  }
+  process.exit(1);
+}
+
+await Bun.$`bunx tsc -p tsconfig.build.json`;
