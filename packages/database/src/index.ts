@@ -45,7 +45,7 @@ const log = (debugPrisma ? ["query", "info", "warn", "error"] : []) as (LogLevel
 export function newPrismaPg(connectionString: string) {
   if (connectionString.indexOf("schema=") !== -1) {
     const schema = /schema=([^& ]+)/.exec(connectionString)?.[1] ?? "public";
-    return new PrismaPg({ connectionString, schema });
+    return new PrismaPg(connectionString, { schema });
   }
 
   return new PrismaPg({ connectionString });
