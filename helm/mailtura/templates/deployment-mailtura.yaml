@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mailtura.fullname" . }}
+  labels:
+    {{- include "mailtura.labels" . | nindent 4 }}
+    app.kubernetes.io/component: app
+spec:
+  replicas: {{ .Values.mailtura.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mailtura.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: app
+  template:
+    metadata:
+      labels:
+        {{- include "mailtura.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: app
+        {{- with .Values.mailtura.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.mailtura.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      containers:
+        - name: mailtura
+          image: "{{ .Values.mailtura.image.repository }}:{{ .Values.mailtura.image.tag }}"
+          imagePullPolicy: {{ .Values.mailtura.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: {{ include "mailtura.envSecretName" . }}
+          resources:
+            {{- toYaml .Values.mailtura.resources | nindent 12 }}

@@ -1,0 +1,29 @@
+{{- if and .Values.stackgres.enabled (not .Values.externalDatabase.enabled) }}
+apiVersion: stackgres.io/v1
+kind: SGCluster
+metadata:
+  name: {{ .Values.stackgres.cluster.name }}
+  labels:
+    {{- include "mailtura.labels" . | nindent 4 }}
+spec:
+  instances: {{ .Values.stackgres.cluster.instances }}
+  sgInstanceProfile: {{ .Values.stackgres.instanceProfile.name }}
+  postgres:
+    version: {{ .Values.stackgres.cluster.postgres.version | quote }}
+  pods:
+    persistentVolume:
+      size: {{ .Values.stackgres.cluster.storage.size | quote }}
+      {{- if .Values.stackgres.cluster.storage.storageClass }}
+      storageClass: {{ .Values.stackgres.cluster.storage.storageClass | quote }}
+      {{- end }}
+  configurations:
+    credentials:
+      users:
+        superuser:
+          username:
+            name: {{ include "mailtura.envSecretName" . }}
+            key: STACKGRES_SUPERUSER_USERNAME
+          password:
+            name: {{ include "mailtura.envSecretName" . }}
+            key: STACKGRES_SUPERUSER_PASSWORD
+{{- end }}

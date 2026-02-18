@@ -1,0 +1,24 @@
+{{- if and .Values.stackgres.enabled .Values.temporal.enabled -}}
+{{- $expectedHost := .Values.stackgres.cluster.name | toString -}}
+{{- $defaultSql := .Values.temporal.server.config.persistence.default.sql | default dict -}}
+{{- $visibilitySql := .Values.temporal.server.config.persistence.visibility.sql | default dict -}}
+
+{{- if ne (($defaultSql.host | default "") | toString) $expectedHost -}}
+{{- fail (printf "Invalid configuration: temporal.server.config.persistence.default.sql.host must match stackgres.cluster.name (%s) when stackgres.enabled=true" $expectedHost) -}}
+{{- end -}}
+{{- if ne (($visibilitySql.host | default "") | toString) $expectedHost -}}
+{{- fail (printf "Invalid configuration: temporal.server.config.persistence.visibility.sql.host must match stackgres.cluster.name (%s) when stackgres.enabled=true" $expectedHost) -}}
+{{- end -}}
+{{- if ne (($defaultSql.database | default "") | toString) "postgres" -}}
+{{- fail "Invalid configuration: temporal.server.config.persistence.default.sql.database must be postgres when stackgres.enabled=true" -}}
+{{- end -}}
+{{- if ne (($visibilitySql.database | default "") | toString) "postgres" -}}
+{{- fail "Invalid configuration: temporal.server.config.persistence.visibility.sql.database must be postgres when stackgres.enabled=true" -}}
+{{- end -}}
+{{- if ne (($defaultSql.schema | default "") | toString) "temporal" -}}
+{{- fail "Invalid configuration: temporal.server.config.persistence.default.sql.schema must be temporal when stackgres.enabled=true" -}}
+{{- end -}}
+{{- if ne (($visibilitySql.schema | default "") | toString) "temporal" -}}
+{{- fail "Invalid configuration: temporal.server.config.persistence.visibility.sql.schema must be temporal when stackgres.enabled=true" -}}
+{{- end -}}
+{{- end -}}

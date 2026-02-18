@@ -1,0 +1,17 @@
+apiVersion: v2
+name: mailtura
+description: Helm chart for Mailtura with Temporal and StackGres dependencies
+type: application
+version: 0.1.0
+appVersion: "0.0.0"
+
+dependencies:
+  - name: stackgres-operator
+    alias: stackgresOperator
+    version: ">=0.0.0"
+    repository: "https://stackgres.io/downloads/stackgres-k8s/stackgres/helm/"
+    condition: stackgres.enabled
+  - name: temporal
+    version: ">=0.0.0"
+    repository: "https://go.temporal.io/helm-charts"
+    condition: temporal.enabled

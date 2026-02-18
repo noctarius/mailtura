@@ -1,0 +1,11 @@
+{{- if and .Values.stackgres.enabled (not .Values.externalDatabase.enabled) }}
+apiVersion: stackgres.io/v1
+kind: SGInstanceProfile
+metadata:
+  name: {{ .Values.stackgres.instanceProfile.name }}
+  labels:
+    {{- include "mailtura.labels" . | nindent 4 }}
+spec:
+  cpu: {{ .Values.stackgres.instanceProfile.cpu | quote }}
+  memory: {{ .Values.stackgres.instanceProfile.memory | quote }}
+{{- end }}

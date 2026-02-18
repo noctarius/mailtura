@@ -1,0 +1,108 @@
+nameOverride: ""
+fullnameOverride: ""
+
+mailtura:
+  replicaCount: 1
+  image:
+    repository: mailtura
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 3000
+  resources: {}
+  podAnnotations: {}
+  podLabels: {}
+
+worker:
+  replicaCount: 1
+  image:
+    repository: mailtura-worker
+    tag: latest
+    pullPolicy: Always
+  resources: {}
+  podAnnotations: {}
+  podLabels: {}
+
+migrations:
+  enabled: true
+  image:
+    repository: mailtura-init
+    tag: latest
+    pullPolicy: Always
+  backoffLimit: 3
+  activeDeadlineSeconds: 300
+
+env:
+  mailturaAuthSecret: "change-me"
+  temporal:
+    namespace: "default"
+    taskQueue: "mailtura"
+    address: ""
+  apiBaseUrl: ""
+
+externalDatabase:
+  enabled: false
+  url: ""
+
+# StackGres operator dependency values
+stackgresOperator: {}
+
+# StackGres resources managed by this chart
+stackgres:
+  enabled: true
+  cluster:
+    name: &stackgresHost "stackgres"
+    instances: 1
+    postgres:
+      version: "18"
+    storage:
+      size: "8Gi"
+      storageClass: ""
+  credentials:
+    superuser:
+      username: &stackgresUser "postgres"
+      password: &stackgresPassword "mailtura"
+  instanceProfile:
+    name: "mailtura-small"
+    cpu: "500m"
+    memory: "1Gi"
+  database:
+    name: &stackgresDatabase "postgres"
+
+# Temporal subchart values
+temporal:
+  enabled: true
+  fullnameOverride: temporal
+  server:
+    replicaCount: 1
+    config:
+      persistence:
+        default:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            host: *stackgresHost
+            port: 5432
+            database: *stackgresDatabase
+            schema: &temporalSchema "temporal"
+            user: *stackgresUser
+            password: *stackgresPassword
+            maxConns: 20
+            maxConnLifetime: "1h"
+        visibility:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            host: *stackgresHost
+            port: 5432
+            database: *stackgresDatabase
+            schema: *temporalSchema
+            user: *stackgresUser
+            password: *stackgresPassword
+            maxConns: 20
+            maxConnLifetime: "1h"
+  admintools:
+    enabled: true
+  web:
+    enabled: true
