@@ -15,11 +15,10 @@
     "@mailtura/rpcmodel": "*",
     "cacheable": "^2.1.1",
     "cheerio": "^1.1.2",
-    "handlebars": "^4.7.8",
     "html-to-text": "^9.0.5",
     "htmlnano": "^2.1.5",
     "liquidjs": "^10.24.0",
-    "mjml": "^4.17.0",
+    "mjml": "^4.18.0",
     "moment-timezone": "^0.6.0",
     "typebox": "catalog:",
     "uuid": "^13.0.0"

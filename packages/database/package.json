@@ -22,12 +22,6 @@
     "@prisma/adapter-pg": "^7.1.0",
     "@prisma/client": "^7.1.0",
     "@prisma/client-runtime-utils": "^7.1.0",
-    "cacheable": "^2.1.1",
-    "handlebars": "^4.7.8",
-    "html-to-text": "^9.0.5",
-    "htmlnano": "^2.1.5",
-    "liquidjs": "^10.24.0",
-    "mjml": "^4.18.0",
     "moment-timezone": "^0.6.0",
     "typebox": "catalog:",
     "uuid": "^13.0.0"
@@ -50,8 +44,8 @@
     "ts-jest": "^29.4.6",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "undici": "^7.16.0",
-    "undici-types": "^7.16.0",
+    "undici": "^7.22.0",
+    "undici-types": "^7.22.0",
     "uuidv7": "^1.1.0"
   }
 }
