@@ -17,6 +17,7 @@ import { createLazyTemporalTaskManager } from "./tasks/index.js";
 import type { ServerContext } from "./context/index.js";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { startSmtpServer } from "./smtp/server.js";
+import { trackingRoutes } from "./api/handlers/tracking.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -124,6 +125,7 @@ registerModelSchema(app);
 
   const router = createRouter(app, context);
 
+  router.route("/tracking", trackingRoutes, false);
   router.route("/api/v1", registerRoutes);
   if (await requiresInstallation(prisma)) {
     console.info("Installation required, enabling installation routes.");

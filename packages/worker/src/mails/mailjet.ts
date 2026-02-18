@@ -1,7 +1,6 @@
 import { Mail, MailContact, MailDirectContent, MailjetConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import type { SendEmailV3_1 } from "node-mailjet";
-import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
@@ -35,8 +34,7 @@ export class MailjetTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
-    const messages = await this.#createMessages(mail, templateCompiler, content);
+    const messages = await this.#createMessages(mail, content);
 
     try {
       const payload = { Messages: messages } as SendEmailV3_1.Body;
@@ -49,24 +47,16 @@ export class MailjetTransport extends AbstractTransport {
     return messages.length;
   }
 
-  async #createMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<SendEmailV3_1_Message[]> {
+  async #createMessages(mail: Mail, content: MailDirectContent): Promise<SendEmailV3_1_Message[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
 
-    if (!hasSubstitutions) return this.#createJoinedMessages(mail, templateCompiler);
-    return this.#createSubstitutedMessages(mail, templateCompiler, content);
+    if (!hasSubstitutions) return this.#createJoinedMessages(mail);
+    return this.#createSubstitutedMessages(mail, content);
   }
 
-  async #createSubstitutedMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<SendEmailV3_1_Message[]> {
+  async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<SendEmailV3_1_Message[]> {
     const from = this.#mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
@@ -75,7 +65,7 @@ export class MailjetTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
         return {
           From: from,
           To: this.#mapMailAddresses(recipient.to) ?? [],
@@ -89,8 +79,8 @@ export class MailjetTransport extends AbstractTransport {
     );
   }
 
-  async #createJoinedMessages(mail: Mail, templateCompiler: TemplateCompiler): Promise<SendEmailV3_1_Message[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+  async #createJoinedMessages(mail: Mail): Promise<SendEmailV3_1_Message[]> {
+    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

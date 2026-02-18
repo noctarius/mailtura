@@ -2,7 +2,6 @@ import { Mail, MailContact, MailDirectContent, SendgridConfig } from "@mailtura/
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import { Client } from "@sendgrid/client";
 import { classes } from "@sendgrid/helpers";
-import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 const SendgridMail = classes.Mail;
 type SendgridMail = typeof SendgridMail;
@@ -29,8 +28,7 @@ export class SendgridTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
-    const mailData = await this.#createMails(mail, templateCompiler, content);
+    const mailData = await this.#createMails(mail, content);
     for (const mail of mailData) {
       try {
         const [response, body] = await client.request({
@@ -48,20 +46,16 @@ export class SendgridTransport extends AbstractTransport {
       : mailData.length;
   }
 
-  async #createMails(mail: Mail, templateCompiler: TemplateCompiler, content: MailDirectContent): Promise<MailData[]> {
+  async #createMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
 
-    if (!hasSubstitutions) return this.#createJoinedMail(mail, templateCompiler);
-    return this.#createSubstitutedMails(mail, templateCompiler, content);
+    if (!hasSubstitutions) return this.#createJoinedMail(mail);
+    return this.#createSubstitutedMails(mail, content);
   }
 
-  async #createSubstitutedMails(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<MailData[]> {
+  async #createSubstitutedMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
     const from = this.#mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
@@ -70,7 +64,7 @@ export class SendgridTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
         return {
           from,
           subject: mail.subject,
@@ -88,8 +82,8 @@ export class SendgridTransport extends AbstractTransport {
     );
   }
 
-  async #createJoinedMail(mail: Mail, templateCompiler: TemplateCompiler): Promise<MailData[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+  async #createJoinedMail(mail: Mail): Promise<MailData[]> {
+    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

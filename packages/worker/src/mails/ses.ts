@@ -1,7 +1,6 @@
 import { Mail, MailContact, MailDirectContent, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, Transport, TransportConfig } from "./transport.js";
-import { SendEmailCommand, SESClient, SendEmailCommandInput } from "@aws-sdk/client-ses";
-import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
+import { AbstractTransport, TransportConfig } from "./transport.js";
+import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/client-ses";
 
 type SendEmailRequest = SendEmailCommandInput;
 
@@ -25,8 +24,7 @@ export class SesTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
-    const requests = await this.#createRequests(mail, templateCompiler, content);
+    const requests = await this.#createRequests(mail, content);
 
     for (const request of requests) {
       try {
@@ -41,24 +39,16 @@ export class SesTransport extends AbstractTransport {
     return requests.length;
   }
 
-  async #createRequests(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<SendEmailRequest[]> {
+  async #createRequests(mail: Mail, content: MailDirectContent): Promise<SendEmailRequest[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
 
-    if (!hasSubstitutions) return this.#createJoinedRequests(mail, templateCompiler);
-    return this.#createSubstitutedRequests(mail, templateCompiler, content);
+    if (!hasSubstitutions) return this.#createJoinedRequests(mail);
+    return this.#createSubstitutedRequests(mail, content);
   }
 
-  async #createSubstitutedRequests(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<SendEmailRequest[]> {
+  async #createSubstitutedRequests(mail: Mail, content: MailDirectContent): Promise<SendEmailRequest[]> {
     const from = this.#mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
@@ -67,7 +57,10 @@ export class SesTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
+          throw new Error(resolvedTemplate.errors.join("\n"));
+        }
         return {
           Source: from,
           Destination: {
@@ -87,8 +80,8 @@ export class SesTransport extends AbstractTransport {
     );
   }
 
-  async #createJoinedRequests(mail: Mail, templateCompiler: TemplateCompiler): Promise<SendEmailRequest[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+  async #createJoinedRequests(mail: Mail): Promise<SendEmailRequest[]> {
+    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

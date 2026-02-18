@@ -5,8 +5,10 @@ import * as expectations from "./templates.test.json";
 describe("TemplateCompiler", () => {
   const API_BASE = "https://api.example.test";
 
-  const resolver = (templates: Record<string, Template | undefined>) =>
-    async (templateId: string): Promise<Template | undefined> => templates[templateId];
+  const resolver =
+    (templates: Record<string, Template | undefined>) =>
+    async (templateId: string): Promise<Template | undefined> =>
+      templates[templateId];
 
   test("returns resolver error when template id not found", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
@@ -22,11 +24,14 @@ describe("TemplateCompiler", () => {
 
   test("catch mjml errors on pure html content", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: "<html></html>",
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content: "<html></html>",
+      },
+      {}
+    );
 
     expect(result.errors).not.toBeUndefined();
   });
@@ -38,7 +43,7 @@ describe("TemplateCompiler", () => {
       {
         type: "direct",
         isTemplate: false,
-        content: "<html><body><a href=\"\">rel</a> <img src=\"\"/> <a href=\"\">abs</a></body></html>",
+        content: '<html><body><a href="">rel</a> <img src=""/> <a href="">abs</a></body></html>',
       },
       {}
     );
@@ -64,15 +69,38 @@ describe("TemplateCompiler", () => {
     expect(result.html).toContain("/tracking/");
     expect(result.html).not.toContain('href="http://example.com/relative"');
     expect(result.html).not.toContain('src="http://example.com/img.png"');
+    expect(result.html).not.toContain("relative");
 
     // Text: relative URL proxied, absolute stays intact
     expect(result.text).toContain("/tracking/");
     expect(result.text).not.toContain("http://example.com");
+    expect(result.text).not.toContain("relative");
 
     // urlRelocations should contain entries for the relative link and image
     expect(result.urlRelocations.length).toBe(5);
-    const froms = result.urlRelocations.map(u => u.from).sort();
-    expect(froms).toEqual(["http://example.com", "http://example.com","http://example.com/", "http://example.com/img.png", "http://example.com/relative"]);
+    const froms = result.urlRelocations.map(u => ({ from: u.from, position: u.position }));
+    expect(froms).toEqual([
+      {
+        from: "http://example.com/relative",
+        position: 1,
+      },
+      {
+        from: "http://example.com/img.png",
+        position: 2,
+      },
+      {
+        from: "http://example.com",
+        position: 3,
+      },
+      {
+        from: "http://example.com/relative",
+        position: 1,
+      },
+      {
+        from: "http://example.com",
+        position: 2,
+      },
+    ]);
     for (const u of result.urlRelocations) {
       expect(u.to.startsWith(`${API_BASE}/tracking/`)).toBe(true);
       expect(u.id).toBeDefined();
@@ -83,13 +111,10 @@ describe("TemplateCompiler", () => {
     const tmpl: Template = {
       id: "welcome",
       content:
-        "<mjml><mj-body><mj-section><mj-column><mj-button href=\"http://example.com/start\">Go</mj-button></mj-column></mj-section></mj-body></mjml>",
+        '<mjml><mj-body><mj-section><mj-column><mj-button href="http://example.com/start">Go</mj-button></mj-column></mj-section></mj-body></mjml>',
     } as unknown as Template; // minimal shape for tests
 
-    const compiler = createTemplateCompiler(
-      resolver({ welcome: tmpl }),
-      API_BASE
-    );
+    const compiler = createTemplateCompiler(resolver({ welcome: tmpl }), API_BASE);
 
     const result = await compiler.resolveTemplate({ type: "template", templateId: "welcome" }, { name: "John" });
 
@@ -110,11 +135,15 @@ describe("TemplateCompiler", () => {
 
   test("mjml should render successfully", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: "<mjml><mj-body><mj-section><mj-column><mj-text>Hello</mj-text></mj-column></mj-section></mj-body></mjml>",
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          "<mjml><mj-body><mj-section><mj-column><mj-text>Hello</mj-text></mj-column></mj-section></mj-body></mjml>",
+      },
+      {}
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.html).toBe(expectations["mjml should render successfully"]);
@@ -123,11 +152,15 @@ describe("TemplateCompiler", () => {
 
   test("mjml should render links in text successfully", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: '<mjml><mj-body><mj-section><mj-column><mj-text>Hello <a href="http://example.com">Link</a></mj-text></mj-column></mj-section></mj-body></mjml>',
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          '<mjml><mj-body><mj-section><mj-column><mj-text>Hello <a href="http://example.com">Link</a></mj-text></mj-column></mj-section></mj-body></mjml>',
+      },
+      {}
+    );
 
     expect(result.errors).toBeUndefined();
     //expect(result.html).toBe(expectations["mjml should render successfully"]);
@@ -136,10 +169,13 @@ describe("TemplateCompiler", () => {
 
   test("undefined isTemplate should behave as not template", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      content: "<html><body>Hello</body></html>",
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        content: "<html><body>Hello</body></html>",
+      },
+      {}
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.html).toBe("<html><head></head><body>Hello</body></html>");
@@ -148,11 +184,14 @@ describe("TemplateCompiler", () => {
 
   test("undefined isTemplate=false should behave as not template", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: false,
-      content: "<html><body>Hello</body></html>",
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: false,
+        content: "<html><body>Hello</body></html>",
+      },
+      {}
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.html).toBe("<html><head></head><body>Hello</body></html>");
@@ -161,23 +200,30 @@ describe("TemplateCompiler", () => {
 
   test("empty mjml string should error out", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: "",
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content: "",
+      },
+      {}
+    );
 
     expect(result.errors).not.toBeUndefined();
-    expect(result.errors?.length).toBeGreaterThanOrEqual(1)
+    expect(result.errors?.length).toBeGreaterThanOrEqual(1);
   });
 
   test("mjml should render successfully with execution substitutions", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: "<mjml><mj-body><mj-section><mj-column><mj-text>Hello {{name}}</mj-text></mj-column></mj-section></mj-body></mjml>",
-    }, { name: "John" });
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          "<mjml><mj-body><mj-section><mj-column><mj-text>Hello {{name}}</mj-text></mj-column></mj-section></mj-body></mjml>",
+      },
+      { name: "John" }
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.html).toBe(expectations["mjml should render successfully with execution substitutions"]);
@@ -186,12 +232,16 @@ describe("TemplateCompiler", () => {
 
   test("mjml should render successfully with template substitutions", async () => {
     const compiler = createTemplateCompiler(resolver({}), API_BASE);
-    const result = await compiler.resolveTemplate({
-      type: "direct",
-      isTemplate: true,
-      content: "<mjml><mj-body><mj-section><mj-column><mj-text>Hello {{name}}</mj-text></mj-column></mj-section></mj-body></mjml>",
-      substitutions: { name: "John" }
-    }, {});
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          "<mjml><mj-body><mj-section><mj-column><mj-text>Hello {{name}}</mj-text></mj-column></mj-section></mj-body></mjml>",
+        substitutions: { name: "John" },
+      },
+      {}
+    );
 
     expect(result.errors).toBeUndefined();
     expect(result.html).toBe(expectations["mjml should render successfully with template substitutions"]);

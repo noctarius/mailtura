@@ -70,6 +70,18 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
       if (!template) return undefined;
       return mapTemplate(template);
     },
+    urlRelocationStorage: async urlRelocations => {
+      await prisma.mail_url_proxies.createMany({
+        data: urlRelocations.map(urlRelocation => ({
+          tenant_id: tenantId,
+          id: urlRelocation.id,
+          from: urlRelocation.from,
+          to: urlRelocation.to,
+          contact_id: urlRelocation.contactId,
+          position: urlRelocation.position,
+        })),
+      });
+    },
   };
 
   const transport = newMailTransport(mailConfig, transportConfig);

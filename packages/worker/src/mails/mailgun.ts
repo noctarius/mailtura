@@ -2,7 +2,6 @@ import { Mail, MailContact, MailDirectContent, MailgunConfig } from "@mailtura/r
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
-import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 type MailgunMessageData = Parameters<ReturnType<Mailgun["client"]>["messages"]["create"]>[1];
 
@@ -23,8 +22,7 @@ export class MailgunTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
-    const messages = await this.#createMessages(mail, templateCompiler, content);
+    const messages = await this.#createMessages(mail, content);
 
     for (const message of messages) {
       try {
@@ -38,24 +36,16 @@ export class MailgunTransport extends AbstractTransport {
     return messages.length;
   }
 
-  async #createMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<MailgunMessageData[]> {
+  async #createMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
 
-    if (!hasSubstitutions) return this.#createJoinedMessages(mail, templateCompiler);
-    return this.#createSubstitutedMessages(mail, templateCompiler, content);
+    if (!hasSubstitutions) return this.#createJoinedMessages(mail);
+    return this.#createSubstitutedMessages(mail, content);
   }
 
-  async #createSubstitutedMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<MailgunMessageData[]> {
+  async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
     const from = this.#mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
@@ -64,7 +54,7 @@ export class MailgunTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
         return {
           from,
           to: this.#mapMailAddresses(recipient.to) ?? [],
@@ -78,8 +68,8 @@ export class MailgunTransport extends AbstractTransport {
     );
   }
 
-  async #createJoinedMessages(mail: Mail, templateCompiler: TemplateCompiler): Promise<MailgunMessageData[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+  async #createJoinedMessages(mail: Mail): Promise<MailgunMessageData[]> {
+    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

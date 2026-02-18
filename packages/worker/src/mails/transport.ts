@@ -6,13 +6,21 @@ import {
   MailDirectContent,
 } from "@mailtura/rpcmodel/mails/index.js";
 import { getRpcManager } from "../rpc/index.js";
-import { createTemplateCompiler, TemplateResolver } from "@mailtura/contentcompiler";
+import {
+  createTemplateCompiler,
+  ResolvedTemplate,
+  TemplateCompiler,
+  TemplateResolver,
+} from "@mailtura/contentcompiler";
+
+type UrlProxy = ResolvedTemplate["urlRelocations"][number];
 
 const rpcManager = getRpcManager();
 
 export interface TransportConfig {
   apiBase: string;
   templateResolver: TemplateResolver;
+  urlRelocationStorage: (urlRelocations: UrlProxy[]) => Promise<void>;
 }
 
 export interface Transport {
@@ -22,10 +30,12 @@ export interface Transport {
 export abstract class AbstractTransport implements Transport {
   readonly #tenantId: string;
   readonly #transportConfig: TransportConfig;
+  readonly #contentCompiler: TemplateCompiler;
 
   protected constructor(tenantId: string, transportConfig: TransportConfig) {
     this.#tenantId = tenantId;
     this.#transportConfig = transportConfig;
+    this.#contentCompiler = createTemplateCompiler(transportConfig.templateResolver, transportConfig.apiBase);
   }
 
   protected async getTemplateContent(content: MailContent): Promise<MailDirectContent> {
@@ -57,7 +67,24 @@ export abstract class AbstractTransport implements Transport {
     };
   }
 
-  protected createContentCompiler() {
-    return createTemplateCompiler(this.#transportConfig.templateResolver, this.#transportConfig.apiBase);
+  protected async resolveTemplate<T extends Record<string, any> = any>(
+    content: MailContent,
+    substitutions: T,
+    bypassCache?: boolean
+  ): Promise<Omit<ResolvedTemplate, "urlRelocations">> {
+    const resolvedTemplate = await this.#contentCompiler.resolveTemplate(content, substitutions, bypassCache);
+    if (resolvedTemplate.errors) {
+      return {
+        errors: resolvedTemplate.errors,
+        html: "",
+        text: "",
+      };
+    }
+
+    await this.#transportConfig.urlRelocationStorage(resolvedTemplate.urlRelocations ?? []);
+    return {
+      html: resolvedTemplate.html,
+      text: resolvedTemplate.text,
+    };
   }
 }

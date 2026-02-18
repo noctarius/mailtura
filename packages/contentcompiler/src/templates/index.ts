@@ -21,11 +21,11 @@ declare class LiquidErrors extends LiquidError {
 const isLiquidErrors = (e: unknown): e is LiquidErrors => e instanceof LiquidError && "errors" in e;
 
 const mergeSubstitutions = (a?: Record<string, string>, b?: Record<string, string>): Record<string, string> => ({
-  ...(a??{}),
-  ...(b??{}),
+  ...(a ?? {}),
+  ...(b ?? {}),
 });
 
-const urlRegex = /(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\w.-]*)*\/?/g;
+const urlRegex = /\bhttps?:\/\/[^\s<>"']+/g;
 
 type TemplateFunction<T> = (context: T) => string;
 
@@ -170,7 +170,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
       const src = element.attr("src");
 
       const from = href || src;
-      const urlProxy = this.#generateProxyUrl(from, pos, contactId);
+      const urlProxy = this.#generateProxyUrl(from, pos + 1, contactId);
       if (!urlProxy) return;
 
       urlRelocations.push(urlProxy);
@@ -194,7 +194,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
           state.segments.push(text.slice(state.startIndex, startIndex));
         }
 
-        const proxyUrl = this.#generateProxyUrl(url, pos, contactId);
+        const proxyUrl = this.#generateProxyUrl(url, pos + 1, contactId);
         if (proxyUrl) {
           urlRelocations.push(proxyUrl);
           state.segments.push(proxyUrl.to);

@@ -12,7 +12,6 @@ import {
 import { createTransport as createNodemailerTransport } from "nodemailer";
 import { Address, Options } from "nodemailer/lib/mailer/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
-import { createTemplateCompiler } from "@mailtura/contentcompiler";
 
 export class SmtpTransport extends AbstractTransport {
   readonly #config: SmtpConfig;
@@ -36,10 +35,9 @@ export class SmtpTransport extends AbstractTransport {
     const from = this.#mapMailAddress(mail.from);
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
     for (const recipient of mail.recipients) {
       const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
-      const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+      const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
 
       const mailOptions: Options = {
         from,

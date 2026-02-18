@@ -1,7 +1,6 @@
 import { Mail, MailchimpConfig, MailContact, MailDirectContent } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import mailchimp from "@mailchimp/mailchimp_transactional";
-import { createTemplateCompiler, TemplateCompiler } from "@mailtura/contentcompiler";
 
 type MailchimpClient = ReturnType<typeof mailchimp>;
 type Message = Parameters<MailchimpClient["messages"]["send"]>[0]["message"];
@@ -19,8 +18,7 @@ export class MailchimpTransport extends AbstractTransport {
 
     const content = await this.getTemplateContent(mail.content);
 
-    const templateCompiler = this.createContentCompiler();
-    const messages = await this.#createMessages(mail, templateCompiler, content);
+    const messages = await this.#createMessages(mail, content);
 
     for (const message of messages) {
       try {
@@ -34,24 +32,16 @@ export class MailchimpTransport extends AbstractTransport {
     return messages.length;
   }
 
-  async #createMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<Message[]> {
+  async #createMessages(mail: Mail, content: MailDirectContent): Promise<Message[]> {
     const hasSubstitutions = mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
 
-    if (!hasSubstitutions) return this.#createJoinedMessages(mail, templateCompiler);
-    return this.#createSubstitutedMessages(mail, templateCompiler, content);
+    if (!hasSubstitutions) return this.#createJoinedMessages(mail);
+    return this.#createSubstitutedMessages(mail, content);
   }
 
-  async #createSubstitutedMessages(
-    mail: Mail,
-    templateCompiler: TemplateCompiler,
-    content: MailDirectContent
-  ): Promise<Message[]> {
+  async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<Message[]> {
     return Promise.all(
       mail.recipients.map(async recipient => {
         const substitutions = this.mergeSubstitutions(
@@ -59,7 +49,7 @@ export class MailchimpTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
         return {
           from_email: mail.from.email,
           from_name: mail.from.name,
@@ -74,8 +64,8 @@ export class MailchimpTransport extends AbstractTransport {
     );
   }
 
-  async #createJoinedMessages(mail: Mail, templateCompiler: TemplateCompiler): Promise<Message[]> {
-    const resolvedTemplate = await templateCompiler.resolveTemplate(mail.content, mail.substitutions ?? {});
+  async #createJoinedMessages(mail: Mail): Promise<Message[]> {
+    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }
