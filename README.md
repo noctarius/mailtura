@@ -36,13 +36,89 @@ services, or just want more control over your email stack, Mailtura gives you th
 
 ## 📦 Installation
 
-Clone the repository and run it in Docker Compose.
+Mailtura can be run locally with Docker Compose or on Kubernetes via Helm.
+
+### Option 1: Docker Compose (quick start)
 
 ```bash
 git clone https://github.com/mailtura/mailtura.git
 cd mailtura
- docker compose -f docker/docker-compose.yaml up --build -d
+docker compose -f docker/docker-compose.yaml up --build -d
 ```
+
+Useful default endpoints:
+
+- Mailtura API + Dashboard: `http://localhost:3000`
+- Temporal UI: `http://localhost:8080`
+- PostgreSQL: `postgresql://mailtura:mailtura@localhost:5533/mailtura`
+
+### Option 2: Helm (Kubernetes)
+
+The chart is located in `helm/mailtura` and deploys:
+
+- Mailtura app deployment
+- Mailtura worker deployment
+- Migration job (Helm hook)
+- Temporal (optional, enabled by default)
+- StackGres operator + PostgreSQL cluster (optional, enabled by default)
+
+Install:
+
+```bash
+helm dependency build helm/mailtura
+helm upgrade --install mailtura helm/mailtura \
+  --namespace mailtura \
+  --create-namespace \
+  --wait \
+  --wait-for-jobs
+```
+
+Example: use external PostgreSQL instead of bundled StackGres:
+
+```bash
+helm upgrade --install mailtura helm/mailtura \
+  --namespace mailtura \
+  --create-namespace \
+  --set stackgres.enabled=false \
+  --set externalDatabase.enabled=true \
+  --set externalDatabase.url='postgres://user:pass@host:5432/postgres'
+```
+
+Example: use external Temporal instead of bundled Temporal chart:
+
+```bash
+helm upgrade --install mailtura helm/mailtura \
+  --namespace mailtura \
+  --create-namespace \
+  --set temporal.enabled=false \
+  --set env.temporal.address='your-temporal-frontend:7233'
+```
+
+Check `helm/mailtura/README.md` and `helm/mailtura/values.yaml` for all chart options.
+
+## ⚙️ Environment Variables
+
+Core runtime variables:
+
+| Variable               | Required    | Default                               | Used by                     | Notes                                |
+|------------------------|-------------|---------------------------------------|-----------------------------|--------------------------------------|
+| `DATABASE_URL`         | Yes         | none                                  | backend, worker, migrations | PostgreSQL connection string         |
+| `TEMPORAL_ADDRESS`     | Yes         | none (Compose) / auto-derived in Helm | backend, worker             | Temporal frontend endpoint           |
+| `TEMPORAL_NAMESPACE`   | Worker: yes | `default` (Compose and Helm values)   | worker                      | Temporal namespace                   |
+| `TEMPORAL_TASK_QUEUE`  | Yes         | `mailtura` (Compose and Helm values)  | backend, worker             | Queue shared by API and worker       |
+| `MAILTURA_AUTH_SECRET` | Yes         | none                                  | backend                     | Session/auth secret                  |
+| `API_BASE_URL`         | No          | `http://localhost:3000/api/v1`        | worker                      | Base URL for worker callbacks to API |
+
+Additional variables:
+
+| Variable             | Required | Default           | Used by          | Notes                                        |
+|----------------------|----------|-------------------|------------------|----------------------------------------------|
+| `SMTP_SERVER_PORT`   | No       | `2525`            | backend          | Internal SMTP listener port                  |
+| `DEBUG_PRISMA`       | No       | `false`           | database package | Enables Prisma debug mode when set to `true` |
+| `NODE_ENV`           | No       | runtime-dependent | backend          | Affects production cookie security           |
+| `DASHBOARD_BASE_URL` | No       | `/` behavior      | frontend build   | Vite `base` for dashboard assets             |
+
+For Helm-based installs, these values are rendered from `helm/mailtura/values.yaml` into a Kubernetes Secret (`*-env`) and injected into pods.
 
 ## 🧪 Usage Scenarios
 
