@@ -23,6 +23,7 @@
     "@prisma/client": "^7.1.0",
     "@prisma/client-runtime-utils": "^7.1.0",
     "moment-timezone": "^0.6.0",
+    "pg": "^8.16.3",
     "typebox": "catalog:",
     "uuid": "^13.0.0"
   },
@@ -34,6 +35,7 @@
     "@testcontainers/postgresql": "^11.10.0",
     "@types/bun": "^1.2.23",
     "@types/jest": "^30.0.0",
+    "@types/pg": "8.11.11",
     "@types/node": "^24.10.1",
     "bun-plugin-dts": "^0.3.0",
     "dotenv": "^17.2.3",

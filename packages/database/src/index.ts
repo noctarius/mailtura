@@ -38,14 +38,16 @@ import {
   type LogLevel,
   PrismaClientKnownRequestError,
 } from "./generated/prisma/internal/prismaNamespace.js";
+import { Pool } from "pg";
 
 const debugPrisma = process.env.DEBUG_PRISMA === "true";
 const log = (debugPrisma ? ["query", "info", "warn", "error"] : []) as (LogLevel | LogDefinition)[];
 
 export function newPrismaPg(connectionString: string) {
   if (connectionString.indexOf("schema=") !== -1) {
+    const pool = new Pool({ connectionString });
     const schema = /schema=([^& ]+)/.exec(connectionString)?.[1] ?? "public";
-    return new PrismaPg(connectionString, { schema });
+    return new PrismaPg(pool, { schema });
   }
 
   return new PrismaPg({ connectionString });
