@@ -91,7 +91,7 @@ security policies.
     - [Typebox](https://github.com/sinclairzx81/typebox) for type OpenAPI type definitions and validation.
     - [Papaparse](https://www.papaparse.com/) for reliable CSV parsing.
     - [MJML](https://mjml.io/) for easy and reliable email templating.
-    - [Mustache.js](https://github.com/janl/mustache.js) for variable expanding and template logic.
+    - [LiquidJS](https://liquidjs.com/) for variable expanding and template logic.
     - [Bun](https://bun.com/) for package management, backend runtime, and more.
 - Backend:
     - [Fastify](https://fastify.dev/) for a fast and extensible API service. 
