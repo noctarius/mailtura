@@ -14,6 +14,7 @@ import { generateNewKey } from "../../auth/apiKey.js";
 import type { ApiKey } from "@mailtura/rpcmodel/api/index.js";
 import { fromDateTime, mapApiKey, unpackOptionalNullable } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function apiKeyRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -65,6 +66,7 @@ export function apiKeyRoutes<
       const now = UTC.now();
       const newApiKey = await prisma.api_keys.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           name: request.body.name,
           key: generateNewKey(now),

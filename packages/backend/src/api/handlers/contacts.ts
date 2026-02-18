@@ -24,6 +24,7 @@ import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
 import { mapContact, mapContactImport, mapContactsWithSubscriptions, Prisma, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -90,6 +91,7 @@ export function contactRoutes<
       await prisma.$transaction(async tx => {
         const newContact = await tx.contacts.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenantId,
             email: request.body.email,
             first_name: request.body.firstName,
@@ -102,6 +104,7 @@ export function contactRoutes<
         for (const subscription of request.body.subscriptions) {
           await tx.subscribers.create({
             data: {
+              id: uuidv7(),
               tenant_id: tenantId,
               contact_id: newContact.id,
               status: "Subscribed",
@@ -183,6 +186,7 @@ export function contactRoutes<
               },
             },
             create: {
+              id: uuidv7(),
               tenant_id: tenantId,
               email: contact.email,
               first_name: contact.firstName,
@@ -208,6 +212,7 @@ export function contactRoutes<
                 },
               },
               create: {
+                id: uuidv7(),
                 tenant_id: tenantId,
                 contact_id: newContact.id,
                 status: "Subscribed",
@@ -318,6 +323,7 @@ export function contactRoutes<
             for (const listId of listsToAdd) {
               await tx.subscribers.create({
                 data: {
+                  id: uuidv7(),
                   tenant_id: tenantId,
                   contact_id: contactId,
                   status: "Subscribed",
@@ -489,6 +495,7 @@ export function contactImportRoutes<
       return prisma.$transaction(async tx => {
         const newFile = await tx.files.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenantId,
             name: file.filename,
             data: Uint8Array.from(data),
@@ -505,6 +512,7 @@ export function contactImportRoutes<
 
         const contactImport = await tx.contact_imports.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenantId,
             status: 0,
             records: 0,

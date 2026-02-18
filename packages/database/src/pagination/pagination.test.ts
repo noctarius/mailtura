@@ -3,9 +3,10 @@ import type { contacts } from "../generated/prisma/browser.js";
 import { randomUUID } from "node:crypto";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { uuidv7 } from "uuidv7";
-import { type Prisma, setupDatabase } from "../test_support/index.js";
+import { setupDatabase } from "../test_support/index.js";
 import { withPagination } from "./index.js";
 import type { PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/pagination.js";
+import type { PrismaType } from "../index.js";
 
 const letters = "abcdefghijklmnopqrstuvwxyz";
 
@@ -30,7 +31,7 @@ const createTestContacts = (): contacts[] => {
 };
 
 const skipPages = async (
-  prisma: Prisma,
+  prisma: PrismaType,
   skipPages: number,
   pageSize: number,
   nextCursor?: string,
@@ -58,7 +59,7 @@ const skipPages = async (
 };
 
 const rewindPages = async (
-  prisma: Prisma,
+  prisma: PrismaType,
   rewindPages: number,
   pageSize: number,
   previousCursor?: string,
@@ -88,7 +89,7 @@ const rewindPages = async (
 describe("Pagination unit tests", () => {
   const testData = createTestContacts();
   let postgresContainer: StartedPostgreSqlContainer;
-  let prisma: import("../index.ts").prisma;
+  let prisma: import("../index.ts").PrismaType;
 
   beforeAll(async () => {
     const database = await setupDatabase();

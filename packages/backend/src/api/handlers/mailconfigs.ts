@@ -14,6 +14,7 @@ import type { MailConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { mapMailConfig, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function mailConfigRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -80,6 +81,7 @@ export function mailConfigRoutes<
 
       const newMailConfig = await prisma.mail_configs.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           name: request.body.name,
           type: request.body.type,

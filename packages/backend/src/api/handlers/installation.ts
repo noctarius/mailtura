@@ -13,6 +13,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
 import { CreateMailConfig } from "@mailtura/rpcmodel/api/request-response.js";
 import { Prisma } from "@mailtura/database";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),
@@ -76,6 +77,7 @@ export function installationRoutes<
         // Create Tenant
         const tenant = await tx.tenants.create({
           data: {
+            id: uuidv7(),
             name: "::system::",
             created_at: UTC.now().toDate(),
             created_by: "api",
@@ -85,6 +87,7 @@ export function installationRoutes<
         // System admin role
         const systemAdmin = await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "Super Admin",
             description: "System administrator",
@@ -110,6 +113,7 @@ export function installationRoutes<
         // Tenant admin role
         await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "Tenant Admin",
             description: "Can fully manage the tenant",
@@ -134,6 +138,7 @@ export function installationRoutes<
         // User role
         await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "User",
             description: "Can manage campaigns, contacts, and templates",
@@ -153,6 +158,7 @@ export function installationRoutes<
         // Viewer role
         await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "Viewer",
             description: "Can view reports, suppressions, and logs",
@@ -165,6 +171,7 @@ export function installationRoutes<
         // Create user
         const user = await tx.users.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             email: request.body.user.email,
             first_name: request.body.user.firstName,
@@ -181,6 +188,7 @@ export function installationRoutes<
         // Create account
         await tx.accounts.create({
           data: {
+            id: uuidv7(),
             user_id: user.id,
             account_id: user.id,
             provider_id: "credential",
@@ -192,6 +200,7 @@ export function installationRoutes<
 
         await tx.mail_configs.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: request.body.systemMail.name,
             type: request.body.systemMail.type,

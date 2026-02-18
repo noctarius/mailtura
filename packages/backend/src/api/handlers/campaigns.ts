@@ -14,6 +14,7 @@ import type { Campaign, CampaignStatus } from "@mailtura/rpcmodel/api/index.js";
 import { fromDateTime, mapCampaign, unpackOptionalNullable, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function campaignRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -79,6 +80,7 @@ export function campaignRoutes<
 
       const newCampaign = await prisma.campaigns.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           name: request.body.name,
           type: request.body.type,

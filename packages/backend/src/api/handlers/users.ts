@@ -16,6 +16,7 @@ import { mapUser, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { sendInviteEmail } from "../../mail/index.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -81,6 +82,7 @@ export function userRoutes<
 
       const newUser = await prisma.users.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           email: request.body.email,
           first_name: request.body.firstName,

@@ -6,6 +6,7 @@
   "workspaces": {
     "packages": ["packages/*"],
     "catalog": {
+      "@better-auth/passkey": "^1.4.18",
       "@eslint/js": "^9.9.1",
       "@temporalio/activity": "^1.13.2",
       "@temporalio/client": "^1.13.2",
@@ -13,7 +14,7 @@
       "@temporalio/worker": "^1.13.2",
       "@temporalio/workflow": "^1.13.2",
       "@types/jest": "^30.0.0",
-      "better-auth": "^1.4.9",
+      "better-auth": "^1.4.18",
       "eslint": "^9.9.1",
       "eslint-config-prettier": "^10.1.8",
       "jest": "^29.7.0",
