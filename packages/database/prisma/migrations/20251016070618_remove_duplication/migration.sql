@@ -7,19 +7,19 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "public"."subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_contact_id_fkey";
+ALTER TABLE "subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_contact_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_subscriber_list_id_fkey";
+ALTER TABLE "subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_subscriber_list_id_fkey";
 
 -- DropIndex
-DROP INDEX "public"."subscribers_tenant_id_contact_id_key";
+DROP INDEX "subscribers_tenant_id_contact_id_key";
 
 -- AlterTable
 ALTER TABLE "subscribers" ADD COLUMN     "subscriber_list_id" UUID NOT NULL;
 
 -- DropTable
-DROP TABLE "public"."subscriber_list_contacts";
+DROP TABLE "subscriber_list_contacts";
 
 -- CreateIndex
 CREATE UNIQUE INDEX "subscribers_tenant_id_contact_id_subscriber_list_id_key" ON "subscribers"("tenant_id", "contact_id", "subscriber_list_id");

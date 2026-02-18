@@ -36,79 +36,79 @@ CREATE TYPE "subscriber_status" AS ENUM ('Subscribed', 'Unsubscribed', 'Bounced'
 CREATE TYPE "unsubscribe_source" AS ENUM ('UnsubscribeLink', 'ManualAddition', 'Bounce', 'Api', 'Other');
 
 -- DropForeignKey
-ALTER TABLE "public"."Activity" DROP CONSTRAINT "Activity_campaign_id_fkey";
+ALTER TABLE "Activity" DROP CONSTRAINT "Activity_campaign_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."Activity" DROP CONSTRAINT "Activity_contact_id_fkey";
+ALTER TABLE "Activity" DROP CONSTRAINT "Activity_contact_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."Bounce" DROP CONSTRAINT "Bounce_contact_id_fkey";
+ALTER TABLE "Bounce" DROP CONSTRAINT "Bounce_contact_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."Contact" DROP CONSTRAINT "Contact_subscriber_list_contacts_id_fkey";
+ALTER TABLE "Contact" DROP CONSTRAINT "Contact_subscriber_list_contacts_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."Subscriber" DROP CONSTRAINT "Subscriber_contact_id_fkey";
+ALTER TABLE "Subscriber" DROP CONSTRAINT "Subscriber_contact_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."SubscriberListContacts" DROP CONSTRAINT "SubscriberListContacts_subscriber_list_id_fkey";
+ALTER TABLE "SubscriberListContacts" DROP CONSTRAINT "SubscriberListContacts_subscriber_list_id_fkey";
 
 -- DropForeignKey
-ALTER TABLE "public"."Unsubscribe" DROP CONSTRAINT "Unsubscribe_contact_id_fkey";
+ALTER TABLE "Unsubscribe" DROP CONSTRAINT "Unsubscribe_contact_id_fkey";
 
 -- DropTable
-DROP TABLE "public"."Activity";
+DROP TABLE "Activity";
 
 -- DropTable
-DROP TABLE "public"."ApiKey";
+DROP TABLE "ApiKey";
 
 -- DropTable
-DROP TABLE "public"."Bounce";
+DROP TABLE "Bounce";
 
 -- DropTable
-DROP TABLE "public"."Campaign";
+DROP TABLE "Campaign";
 
 -- DropTable
-DROP TABLE "public"."Contact";
+DROP TABLE "Contact";
 
 -- DropTable
-DROP TABLE "public"."Subscriber";
+DROP TABLE "Subscriber";
 
 -- DropTable
-DROP TABLE "public"."SubscriberList";
+DROP TABLE "SubscriberList";
 
 -- DropTable
-DROP TABLE "public"."SubscriberListContacts";
+DROP TABLE "SubscriberListContacts";
 
 -- DropTable
-DROP TABLE "public"."Tenant";
+DROP TABLE "Tenant";
 
 -- DropTable
-DROP TABLE "public"."Unsubscribe";
+DROP TABLE "Unsubscribe";
 
 -- DropTable
-DROP TABLE "public"."User";
+DROP TABLE "User";
 
 -- DropEnum
-DROP TYPE "public"."ActivityStatus";
+DROP TYPE "ActivityStatus";
 
 -- DropEnum
-DROP TYPE "public"."BounceType";
+DROP TYPE "BounceType";
 
 -- DropEnum
-DROP TYPE "public"."CampaignStatus";
+DROP TYPE "CampaignStatus";
 
 -- DropEnum
-DROP TYPE "public"."CampaignType";
+DROP TYPE "CampaignType";
 
 -- DropEnum
-DROP TYPE "public"."EventType";
+DROP TYPE "EventType";
 
 -- DropEnum
-DROP TYPE "public"."SubscriberStatus";
+DROP TYPE "SubscriberStatus";
 
 -- DropEnum
-DROP TYPE "public"."UnsubscribeSource";
+DROP TYPE "UnsubscribeSource";
 
 -- CreateTable
 CREATE TABLE "tenants" (

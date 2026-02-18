@@ -5,10 +5,10 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "public"."subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_subscriber_list_id_fkey";
+ALTER TABLE "subscriber_list_contacts" DROP CONSTRAINT "subscriber_list_contacts_subscriber_list_id_fkey";
 
 -- DropTable
-DROP TABLE "public"."subscriber_list";
+DROP TABLE "subscriber_list";
 
 -- CreateTable
 CREATE TABLE "subscriber_lists" (

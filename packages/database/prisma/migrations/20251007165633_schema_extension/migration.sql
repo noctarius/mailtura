@@ -82,7 +82,7 @@ DROP COLUMN "list_ids",
 ADD COLUMN     "list_ids" UUID[];
 
 -- DropTable
-DROP TABLE "public"."UnsubscribedList";
+DROP TABLE "UnsubscribedList";
 
 -- CreateTable
 CREATE TABLE "SubscriberListContacts" (

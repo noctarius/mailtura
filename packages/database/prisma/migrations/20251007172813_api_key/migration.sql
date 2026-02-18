@@ -13,7 +13,7 @@
 
 */
 -- DropForeignKey
-ALTER TABLE "public"."Contact" DROP CONSTRAINT "Contact_subscriberListContactsId_fkey";
+ALTER TABLE "Contact" DROP CONSTRAINT "Contact_subscriberListContactsId_fkey";
 
 -- AlterTable
 ALTER TABLE "Campaign" DROP COLUMN "click_rate",
