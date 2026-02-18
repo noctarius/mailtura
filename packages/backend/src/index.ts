@@ -15,9 +15,9 @@ import { installationRoutes } from "./api/handlers/installation.js";
 import { handlePrismaError, newPrismaClient } from "@mailtura/database";
 import { createLazyTemporalTaskManager } from "./tasks/index.js";
 import type { ServerContext } from "./context/index.js";
-import { PrismaPg } from "@prisma/adapter-pg";
 import { startSmtpServer } from "./smtp/server.js";
 import { trackingRoutes } from "./api/handlers/tracking.js";
+import { newPrismaPg } from "../../database/src/index.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -113,7 +113,7 @@ registerModelSchema(app);
   });
 
   const taskManager = createLazyTemporalTaskManager();
-  const prisma = newPrismaClient(new PrismaPg({ connectionString }));
+  const prisma = newPrismaClient(newPrismaPg(connectionString));
   const context: ServerContext = { prisma, taskManager };
 
   await startSmtpServer(context);
