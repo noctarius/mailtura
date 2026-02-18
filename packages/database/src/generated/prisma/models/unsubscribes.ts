@@ -298,7 +298,7 @@ export type unsubscribesScalarWhereWithAggregatesInput = {
 }
 
 export type unsubscribesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
@@ -312,7 +312,7 @@ export type unsubscribesCreateInput = {
 }
 
 export type unsubscribesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
@@ -354,7 +354,7 @@ export type unsubscribesUncheckedUpdateInput = {
 }
 
 export type unsubscribesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
@@ -517,7 +517,7 @@ export type unsubscribesUpdatelist_idsInput = {
 }
 
 export type unsubscribesCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
@@ -530,7 +530,7 @@ export type unsubscribesCreateWithoutContactsInput = {
 }
 
 export type unsubscribesUncheckedCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
@@ -586,7 +586,7 @@ export type unsubscribesScalarWhereInput = {
 }
 
 export type unsubscribesCreateManyContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string

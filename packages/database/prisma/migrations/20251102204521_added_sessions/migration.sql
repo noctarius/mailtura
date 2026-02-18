@@ -11,7 +11,7 @@ ADD COLUMN     "created_by" TEXT NOT NULL;
 
 -- CreateTable
 CREATE TABLE "sessions" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "user_id" UUID NOT NULL,
     "token" TEXT NOT NULL,
     "expired_at" TIMESTAMPTZ NOT NULL,

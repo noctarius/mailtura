@@ -14,7 +14,7 @@
     "build:openapi": "npx openapi-typescript http://localhost:3333/docs/json -o ./generated/api/mailtura.d.ts --default-non-nullable false"
   },
   "dependencies": {
-    "@better-auth/passkey": "^1.4.3",
+    "@better-auth/passkey": "catalog:",
     "@jsr/timepp__murmurhash": "^0.1.1",
     "@mailtura/rpcmodel": "*",
     "@modular-forms/solid": "^0.25.1",

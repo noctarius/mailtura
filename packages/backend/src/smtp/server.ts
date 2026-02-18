@@ -11,6 +11,7 @@ import type { ServerContext } from "../context/index.js";
 import type { PrismaType } from "@mailtura/database";
 import type { TaskManager } from "../tasks/index.js";
 import { hasPermission } from "@mailtura/rpcmodel/auth/index.js";
+import uuidv7 from "../helpers/uuidv7.js";
 
 interface SmtpSession extends SMTPServerSession {
   user?: any;
@@ -118,6 +119,7 @@ export async function startSmtpServer(context: ServerContext) {
 
         const mailSending = await prisma.mail_sendings.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenantId,
             subject: parsed.subject || "(No Subject)",
             content: parsed.html || parsed.text || "",
@@ -133,6 +135,7 @@ export async function startSmtpServer(context: ServerContext) {
                   id: mailSender?.id || "00000000-0000-0000-0000-000000000000",
                 },
                 create: {
+                  id: uuidv7(),
                   tenant_id: tenantId,
                   name: senderName,
                   email: senderEmail,
@@ -148,6 +151,7 @@ export async function startSmtpServer(context: ServerContext) {
             },
             mail_receivers: {
               create: directRecipients.map(r => ({
+                id: uuidv7(),
                 tenant_id: tenantId,
                 name: r.name,
                 email: r.email,

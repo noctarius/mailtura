@@ -349,7 +349,7 @@ export type passkeysScalarWhereWithAggregatesInput = {
 }
 
 export type passkeysCreateInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   credential_id: string
@@ -364,7 +364,7 @@ export type passkeysCreateInput = {
 }
 
 export type passkeysUncheckedCreateInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   user_id: string
@@ -409,7 +409,7 @@ export type passkeysUncheckedUpdateInput = {
 }
 
 export type passkeysCreateManyInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   user_id: string
@@ -558,7 +558,7 @@ export type passkeysUncheckedUpdateManyWithoutUsersNestedInput = {
 }
 
 export type passkeysCreateWithoutUsersInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   credential_id: string
@@ -572,7 +572,7 @@ export type passkeysCreateWithoutUsersInput = {
 }
 
 export type passkeysUncheckedCreateWithoutUsersInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   credential_id: string
@@ -630,7 +630,7 @@ export type passkeysScalarWhereInput = {
 }
 
 export type passkeysCreateManyUsersInput = {
-  id?: string
+  id: string
   name?: string | null
   public_key: string
   credential_id: string

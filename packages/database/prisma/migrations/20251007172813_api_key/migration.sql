@@ -34,7 +34,7 @@ ALTER TABLE "SubscriberListContacts" ADD COLUMN     "tenant_id" UUID NOT NULL;
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "email" TEXT NOT NULL,
     "first_name" TEXT,
@@ -53,7 +53,7 @@ CREATE TABLE "User" (
 
 -- CreateTable
 CREATE TABLE "ApiKey" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "key" TEXT NOT NULL,

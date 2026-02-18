@@ -14,6 +14,7 @@ import type { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
 import { mapUnsubscribe, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function unsubscribeRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -79,6 +80,7 @@ export function unsubscribeRoutes<
 
       const newUnsubscribe = await prisma.unsubscribes.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           contact_id: request.body.contactId,
           source: request.body.source,

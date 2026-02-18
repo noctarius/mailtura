@@ -15,6 +15,7 @@ import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompil
 import { mapTemplate, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -78,6 +79,7 @@ export function templateRoutes<
       const tenantId = request.params.tenant_id;
       const newTemplate = await prisma.templates.create({
         data: {
+          id: uuidv7(),
           tenant_id: tenantId,
           name: request.body.name,
           description: request.body.description,
@@ -87,6 +89,7 @@ export function templateRoutes<
             ? {
                 create: request.body.properties.map(property => {
                   return {
+                    id: uuidv7(),
                     tenant_id: tenantId,
                     name: property.name,
                     type: property.type,

@@ -14,6 +14,7 @@ import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
 import { mapUser } from "@mailtura/database";
 import { sendInviteEmail } from "../mail/index.js";
+import uuidv7 from "../helpers/uuidv7.js";
 
 const SignUpEmail = Type.Object({
   email: Type.String({ format: "email" }),
@@ -64,6 +65,7 @@ export function registerCustomAuthRoutes<
         // Create Tenant
         const tenant = await tx.tenants.create({
           data: {
+            id: uuidv7(),
             name: (firstName.endsWith("s") ? `${firstName}'` : `${firstName}'s`) + " Tenant",
             created_at: UTC.now().toDate(),
             created_by: "api",
@@ -73,6 +75,7 @@ export function registerCustomAuthRoutes<
         // Tenant admin role
         const tenantAdmin = await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "Tenant Admin",
             description: "Can fully manage the tenant",
@@ -97,6 +100,7 @@ export function registerCustomAuthRoutes<
         // User role
         await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "User",
             description: "Can manage campaigns, contacts, and templates",
@@ -116,6 +120,7 @@ export function registerCustomAuthRoutes<
         // Viewer role
         await tx.roles.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             name: "Viewer",
             description: "Can view reports, suppressions, and logs",
@@ -128,6 +133,7 @@ export function registerCustomAuthRoutes<
         // Create user
         const user = await tx.users.create({
           data: {
+            id: uuidv7(),
             tenant_id: tenant.id,
             email,
             first_name: firstName,
@@ -143,6 +149,7 @@ export function registerCustomAuthRoutes<
         // Create account
         await tx.accounts.create({
           data: {
+            id: uuidv7(),
             user_id: user.id,
             account_id: user.id,
             provider_id: "credential",

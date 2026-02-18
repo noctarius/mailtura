@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "system_configs" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "key" TEXT NOT NULL,
     "value" JSONB NOT NULL,
 

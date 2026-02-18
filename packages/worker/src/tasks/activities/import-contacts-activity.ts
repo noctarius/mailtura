@@ -12,6 +12,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { CreateContact } from "@mailtura/rpcmodel/api/request-response.js";
 import { PrismaPg } from "@prisma/adapter-pg";
+import uuidv7 from "../../helper/uuidv7.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -151,6 +152,7 @@ const createContacts = async (
           },
         },
         create: {
+          id: uuidv7(),
           tenant_id: tenantId,
           email: contact.email,
           first_name: contact.firstName,
@@ -176,6 +178,7 @@ const createContacts = async (
             },
           },
           create: {
+            id: uuidv7(),
             tenant_id: tenantId,
             contact_id: newContact.id,
             status: "Subscribed",

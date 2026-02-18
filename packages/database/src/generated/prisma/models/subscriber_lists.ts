@@ -269,7 +269,7 @@ export type subscriber_listsScalarWhereWithAggregatesInput = {
 }
 
 export type subscriber_listsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -282,7 +282,7 @@ export type subscriber_listsCreateInput = {
 }
 
 export type subscriber_listsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -321,7 +321,7 @@ export type subscriber_listsUncheckedUpdateInput = {
 }
 
 export type subscriber_listsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -425,7 +425,7 @@ export type subscriber_listsUpdateOneRequiredWithoutMail_sendingsNestedInput = {
 }
 
 export type subscriber_listsCreateWithoutSubscribersInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -437,7 +437,7 @@ export type subscriber_listsCreateWithoutSubscribersInput = {
 }
 
 export type subscriber_listsUncheckedCreateWithoutSubscribersInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -489,7 +489,7 @@ export type subscriber_listsUncheckedUpdateWithoutSubscribersInput = {
 }
 
 export type subscriber_listsCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -501,7 +501,7 @@ export type subscriber_listsCreateWithoutMail_sendingsInput = {
 }
 
 export type subscriber_listsUncheckedCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null

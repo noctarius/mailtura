@@ -349,7 +349,7 @@ export type accountsScalarWhereWithAggregatesInput = {
 }
 
 export type accountsCreateInput = {
-  id?: string
+  id: string
   account_id: string
   provider_id: string
   access_token?: string | null
@@ -367,7 +367,7 @@ export type accountsCreateInput = {
 }
 
 export type accountsUncheckedCreateInput = {
-  id?: string
+  id: string
   user_id: string
   account_id: string
   provider_id: string
@@ -421,7 +421,7 @@ export type accountsUncheckedUpdateInput = {
 }
 
 export type accountsCreateManyInput = {
-  id?: string
+  id: string
   user_id: string
   account_id: string
   provider_id: string
@@ -580,7 +580,7 @@ export type accountsUncheckedUpdateManyWithoutUsersNestedInput = {
 }
 
 export type accountsCreateWithoutUsersInput = {
-  id?: string
+  id: string
   account_id: string
   provider_id: string
   access_token?: string | null
@@ -597,7 +597,7 @@ export type accountsCreateWithoutUsersInput = {
 }
 
 export type accountsUncheckedCreateWithoutUsersInput = {
-  id?: string
+  id: string
   account_id: string
   provider_id: string
   access_token?: string | null
@@ -661,7 +661,7 @@ export type accountsScalarWhereInput = {
 }
 
 export type accountsCreateManyUsersInput = {
-  id?: string
+  id: string
   account_id: string
   provider_id: string
   access_token?: string | null

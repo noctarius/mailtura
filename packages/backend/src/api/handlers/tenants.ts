@@ -26,6 +26,7 @@ import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
 import { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { hasAnyPermission } from "@mailtura/rpcmodel/auth/index.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -89,6 +90,7 @@ export function tenantRoutes<
 
       const newTenant = await prisma.tenants.create({
         data: {
+          id: uuidv7(),
           name: tenantName,
           created_at: UTC.now().toDate(),
           created_by: "api",

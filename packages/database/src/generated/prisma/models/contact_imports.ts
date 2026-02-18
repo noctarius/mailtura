@@ -346,7 +346,7 @@ export type contact_importsScalarWhereWithAggregatesInput = {
 }
 
 export type contact_importsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name?: string | null
   filename: string
@@ -361,7 +361,7 @@ export type contact_importsCreateInput = {
 }
 
 export type contact_importsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name?: string | null
   filename: string
@@ -406,7 +406,7 @@ export type contact_importsUncheckedUpdateInput = {
 }
 
 export type contact_importsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name?: string | null
   filename: string

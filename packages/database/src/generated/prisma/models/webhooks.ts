@@ -217,14 +217,14 @@ export type webhooksScalarWhereWithAggregatesInput = {
 }
 
 export type webhooksCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
   mail_config: Prisma.mail_configsCreateNestedOneWithoutWebhooksInput
 }
 
 export type webhooksUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_config_id: string
   provider_id: string
@@ -245,7 +245,7 @@ export type webhooksUncheckedUpdateInput = {
 }
 
 export type webhooksCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_config_id: string
   provider_id: string
@@ -338,13 +338,13 @@ export type webhooksUncheckedUpdateManyWithoutMail_configNestedInput = {
 }
 
 export type webhooksCreateWithoutMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
 }
 
 export type webhooksUncheckedCreateWithoutMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
 }
@@ -386,7 +386,7 @@ export type webhooksScalarWhereInput = {
 }
 
 export type webhooksCreateManyMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   provider_id: string
 }

@@ -330,7 +330,7 @@ export type mail_sendingsScalarWhereWithAggregatesInput = {
 }
 
 export type mail_sendingsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   subject: string
   content_type: string
@@ -348,7 +348,7 @@ export type mail_sendingsCreateInput = {
 }
 
 export type mail_sendingsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   mail_config_id: string
@@ -402,7 +402,7 @@ export type mail_sendingsUncheckedUpdateInput = {
 }
 
 export type mail_sendingsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   mail_config_id: string
@@ -621,7 +621,7 @@ export type mail_sendingsUpdateOneRequiredWithoutMail_receiversNestedInput = {
 }
 
 export type mail_sendingsCreateWithoutMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   subject: string
   content_type: string
@@ -638,7 +638,7 @@ export type mail_sendingsCreateWithoutMail_configInput = {
 }
 
 export type mail_sendingsUncheckedCreateWithoutMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   subject: string
@@ -700,7 +700,7 @@ export type mail_sendingsScalarWhereInput = {
 }
 
 export type mail_sendingsCreateWithoutSubscriber_listsInput = {
-  id?: string
+  id: string
   tenant_id: string
   subject: string
   content_type: string
@@ -717,7 +717,7 @@ export type mail_sendingsCreateWithoutSubscriber_listsInput = {
 }
 
 export type mail_sendingsUncheckedCreateWithoutSubscriber_listsInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   mail_config_id: string
@@ -784,7 +784,7 @@ export type mail_sendingsUncheckedUpdateWithoutSubscriber_listsInput = {
 }
 
 export type mail_sendingsCreateWithoutMail_senderInput = {
-  id?: string
+  id: string
   tenant_id: string
   subject: string
   content_type: string
@@ -801,7 +801,7 @@ export type mail_sendingsCreateWithoutMail_senderInput = {
 }
 
 export type mail_sendingsUncheckedCreateWithoutMail_senderInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_config_id: string
   subject: string
@@ -844,7 +844,7 @@ export type mail_sendingsUpdateManyWithWhereWithoutMail_senderInput = {
 }
 
 export type mail_sendingsCreateWithoutMail_receiversInput = {
-  id?: string
+  id: string
   tenant_id: string
   subject: string
   content_type: string
@@ -861,7 +861,7 @@ export type mail_sendingsCreateWithoutMail_receiversInput = {
 }
 
 export type mail_sendingsUncheckedCreateWithoutMail_receiversInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   mail_config_id: string
@@ -928,7 +928,7 @@ export type mail_sendingsUncheckedUpdateWithoutMail_receiversInput = {
 }
 
 export type mail_sendingsCreateManyMail_configInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_sender_id: string
   subject: string
@@ -992,7 +992,7 @@ export type mail_sendingsUncheckedUpdateManyWithoutMail_configInput = {
 }
 
 export type mail_sendingsCreateManyMail_senderInput = {
-  id?: string
+  id: string
   tenant_id: string
   mail_config_id: string
   subject: string

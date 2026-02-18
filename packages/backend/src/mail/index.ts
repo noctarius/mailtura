@@ -4,6 +4,7 @@ import { createEmailVerificationToken } from "better-auth/api";
 import { getBaseConfig } from "../system/index.js";
 import { getBaseSystemUrl } from "../helpers/base-system-url.js";
 import type { TaskManager } from "../tasks/index.js";
+import uuidv7 from "../helpers/uuidv7.js";
 
 const authSecret = process.env.MAILTURA_AUTH_SECRET;
 if (!authSecret) {
@@ -35,6 +36,7 @@ export async function sendSystemMail(
   const systemMailConfig = await getSystemMailConfig(prisma);
   const mailSending = await prisma.mail_sendings.create({
     data: {
+      id: uuidv7(),
       tenant_id: systemMailConfig.tenant_id,
       mail_config_id: systemMailConfig.id,
       mail_sender_id: "019b1152-e76e-7a86-8582-28f0e3204c6d",
@@ -50,6 +52,7 @@ export async function sendSystemMail(
       mail_receivers: {
         create: [
           {
+            id: uuidv7(),
             tenant_id: systemMailConfig.tenant_id,
             email,
             name,

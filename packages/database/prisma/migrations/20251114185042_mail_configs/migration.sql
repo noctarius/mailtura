@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "mail_configs" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "type" TEXT NOT NULL,

@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "contact_imports" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "name" TEXT,
     "filename" TEXT NOT NULL,

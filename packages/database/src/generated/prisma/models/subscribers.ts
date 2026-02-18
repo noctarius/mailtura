@@ -293,7 +293,7 @@ export type subscribersScalarWhereWithAggregatesInput = {
 }
 
 export type subscribersCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -306,7 +306,7 @@ export type subscribersCreateInput = {
 }
 
 export type subscribersUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -345,7 +345,7 @@ export type subscribersUncheckedUpdateInput = {
 }
 
 export type subscribersCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -525,7 +525,7 @@ export type subscribersUncheckedUpdateManyWithoutSubscriber_listsNestedInput = {
 }
 
 export type subscribersCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -537,7 +537,7 @@ export type subscribersCreateWithoutContactsInput = {
 }
 
 export type subscribersUncheckedCreateWithoutContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -591,7 +591,7 @@ export type subscribersScalarWhereInput = {
 }
 
 export type subscribersCreateWithoutSubscriber_listsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -603,7 +603,7 @@ export type subscribersCreateWithoutSubscriber_listsInput = {
 }
 
 export type subscribersUncheckedCreateWithoutSubscriber_listsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -641,7 +641,7 @@ export type subscribersUpdateManyWithWhereWithoutSubscriber_listsInput = {
 }
 
 export type subscribersCreateManyContactsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string
@@ -689,7 +689,7 @@ export type subscribersUncheckedUpdateManyWithoutContactsInput = {
 }
 
 export type subscribersCreateManySubscriber_listsInput = {
-  id?: string
+  id: string
   tenant_id: string
   status: $Enums.subscriber_status
   subscribed_at: Date | string

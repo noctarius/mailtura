@@ -238,7 +238,7 @@ export type tenantsScalarWhereWithAggregatesInput = {
 }
 
 export type tenantsCreateInput = {
-  id?: string
+  id: string
   name: string
   created_at: Date | string
   created_by: string
@@ -247,7 +247,7 @@ export type tenantsCreateInput = {
 }
 
 export type tenantsUncheckedCreateInput = {
-  id?: string
+  id: string
   name: string
   created_at: Date | string
   created_by: string
@@ -274,7 +274,7 @@ export type tenantsUncheckedUpdateInput = {
 }
 
 export type tenantsCreateManyInput = {
-  id?: string
+  id: string
   name: string
   created_at: Date | string
   created_by: string

@@ -265,7 +265,7 @@ export type mail_sendersScalarWhereWithAggregatesInput = {
 }
 
 export type mail_sendersCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   email: string
@@ -277,7 +277,7 @@ export type mail_sendersCreateInput = {
 }
 
 export type mail_sendersUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   email: string
@@ -313,7 +313,7 @@ export type mail_sendersUncheckedUpdateInput = {
 }
 
 export type mail_sendersCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   email: string
@@ -398,7 +398,7 @@ export type mail_sendersUpdateOneRequiredWithoutMail_sendingsNestedInput = {
 }
 
 export type mail_sendersCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   email: string
@@ -409,7 +409,7 @@ export type mail_sendersCreateWithoutMail_sendingsInput = {
 }
 
 export type mail_sendersUncheckedCreateWithoutMail_sendingsInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   email: string

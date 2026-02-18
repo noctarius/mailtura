@@ -370,7 +370,7 @@ export type campaignsScalarWhereWithAggregatesInput = {
 }
 
 export type campaignsCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   status: $Enums.campaign_status
@@ -387,7 +387,7 @@ export type campaignsCreateInput = {
 }
 
 export type campaignsUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   status: $Enums.campaign_status
@@ -438,7 +438,7 @@ export type campaignsUncheckedUpdateInput = {
 }
 
 export type campaignsCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   status: $Enums.campaign_status
@@ -588,7 +588,7 @@ export type campaignsUpdateOneWithoutActivitiesNestedInput = {
 }
 
 export type campaignsCreateWithoutActivitiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   status: $Enums.campaign_status
@@ -604,7 +604,7 @@ export type campaignsCreateWithoutActivitiesInput = {
 }
 
 export type campaignsUncheckedCreateWithoutActivitiesInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   status: $Enums.campaign_status

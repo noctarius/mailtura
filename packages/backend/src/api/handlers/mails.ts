@@ -13,6 +13,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateSingleSend, CreateSingleSendResponse } from "@mailtura/rpcmodel/api/request-response.js";
 import { isDirectContent, isTemplatedContent } from "@mailtura/rpcmodel/mails/index.js";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
+import uuidv7 from "../../helpers/uuidv7.js";
 
 export function mailRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -62,6 +63,7 @@ export function mailRoutes<
 
       // Prepare mail_sendings create payload
       const data: Prisma.mail_sendingsCreateInput = {
+        id: uuidv7(),
         tenant_id: tenantId,
         mail_config: {
           connect: {
@@ -80,7 +82,7 @@ export function mailRoutes<
         created_at: UTC.now().toDate(),
         created_by: "api",
       };
-      console.log(content.type);
+
       if (isDirectContent(content)) {
         data.content = content.content;
         data.text_content = content.textContent ?? null;
@@ -97,6 +99,7 @@ export function mailRoutes<
               // Normalize to array of contacts for 'to'
               const tos = Array.isArray(r.to) ? r.to : [r.to];
               return tos.map(to => ({
+                id: uuidv7(),
                 tenant_id: tenantId,
                 email: to.email,
                 name: to.name ?? to.email,
@@ -110,6 +113,7 @@ export function mailRoutes<
       } else if (subscriberListIds && subscriberListIds.length > 0) {
         data.subscriber_lists = {
           create: subscriberListIds.map(id => ({
+            id: uuidv7(),
             subscriber_list_id: id,
             tenant_id: tenantId,
             created_at: UTC.now().toDate(),

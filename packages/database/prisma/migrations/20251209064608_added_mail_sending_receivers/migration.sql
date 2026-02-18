@@ -17,7 +17,7 @@ CREATE TABLE "mail_sendings_on_subscriber_lists" (
 
 -- CreateTable
 CREATE TABLE "mail_sending_receivers" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "tenant_id" UUID NOT NULL,
     "mail_sending_id" UUID NOT NULL,
     "email" TEXT NOT NULL,

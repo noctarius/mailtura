@@ -274,7 +274,7 @@ export type rolesScalarWhereWithAggregatesInput = {
 }
 
 export type rolesCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -287,7 +287,7 @@ export type rolesCreateInput = {
 }
 
 export type rolesUncheckedCreateInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -326,7 +326,7 @@ export type rolesUncheckedUpdateInput = {
 }
 
 export type rolesCreateManyInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -429,7 +429,7 @@ export type rolesUpdatepermissionsInput = {
 }
 
 export type rolesCreateWithoutUsersInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null
@@ -441,7 +441,7 @@ export type rolesCreateWithoutUsersInput = {
 }
 
 export type rolesUncheckedCreateWithoutUsersInput = {
-  id?: string
+  id: string
   tenant_id: string
   name: string
   description?: string | null

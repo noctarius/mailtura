@@ -14,7 +14,7 @@ datasource db {
 }
 
 model tenants {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   name       String
   created_at DateTime  @db.Timestamptz()
   created_by String
@@ -23,7 +23,7 @@ model tenants {
 }
 
 model contacts {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   tenant_id  String    @db.Uuid
   email      String
   first_name String?
@@ -57,7 +57,7 @@ enum campaign_type {
 }
 
 model campaigns {
-  id            String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id            String          @id @db.Uuid
   tenant_id     String          @db.Uuid
   name          String
   status        campaign_status
@@ -96,7 +96,7 @@ enum event_type {
 }
 
 model activities {
-  id                     String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id                     String          @id @db.Uuid
   tenant_id              String          @db.Uuid
   send_name              String
   subject                String
@@ -125,7 +125,7 @@ enum bounce_type {
 }
 
 model bounces {
-  id          String      @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id          String      @id @db.Uuid
   tenant_id   String      @db.Uuid
   bounced_at  DateTime    @db.Timestamptz()
   reason      String
@@ -149,7 +149,7 @@ enum subscriber_status {
 }
 
 model subscribers {
-  id                 String            @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id                 String            @id @db.Uuid
   tenant_id          String            @db.Uuid
   status             subscriber_status
   subscribed_at      DateTime          @db.Timestamptz()
@@ -167,7 +167,7 @@ model subscribers {
 }
 
 model subscriber_lists {
-  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id          String    @id @db.Uuid
   tenant_id   String    @db.Uuid
   name        String
   description String?
@@ -191,7 +191,7 @@ enum unsubscribe_source {
 }
 
 model unsubscribes {
-  id              String             @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id              String             @id @db.Uuid
   tenant_id       String             @db.Uuid
   source          unsubscribe_source
   unsubscribed_at DateTime           @db.Timestamptz()
@@ -209,7 +209,7 @@ model unsubscribes {
 }
 
 model users {
-  id                 String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id                 String    @id @db.Uuid
   tenant_id          String    @db.Uuid
   email              String
   first_name         String?
@@ -238,7 +238,7 @@ model users {
 }
 
 model api_keys {
-  id           String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id           String    @id @db.Uuid
   tenant_id    String    @db.Uuid
   name         String
   key          String
@@ -256,7 +256,7 @@ model api_keys {
 }
 
 model template_properties {
-  id            String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id            String  @id @db.Uuid
   tenant_id     String  @db.Uuid
   templates_id  String? @db.Uuid
   name          String
@@ -269,7 +269,7 @@ model template_properties {
 }
 
 model templates {
-  id          String                @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id          String                @id @db.Uuid
   tenant_id   String                @db.Uuid
   name        String
   description String?
@@ -284,7 +284,7 @@ model templates {
 }
 
 model contact_imports {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   tenant_id  String    @db.Uuid
   name       String?
   filename   String
@@ -301,7 +301,7 @@ model contact_imports {
 }
 
 model files {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   tenant_id  String    @db.Uuid
   name       String
   data       Bytes     @db.ByteA
@@ -314,7 +314,7 @@ model files {
 }
 
 model accounts {
-  id                       String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id                       String    @id @db.Uuid
   user_id                  String    @db.Uuid
   account_id               String    @db.Uuid
   provider_id              String
@@ -338,7 +338,7 @@ model accounts {
 }
 
 model verifications {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   identifier String
   value      String
   expires_at DateTime  @db.Timestamptz()
@@ -349,7 +349,7 @@ model verifications {
 }
 
 model two_factors {
-  id           String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id           String   @id @db.Uuid
   user_id      String   @db.Uuid
   secret       String?
   backup_codes String?
@@ -362,7 +362,7 @@ model two_factors {
 }
 
 model passkeys {
-  id            String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id            String   @id @db.Uuid
   name          String?
   public_key    String
   user_id       String   @db.Uuid
@@ -381,7 +381,7 @@ model passkeys {
 }
 
 model sessions {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   user_id    String    @db.Uuid
   token      String
   expires_at DateTime  @db.Timestamptz()
@@ -399,7 +399,7 @@ model sessions {
 }
 
 model roles {
-  id          String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id          String    @id @db.Uuid
   tenant_id   String    @db.Uuid
   name        String
   description String?
@@ -415,7 +415,7 @@ model roles {
 }
 
 model mail_configs {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   tenant_id  String    @db.Uuid
   name       String
   type       String
@@ -440,7 +440,7 @@ enum mail_log_status {
 }
 
 model mail_logs {
-  id               String          @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id               String          @id @db.Uuid
   tenant_id        String          @db.Uuid
   contact_id       String          @db.Uuid
   provider_id      String
@@ -460,7 +460,7 @@ model mail_logs {
 }
 
 model webhooks {
-  id             String @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id             String @id @db.Uuid
   tenant_id      String @db.Uuid
   mail_config_id String @db.Uuid
   provider_id    String
@@ -469,7 +469,7 @@ model webhooks {
 }
 
 model mail_sendings {
-  id             String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id             String   @id @db.Uuid
   tenant_id      String   @db.Uuid
   mail_sender_id String   @db.Uuid
   mail_config_id String   @db.Uuid
@@ -503,7 +503,7 @@ model mail_sendings_on_subscriber_lists {
 }
 
 model mail_url_proxies {
-  id         String  @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String  @id @db.Uuid
   tenant_id  String  @db.Uuid
   contact_id String? @db.Uuid
   position   Int
@@ -514,7 +514,7 @@ model mail_url_proxies {
 }
 
 model mail_senders {
-  id         String    @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id         String    @id @db.Uuid
   tenant_id  String    @db.Uuid
   name       String
   email      String
@@ -529,7 +529,7 @@ model mail_senders {
 }
 
 model mail_sending_receivers {
-  id              String   @id @default(dbgenerated("uuidv7()")) @db.Uuid
+  id              String   @id @db.Uuid
   tenant_id       String   @db.Uuid
   mail_sending_id String   @db.Uuid
   email           String

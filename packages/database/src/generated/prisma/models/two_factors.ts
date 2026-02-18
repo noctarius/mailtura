@@ -241,7 +241,7 @@ export type two_factorsScalarWhereWithAggregatesInput = {
 }
 
 export type two_factorsCreateInput = {
-  id?: string
+  id: string
   secret?: string | null
   backup_codes?: string | null
   created_at: Date | string
@@ -250,7 +250,7 @@ export type two_factorsCreateInput = {
 }
 
 export type two_factorsUncheckedCreateInput = {
-  id?: string
+  id: string
   user_id: string
   secret?: string | null
   backup_codes?: string | null
@@ -277,7 +277,7 @@ export type two_factorsUncheckedUpdateInput = {
 }
 
 export type two_factorsCreateManyInput = {
-  id?: string
+  id: string
   user_id: string
   secret?: string | null
   backup_codes?: string | null
@@ -382,7 +382,7 @@ export type two_factorsUncheckedUpdateManyWithoutUsersNestedInput = {
 }
 
 export type two_factorsCreateWithoutUsersInput = {
-  id?: string
+  id: string
   secret?: string | null
   backup_codes?: string | null
   created_at: Date | string
@@ -390,7 +390,7 @@ export type two_factorsCreateWithoutUsersInput = {
 }
 
 export type two_factorsUncheckedCreateWithoutUsersInput = {
-  id?: string
+  id: string
   secret?: string | null
   backup_codes?: string | null
   created_at: Date | string
@@ -436,7 +436,7 @@ export type two_factorsScalarWhereInput = {
 }
 
 export type two_factorsCreateManyUsersInput = {
-  id?: string
+  id: string
   secret?: string | null
   backup_codes?: string | null
   created_at: Date | string

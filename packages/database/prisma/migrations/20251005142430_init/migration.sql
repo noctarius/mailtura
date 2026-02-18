@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "Tenant" (
-    "id" UUID NOT NULL DEFAULT uuidv7(),
+    "id" UUID NOT NULL,
     "name" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "created_by" TEXT NOT NULL,
