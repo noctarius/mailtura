@@ -102,7 +102,7 @@ COPY --chown=bun:bun --from=builder-backend /temp/dev/packages/backend/dist .
 COPY --chown=bun:bun --from=builder-backend /temp/dev/packages/backend/package.json .
 COPY --chown=bun:bun --from=builder-backend /temp/dev/packages/backend/entrypoint.sh .
 
-EXPOSE 3000/tcp
+EXPOSE 3333/tcp
 WORKDIR /opt/app
 CMD [ "sh", "-c", "/opt/app/entrypoint.sh" ]
 
