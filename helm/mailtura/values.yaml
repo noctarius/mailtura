@@ -74,6 +74,14 @@ stackgres:
 temporal:
   enabled: true
   fullnameOverride: temporal
+  cassandra:
+    enabled: false
+  elasticsearch:
+    enabled: false
+  prometheus:
+    enabled: false
+  grafana:
+    enabled: false
   server:
     replicaCount: 1
     config:
