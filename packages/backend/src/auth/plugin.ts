@@ -10,6 +10,7 @@ import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
 import { sendMagicLinkEmail, sendResetPasswordEmail, sendVerificationEmail } from "../mail/index.js";
 import type { ServerContext } from "../context/index.js";
+import uuidv7 from "../helpers/uuidv7.js";
 
 declare module "fastify" {
   interface FastifyInstance {
@@ -143,6 +144,7 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
       session: {
         create: {
           before: async session => {
+            session.id = uuidv7();
             session.updatedBy = "api";
           },
           after: async session => {
@@ -165,12 +167,27 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
       verification: {
         create: {
           before: async verification => {
+            verification.id = uuidv7();
             verification.created_by = "api";
           },
         },
         update: {
           before: async verification => {
             verification.updated_by = "api";
+          },
+        },
+      },
+      user: {
+        create: {
+          before: async user => {
+            user.id = uuidv7();
+          },
+        },
+      },
+      account: {
+        create: {
+          before: async account => {
+            account.id = uuidv7();
           },
         },
       },
