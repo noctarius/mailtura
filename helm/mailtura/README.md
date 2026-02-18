@@ -49,6 +49,8 @@ helm upgrade --install mailtura helm/mailtura \
 ## Important values
 
 - `env.mailturaAuthSecret`: Secret for auth/session token handling.
+- `env.authBaseUrl`: Optional Better Auth base URL (for example `https://mail.example.com`).
+- `env.authTrustedOrigins`: Optional comma-separated list of additional trusted web origins.
 - `env.temporal.address`: Temporal frontend address used by app/worker.
 - `env.temporal.namespace`: Temporal namespace.
 - `env.temporal.taskQueue`: Temporal task queue.

@@ -35,6 +35,8 @@ migrations:
 
 env:
   mailturaAuthSecret: "change-me"
+  authBaseUrl: ""
+  authTrustedOrigins: ""
   temporal:
     namespace: "default"
     taskQueue: "mailtura"

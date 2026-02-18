@@ -43,7 +43,23 @@ const auth = fastifyPlugin<AuthOptions & { context: ServerContext }>(
 
 export default auth;
 
+function parseOrigins(value?: string) {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map(origin => origin.trim())
+    .filter(Boolean);
+}
+
 const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) => {
+  const baseURL = process.env.AUTH_BASE_URL || "http://localhost:3333";
+  const trustedOrigins = [
+    "http://localhost:3333",
+    "http://localhost:3000",
+    "http://localhost:5173",
+    ...parseOrigins(process.env.AUTH_TRUSTED_ORIGINS),
+  ];
+
   return betterAuth({
     ...options,
     database: mailturaAdapter({ debugLogs: false, prisma: context.prisma }),
@@ -99,9 +115,9 @@ const createBetterAuth = (options: BetterAuthOptions, context: ServerContext) =>
       }),
     ],
     appName: "Mailtura",
-    baseURL: "http://localhost:3000",
+    baseURL,
     basePath: "/api/v1/auth",
-    trustedOrigins: ["http://localhost:3000", "http://localhost:5173"],
+    trustedOrigins: Array.from(new Set(trustedOrigins)),
     secret: process.env.MAILTURA_AUTH_SECRET,
     advanced: {
       cookiePrefix: "mailtura",
