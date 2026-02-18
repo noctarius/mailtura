@@ -4,8 +4,8 @@ fullnameOverride: ""
 mailtura:
   replicaCount: 1
   image:
-    repository: mailtura
-    tag: latest
+    repository: docker.io/noctarius2k/mailtura
+    tag: mailtura-core
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -17,8 +17,8 @@ mailtura:
 worker:
   replicaCount: 1
   image:
-    repository: mailtura-worker
-    tag: latest
+    repository: docker.io/noctarius2k/mailtura
+    tag: mailtura-worker
     pullPolicy: Always
   resources: {}
   podAnnotations: {}
@@ -27,8 +27,8 @@ worker:
 migrations:
   enabled: true
   image:
-    repository: mailtura-init
-    tag: latest
+    repository: docker.io/noctarius2k/mailtura
+    tag: mailtura-init
     pullPolicy: Always
   backoffLimit: 3
   activeDeadlineSeconds: 300
@@ -94,6 +94,8 @@ temporal:
             port: 5432
             database: *stackgresDatabase
             schema: &temporalSchema "temporal"
+            connectAttributes:
+              search_path: *temporalSchema
             user: *stackgresUser
             password: *stackgresPassword
             maxConns: 20
@@ -106,6 +108,8 @@ temporal:
             port: 5432
             database: *stackgresDatabase
             schema: *temporalSchema
+            connectAttributes:
+              search_path: *temporalSchema
             user: *stackgresUser
             password: *stackgresPassword
             maxConns: 20
@@ -114,3 +118,6 @@ temporal:
     enabled: true
   web:
     enabled: true
+  schema:
+    createDatabase:
+      enabled: false

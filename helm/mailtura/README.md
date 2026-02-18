@@ -17,7 +17,7 @@ helm upgrade --install mailtura helm/mailtura -n mailtura --create-namespace --w
 
 Migration hook timing:
 - `post-install` for fresh installs (after DB/infra resources are created)
-- `post-upgrade` for upgrades
+- `pre-upgrade` for upgrades
 
 Dependency ordering:
 - The chart lists StackGres before Temporal so StackGres resources are applied first.

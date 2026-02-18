@@ -7,7 +7,7 @@ metadata:
     {{- include "mailtura.labels" . | nindent 4 }}
     app.kubernetes.io/component: migrations
   annotations:
-    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-weight": "-5"
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
 spec:
@@ -24,7 +24,7 @@ spec:
         - name: migrations
           image: "{{ .Values.migrations.image.repository }}:{{ .Values.migrations.image.tag }}"
           imagePullPolicy: {{ .Values.migrations.image.pullPolicy }}
-          envFrom:
-            - secretRef:
-                name: {{ include "mailtura.envSecretName" . }}
+          env:
+            - name: DATABASE_URL
+              value: {{ include "mailtura.databaseUrl" . | quote }}
 {{- end }}
