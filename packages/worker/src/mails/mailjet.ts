@@ -21,7 +21,7 @@ const Mailjet = require("node-mailjet") as {
 type SendEmailV3_1_Message = SendEmailV3_1.Message;
 export type EmailData = SendEmailV3_1.EmailAddressTo;
 
-export class MailjetTransport extends AbstractTransport {
+export class MailjetTransport extends AbstractTransport<EmailData> {
   readonly #config: MailjetConfig;
 
   constructor(config: MailjetConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -57,7 +57,7 @@ export class MailjetTransport extends AbstractTransport {
   }
 
   async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<SendEmailV3_1_Message[]> {
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
         const substitutions = this.mergeSubstitutions(
@@ -68,9 +68,9 @@ export class MailjetTransport extends AbstractTransport {
         const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           From: from,
-          To: this.#mapMailAddresses(recipient.to) ?? [],
-          Cc: this.#mapMailAddresses(recipient.cc),
-          Bcc: this.#mapMailAddresses(recipient.bcc),
+          To: this.mapMailAddresses(recipient.to),
+          Cc: this.mapMailAddresses(recipient.cc),
+          Bcc: this.mapMailAddresses(recipient.bcc),
           Subject: mail.subject,
           HTMLPart: resolvedTemplate.html,
           TextPart: resolvedTemplate.text,
@@ -84,13 +84,13 @@ export class MailjetTransport extends AbstractTransport {
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return [
       {
         From: from,
-        To: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.to) ?? []),
-        Cc: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.cc) ?? []),
-        Bcc: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.bcc) ?? []),
+        To: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.to)),
+        Cc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.cc)),
+        Bcc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.bcc)),
         Subject: mail.subject,
         HTMLPart: resolvedTemplate.html,
         TextPart: resolvedTemplate.text,
@@ -98,12 +98,7 @@ export class MailjetTransport extends AbstractTransport {
     ];
   }
 
-  #mapMailAddresses(contacts: MailContact | MailContact[] | undefined): EmailData[] | undefined {
-    if (!contacts) return undefined;
-    return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.#mapMailAddress(contact));
-  }
-
-  #mapMailAddress(contact: MailContact): EmailData {
+  protected mapMailAddress(contact: MailContact): EmailData {
     return { Name: contact.name, Email: contact.email };
   }
 }

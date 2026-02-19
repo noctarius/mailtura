@@ -5,7 +5,7 @@ import FormData from "form-data";
 
 type MailgunMessageData = Parameters<ReturnType<Mailgun["client"]>["messages"]["create"]>[1];
 
-export class MailgunTransport extends AbstractTransport {
+export class MailgunTransport extends AbstractTransport<string> {
   readonly #config: MailgunConfig;
 
   constructor(config: MailgunConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -46,7 +46,7 @@ export class MailgunTransport extends AbstractTransport {
   }
 
   async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
         const substitutions = this.mergeSubstitutions(
@@ -57,9 +57,9 @@ export class MailgunTransport extends AbstractTransport {
         const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           from,
-          to: this.#mapMailAddresses(recipient.to) ?? [],
-          cc: this.#mapMailAddresses(recipient.cc),
-          bcc: this.#mapMailAddresses(recipient.bcc),
+          to: this.mapMailAddresses(recipient.to),
+          cc: this.mapMailAddresses(recipient.cc),
+          bcc: this.mapMailAddresses(recipient.bcc),
           subject: mail.subject,
           html: resolvedTemplate.html,
           text: resolvedTemplate.text,
@@ -73,13 +73,13 @@ export class MailgunTransport extends AbstractTransport {
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return [
       {
         from,
-        to: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.to) ?? []),
-        cc: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.cc) ?? []),
-        bcc: mail.recipients.flatMap(recipient => this.#mapMailAddresses(recipient.bcc) ?? []),
+        to: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.to)),
+        cc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.cc)),
+        bcc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.bcc)),
         subject: mail.subject,
         html: resolvedTemplate.html,
         text: resolvedTemplate.text,
@@ -87,12 +87,7 @@ export class MailgunTransport extends AbstractTransport {
     ];
   }
 
-  #mapMailAddresses(contacts: MailContact | MailContact[] | undefined): string[] | undefined {
-    if (!contacts) return undefined;
-    return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.#mapMailAddress(contact));
-  }
-
-  #mapMailAddress(contact: MailContact): string {
+  protected mapMailAddress(contact: MailContact): string {
     return contact.name ? `${contact.name} <${contact.email}>` : contact.email;
   }
 }

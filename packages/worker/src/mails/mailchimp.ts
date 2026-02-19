@@ -1,11 +1,12 @@
 import { Mail, MailchimpConfig, MailContact, MailDirectContent } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, TransportConfig } from "./transport.js";
+import { AbstractTransport, RecipientType, TransportConfig } from "./transport.js";
 import mailchimp from "@mailchimp/mailchimp_transactional";
 
 type MailchimpClient = ReturnType<typeof mailchimp>;
 type Message = Parameters<MailchimpClient["messages"]["send"]>[0]["message"];
+type Recipient = Message["to"][number];
 
-export class MailchimpTransport extends AbstractTransport {
+export class MailchimpTransport extends AbstractTransport<Recipient> {
   readonly #config: MailchimpConfig;
 
   constructor(config: MailchimpConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -53,9 +54,9 @@ export class MailchimpTransport extends AbstractTransport {
         return {
           from_email: mail.from.email,
           from_name: mail.from.name,
-          to: this.#mapToRecipients(recipient.to, "to")
-            .concat(this.#mapToRecipients(recipient.cc, "cc"))
-            .concat(this.#mapToRecipients(recipient.bcc, "bcc")),
+          to: this.mapMailAddresses(recipient.to, "to")
+            .concat(this.mapMailAddresses(recipient.cc, "cc"))
+            .concat(this.mapMailAddresses(recipient.bcc, "bcc")),
           subject: mail.subject,
           html: resolvedTemplate.html,
           text: resolvedTemplate.text,
@@ -74,9 +75,9 @@ export class MailchimpTransport extends AbstractTransport {
         from_email: mail.from.email,
         from_name: mail.from.name,
         to: mail.recipients.flatMap(recipient =>
-          this.#mapToRecipients(recipient.to, "to")
-            .concat(this.#mapToRecipients(recipient.cc, "cc"))
-            .concat(this.#mapToRecipients(recipient.bcc, "bcc"))
+          this.mapMailAddresses(recipient.to, "to")
+            .concat(this.mapMailAddresses(recipient.cc, "cc"))
+            .concat(this.mapMailAddresses(recipient.bcc, "bcc"))
         ),
         subject: mail.subject,
         html: resolvedTemplate.html,
@@ -85,13 +86,11 @@ export class MailchimpTransport extends AbstractTransport {
     ];
   }
 
-  #mapToRecipients(contacts: MailContact | MailContact[] | undefined, type: "to" | "cc" | "bcc"): any[] {
-    if (!contacts) return [];
-    const contactArray = Array.isArray(contacts) ? contacts : [contacts];
-    return contactArray.map(contact => ({
+  protected override mapMailAddress(contact: MailContact, type?: RecipientType): mailchimp.MessageRecipient {
+    return {
       email: contact.email,
       name: contact.name,
       type: type,
-    }));
+    };
   }
 }

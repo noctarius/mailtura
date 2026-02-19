@@ -8,7 +8,7 @@ type SendgridMail = typeof SendgridMail;
 type MailData = NonNullable<ConstructorParameters<SendgridMail>[0]>;
 type EmailData = NonNullable<MailData["from"]>;
 
-export class SendgridTransport extends AbstractTransport {
+export class SendgridTransport extends AbstractTransport<EmailData> {
   readonly #config: SendgridConfig;
 
   constructor(config: SendgridConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -56,7 +56,7 @@ export class SendgridTransport extends AbstractTransport {
   }
 
   async #createSubstitutedMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return Promise.all(
       mail.recipients.map(async recipient => {
         const substitutions = this.mergeSubstitutions(
@@ -72,9 +72,9 @@ export class SendgridTransport extends AbstractTransport {
           text: resolvedTemplate.text,
           personalizations: mail.recipients.map(recipient => {
             return {
-              to: this.#mapMailAddresses(recipient.to) ?? [],
-              cc: this.#mapMailAddresses(recipient.cc),
-              bcc: this.#mapMailAddresses(recipient.bcc),
+              to: this.mapMailAddresses(recipient.to) ?? [],
+              cc: this.mapMailAddresses(recipient.cc),
+              bcc: this.mapMailAddresses(recipient.bcc),
             };
           }),
         };
@@ -87,7 +87,7 @@ export class SendgridTransport extends AbstractTransport {
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     return [
       {
         from,
@@ -96,21 +96,16 @@ export class SendgridTransport extends AbstractTransport {
         text: resolvedTemplate.text,
         personalizations: mail.recipients.map(recipient => {
           return {
-            to: this.#mapMailAddresses(recipient.to) ?? [],
-            cc: this.#mapMailAddresses(recipient.cc),
-            bcc: this.#mapMailAddresses(recipient.bcc),
+            to: this.mapMailAddresses(recipient.to) ?? [],
+            cc: this.mapMailAddresses(recipient.cc),
+            bcc: this.mapMailAddresses(recipient.bcc),
           };
         }),
       },
     ];
   }
 
-  #mapMailAddresses(contacts: MailContact | MailContact[] | undefined): EmailData[] | undefined {
-    if (!contacts) return undefined;
-    return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.#mapMailAddress(contact));
-  }
-
-  #mapMailAddress(contact: MailContact): EmailData {
+  protected mapMailAddress(contact: MailContact): EmailData {
     return { name: contact.name, email: contact.email };
   }
 }

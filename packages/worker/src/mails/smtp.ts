@@ -13,7 +13,7 @@ import { createTransport as createNodemailerTransport } from "nodemailer";
 import { Address, Options } from "nodemailer/lib/mailer/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 
-export class SmtpTransport extends AbstractTransport {
+export class SmtpTransport extends AbstractTransport<string | Address> {
   readonly #config: SmtpConfig;
 
   constructor(config: SmtpConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -32,7 +32,7 @@ export class SmtpTransport extends AbstractTransport {
       auth: this.#createAuthConfig(),
     });
 
-    const from = this.#mapMailAddress(mail.from);
+    const from = this.mapMailAddress(mail.from);
     const content = await this.getTemplateContent(mail.content);
 
     for (const recipient of mail.recipients) {
@@ -41,9 +41,9 @@ export class SmtpTransport extends AbstractTransport {
 
       const mailOptions: Options = {
         from,
-        to: this.#mapMailAddresses(recipient.to),
-        cc: this.#mapMailAddresses(recipient.cc),
-        bcc: this.#mapMailAddresses(recipient.bcc),
+        to: this.mapMailAddresses(recipient.to),
+        cc: this.mapMailAddresses(recipient.cc),
+        bcc: this.mapMailAddresses(recipient.bcc),
         subject: mail.subject,
         html: resolvedTemplate.html,
         text: resolvedTemplate.text,
@@ -56,12 +56,7 @@ export class SmtpTransport extends AbstractTransport {
     return 0;
   }
 
-  #mapMailAddresses(contacts: MailContact | MailContact[] | undefined): (string | Address)[] | undefined {
-    if (!contacts) return undefined;
-    return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.#mapMailAddress(contact));
-  }
-
-  #mapMailAddress(contact: MailContact): string | Address {
+  protected mapMailAddress(contact: MailContact): string | Address {
     return contact.name ? { name: contact.name, address: contact.email } : contact.email;
   }
 

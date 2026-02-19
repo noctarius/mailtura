@@ -2,6 +2,7 @@ import {
   isDirectContent,
   isTemplatedContent,
   Mail,
+  MailContact,
   MailContent,
   MailDirectContent,
 } from "@mailtura/rpcmodel/mails/index.js";
@@ -18,6 +19,8 @@ type UrlProxy = ResolvedTemplate["urlRelocations"][number];
 
 const rpcManager = getRpcManager();
 
+export type RecipientType = "to" | "cc" | "bcc";
+
 export interface TransportConfig {
   apiBase: string;
   templateResolver: TemplateResolver;
@@ -28,7 +31,7 @@ export interface Transport {
   send(mail: Mail): Promise<number>;
 }
 
-export abstract class AbstractTransport implements Transport {
+export abstract class AbstractTransport<EmailType> implements Transport {
   readonly #tenantId: string;
   readonly #transportConfig: TransportConfig;
   readonly #contentCompiler: TemplateCompiler;
@@ -102,4 +105,11 @@ export abstract class AbstractTransport implements Transport {
       text: resolvedTemplate.text,
     };
   }
+
+  protected mapMailAddresses(contacts: MailContact | MailContact[] | undefined, type?: RecipientType): EmailType[] {
+    if (!contacts) return [];
+    return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.mapMailAddress(contact, type));
+  }
+
+  protected abstract mapMailAddress(contact: MailContact, type?: RecipientType): EmailType;
 }
