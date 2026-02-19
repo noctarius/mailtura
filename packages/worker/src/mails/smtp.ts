@@ -33,27 +33,21 @@ export class SmtpTransport extends AbstractTransport<string | Address> {
     });
 
     const from = this.mapMailAddress(mail.from);
-    const content = await this.getTemplateContent(mail.content);
-
-    for (const recipient of mail.recipients) {
-      const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
-      const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
-
+    const deliveryPlan = await this.resolveDeliveryPlan(mail);
+    return this.sendWithDeliveryPlan(deliveryPlan, async item => {
       const mailOptions: Options = {
         from,
-        to: this.mapMailAddresses(recipient.to),
-        cc: this.mapMailAddresses(recipient.cc),
-        bcc: this.mapMailAddresses(recipient.bcc),
+        to: item.to,
+        cc: item.cc,
+        bcc: item.bcc,
         subject: mail.subject,
-        html: resolvedTemplate.html,
-        text: resolvedTemplate.text,
+        html: item.html,
+        text: item.text,
       };
 
       const messageInfo = await transport.sendMail(mailOptions);
       messageInfo.accepted.forEach(messageId => console.log(`Message ${messageId} accepted`));
-    }
-
-    return 0;
+    });
   }
 
   protected mapMailAddress(contact: MailContact): string | Address {

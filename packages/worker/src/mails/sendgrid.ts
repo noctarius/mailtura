@@ -1,4 +1,4 @@
-import { Mail, MailContact, MailDirectContent, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { Mail, MailContact, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import { Client } from "@sendgrid/client";
 import { classes } from "@sendgrid/helpers";
@@ -26,79 +26,29 @@ export class SendgridTransport extends AbstractTransport<EmailData> {
       client.setImpersonateSubuser(this.#config.subuser);
     }
 
-    const content = await this.getTemplateContent(mail.content);
-
-    const mailData = await this.#createMails(mail, content);
-    for (const mail of mailData) {
-      try {
-        const [response, body] = await client.request({
-          method: "POST",
-          url: "/v3/mail/send",
-          body: SendgridMail.create(mail).toJSON(),
-        });
-        if (response.statusCode >= 200 && response.statusCode < 300) console.log(response.body);
-      } catch (error: unknown) {
-        console.error(error);
-      }
-    }
-    return mailData.length === 1
-      ? mailData.reduce((acc, item) => acc + (item.personalizations?.length ?? 0), 0)
-      : mailData.length;
-  }
-
-  async #createMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
-    if (!this.hasSubstitutions(mail)) return this.#createJoinedMail(mail);
-    return this.#createSubstitutedMails(mail, content);
-  }
-
-  async #createSubstitutedMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
     const from = this.mapMailAddress(mail.from);
-    return Promise.all(
-      mail.recipients.map(async recipient => {
-        const substitutions = this.mergeSubstitutions(
-          content.substitutions,
-          mail.substitutions,
-          recipient.substitutions
-        );
-        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
-        return {
-          from,
-          subject: mail.subject,
-          html: resolvedTemplate.html,
-          text: resolvedTemplate.text,
-          personalizations: mail.recipients.map(recipient => {
-            return {
-              to: this.mapMailAddresses(recipient.to) ?? [],
-              cc: this.mapMailAddresses(recipient.cc),
-              bcc: this.mapMailAddresses(recipient.bcc),
-            };
-          }),
-        };
-      })
-    );
-  }
-
-  async #createJoinedMail(mail: Mail): Promise<MailData[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail);
-    if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
-      throw new Error(resolvedTemplate.errors.join("\n"));
-    }
-    const from = this.mapMailAddress(mail.from);
-    return [
-      {
+    const deliveryPlan = await this.resolveDeliveryPlan(mail);
+    return this.sendWithDeliveryPlan(deliveryPlan, async item => {
+      const mailData: MailData = {
         from,
         subject: mail.subject,
-        html: resolvedTemplate.html,
-        text: resolvedTemplate.text,
-        personalizations: mail.recipients.map(recipient => {
-          return {
-            to: this.mapMailAddresses(recipient.to) ?? [],
-            cc: this.mapMailAddresses(recipient.cc),
-            bcc: this.mapMailAddresses(recipient.bcc),
-          };
-        }),
-      },
-    ];
+        html: item.html,
+        text: item.text,
+        personalizations: [
+          {
+            to: item.to,
+            cc: item.cc,
+            bcc: item.bcc,
+          },
+        ],
+      };
+      const [response] = await client.request({
+        method: "POST",
+        url: "/v3/mail/send",
+        body: SendgridMail.create(mailData).toJSON(),
+      });
+      if (response.statusCode >= 200 && response.statusCode < 300) console.log(response.body);
+    });
   }
 
   protected mapMailAddress(contact: MailContact): EmailData {

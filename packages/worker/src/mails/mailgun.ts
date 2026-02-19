@@ -1,4 +1,4 @@
-import { Mail, MailContact, MailDirectContent, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { Mail, MailContact, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
@@ -20,67 +20,21 @@ export class MailgunTransport extends AbstractTransport<string> {
       key: this.#config.apiKey,
     });
 
-    const content = await this.getTemplateContent(mail.content);
-
-    const messages = await this.#createMessages(mail, content);
-
-    for (const message of messages) {
-      try {
-        const result = await mg.messages.create(this.#config.domain, message);
-        console.log(result);
-      } catch (error: unknown) {
-        console.error(error);
-      }
-    }
-
-    return messages.length;
-  }
-
-  async #createMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
-    if (!this.hasSubstitutions(mail)) return this.#createJoinedMessages(mail);
-    return this.#createSubstitutedMessages(mail, content);
-  }
-
-  async #createSubstitutedMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
     const from = this.mapMailAddress(mail.from);
-    return Promise.all(
-      mail.recipients.map(async recipient => {
-        const substitutions = this.mergeSubstitutions(
-          content.substitutions,
-          mail.substitutions,
-          recipient.substitutions
-        );
-        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
-        return {
-          from,
-          to: this.mapMailAddresses(recipient.to),
-          cc: this.mapMailAddresses(recipient.cc),
-          bcc: this.mapMailAddresses(recipient.bcc),
-          subject: mail.subject,
-          html: resolvedTemplate.html,
-          text: resolvedTemplate.text,
-        };
-      })
-    );
-  }
-
-  async #createJoinedMessages(mail: Mail): Promise<MailgunMessageData[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail);
-    if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
-      throw new Error(resolvedTemplate.errors.join("\n"));
-    }
-    const from = this.mapMailAddress(mail.from);
-    return [
-      {
+    const deliveryPlan = await this.resolveDeliveryPlan(mail);
+    return this.sendWithDeliveryPlan(deliveryPlan, async item => {
+      const message: MailgunMessageData = {
         from,
-        to: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.to)),
-        cc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.cc)),
-        bcc: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.bcc)),
+        to: item.to,
+        cc: item.cc,
+        bcc: item.bcc,
         subject: mail.subject,
-        html: resolvedTemplate.html,
-        text: resolvedTemplate.text,
-      },
-    ];
+        html: item.html,
+        text: item.text,
+      };
+      const result = await mg.messages.create(this.#config.domain, message);
+      console.log(result);
+    });
   }
 
   protected mapMailAddress(contact: MailContact): string {

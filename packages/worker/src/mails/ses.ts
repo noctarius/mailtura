@@ -1,4 +1,4 @@
-import { Mail, MailContact, MailDirectContent, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { Mail, MailContact, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, TransportConfig } from "./transport.js";
 import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/client-ses";
 
@@ -22,83 +22,28 @@ export class SesTransport extends AbstractTransport<string> {
       },
     });
 
-    const content = await this.getTemplateContent(mail.content);
-
-    const requests = await this.#createRequests(mail, content);
-
-    for (const request of requests) {
-      try {
-        const command = new SendEmailCommand(request);
-        const response = await client.send(command);
-        console.log(response);
-      } catch (error: unknown) {
-        console.error(error);
-      }
-    }
-
-    return requests.length;
-  }
-
-  async #createRequests(mail: Mail, content: MailDirectContent): Promise<SendEmailRequest[]> {
-    if (!this.hasSubstitutions(mail)) return this.#createJoinedRequests(mail);
-    return this.#createSubstitutedRequests(mail, content);
-  }
-
-  async #createSubstitutedRequests(mail: Mail, content: MailDirectContent): Promise<SendEmailRequest[]> {
     const from = this.mapMailAddress(mail.from);
-    return Promise.all(
-      mail.recipients.map(async recipient => {
-        const substitutions = this.mergeSubstitutions(
-          content.substitutions,
-          mail.substitutions,
-          recipient.substitutions
-        );
-        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
-        if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
-          throw new Error(resolvedTemplate.errors.join("\n"));
-        }
-        return {
-          Source: from,
-          Destination: {
-            ToAddresses: this.mapMailAddresses(recipient.to),
-            CcAddresses: this.mapMailAddresses(recipient.cc),
-            BccAddresses: this.mapMailAddresses(recipient.bcc),
-          },
-          Message: {
-            Subject: { Data: mail.subject },
-            Body: {
-              Html: { Data: resolvedTemplate.html },
-              Text: { Data: resolvedTemplate.text },
-            },
-          },
-        };
-      })
-    );
-  }
-
-  async #createJoinedRequests(mail: Mail): Promise<SendEmailRequest[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail);
-    if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
-      throw new Error(resolvedTemplate.errors.join("\n"));
-    }
-    const from = this.mapMailAddress(mail.from);
-    return [
-      {
+    const deliveryPlan = await this.resolveDeliveryPlan(mail);
+    return this.sendWithDeliveryPlan(deliveryPlan, async item => {
+      const request: SendEmailRequest = {
         Source: from,
         Destination: {
-          ToAddresses: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.to)),
-          CcAddresses: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.cc)),
-          BccAddresses: mail.recipients.flatMap(recipient => this.mapMailAddresses(recipient.bcc)),
+          ToAddresses: item.to,
+          CcAddresses: item.cc,
+          BccAddresses: item.bcc,
         },
         Message: {
           Subject: { Data: mail.subject },
           Body: {
-            Html: { Data: resolvedTemplate.html },
-            Text: { Data: resolvedTemplate.text },
+            Html: { Data: item.html },
+            Text: { Data: item.text },
           },
         },
-      },
-    ];
+      };
+      const command = new SendEmailCommand(request);
+      const response = await client.send(command);
+      console.log(response);
+    });
   }
 
   mapMailAddress(contact: MailContact): string {
