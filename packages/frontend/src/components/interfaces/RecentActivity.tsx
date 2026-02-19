@@ -1,4 +1,5 @@
 import { AlertCircle, CheckCircle, Clock, Mail } from "lucide-solid";
+import { A } from "@solidjs/router";
 
 const RecentActivity = () => {
   const activities = [
@@ -82,12 +83,12 @@ const RecentActivity = () => {
         })}
       </div>
 
-      <a
+      <A
         class="button w-full mt-4 text-sm text-blue-600 hover:text-blue-700 font-medium"
         href="/activity"
       >
         View all activity
-      </a>
+      </A>
     </div>
   );
 };

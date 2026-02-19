@@ -141,7 +141,10 @@ function AppContent() {
         )
       ) : (
         <div class="flex flex-1 min-h-0 h-screen bg-gray-50">
-          <Router root={AppLayout}>
+          <Router
+            root={AppLayout}
+            base={import.meta.env.BASE_URL}
+          >
             <Route path="/">
               <Route
                 path="/"
