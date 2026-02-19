@@ -442,7 +442,7 @@ enum mail_log_status {
 model mail_logs {
   id               String          @id @db.Uuid
   tenant_id        String          @db.Uuid
-  contact_id       String          @db.Uuid
+  contact_id       String?         @db.Uuid
   provider_id      String
   provider_mail_id String
   opens            Int
@@ -453,7 +453,7 @@ model mail_logs {
   updated_at       DateTime?       @db.Timestamptz()
   updated_by       String?
 
-  contacts contacts @relation(fields: [contact_id], references: [id])
+  contacts contacts? @relation(fields: [contact_id], references: [id])
 
   @@unique([provider_id, provider_mail_id])
   @@index([tenant_id])

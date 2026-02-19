@@ -228,7 +228,7 @@ export type mail_logsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Intern
 export type Mail_logsGroupByOutputType = {
   id: string
   tenant_id: string
-  contact_id: string
+  contact_id: string | null
   provider_id: string
   provider_mail_id: string
   opens: number
@@ -266,7 +266,7 @@ export type mail_logsWhereInput = {
   NOT?: Prisma.mail_logsWhereInput | Prisma.mail_logsWhereInput[]
   id?: Prisma.UuidFilter<"mail_logs"> | string
   tenant_id?: Prisma.UuidFilter<"mail_logs"> | string
-  contact_id?: Prisma.UuidFilter<"mail_logs"> | string
+  contact_id?: Prisma.UuidNullableFilter<"mail_logs"> | string | null
   provider_id?: Prisma.StringFilter<"mail_logs"> | string
   provider_mail_id?: Prisma.StringFilter<"mail_logs"> | string
   opens?: Prisma.IntFilter<"mail_logs"> | number
@@ -276,13 +276,13 @@ export type mail_logsWhereInput = {
   created_by?: Prisma.StringFilter<"mail_logs"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"mail_logs"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"mail_logs"> | string | null
-  contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
+  contacts?: Prisma.XOR<Prisma.ContactsNullableScalarRelationFilter, Prisma.contactsWhereInput> | null
 }
 
 export type mail_logsOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  contact_id?: Prisma.SortOrderInput | Prisma.SortOrder
   provider_id?: Prisma.SortOrder
   provider_mail_id?: Prisma.SortOrder
   opens?: Prisma.SortOrder
@@ -302,7 +302,7 @@ export type mail_logsWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.mail_logsWhereInput[]
   NOT?: Prisma.mail_logsWhereInput | Prisma.mail_logsWhereInput[]
   tenant_id?: Prisma.UuidFilter<"mail_logs"> | string
-  contact_id?: Prisma.UuidFilter<"mail_logs"> | string
+  contact_id?: Prisma.UuidNullableFilter<"mail_logs"> | string | null
   provider_id?: Prisma.StringFilter<"mail_logs"> | string
   provider_mail_id?: Prisma.StringFilter<"mail_logs"> | string
   opens?: Prisma.IntFilter<"mail_logs"> | number
@@ -312,13 +312,13 @@ export type mail_logsWhereUniqueInput = Prisma.AtLeast<{
   created_by?: Prisma.StringFilter<"mail_logs"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"mail_logs"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"mail_logs"> | string | null
-  contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
+  contacts?: Prisma.XOR<Prisma.ContactsNullableScalarRelationFilter, Prisma.contactsWhereInput> | null
 }, "id" | "provider_id_provider_mail_id">
 
 export type mail_logsOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  contact_id?: Prisma.SortOrderInput | Prisma.SortOrder
   provider_id?: Prisma.SortOrder
   provider_mail_id?: Prisma.SortOrder
   opens?: Prisma.SortOrder
@@ -341,7 +341,7 @@ export type mail_logsScalarWhereWithAggregatesInput = {
   NOT?: Prisma.mail_logsScalarWhereWithAggregatesInput | Prisma.mail_logsScalarWhereWithAggregatesInput[]
   id?: Prisma.UuidWithAggregatesFilter<"mail_logs"> | string
   tenant_id?: Prisma.UuidWithAggregatesFilter<"mail_logs"> | string
-  contact_id?: Prisma.UuidWithAggregatesFilter<"mail_logs"> | string
+  contact_id?: Prisma.UuidNullableWithAggregatesFilter<"mail_logs"> | string | null
   provider_id?: Prisma.StringWithAggregatesFilter<"mail_logs"> | string
   provider_mail_id?: Prisma.StringWithAggregatesFilter<"mail_logs"> | string
   opens?: Prisma.IntWithAggregatesFilter<"mail_logs"> | number
@@ -365,13 +365,13 @@ export type mail_logsCreateInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
-  contacts: Prisma.contactsCreateNestedOneWithoutMail_logsInput
+  contacts?: Prisma.contactsCreateNestedOneWithoutMail_logsInput
 }
 
 export type mail_logsUncheckedCreateInput = {
   id: string
   tenant_id: string
-  contact_id: string
+  contact_id?: string | null
   provider_id: string
   provider_mail_id: string
   opens: number
@@ -395,13 +395,13 @@ export type mail_logsUpdateInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contacts?: Prisma.contactsUpdateOneRequiredWithoutMail_logsNestedInput
+  contacts?: Prisma.contactsUpdateOneWithoutMail_logsNestedInput
 }
 
 export type mail_logsUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_mail_id?: Prisma.StringFieldUpdateOperationsInput | string
   opens?: Prisma.IntFieldUpdateOperationsInput | number
@@ -416,7 +416,7 @@ export type mail_logsUncheckedUpdateInput = {
 export type mail_logsCreateManyInput = {
   id: string
   tenant_id: string
-  contact_id: string
+  contact_id?: string | null
   provider_id: string
   provider_mail_id: string
   opens: number
@@ -445,7 +445,7 @@ export type mail_logsUpdateManyMutationInput = {
 export type mail_logsUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  contact_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   provider_id?: Prisma.StringFieldUpdateOperationsInput | string
   provider_mail_id?: Prisma.StringFieldUpdateOperationsInput | string
   opens?: Prisma.IntFieldUpdateOperationsInput | number
@@ -633,7 +633,7 @@ export type mail_logsScalarWhereInput = {
   NOT?: Prisma.mail_logsScalarWhereInput | Prisma.mail_logsScalarWhereInput[]
   id?: Prisma.UuidFilter<"mail_logs"> | string
   tenant_id?: Prisma.UuidFilter<"mail_logs"> | string
-  contact_id?: Prisma.UuidFilter<"mail_logs"> | string
+  contact_id?: Prisma.UuidNullableFilter<"mail_logs"> | string | null
   provider_id?: Prisma.StringFilter<"mail_logs"> | string
   provider_mail_id?: Prisma.StringFilter<"mail_logs"> | string
   opens?: Prisma.IntFilter<"mail_logs"> | number
@@ -716,7 +716,7 @@ export type mail_logsSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }, ExtArgs["result"]["mail_logs"]>
 
 export type mail_logsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -732,7 +732,7 @@ export type mail_logsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }, ExtArgs["result"]["mail_logs"]>
 
 export type mail_logsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -748,7 +748,7 @@ export type mail_logsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }, ExtArgs["result"]["mail_logs"]>
 
 export type mail_logsSelectScalar = {
@@ -768,24 +768,24 @@ export type mail_logsSelectScalar = {
 
 export type mail_logsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "contact_id" | "provider_id" | "provider_mail_id" | "opens" | "clicks" | "status" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_logs"]>
 export type mail_logsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }
 export type mail_logsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }
 export type mail_logsIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
+  contacts?: boolean | Prisma.mail_logs$contactsArgs<ExtArgs>
 }
 
 export type $mail_logsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "mail_logs"
   objects: {
-    contacts: Prisma.$contactsPayload<ExtArgs>
+    contacts: Prisma.$contactsPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenant_id: string
-    contact_id: string
+    contact_id: string | null
     provider_id: string
     provider_mail_id: string
     opens: number
@@ -1189,7 +1189,7 @@ readonly fields: mail_logsFieldRefs;
  */
 export interface Prisma__mail_logsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  contacts<T extends Prisma.contactsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contactsDefaultArgs<ExtArgs>>): Prisma.Prisma__contactsClient<runtime.Types.Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  contacts<T extends Prisma.mail_logs$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.mail_logs$contactsArgs<ExtArgs>>): Prisma.Prisma__contactsClient<runtime.Types.Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1633,6 +1633,25 @@ export type mail_logsDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
    * Limit how many mail_logs to delete.
    */
   limit?: number
+}
+
+/**
+ * mail_logs.contacts
+ */
+export type mail_logs$contactsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the contacts
+   */
+  select?: Prisma.contactsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the contacts
+   */
+  omit?: Prisma.contactsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.contactsInclude<ExtArgs> | null
+  where?: Prisma.contactsWhereInput
 }
 
 /**

@@ -16,10 +16,9 @@ import {
   TemplateResolver,
 } from "@mailtura/contentcompiler";
 
-type UrlProxy = ResolvedTemplate["urlRelocations"][number];
-
 const rpcManager = getRpcManager();
 
+export type UrlProxy = ResolvedTemplate["urlRelocations"][number];
 export type RecipientType = "to" | "cc" | "bcc";
 export type RecipientGroupingPolicy = "auto" | "joined" | "per-recipient";
 
@@ -27,15 +26,27 @@ export interface DeliveryPlan<EmailType> {
   to: EmailType[];
   cc: EmailType[];
   bcc: EmailType[];
+  contactIds: Array<string | undefined>;
   html: string;
   text: string;
   recipientCount: number;
+}
+
+export interface DeliverySendResult {
+  providerMailId?: string;
+}
+
+export interface MailLogEntry {
+  contactId?: string;
+  providerId: string;
+  providerMailId?: string;
 }
 
 export interface TransportConfig {
   apiBase: string;
   templateResolver: TemplateResolver;
   urlRelocationStorage: (urlRelocations: UrlProxy[]) => Promise<void>;
+  mailLogStorage: (entries: MailLogEntry[]) => Promise<void>;
 }
 
 export interface Transport {
@@ -124,7 +135,7 @@ export abstract class AbstractTransport<EmailType> implements Transport {
   }
 
   protected recipientGroupingPolicy(_mail: Mail): RecipientGroupingPolicy {
-    return "auto";
+    return "per-recipient";
   }
 
   protected resolveRecipientGroupingPolicy(mail: Mail): Exclude<RecipientGroupingPolicy, "auto"> {
@@ -148,6 +159,12 @@ export abstract class AbstractTransport<EmailType> implements Transport {
       cc: this.mapMailAddresses(recipient.cc, "cc"),
       bcc: this.mapMailAddresses(recipient.bcc, "bcc"),
     };
+  }
+
+  protected extractRecipientContactId(recipient: MailRecipient): string | undefined {
+    const substitutions = recipient.substitutions as Record<string, unknown> | undefined;
+    const contactId = substitutions?.contactId;
+    return typeof contactId === "string" && contactId.length > 0 ? contactId : undefined;
   }
 
   protected async resolveTemplateOrThrow<T extends Record<string, any> = any>(
@@ -178,8 +195,10 @@ export abstract class AbstractTransport<EmailType> implements Transport {
             recipient.substitutions
           );
           const resolvedTemplate = await this.resolveTemplateOrThrow(mail, substitutions);
+          const contactId = this.extractRecipientContactId(recipient);
           return {
             ...this.mapRecipientAddresses(recipient),
+            contactIds: contactId ? [contactId] : [],
             html: resolvedTemplate.html,
             text: resolvedTemplate.text,
             recipientCount: 1,
@@ -190,11 +209,13 @@ export abstract class AbstractTransport<EmailType> implements Transport {
 
     const resolvedTemplate = await this.resolveTemplateOrThrow(mail);
     const mappedRecipients = mail.recipients.map(recipient => this.mapRecipientAddresses(recipient));
+    const contactIds = mail.recipients.map(recipient => this.extractRecipientContactId(recipient));
     return [
       {
         to: mappedRecipients.flatMap(recipient => recipient.to),
         cc: mappedRecipients.flatMap(recipient => recipient.cc),
         bcc: mappedRecipients.flatMap(recipient => recipient.bcc),
+        contactIds,
         html: resolvedTemplate.html,
         text: resolvedTemplate.text,
         recipientCount: mail.recipients.length,
@@ -202,15 +223,23 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     ];
   }
 
-  protected async sendWithDeliveryPlan<T>(
+  protected async sendWithDeliveryPlan(
     deliveryPlan: DeliveryPlan<EmailType>[],
-    sender: (item: DeliveryPlan<EmailType>) => Promise<T>
+    sender: (item: DeliveryPlan<EmailType>) => Promise<void | DeliverySendResult>
   ): Promise<number> {
     let sentCount = 0;
-
     for (const [index, item] of deliveryPlan.entries()) {
       try {
-        await sender(item);
+        const result = await sender(item);
+        const contactIds = this.#normalizeContactIds(item.contactIds, item.recipientCount);
+        const providerMailId = item.recipientCount === 1 ? result?.providerMailId : undefined;
+        await this.#transportConfig.mailLogStorage(
+          contactIds.map(contactId => ({
+            contactId,
+            providerId: this.providerId,
+            providerMailId,
+          }))
+        );
         sentCount += item.recipientCount;
       } catch (error: unknown) {
         const message = error instanceof Error ? error.message : String(error);
@@ -221,5 +250,13 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     return sentCount;
   }
 
+  #normalizeContactIds(contactIds: Array<string | undefined>, recipientCount: number): Array<string | undefined> {
+    if (contactIds.length >= recipientCount) {
+      return contactIds.slice(0, recipientCount);
+    }
+    return contactIds.concat(Array(recipientCount - contactIds.length).fill(undefined));
+  }
+
+  protected abstract readonly providerId: string;
   protected abstract mapMailAddress(contact: MailContact, type?: RecipientType): EmailType;
 }

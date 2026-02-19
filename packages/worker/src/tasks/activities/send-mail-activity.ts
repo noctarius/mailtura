@@ -12,7 +12,8 @@ import { newMailTransport } from "../../mails/index.js";
 import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { getSystemConfig } from "../../helper/system-config.js";
-import { TransportConfig } from "../../mails/transport.js";
+import { MailLogEntry, TransportConfig, UrlProxy } from "../../mails/transport.js";
+import uuidv7 from "../../helper/uuidv7.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -20,6 +21,53 @@ if (!connectionString) throw new Error("DATABASE_URL is not set");
 type MailSending = MailSendingEntity & {
   mail_receivers: MailSendingReceiverEntity[];
   subscriber_lists: { subscriber_list_id: string }[];
+};
+
+const buildTemplateResolver = (prisma: PrismaType) => {
+  return async (templateId: string) => {
+    const template = await prisma.templates.findUnique({ where: { id: templateId } });
+    if (!template) return undefined;
+    return mapTemplate(template);
+  };
+};
+
+const buildUrlRelocationStorage = (prisma: PrismaType, tenantId: string) => {
+  return async (urlRelocations: UrlProxy[]) => {
+    await prisma.mail_url_proxies.createMany({
+      data: urlRelocations.map(urlRelocation => ({
+        tenant_id: tenantId,
+        id: urlRelocation.id,
+        from: urlRelocation.from,
+        to: urlRelocation.to,
+        contact_id: urlRelocation.contactId,
+        position: urlRelocation.position,
+      })),
+    });
+  };
+};
+
+const buildMailLogStorage = (prisma: PrismaType, tenantId: string) => {
+  return async (entries: MailLogEntry[]) => {
+    if (entries.length === 0) return;
+    const now = UTC.now().toDate();
+    await prisma.mail_logs.createMany({
+      data: entries.map(entry => {
+        const id = uuidv7();
+        return {
+          id,
+          tenant_id: tenantId,
+          contact_id: entry.contactId ?? null,
+          provider_id: entry.providerId,
+          provider_mail_id: entry.providerMailId ?? id,
+          opens: 0,
+          clicks: 0,
+          status: "Delivered",
+          created_at: now,
+          created_by: "worker",
+        };
+      }),
+    });
+  };
 };
 
 export async function sendMailBatch(args: SendMailArguments): Promise<number> {
@@ -65,23 +113,9 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
   const systemConfig = await getSystemConfig(prisma);
   const transportConfig: TransportConfig = {
     apiBase: systemConfig.apiBase,
-    templateResolver: async templateId => {
-      const template = await prisma.templates.findUnique({ where: { id: templateId } });
-      if (!template) return undefined;
-      return mapTemplate(template);
-    },
-    urlRelocationStorage: async urlRelocations => {
-      await prisma.mail_url_proxies.createMany({
-        data: urlRelocations.map(urlRelocation => ({
-          tenant_id: tenantId,
-          id: urlRelocation.id,
-          from: urlRelocation.from,
-          to: urlRelocation.to,
-          contact_id: urlRelocation.contactId,
-          position: urlRelocation.position,
-        })),
-      });
-    },
+    templateResolver: buildTemplateResolver(prisma),
+    urlRelocationStorage: buildUrlRelocationStorage(prisma, tenantId),
+    mailLogStorage: buildMailLogStorage(prisma, tenantId),
   };
 
   const transport = newMailTransport(mailConfig, transportConfig);
@@ -109,12 +143,29 @@ const mapReceivers = async (
 ): Promise<MailRecipient[]> => {
   const receivers = mailSending.mail_receivers;
   if (receivers && receivers.length > 0) {
+    const contacts = await prisma.contacts.findMany({
+      where: {
+        tenant_id: mailSending.tenant_id,
+        email: {
+          in: receivers.map(receiver => receiver.email),
+        },
+      },
+      select: {
+        id: true,
+        email: true,
+      },
+    });
+
+    const contactIdByEmail = new Map(contacts.map(contact => [contact.email, contact.id]));
     return receivers.map(receiver => ({
       to: {
         name: receiver.name,
         email: receiver.email,
       },
-      substitutions: (receiver.substitutions as Record<string, string> | undefined) ?? undefined,
+      substitutions: {
+        ...((receiver.substitutions as Record<string, string> | undefined) ?? {}),
+        contactId: contactIdByEmail.get(receiver.email),
+      },
     }));
   }
 
@@ -153,6 +204,7 @@ const mapReceivers = async (
       firstName: (contact.first_name ?? undefined)!,
       lastName: (contact.last_name ?? undefined)!,
       email: contact.email,
+      contactId: contact.id,
       createdAt: UTC.parse(contact.created_at).formatIsoTime(),
     },
   }));

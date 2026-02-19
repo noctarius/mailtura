@@ -439,6 +439,11 @@ export type ContactsScalarRelationFilter = {
   isNot?: Prisma.contactsWhereInput
 }
 
+export type ContactsNullableScalarRelationFilter = {
+  is?: Prisma.contactsWhereInput | null
+  isNot?: Prisma.contactsWhereInput | null
+}
+
 export type contactsCreateNestedOneWithoutActivitiesInput = {
   create?: Prisma.XOR<Prisma.contactsCreateWithoutActivitiesInput, Prisma.contactsUncheckedCreateWithoutActivitiesInput>
   connectOrCreate?: Prisma.contactsCreateOrConnectWithoutActivitiesInput
@@ -501,10 +506,12 @@ export type contactsCreateNestedOneWithoutMail_logsInput = {
   connect?: Prisma.contactsWhereUniqueInput
 }
 
-export type contactsUpdateOneRequiredWithoutMail_logsNestedInput = {
+export type contactsUpdateOneWithoutMail_logsNestedInput = {
   create?: Prisma.XOR<Prisma.contactsCreateWithoutMail_logsInput, Prisma.contactsUncheckedCreateWithoutMail_logsInput>
   connectOrCreate?: Prisma.contactsCreateOrConnectWithoutMail_logsInput
   upsert?: Prisma.contactsUpsertWithoutMail_logsInput
+  disconnect?: Prisma.contactsWhereInput | boolean
+  delete?: Prisma.contactsWhereInput | boolean
   connect?: Prisma.contactsWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.contactsUpdateToOneWithWhereWithoutMail_logsInput, Prisma.contactsUpdateWithoutMail_logsInput>, Prisma.contactsUncheckedUpdateWithoutMail_logsInput>
 }

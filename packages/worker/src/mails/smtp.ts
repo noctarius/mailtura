@@ -11,9 +11,10 @@ import {
 } from "@mailtura/rpcmodel/mails/index.js";
 import { createTransport as createNodemailerTransport } from "nodemailer";
 import { Address, Options } from "nodemailer/lib/mailer/index.js";
-import { AbstractTransport, TransportConfig } from "./transport.js";
+import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
 
 export class SmtpTransport extends AbstractTransport<string | Address> {
+  protected readonly providerId = "smtp";
   readonly #config: SmtpConfig;
 
   constructor(config: SmtpConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -35,23 +36,27 @@ export class SmtpTransport extends AbstractTransport<string | Address> {
     const from = this.mapMailAddress(mail.from);
     const deliveryPlan = await this.resolveDeliveryPlan(mail);
     return this.sendWithDeliveryPlan(deliveryPlan, async item => {
-      const mailOptions: Options = {
-        from,
-        to: item.to,
-        cc: item.cc,
-        bcc: item.bcc,
-        subject: mail.subject,
-        html: item.html,
-        text: item.text,
-      };
-
+      const mailOptions = this.#makeMailOptions(from, mail, item);
       const messageInfo = await transport.sendMail(mailOptions);
       messageInfo.accepted.forEach(messageId => console.log(`Message ${messageId} accepted`));
+      return { providerMailId: messageInfo.messageId ?? undefined };
     });
   }
 
   protected mapMailAddress(contact: MailContact): string | Address {
     return contact.name ? { name: contact.name, address: contact.email } : contact.email;
+  }
+
+  #makeMailOptions(from: string | Address, mail: Mail, item: DeliveryPlan<string | Address>): Options {
+    return {
+      from,
+      to: item.to,
+      cc: item.cc,
+      bcc: item.bcc,
+      subject: mail.subject,
+      html: item.html,
+      text: item.text,
+    };
   }
 
   #createAuthConfig() {

@@ -1,5 +1,5 @@
 import { Mail, MailContact, MailjetConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, TransportConfig } from "./transport.js";
+import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
 import type { SendEmailV3_1 } from "node-mailjet";
 import { createRequire } from "node:module";
 
@@ -22,6 +22,7 @@ type SendEmailV3_1_Message = SendEmailV3_1.Message;
 export type EmailData = SendEmailV3_1.EmailAddressTo;
 
 export class MailjetTransport extends AbstractTransport<EmailData> {
+  protected readonly providerId = "mailjet";
   readonly #config: MailjetConfig;
 
   constructor(config: MailjetConfig, tenantId: string, transportConfig: TransportConfig) {
@@ -35,22 +36,32 @@ export class MailjetTransport extends AbstractTransport<EmailData> {
     const from = this.mapMailAddress(mail.from);
     const deliveryPlan = await this.resolveDeliveryPlan(mail);
     return this.sendWithDeliveryPlan(deliveryPlan, async item => {
-      const message: SendEmailV3_1_Message = {
-        From: from,
-        To: item.to,
-        Cc: item.cc,
-        Bcc: item.bcc,
-        Subject: mail.subject,
-        HTMLPart: item.html,
-        TextPart: item.text,
-      };
+      const message = this.#makeMessage(from, mail, item);
       const payload = { Messages: [message] } as SendEmailV3_1.Body;
       const result = await mailjet.post("send", { version: "v3.1" }).request(payload);
-      console.log(result.body);
+      const body = result.body as {
+        Messages?: Array<{ To?: Array<{ MessageID?: number | string; MessageUUID?: string }> }>;
+      };
+      const firstTarget = body.Messages?.[0]?.To?.[0];
+      return {
+        providerMailId: firstTarget?.MessageUUID ?? firstTarget?.MessageID?.toString(),
+      };
     });
   }
 
   protected mapMailAddress(contact: MailContact): EmailData {
     return { Name: contact.name, Email: contact.email };
+  }
+
+  #makeMessage(from: SendEmailV3_1.EmailAddressTo, mail: Mail, item: DeliveryPlan<EmailData>): SendEmailV3_1_Message {
+    return {
+      From: from,
+      To: item.to,
+      Cc: item.cc,
+      Bcc: item.bcc,
+      Subject: mail.subject,
+      HTMLPart: item.html,
+      TextPart: item.text,
+    };
   }
 }
