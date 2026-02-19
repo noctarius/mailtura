@@ -26,6 +26,7 @@ const mergeSubstitutions = (a?: Record<string, string>, b?: Record<string, strin
 });
 
 const urlRegex = /\bhttps?:\/\/[^\s<>"']+/g;
+const trailingUrlDelimiterRegex = /[)\]}.,;:!?]+$/;
 
 type TemplateFunction<T> = (context: T) => string;
 
@@ -186,20 +187,26 @@ class TemplateCompilerImpl implements TemplateCompiler {
     const matches = text.matchAll(urlRegex);
     const parts = matches.reduce(
       (state, match, pos) => {
-        const url = match[0];
+        const rawUrl = match[0];
+        const trimmedUrl = rawUrl.replace(trailingUrlDelimiterRegex, "");
+        const suffix = rawUrl.slice(trimmedUrl.length);
         const startIndex = match.index;
-        const endIndex = match.index + url.length;
+        const endIndex = match.index + rawUrl.length;
 
         if (state.startIndex < startIndex) {
           state.segments.push(text.slice(state.startIndex, startIndex));
         }
 
-        const proxyUrl = this.#generateProxyUrl(url, pos + 1, contactId);
+        const proxyUrl = this.#generateProxyUrl(trimmedUrl, pos + 1, contactId);
         if (proxyUrl) {
           urlRelocations.push(proxyUrl);
           state.segments.push(proxyUrl.to);
         } else {
-          state.segments.push(url);
+          state.segments.push(rawUrl);
+        }
+
+        if (suffix.length > 0) {
+          state.segments.push(suffix);
         }
 
         state.startIndex = endIndex;

@@ -107,6 +107,26 @@ describe("TemplateCompiler", () => {
     }
   });
 
+  test("text url proxying should not include trailing bracket in relocation source", async () => {
+    const compiler = createTemplateCompiler(resolver({}), API_BASE);
+
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: false,
+        content: "<html><body>Hello</body></html>",
+        textContent: "Visit [http://example.com/path] please.",
+      },
+      {}
+    );
+
+    expect(result.errors).toBeUndefined();
+    expect(result.urlRelocations).toHaveLength(1);
+    expect(result.urlRelocations[0]?.from).toBe("http://example.com/path");
+    expect(result.text).toContain("[https://api.example.test/tracking/");
+    expect(result.text).toContain("] please.");
+  });
+
   test("mjml + liquid should render proxied urls", async () => {
     const tmpl: Template = {
       id: "welcome",
