@@ -106,6 +106,12 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     };
   }
 
+  protected hasSubstitutions(mail: Mail): boolean {
+    return mail.recipients.some(
+      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
+    );
+  }
+
   protected mapMailAddresses(contacts: MailContact | MailContact[] | undefined, type?: RecipientType): EmailType[] {
     if (!contacts) return [];
     return (!Array.isArray(contacts) ? [contacts] : contacts).map(contact => this.mapMailAddress(contact, type));

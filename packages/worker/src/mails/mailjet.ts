@@ -48,11 +48,7 @@ export class MailjetTransport extends AbstractTransport<EmailData> {
   }
 
   async #createMessages(mail: Mail, content: MailDirectContent): Promise<SendEmailV3_1_Message[]> {
-    const hasSubstitutions = mail.recipients.some(
-      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
-    );
-
-    if (!hasSubstitutions) return this.#createJoinedMessages(mail);
+    if (!this.hasSubstitutions(mail)) return this.#createJoinedMessages(mail);
     return this.#createSubstitutedMessages(mail, content);
   }
 

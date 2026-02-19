@@ -47,11 +47,7 @@ export class SendgridTransport extends AbstractTransport<EmailData> {
   }
 
   async #createMails(mail: Mail, content: MailDirectContent): Promise<MailData[]> {
-    const hasSubstitutions = mail.recipients.some(
-      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
-    );
-
-    if (!hasSubstitutions) return this.#createJoinedMail(mail);
+    if (!this.hasSubstitutions(mail)) return this.#createJoinedMail(mail);
     return this.#createSubstitutedMails(mail, content);
   }
 

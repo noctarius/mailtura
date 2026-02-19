@@ -37,11 +37,7 @@ export class MailgunTransport extends AbstractTransport<string> {
   }
 
   async #createMessages(mail: Mail, content: MailDirectContent): Promise<MailgunMessageData[]> {
-    const hasSubstitutions = mail.recipients.some(
-      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
-    );
-
-    if (!hasSubstitutions) return this.#createJoinedMessages(mail);
+    if (!this.hasSubstitutions(mail)) return this.#createJoinedMessages(mail);
     return this.#createSubstitutedMessages(mail, content);
   }
 

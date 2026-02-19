@@ -40,11 +40,7 @@ export class SesTransport extends AbstractTransport<string> {
   }
 
   async #createRequests(mail: Mail, content: MailDirectContent): Promise<SendEmailRequest[]> {
-    const hasSubstitutions = mail.recipients.some(
-      recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
-    );
-
-    if (!hasSubstitutions) return this.#createJoinedRequests(mail);
+    if (!this.hasSubstitutions(mail)) return this.#createJoinedRequests(mail);
     return this.#createSubstitutedRequests(mail, content);
   }
 
