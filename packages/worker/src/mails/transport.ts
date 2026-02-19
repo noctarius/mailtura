@@ -10,6 +10,7 @@ import {
   createTemplateCompiler,
   ResolvedTemplate,
   TemplateCompiler,
+  TemplateCompilerConfig,
   TemplateResolver,
 } from "@mailtura/contentcompiler";
 
@@ -68,11 +69,25 @@ export abstract class AbstractTransport implements Transport {
   }
 
   protected async resolveTemplate<T extends Record<string, any> = any>(
-    content: MailContent,
-    substitutions: T,
+    mail: Mail,
+    substitutions?: T,
     bypassCache?: boolean
   ): Promise<Omit<ResolvedTemplate, "urlRelocations">> {
-    const resolvedTemplate = await this.#contentCompiler.resolveTemplate(content, substitutions, bypassCache);
+    const content = mail.content;
+    const safeSubstitutions = substitutions ?? mail.substitutions ?? {};
+    const features: TemplateCompilerConfig = {
+      ...{
+        embedImages: true,
+        trackOpens: false,
+        trackClicks: false,
+        minifyHtml: true,
+        minifyCss: true,
+        minifySvg: true,
+        bypassCache: bypassCache ?? false,
+      },
+      ...(mail.features ?? {}),
+    };
+    const resolvedTemplate = await this.#contentCompiler.resolveTemplate(content, safeSubstitutions, features);
     if (resolvedTemplate.errors) {
       return {
         errors: resolvedTemplate.errors,

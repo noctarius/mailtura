@@ -49,7 +49,7 @@ export class MailchimpTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           from_email: mail.from.email,
           from_name: mail.from.name,
@@ -65,7 +65,7 @@ export class MailchimpTransport extends AbstractTransport {
   }
 
   async #createJoinedMessages(mail: Mail): Promise<Message[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
+    const resolvedTemplate = await this.resolveTemplate(mail);
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

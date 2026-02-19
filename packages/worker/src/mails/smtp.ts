@@ -37,7 +37,7 @@ export class SmtpTransport extends AbstractTransport {
 
     for (const recipient of mail.recipients) {
       const substitutions = this.mergeSubstitutions(content.substitutions, mail.substitutions, recipient.substitutions);
-      const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+      const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
 
       const mailOptions: Options = {
         from,

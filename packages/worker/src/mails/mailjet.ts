@@ -65,7 +65,7 @@ export class MailjetTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           From: from,
           To: this.#mapMailAddresses(recipient.to) ?? [],
@@ -80,7 +80,7 @@ export class MailjetTransport extends AbstractTransport {
   }
 
   async #createJoinedMessages(mail: Mail): Promise<SendEmailV3_1_Message[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
+    const resolvedTemplate = await this.resolveTemplate(mail);
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

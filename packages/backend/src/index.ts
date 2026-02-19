@@ -12,12 +12,11 @@ import * as path from "node:path";
 import "./tasks/index.js";
 import { requiresInstallation } from "./helpers/requires-installation.js";
 import { installationRoutes } from "./api/handlers/installation.js";
-import { handlePrismaError, newPrismaClient } from "@mailtura/database";
+import { handlePrismaError, newPrismaClient, newPrismaPg } from "@mailtura/database";
 import { createLazyTemporalTaskManager } from "./tasks/index.js";
 import type { ServerContext } from "./context/index.js";
 import { startSmtpServer } from "./smtp/server.js";
 import { trackingRoutes } from "./api/handlers/tracking.js";
-import { newPrismaPg } from "../../database/src/index.js";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");

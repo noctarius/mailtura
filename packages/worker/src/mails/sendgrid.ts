@@ -64,7 +64,7 @@ export class SendgridTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           from,
           subject: mail.subject,
@@ -83,7 +83,7 @@ export class SendgridTransport extends AbstractTransport {
   }
 
   async #createJoinedMail(mail: Mail): Promise<MailData[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
+    const resolvedTemplate = await this.resolveTemplate(mail);
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

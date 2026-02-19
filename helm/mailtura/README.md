@@ -64,7 +64,8 @@ helm upgrade --install mailtura helm/mailtura \
 When `stackgres.enabled=true`, this chart enforces Temporal SQL persistence to:
 - host: `stackgres.cluster.name`
 - database: `postgres`
-- schema: `temporal`
+- default schema: `temporal`
+- visibility schema: `temporal_visibility`
 
 The default `values.yaml` uses YAML anchors so StackGres and Temporal share the same host/user/password/database values.
 

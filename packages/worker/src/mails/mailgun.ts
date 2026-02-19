@@ -54,7 +54,7 @@ export class MailgunTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         return {
           from,
           to: this.#mapMailAddresses(recipient.to) ?? [],
@@ -69,7 +69,7 @@ export class MailgunTransport extends AbstractTransport {
   }
 
   async #createJoinedMessages(mail: Mail): Promise<MailgunMessageData[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
+    const resolvedTemplate = await this.resolveTemplate(mail);
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

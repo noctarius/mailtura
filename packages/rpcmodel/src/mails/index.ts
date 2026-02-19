@@ -270,8 +270,12 @@ export const Mail = Type.Object(
     recipients: Type.Array(MailRecipient),
     substitutions: Type.Optional(Type.Record(Type.String(), Type.Any())),
     features: Type.Object({
+      embedImages: Type.Optional(Type.Boolean()),
       trackOpens: Type.Optional(Type.Boolean()),
       trackClicks: Type.Optional(Type.Boolean()),
+      minifyCss: Type.Optional(Type.Boolean()),
+      minifyHtml: Type.Optional(Type.Boolean()),
+      minifySvg: Type.Optional(Type.Boolean()),
     }),
   },
   {

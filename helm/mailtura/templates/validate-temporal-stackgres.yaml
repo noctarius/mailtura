@@ -18,8 +18,8 @@
 {{- if ne (($defaultSql.schema | default "") | toString) "temporal" -}}
 {{- fail "Invalid configuration: temporal.server.config.persistence.default.sql.schema must be temporal when stackgres.enabled=true" -}}
 {{- end -}}
-{{- if ne (($visibilitySql.schema | default "") | toString) "temporal" -}}
-{{- fail "Invalid configuration: temporal.server.config.persistence.visibility.sql.schema must be temporal when stackgres.enabled=true" -}}
+{{- if ne (($visibilitySql.schema | default "") | toString) "temporal_visibility" -}}
+{{- fail "Invalid configuration: temporal.server.config.persistence.visibility.sql.schema must be temporal_visibility when stackgres.enabled=true" -}}
 {{- end -}}
 {{- end -}}
 

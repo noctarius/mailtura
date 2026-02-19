@@ -62,7 +62,8 @@ describe("TemplateCompiler", () => {
           '<html><body><a href="http://example.com/relative">rel</a> <img src="http://example.com/img.png"/> <a href="http://example.com">abs</a></body></html>',
         textContent: "Visit http://example.com/relative and http://example.com",
       },
-      {}
+      {},
+      { trackOpens: true, trackClicks: true }
     );
 
     // HTML: relative href and src should be replaced with proxy URLs
@@ -143,6 +144,55 @@ describe("TemplateCompiler", () => {
     expect(result.html).toContain("/tracking/");
     // at least two relocations: image and button link
     expect(result.urlRelocations.length).toBeGreaterThanOrEqual(1);
+  });
+
+  test("mjml image sources should be embedded as data urls when embedImages is enabled", async () => {
+    const compiler = createTemplateCompiler(resolver({}), API_BASE);
+    const fetchSpy = jest.spyOn(globalThis, "fetch").mockResolvedValue({
+      ok: true,
+      arrayBuffer: async () => Uint8Array.from([137, 80, 78, 71]).buffer,
+      headers: new Headers({ "content-type": "image/png" }),
+    } as Response);
+
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          '<mjml><mj-body><mj-section><mj-column><mj-image src="https://example.com/logo.png" /></mj-column></mj-section></mj-body></mjml>',
+      },
+      {},
+      { embedImages: true }
+    );
+
+    expect(result.errors).toBeUndefined();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    expect(result.html).toContain("data:image/png;base64,iVBORw==");
+    expect(result.html).not.toContain("https://example.com/logo.png");
+
+    fetchSpy.mockRestore();
+  });
+
+  test("mjml image sources should stay unchanged when embedImages is disabled", async () => {
+    const compiler = createTemplateCompiler(resolver({}), API_BASE);
+    const fetchSpy = jest.spyOn(globalThis, "fetch");
+
+    const result = await compiler.resolveTemplate(
+      {
+        type: "direct",
+        isTemplate: true,
+        content:
+          '<mjml><mj-body><mj-section><mj-column><mj-image src="https://example.com/logo.png" /></mj-column></mj-section></mj-body></mjml>',
+      },
+      {},
+      { embedImages: false, trackOpens: false, trackClicks: false }
+    );
+
+    expect(result.errors).toBeUndefined();
+    expect(fetchSpy).not.toHaveBeenCalled();
+    expect(result.html).toContain("https://example.com/logo.png");
+
+    fetchSpy.mockRestore();
   });
 
   test("isTemplateError helper identifies error-like objects", () => {

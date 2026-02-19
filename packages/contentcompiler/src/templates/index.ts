@@ -2,6 +2,7 @@ import type { Template } from "@mailtura/rpcmodel/api/index.js";
 import {
   isDirectContent,
   isTemplatedContent,
+  Mail,
   type MailContent,
   MailDirectContent,
 } from "@mailtura/rpcmodel/mails/index.js";
@@ -28,7 +29,7 @@ const mergeSubstitutions = (a?: Record<string, string>, b?: Record<string, strin
 const urlRegex = /\bhttps?:\/\/[^\s<>"']+/g;
 const trailingUrlDelimiterRegex = /[)\]}.,;:!?]+$/;
 
-type TemplateFunction<T> = (context: T) => string;
+type TemplateFunction<T> = (context: T) => Promise<string>;
 
 interface ApplicableTemplate<T extends Record<string, any> = any> {
   html: TemplateFunction<T>;
@@ -47,6 +48,10 @@ interface ProxyingResult {
   content: string;
   urlRelocations: UrlProxy[];
 }
+
+export type TemplateCompilerConfig = Required<Mail["features"]> & {
+  bypassCache: boolean;
+};
 
 export type TemplateResolver = (templateId: string) => Promise<Template | undefined>;
 
@@ -70,7 +75,7 @@ export interface TemplateCompiler {
   resolveTemplate<T extends Record<string, any> = any>(
     content: MailContent,
     substitutions: T,
-    bypassCache?: boolean
+    config?: Partial<TemplateCompilerConfig>
   ): Promise<ResolvedTemplate>;
 }
 
@@ -103,8 +108,19 @@ class TemplateCompilerImpl implements TemplateCompiler {
   async resolveTemplate<T extends Record<string, any>>(
     content: MailContent,
     substitutions: T,
-    bypassCache = false
+    config?: Partial<TemplateCompilerConfig>
   ): Promise<ResolvedTemplate> {
+    const normalizedConfig: TemplateCompilerConfig = {
+      embedImages: false,
+      trackOpens: false,
+      trackClicks: false,
+      minifyHtml: false,
+      minifyCss: false,
+      minifySvg: false,
+      bypassCache: false,
+      ...(config ?? {}),
+    };
+
     const template = await this.#getTemplateContent(content);
     if (!template) {
       return {
@@ -115,29 +131,36 @@ class TemplateCompilerImpl implements TemplateCompiler {
       };
     }
 
-    const compiledTemplate = await this.#precompileTemplate<T>(template, bypassCache);
+    const compiledTemplate = await this.#precompileTemplate<T>(template, normalizedConfig);
     if (!compiledTemplate) throw new Error("Failed to precompile template");
     if (isTemplateError(compiledTemplate)) {
       return { errors: compiledTemplate.errors, html: "", text: "", urlRelocations: [] };
     }
-    return { ...(await this.#renderTemplate(compiledTemplate, substitutions)), errors: undefined };
+    return { ...(await this.#renderTemplate(compiledTemplate, substitutions, normalizedConfig)), errors: undefined };
   }
 
   registerMjmlComponent(name: string, component: string): void {}
 
-  async #renderTemplate<T extends Record<string, any>>(template: ApplicableTemplate<T>, substitutions: T) {
+  async #renderTemplate<T extends Record<string, any>>(
+    template: ApplicableTemplate<T>,
+    substitutions: T,
+    config: TemplateCompilerConfig
+  ): Promise<ResolvedTemplate> {
     // Resolve the actual templates
-    const html = template.html(substitutions);
-    const text = template.text?.(substitutions);
+    const html = await template.html(substitutions);
+    const text = await template.text?.(substitutions);
 
-    const proxiedHtml = this.#proxyHtmlUrls(html);
-    const proxiedText = this.#proxyTextUrls(text ?? convert(html, { wordwrap: 120 }));
+    const enableTracking = config.trackOpens || config.trackClicks;
+    const proxiedHtml = this.#proxyHtmlUrls(html, enableTracking, config.embedImages);
+    const proxiedText = this.#proxyTextUrls(text ?? convert(html, { wordwrap: 120 }), enableTracking);
 
-    const minifiedHtml = await htmlnano.process(proxiedHtml.content, {
-      removeComments: "safe",
-      minifyCss: false,
-      minifySvg: false,
-    });
+    const minifiedHtml = config.minifyHtml
+      ? await htmlnano.process(proxiedHtml.content, {
+          removeComments: "safe",
+          minifyCss: config.minifyCss,
+          minifySvg: config.minifySvg,
+        })
+      : { html: proxiedHtml.content };
 
     return {
       html: minifiedHtml.html,
@@ -161,12 +184,16 @@ class TemplateCompilerImpl implements TemplateCompiler {
     };
   }
 
-  #proxyHtmlUrls(html: string, contactId?: string): ProxyingResult {
-    const urlRelocations: UrlProxy[] = [];
+  #proxyHtmlUrls(html: string, enableTracking: boolean, embedImages: boolean, contactId?: string): ProxyingResult {
+    if (!enableTracking) return { content: html, urlRelocations: [] };
 
+    const urlRelocations: UrlProxy[] = [];
     const $ = cheerio.load(html);
-    $("a, img").each((pos, el) => {
+
+    // Find all links and images, or just links is images are being embedded into the mail
+    $(embedImages ? "a" : "a, img").each((pos, el) => {
       const element = $(el);
+
       const href = element.attr("href");
       const src = element.attr("src");
 
@@ -181,9 +208,10 @@ class TemplateCompilerImpl implements TemplateCompiler {
     return { content: $.html(), urlRelocations };
   }
 
-  #proxyTextUrls(text: string, contactId?: string): ProxyingResult {
-    const urlRelocations: UrlProxy[] = [];
+  #proxyTextUrls(text: string, enableTracking: boolean, contactId?: string): ProxyingResult {
+    if (!enableTracking) return { content: text, urlRelocations: [] };
 
+    const urlRelocations: UrlProxy[] = [];
     const matches = text.matchAll(urlRegex);
     const parts = matches.reduce(
       (state, match, pos) => {
@@ -236,20 +264,23 @@ class TemplateCompilerImpl implements TemplateCompiler {
     throw new Error("Unsupported content type");
   }
 
-  async #precompileTemplate<T extends Record<string, any>>(template: MailDirectContent, bypassCache: boolean) {
-    const key = this.#templateCache.hash(template.content);
-    const cached = !bypassCache ? await this.#templateCache.get<ApplicableTemplate<T>>(key) : undefined;
+  async #precompileTemplate<T extends Record<string, any>>(
+    template: MailDirectContent,
+    config: TemplateCompilerConfig
+  ) {
+    const key = this.#templateCache.hash(`${template.content}|embedImages:${config.embedImages ? "1" : "0"}`);
+    const cached = !config.bypassCache ? await this.#templateCache.get<ApplicableTemplate<T>>(key) : undefined;
     if (cached) return cached;
 
     const compiler = async (): Promise<ApplicableTemplate<T> | { errors: TemplateError[] }> => {
       if (typeof template.isTemplate === "undefined" || !template.isTemplate) {
         return {
-          html: () => template.content,
-          text: template.textContent ? () => template.textContent! : undefined,
+          html: async () => template.content,
+          text: template.textContent ? async () => template.textContent! : undefined,
         };
       }
 
-      const htmlTemplate = this.#compileHtmlTemplate<T>(template.content, template.substitutions);
+      const htmlTemplate = this.#compileHtmlTemplate<T>(template.content, config, template.substitutions);
       if (isTemplateError(htmlTemplate)) {
         return { errors: htmlTemplate.errors };
       }
@@ -265,7 +296,7 @@ class TemplateCompilerImpl implements TemplateCompiler {
     const result = await compiler();
     if (isTemplateError(result)) return result;
 
-    if (!bypassCache) await this.#templateCache.set(key, result);
+    if (!config.bypassCache) await this.#templateCache.set(key, result);
     return result;
   }
 
@@ -277,7 +308,11 @@ class TemplateCompilerImpl implements TemplateCompiler {
     return (context: T) => staging.engine.renderSync(staging.template, mergeSubstitutions(substitutions, context));
   }
 
-  #compileHtmlTemplate<T extends Record<string, any>>(template: string, substitutions?: Record<string, string>) {
+  #compileHtmlTemplate<T extends Record<string, any>>(
+    template: string,
+    config: TemplateCompilerConfig,
+    substitutions?: Record<string, string>
+  ) {
     // We need to precompile the Liquid template twice to get syntax errors at the correct location
     const liquid = this.#compileLiquidTemplate(template);
     const mjml = this.#compileMjmlTemplate(template);
@@ -291,7 +326,40 @@ class TemplateCompilerImpl implements TemplateCompiler {
 
     const stage1 = this.#compileMjmlTemplate(this.#wrapLiquidLogic(template));
     const stage2 = this.#compileLiquidTemplate(stage1.template);
-    return (context: T) => stage2.engine.renderSync(stage2.template, mergeSubstitutions(substitutions, context));
+
+    return async (context: T) => {
+      const html = stage2.engine.renderSync(stage2.template, mergeSubstitutions(substitutions, context));
+      if (!config.embedImages) return html;
+      return await this.#embedHtmlImages(html);
+    };
+  }
+
+  async #embedHtmlImages(html: string): Promise<string> {
+    const $ = cheerio.load(html);
+    const images = $("img[src]")
+      .toArray()
+      .map(el => $(el));
+
+    await Promise.all(
+      images.map(async image => {
+        const src = image.attr("src");
+        if (!src || !/^https?:\/\//i.test(src)) return;
+
+        try {
+          const response = await fetch(src);
+          if (!response.ok) return;
+
+          const arrayBuffer = await response.arrayBuffer();
+          const contentType = response.headers.get("content-type")?.split(";")[0] ?? "application/octet-stream";
+          const encoded = Buffer.from(arrayBuffer).toString("base64");
+          image.attr("src", `data:${contentType};base64,${encoded}`);
+        } catch {
+          // Keep original src when embedding fails.
+        }
+      })
+    );
+
+    return $.html();
   }
 
   #wrapLiquidLogic(template: string): string {

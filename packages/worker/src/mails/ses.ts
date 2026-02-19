@@ -57,7 +57,7 @@ export class SesTransport extends AbstractTransport {
           mail.substitutions,
           recipient.substitutions
         );
-        const resolvedTemplate = await this.resolveTemplate(mail.content, substitutions);
+        const resolvedTemplate = await this.resolveTemplate(mail, substitutions);
         if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
           throw new Error(resolvedTemplate.errors.join("\n"));
         }
@@ -81,7 +81,7 @@ export class SesTransport extends AbstractTransport {
   }
 
   async #createJoinedRequests(mail: Mail): Promise<SendEmailRequest[]> {
-    const resolvedTemplate = await this.resolveTemplate(mail.content, mail.substitutions ?? {});
+    const resolvedTemplate = await this.resolveTemplate(mail);
     if (resolvedTemplate.errors && resolvedTemplate.errors.length > 0) {
       throw new Error(resolvedTemplate.errors.join("\n"));
     }

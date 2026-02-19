@@ -100,9 +100,7 @@ temporal:
             host: *stackgresHost
             port: 5432
             database: *stackgresDatabase
-            schema: &temporalSchema "temporal"
-            connectAttributes:
-              search_path: *temporalSchema
+            schema: "temporal"
             user: *stackgresUser
             password: *stackgresPassword
             maxConns: 20
@@ -114,9 +112,7 @@ temporal:
             host: *stackgresHost
             port: 5432
             database: *stackgresDatabase
-            schema: *temporalSchema
-            connectAttributes:
-              search_path: *temporalSchema
+            schema: "temporal_visibility"
             user: *stackgresUser
             password: *stackgresPassword
             maxConns: 20
