@@ -8,6 +8,7 @@ export interface NavigationItem {
   id: string;
   label: string;
   icon: (props: LucideProps) => JSX.Element;
+  link?: string;
   permissions?: Permission[];
   subitems?: Omit<NavigationItem, "icon">[];
 }
@@ -72,7 +73,7 @@ const SidebarEntry = (props: SidebarEntryProps) => {
         </button>
       ) : (
         <A
-          href={`/${props.navigationItem.id}`}
+          href={`${props.navigationItem.link ?? "/" + props.navigationItem.id}`}
           class={`button w-full flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${props.activeView() === props.navigationItem.id ? "bg-blue-600 text-white" : isSectionActive() ? "bg-slate-800 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white"}`}
         >
           <Icon class="w-5 h-5" />

@@ -1,4 +1,4 @@
-import { Activity, ChartColumn, FileText, LogOut, Send, Settings, Shield, TrendingUp, Users, Zap } from "lucide-solid";
+import { Activity, ChartColumn, FileText, LogOut, Send, Settings, Shield, Users, Zap } from "lucide-solid";
 import SidebarEntry, { NavigationItem } from "./SidebarEntry.tsx";
 import { createMemo } from "solid-js";
 import { useLocation } from "@solidjs/router";
@@ -6,12 +6,12 @@ import { useUser } from "../../hooks/useUser.js";
 import { useAuth } from "../../hooks/useAuth.js";
 
 const navItems: NavigationItem[] = [
-  { id: "dashboard", label: "Dashboard", icon: ChartColumn },
+  { id: "dashboard", label: "Dashboard", icon: ChartColumn, link: "/" },
   { id: "campaigns", label: "Campaigns", icon: Send, permissions: ["view::campaigns"] },
   { id: "template-editor", label: "Templates", icon: FileText, permissions: ["view::templates"] },
   { id: "contacts", label: "Contacts", icon: Users, permissions: ["view::contacts"] },
   { id: "activity", label: "Activity", icon: Activity, permissions: ["view::reports"] },
-  { id: "analytics", label: "Analytics", icon: TrendingUp, permissions: ["view::logs"] },
+  //{ id: "analytics", label: "Analytics", icon: TrendingUp, permissions: ["view::logs"] },
   {
     id: "settings",
     label: "Settings",
@@ -19,7 +19,7 @@ const navItems: NavigationItem[] = [
     subitems: [
       { id: "account", label: "Account", permissions: ["view::settings"] },
       { id: "api-key-management", label: "API Key Management", permissions: ["view::api-keys"] },
-      { id: "integrations", label: "Integrations", permissions: ["view::integrations"] },
+      //{ id: "integrations", label: "Integrations", permissions: ["view::integrations"] },
       { id: "tenant-management", label: "Tenant Management", permissions: ["manage::tenants"] },
       { id: "user-management", label: "User Management", permissions: ["manage::users"] },
     ],

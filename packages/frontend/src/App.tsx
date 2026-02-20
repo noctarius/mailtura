@@ -148,10 +148,6 @@ function AppContent() {
             <Route path="/">
               <Route
                 path="/"
-                component={() => <Navigate href="/dashboard" />}
-              />
-              <Route
-                path="/dashboard"
                 component={Dashboard}
               />
               <Route
@@ -261,7 +257,7 @@ function AppContent() {
             </Route>
             <Route
               path="*"
-              component={() => <Navigate href="/dashboard" />}
+              component={() => <Navigate href="/" />}
             />
           </Router>
         </div>
