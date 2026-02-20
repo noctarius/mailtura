@@ -20,6 +20,7 @@ import { JSX } from "solid-js";
 import {
   IsArray,
   IsBoolean,
+  IsInteger,
   IsNumber,
   IsObject,
   IsOptional,
@@ -116,7 +117,7 @@ const resolveFieldType = <
     }
     return "string" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
   }
-  if (IsNumber(property)) {
+  if (IsNumber(property) || IsInteger(property)) {
     return "number" as FieldType<FieldPathValue<TFieldValues, TFieldName>>;
   }
   if (IsBoolean(property)) {

@@ -105,7 +105,11 @@ export const TenantsScalarFieldEnum = {
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
-  updated_by: 'updated_by'
+  updated_by: 'updated_by',
+  max_users: 'max_users',
+  features: 'features',
+  custom_domain: 'custom_domain',
+  active: 'active'
 } as const
 
 export type TenantsScalarFieldEnum = (typeof TenantsScalarFieldEnum)[keyof typeof TenantsScalarFieldEnum]

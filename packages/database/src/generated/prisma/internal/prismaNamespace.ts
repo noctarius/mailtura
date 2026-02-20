@@ -2654,7 +2654,11 @@ export const TenantsScalarFieldEnum = {
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
-  updated_by: 'updated_by'
+  updated_by: 'updated_by',
+  max_users: 'max_users',
+  features: 'features',
+  custom_domain: 'custom_domain',
+  active: 'active'
 } as const
 
 export type TenantsScalarFieldEnum = (typeof TenantsScalarFieldEnum)[keyof typeof TenantsScalarFieldEnum]
@@ -3193,6 +3197,27 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'Int'
+ */
+export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+/**
+ * Reference to a field of type 'Int[]'
+ */
+export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Boolean'
+ */
+export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+/**
  * Reference to a field of type 'campaign_status'
  */
 export type Enumcampaign_statusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'campaign_status'>
@@ -3217,20 +3242,6 @@ export type Enumcampaign_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$Pr
  * Reference to a field of type 'campaign_type[]'
  */
 export type ListEnumcampaign_typeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'campaign_type[]'>
-    
-
-
-/**
- * Reference to a field of type 'Int'
- */
-export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-/**
- * Reference to a field of type 'Int[]'
- */
-export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -3301,13 +3312,6 @@ export type Enumunsubscribe_sourceFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'unsubscribe_source[]'
  */
 export type ListEnumunsubscribe_sourceFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'unsubscribe_source[]'>
-    
-
-
-/**
- * Reference to a field of type 'Boolean'
- */
-export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
     
 
 

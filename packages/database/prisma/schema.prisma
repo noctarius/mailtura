@@ -14,12 +14,16 @@ datasource db {
 }
 
 model tenants {
-  id         String    @id @db.Uuid
-  name       String
-  created_at DateTime  @db.Timestamptz()
-  created_by String
-  updated_at DateTime? @db.Timestamptz()
-  updated_by String?
+  id            String    @id @db.Uuid
+  name          String
+  created_at    DateTime  @db.Timestamptz()
+  created_by    String
+  updated_at    DateTime? @db.Timestamptz()
+  updated_by    String?
+  max_users     Int       @default(0)
+  features      String[]
+  custom_domain String?
+  active        Boolean   @default(true)
 }
 
 model contacts {

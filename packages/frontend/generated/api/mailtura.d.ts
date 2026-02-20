@@ -53,6 +53,10 @@ export interface paths {
                 content: {
                     "application/json": {
                         name: string;
+                        active: boolean;
+                        maxUsers: number;
+                        features: string[];
+                        customDomain?: string;
                     };
                 };
             };
@@ -139,10 +143,14 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
+                        active?: boolean;
+                        maxUsers?: number;
+                        features?: string[];
+                        customDomain?: string;
                     };
                 };
             };
@@ -540,7 +548,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         firstName?: string;
@@ -780,7 +788,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         status?: number;
@@ -882,7 +890,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name: string;
@@ -983,7 +991,7 @@ export interface paths {
                 cookie?: never;
             };
             /** @description An update template request */
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
@@ -1287,7 +1295,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
@@ -1529,7 +1537,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
@@ -1735,7 +1743,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         /** Format: email */
@@ -1836,7 +1844,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         /** Format: email */
@@ -2011,18 +2019,19 @@ export interface paths {
                         subject: string;
                         /** @description Mail content */
                         content: {
-                            /** @enum {unknown} */
-                            type: "direct" | "template";
-                        } & ({
+                            /** @enum {string} */
+                            type: "direct";
                             content: string;
                             textContent?: string;
                             isTemplate?: boolean;
                             substitutions?: {
-                                [key: string]: string;
+                                [key: string]: unknown;
                             };
                         } | {
+                            /** @enum {string} */
+                            type: "template";
                             templateId: string;
-                        });
+                        };
                         recipients?: {
                             to: {
                                 email: string;
@@ -2050,12 +2059,12 @@ export interface paths {
                                 name?: string;
                             };
                             substitutions?: {
-                                [key: string]: string;
+                                [key: string]: unknown;
                             };
                         }[];
                         subscriberListIds?: string[];
                         substitutions?: {
-                            [key: string]: string;
+                            [key: string]: unknown;
                         };
                     };
                 };
@@ -2243,7 +2252,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
@@ -2683,7 +2692,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name?: string;
@@ -3272,7 +3281,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name: string;
@@ -3443,7 +3452,7 @@ export interface paths {
                 };
                 cookie?: never;
             };
-            requestBody?: {
+            requestBody: {
                 content: {
                     "application/json": {
                         name: string;
@@ -3670,6 +3679,10 @@ export interface components {
             /** Format: uuid */
             id: string;
             name: string;
+            active: boolean;
+            maxUsers: number;
+            features: string[];
+            customDomain?: string;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;
@@ -4091,18 +4104,19 @@ export interface components {
             subject: string;
             /** @description Mail content */
             content: {
-                /** @enum {unknown} */
-                type: "direct" | "template";
-            } & ({
+                /** @enum {string} */
+                type: "direct";
                 content: string;
                 textContent?: string;
                 isTemplate?: boolean;
                 substitutions?: {
-                    [key: string]: string;
+                    [key: string]: unknown;
                 };
             } | {
+                /** @enum {string} */
+                type: "template";
                 templateId: string;
-            });
+            };
             recipients: {
                 to: {
                     email: string;
@@ -4130,42 +4144,34 @@ export interface components {
                     name?: string;
                 };
                 substitutions?: {
-                    [key: string]: string;
+                    [key: string]: unknown;
                 };
             }[];
             substitutions?: {
-                [key: string]: string;
+                [key: string]: unknown;
             };
             features: {
+                embedImages?: boolean;
                 trackOpens?: boolean;
                 trackClicks?: boolean;
+                minifyCss?: boolean;
+                minifyHtml?: boolean;
+                minifySvg?: boolean;
             };
         };
         /** @description Mail content */
         MailContent: {
-            /** @enum {unknown} */
-            type: "direct" | "template";
-        } & ({
+            /** @enum {string} */
+            type: "direct";
             content: string;
             textContent?: string;
             isTemplate?: boolean;
             substitutions?: {
-                [key: string]: string;
+                [key: string]: unknown;
             };
         } | {
-            templateId: string;
-        });
-        /** @description Direct mail content */
-        MailDirectContent: {
-            content: string;
-            textContent?: string;
-            isTemplate?: boolean;
-            substitutions?: {
-                [key: string]: string;
-            };
-        };
-        /** @description Templated mail content */
-        MailTemplatedContent: {
+            /** @enum {string} */
+            type: "template";
             templateId: string;
         };
         /** @description Mail recipient */
@@ -4196,7 +4202,7 @@ export interface components {
                 name?: string;
             };
             substitutions?: {
-                [key: string]: string;
+                [key: string]: unknown;
             };
         };
         /** @description Mail configuration */

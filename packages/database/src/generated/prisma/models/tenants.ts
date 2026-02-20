@@ -20,8 +20,18 @@ export type tenantsModel = runtime.Types.Result.DefaultSelection<Prisma.$tenants
 
 export type AggregateTenants = {
   _count: TenantsCountAggregateOutputType | null
+  _avg: TenantsAvgAggregateOutputType | null
+  _sum: TenantsSumAggregateOutputType | null
   _min: TenantsMinAggregateOutputType | null
   _max: TenantsMaxAggregateOutputType | null
+}
+
+export type TenantsAvgAggregateOutputType = {
+  max_users: number | null
+}
+
+export type TenantsSumAggregateOutputType = {
+  max_users: number | null
 }
 
 export type TenantsMinAggregateOutputType = {
@@ -31,6 +41,9 @@ export type TenantsMinAggregateOutputType = {
   created_by: string | null
   updated_at: Date | null
   updated_by: string | null
+  max_users: number | null
+  custom_domain: string | null
+  active: boolean | null
 }
 
 export type TenantsMaxAggregateOutputType = {
@@ -40,6 +53,9 @@ export type TenantsMaxAggregateOutputType = {
   created_by: string | null
   updated_at: Date | null
   updated_by: string | null
+  max_users: number | null
+  custom_domain: string | null
+  active: boolean | null
 }
 
 export type TenantsCountAggregateOutputType = {
@@ -49,9 +65,21 @@ export type TenantsCountAggregateOutputType = {
   created_by: number
   updated_at: number
   updated_by: number
+  max_users: number
+  features: number
+  custom_domain: number
+  active: number
   _all: number
 }
 
+
+export type TenantsAvgAggregateInputType = {
+  max_users?: true
+}
+
+export type TenantsSumAggregateInputType = {
+  max_users?: true
+}
 
 export type TenantsMinAggregateInputType = {
   id?: true
@@ -60,6 +88,9 @@ export type TenantsMinAggregateInputType = {
   created_by?: true
   updated_at?: true
   updated_by?: true
+  max_users?: true
+  custom_domain?: true
+  active?: true
 }
 
 export type TenantsMaxAggregateInputType = {
@@ -69,6 +100,9 @@ export type TenantsMaxAggregateInputType = {
   created_by?: true
   updated_at?: true
   updated_by?: true
+  max_users?: true
+  custom_domain?: true
+  active?: true
 }
 
 export type TenantsCountAggregateInputType = {
@@ -78,6 +112,10 @@ export type TenantsCountAggregateInputType = {
   created_by?: true
   updated_at?: true
   updated_by?: true
+  max_users?: true
+  features?: true
+  custom_domain?: true
+  active?: true
   _all?: true
 }
 
@@ -119,6 +157,18 @@ export type TenantsAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: TenantsAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: TenantsSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: TenantsMinAggregateInputType
@@ -149,6 +199,8 @@ export type tenantsGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: TenantsCountAggregateInputType | true
+  _avg?: TenantsAvgAggregateInputType
+  _sum?: TenantsSumAggregateInputType
   _min?: TenantsMinAggregateInputType
   _max?: TenantsMaxAggregateInputType
 }
@@ -160,7 +212,13 @@ export type TenantsGroupByOutputType = {
   created_by: string
   updated_at: Date | null
   updated_by: string | null
+  max_users: number
+  features: string[]
+  custom_domain: string | null
+  active: boolean
   _count: TenantsCountAggregateOutputType | null
+  _avg: TenantsAvgAggregateOutputType | null
+  _sum: TenantsSumAggregateOutputType | null
   _min: TenantsMinAggregateOutputType | null
   _max: TenantsMaxAggregateOutputType | null
 }
@@ -190,6 +248,10 @@ export type tenantsWhereInput = {
   created_by?: Prisma.StringFilter<"tenants"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"tenants"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"tenants"> | string | null
+  max_users?: Prisma.IntFilter<"tenants"> | number
+  features?: Prisma.StringNullableListFilter<"tenants">
+  custom_domain?: Prisma.StringNullableFilter<"tenants"> | string | null
+  active?: Prisma.BoolFilter<"tenants"> | boolean
 }
 
 export type tenantsOrderByWithRelationInput = {
@@ -199,6 +261,10 @@ export type tenantsOrderByWithRelationInput = {
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  max_users?: Prisma.SortOrder
+  features?: Prisma.SortOrder
+  custom_domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  active?: Prisma.SortOrder
 }
 
 export type tenantsWhereUniqueInput = Prisma.AtLeast<{
@@ -211,6 +277,10 @@ export type tenantsWhereUniqueInput = Prisma.AtLeast<{
   created_by?: Prisma.StringFilter<"tenants"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"tenants"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"tenants"> | string | null
+  max_users?: Prisma.IntFilter<"tenants"> | number
+  features?: Prisma.StringNullableListFilter<"tenants">
+  custom_domain?: Prisma.StringNullableFilter<"tenants"> | string | null
+  active?: Prisma.BoolFilter<"tenants"> | boolean
 }, "id">
 
 export type tenantsOrderByWithAggregationInput = {
@@ -220,9 +290,15 @@ export type tenantsOrderByWithAggregationInput = {
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  max_users?: Prisma.SortOrder
+  features?: Prisma.SortOrder
+  custom_domain?: Prisma.SortOrderInput | Prisma.SortOrder
+  active?: Prisma.SortOrder
   _count?: Prisma.tenantsCountOrderByAggregateInput
+  _avg?: Prisma.tenantsAvgOrderByAggregateInput
   _max?: Prisma.tenantsMaxOrderByAggregateInput
   _min?: Prisma.tenantsMinOrderByAggregateInput
+  _sum?: Prisma.tenantsSumOrderByAggregateInput
 }
 
 export type tenantsScalarWhereWithAggregatesInput = {
@@ -235,6 +311,10 @@ export type tenantsScalarWhereWithAggregatesInput = {
   created_by?: Prisma.StringWithAggregatesFilter<"tenants"> | string
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"tenants"> | Date | string | null
   updated_by?: Prisma.StringNullableWithAggregatesFilter<"tenants"> | string | null
+  max_users?: Prisma.IntWithAggregatesFilter<"tenants"> | number
+  features?: Prisma.StringNullableListFilter<"tenants">
+  custom_domain?: Prisma.StringNullableWithAggregatesFilter<"tenants"> | string | null
+  active?: Prisma.BoolWithAggregatesFilter<"tenants"> | boolean
 }
 
 export type tenantsCreateInput = {
@@ -244,6 +324,10 @@ export type tenantsCreateInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  max_users?: number
+  features?: Prisma.tenantsCreatefeaturesInput | string[]
+  custom_domain?: string | null
+  active?: boolean
 }
 
 export type tenantsUncheckedCreateInput = {
@@ -253,6 +337,10 @@ export type tenantsUncheckedCreateInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  max_users?: number
+  features?: Prisma.tenantsCreatefeaturesInput | string[]
+  custom_domain?: string | null
+  active?: boolean
 }
 
 export type tenantsUpdateInput = {
@@ -262,6 +350,10 @@ export type tenantsUpdateInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  max_users?: Prisma.IntFieldUpdateOperationsInput | number
+  features?: Prisma.tenantsUpdatefeaturesInput | string[]
+  custom_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type tenantsUncheckedUpdateInput = {
@@ -271,6 +363,10 @@ export type tenantsUncheckedUpdateInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  max_users?: Prisma.IntFieldUpdateOperationsInput | number
+  features?: Prisma.tenantsUpdatefeaturesInput | string[]
+  custom_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type tenantsCreateManyInput = {
@@ -280,6 +376,10 @@ export type tenantsCreateManyInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  max_users?: number
+  features?: Prisma.tenantsCreatefeaturesInput | string[]
+  custom_domain?: string | null
+  active?: boolean
 }
 
 export type tenantsUpdateManyMutationInput = {
@@ -289,6 +389,10 @@ export type tenantsUpdateManyMutationInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  max_users?: Prisma.IntFieldUpdateOperationsInput | number
+  features?: Prisma.tenantsUpdatefeaturesInput | string[]
+  custom_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
 }
 
 export type tenantsUncheckedUpdateManyInput = {
@@ -298,6 +402,18 @@ export type tenantsUncheckedUpdateManyInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  max_users?: Prisma.IntFieldUpdateOperationsInput | number
+  features?: Prisma.tenantsUpdatefeaturesInput | string[]
+  custom_domain?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type tenantsCountOrderByAggregateInput = {
@@ -307,6 +423,14 @@ export type tenantsCountOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
+  max_users?: Prisma.SortOrder
+  features?: Prisma.SortOrder
+  custom_domain?: Prisma.SortOrder
+  active?: Prisma.SortOrder
+}
+
+export type tenantsAvgOrderByAggregateInput = {
+  max_users?: Prisma.SortOrder
 }
 
 export type tenantsMaxOrderByAggregateInput = {
@@ -316,6 +440,9 @@ export type tenantsMaxOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
+  max_users?: Prisma.SortOrder
+  custom_domain?: Prisma.SortOrder
+  active?: Prisma.SortOrder
 }
 
 export type tenantsMinOrderByAggregateInput = {
@@ -325,6 +452,17 @@ export type tenantsMinOrderByAggregateInput = {
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
+  max_users?: Prisma.SortOrder
+  custom_domain?: Prisma.SortOrder
+  active?: Prisma.SortOrder
+}
+
+export type tenantsSumOrderByAggregateInput = {
+  max_users?: Prisma.SortOrder
+}
+
+export type tenantsCreatefeaturesInput = {
+  set: string[]
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -343,6 +481,23 @@ export type NullableStringFieldUpdateOperationsInput = {
   set?: string | null
 }
 
+export type IntFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
+export type tenantsUpdatefeaturesInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type BoolFieldUpdateOperationsInput = {
+  set?: boolean
+}
+
 
 
 export type tenantsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -352,6 +507,10 @@ export type tenantsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  max_users?: boolean
+  features?: boolean
+  custom_domain?: boolean
+  active?: boolean
 }, ExtArgs["result"]["tenants"]>
 
 export type tenantsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -361,6 +520,10 @@ export type tenantsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  max_users?: boolean
+  features?: boolean
+  custom_domain?: boolean
+  active?: boolean
 }, ExtArgs["result"]["tenants"]>
 
 export type tenantsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -370,6 +533,10 @@ export type tenantsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  max_users?: boolean
+  features?: boolean
+  custom_domain?: boolean
+  active?: boolean
 }, ExtArgs["result"]["tenants"]>
 
 export type tenantsSelectScalar = {
@@ -379,9 +546,13 @@ export type tenantsSelectScalar = {
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  max_users?: boolean
+  features?: boolean
+  custom_domain?: boolean
+  active?: boolean
 }
 
-export type tenantsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["tenants"]>
+export type tenantsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "created_at" | "created_by" | "updated_at" | "updated_by" | "max_users" | "features" | "custom_domain" | "active", ExtArgs["result"]["tenants"]>
 
 export type $tenantsPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "tenants"
@@ -393,6 +564,10 @@ export type $tenantsPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     created_by: string
     updated_at: Date | null
     updated_by: string | null
+    max_users: number
+    features: string[]
+    custom_domain: string | null
+    active: boolean
   }, ExtArgs["result"]["tenants"]>
   composites: {}
 }
@@ -822,6 +997,10 @@ export interface tenantsFieldRefs {
   readonly created_by: Prisma.FieldRef<"tenants", 'String'>
   readonly updated_at: Prisma.FieldRef<"tenants", 'DateTime'>
   readonly updated_by: Prisma.FieldRef<"tenants", 'String'>
+  readonly max_users: Prisma.FieldRef<"tenants", 'Int'>
+  readonly features: Prisma.FieldRef<"tenants", 'String[]'>
+  readonly custom_domain: Prisma.FieldRef<"tenants", 'String'>
+  readonly active: Prisma.FieldRef<"tenants", 'Boolean'>
 }
     
 

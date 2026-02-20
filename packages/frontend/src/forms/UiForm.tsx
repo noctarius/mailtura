@@ -8,6 +8,7 @@ import UiFormCheckboxField from "./UiFormCheckboxField.js";
 import UiFormRadioField from "./UiFormRadioField.js";
 import UiFormSelectField from "./UiFormSelectField.js";
 import { combineProps } from "@solid-primitives/props";
+import UiFormNumberField from "./UiFormNumberField.js";
 
 interface UiFormProps<
   TFieldValues extends FieldValues,
@@ -54,15 +55,25 @@ export function UiForm<
                       const error = () => field.error;
                       const properties = combineProps(props, {
                         required: fieldSpec.required,
+                        disabled: fieldSpec.disabled ?? false,
                       });
                       if (fieldSpec.cell) {
-                        return fieldSpec.cell({fieldSpec, props, field})
+                        return fieldSpec.cell({ fieldSpec, props, field });
                       }
                       return (
                         <>
                           <Switch>
                             <Match when={fieldSpec.type === "text"}>
                               <UiFormTextField
+                                {...properties}
+                                label={() => fieldSpec.label}
+                                spec={spec}
+                                value={field.value as any}
+                                error={error}
+                              />
+                            </Match>
+                            <Match when={fieldSpec.type === "number"}>
+                              <UiFormNumberField
                                 {...properties}
                                 label={() => fieldSpec.label}
                                 spec={spec}

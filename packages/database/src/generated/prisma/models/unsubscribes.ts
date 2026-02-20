@@ -404,14 +404,6 @@ export type unsubscribesOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type StringNullableListFilter<$PrismaModel = never> = {
-  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
-  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
-  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
-  isEmpty?: boolean
-}
-
 export type unsubscribesTenant_idContact_idCompoundUniqueInput = {
   tenant_id: string
   contact_id: string
@@ -505,10 +497,6 @@ export type unsubscribesCreatelist_idsInput = {
 
 export type Enumunsubscribe_sourceFieldUpdateOperationsInput = {
   set?: $Enums.unsubscribe_source
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
 }
 
 export type unsubscribesUpdatelist_idsInput = {

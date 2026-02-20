@@ -23,6 +23,10 @@ export const Tenant = //
     {
       id: Type.String({ format: "uuid" }),
       name: Type.String(),
+      active: Type.Boolean(),
+      maxUsers: Type.Integer({ minimum: 0 }),
+      features: Type.Array(Type.String()),
+      customDomain: Type.Optional(Type.String()),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),

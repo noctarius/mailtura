@@ -67,6 +67,10 @@ export function mapTenant(tenant: TenantEntity): Tenant {
   return {
     id: tenant.id,
     name: tenant.name,
+    active: tenant.active,
+    maxUsers: tenant.max_users,
+    features: tenant.features,
+    customDomain: tenant.custom_domain ?? undefined,
     createdAt: mapDateTime(tenant.created_at),
     createdBy: tenant.created_by,
     updatedAt: mapDateTime(tenant.updated_at),
