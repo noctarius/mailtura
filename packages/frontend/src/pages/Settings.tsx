@@ -1,16 +1,7 @@
-import { Bell, Copy, Eye, EyeOff, Globe, Key, Shield } from "lucide-solid";
+import { Bell, Globe, Shield } from "lucide-solid";
 import TableCellChip from "../components/interfaces/TableCellChip.js";
-import { createSignal } from "solid-js";
 
 const Settings = () => {
-  const [showApiKey, setShowApiKey] = createSignal(false);
-  const apiKey = "sk-live-1234567890abcdef1234567890abcdef12345678";
-
-  const copyApiKey = () => {
-    navigator.clipboard.writeText(apiKey);
-    // You could add a toast notification here
-  };
-
   return (
     <div class="overflow-y-auto">
       <div class="p-8 max-w-4xl">
@@ -20,51 +11,6 @@ const Settings = () => {
         </div>
 
         <div class="space-y-8">
-          {/* API Keys Section */}
-          <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-            <div class="flex items-center space-x-3 mb-6">
-              <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                <Key class="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <h2 class="text-xl font-semibold text-gray-900">API Keys</h2>
-                <p class="text-sm text-gray-600">Manage your API keys for sending emails</p>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <div class="border border-gray-200 rounded-lg p-4">
-                <div class="flex items-center justify-between mb-2">
-                  <div>
-                    <h3 class="font-medium text-gray-900">Production API Key</h3>
-                    <p class="text-sm text-gray-600">Use this key for live email sending</p>
-                  </div>
-                  <div class="flex items-center space-x-2">
-                    <button
-                      onClick={() => setShowApiKey(!showApiKey)}
-                      class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                      {showApiKey() ? <EyeOff class="w-4 h-4" /> : <Eye class="w-4 h-4" />}
-                    </button>
-                    <button
-                      onClick={copyApiKey}
-                      class="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                    >
-                      <Copy class="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-                <div class="bg-gray-50 rounded-lg p-3 font-mono text-sm">
-                  {showApiKey() ? apiKey : "••••••••••••••••••••••••••••••••••••••••"}
-                </div>
-              </div>
-
-              <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
-                Generate New API Key
-              </button>
-            </div>
-          </div>
-
           {/* Domain Settings */}
           <div class="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
             <div class="flex items-center space-x-3 mb-6">
