@@ -1,6 +1,6 @@
 import { Mail, MailContact, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
-import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/client-ses";
+import { SendEmailCommand, SendEmailCommandInput, SESv2Client } from "@aws-sdk/client-sesv2";
 
 type SendEmailRequest = SendEmailCommandInput;
 
@@ -14,7 +14,7 @@ export class SesTransport extends AbstractTransport<string> {
   }
 
   async send(mail: Mail): Promise<number> {
-    const client = new SESClient({
+    const client = new SESv2Client({
       region: this.#config.region,
       credentials: {
         accessKeyId: this.#config.accessKeyId,
@@ -35,17 +35,20 @@ export class SesTransport extends AbstractTransport<string> {
 
   #makeRequest(from: string, mail: Mail, item: DeliveryPlan<string>): SendEmailRequest {
     return {
-      Source: from,
+      FromEmailAddress: from,
       Destination: {
         ToAddresses: item.to,
         CcAddresses: item.cc,
         BccAddresses: item.bcc,
       },
-      Message: {
-        Subject: { Data: mail.subject },
-        Body: {
-          Html: { Data: item.html },
-          Text: { Data: item.text },
+      Content: {
+        Simple: {
+          Subject: { Data: mail.subject },
+          Body: {
+            Html: { Data: item.html },
+            Text: { Data: item.text },
+          },
+          Headers: [],
         },
       },
     };
