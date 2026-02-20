@@ -8,10 +8,11 @@ import { defineConfig } from "vite";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const monacoEditorDirectory = pathResolve(__dirname, "node_modules/monaco-editor");
 
-const baseUrl = process.env.DASHBOARD_BASE_URL;
+const baseUrl = process.env.DASHBOARD_BASE_URL ?? "/";
+const normalizedBaseUrl = `/${baseUrl.replace(/^\/+|\/+$/g, "")}/`.replace("//", "/");
 
 export default defineConfig({
-  base: baseUrl,
+  base: normalizedBaseUrl,
   plugins: [
     solidPlugin(),
     VitePWA({
@@ -33,7 +34,8 @@ export default defineConfig({
         description: "The Universal Email API: Build with templates, send with any provider.",
         theme_color: "#ffffff",
         background_color: "#ffffff",
-        start_url: "/",
+        start_url: normalizedBaseUrl,
+        scope: normalizedBaseUrl,
         icons: [
           {
             src: "icons/maskable-icon-192.png",
