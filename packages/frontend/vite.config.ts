@@ -16,7 +16,14 @@ export default defineConfig({
     solidPlugin(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt", "apple-touch-icon.png"],
+      includeAssets: [
+        "favicon.ico",
+        "favicon-16x16.png",
+        "favicon-32x32.png",
+        "safari-pinned-tab.svg",
+        "robots.txt",
+        "apple-touch-icon.png",
+      ],
       workbox: {
         maximumFileSizeToCacheInBytes: 10000000,
       },
@@ -29,8 +36,19 @@ export default defineConfig({
         start_url: "/",
         icons: [
           {
+            src: "icons/maskable-icon-192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
             src: "icons/icon-192.png",
             sizes: "192x192",
+            type: "image/png",
+          },
+          {
+            src: "icons/icon-384.png",
+            sizes: "384x384",
             type: "image/png",
           },
           {
