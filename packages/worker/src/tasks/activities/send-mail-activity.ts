@@ -150,10 +150,6 @@ const mapReceivers = async (
           in: receivers.map(receiver => receiver.email),
         },
       },
-      select: {
-        id: true,
-        email: true,
-      },
     });
 
     const contactIdByEmail = new Map(contacts.map(contact => [contact.email, contact.id]));
