@@ -211,6 +211,7 @@ export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/i
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
 export { withPagination } from "./pagination/index.js";
 export * from "./mapper.js";
+export * from "./context/subscriptions/index.js";
 
 export function handlePrismaError(err: any) {
   if (err instanceof PrismaClientKnownRequestError) {
