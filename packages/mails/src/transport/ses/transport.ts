@@ -1,6 +1,6 @@
 import { Mail, MailContact, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
-import { SendEmailCommand, SendEmailCommandInput, SESv2Client } from "@aws-sdk/client-sesv2";
+import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
+import { SendEmailCommand, type SendEmailCommandInput, SESv2Client } from "@aws-sdk/client-sesv2";
 
 type SendEmailRequest = SendEmailCommandInput;
 
@@ -8,8 +8,8 @@ export class SesTransport extends AbstractTransport<string> {
   protected readonly providerId = "ses";
   readonly #config: SesConfig;
 
-  constructor(config: SesConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: SesConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 

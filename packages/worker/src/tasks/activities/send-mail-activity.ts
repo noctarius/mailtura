@@ -1,6 +1,7 @@
 import type { SendMailArguments } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
 import {
+  GLOBAL_UNSUBSCRIBE_LIST_ID,
   MailSendingEntity,
   MailSendingReceiverEntity,
   mapTemplate,
@@ -8,14 +9,12 @@ import {
   newPrismaPg,
   PrismaType,
 } from "@mailtura/database";
-import { newMailTransport } from "../../mails/index.js";
+import { MailLogEntry, newMailTransport, TransportConfig, UrlProxy } from "@mailtura/mails";
 import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { getSystemConfig } from "../../helper/system-config.js";
-import { MailLogEntry, TransportConfig, UrlProxy } from "../../mails/transport.js";
 import uuidv7 from "../../helper/uuidv7.js";
-
-const GLOBAL_UNSUBSCRIBE_LIST_ID = "00000000-0000-0000-0000-000000000000";
+import { TemplateResolver } from "@mailtura/contentcompiler";
 
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
@@ -25,9 +24,14 @@ type MailSending = MailSendingEntity & {
   subscriber_lists: { subscriber_list_id: string }[];
 };
 
-const buildTemplateResolver = (prisma: PrismaType) => {
+const buildTemplateResolver = (prisma: PrismaType, tenantId: string): TemplateResolver => {
   return async (templateId: string) => {
-    const template = await prisma.templates.findUnique({ where: { id: templateId } });
+    const template = await prisma.templates.findUnique({
+      where: {
+        tenant_id: tenantId,
+        id: templateId,
+      },
+    });
     if (!template) return undefined;
     return mapTemplate(template);
   };
@@ -115,7 +119,7 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
   const systemConfig = await getSystemConfig(prisma);
   const transportConfig: TransportConfig = {
     apiBase: systemConfig.apiBase,
-    templateResolver: buildTemplateResolver(prisma),
+    templateResolver: buildTemplateResolver(prisma, tenantId),
     urlRelocationStorage: buildUrlRelocationStorage(prisma, tenantId),
     mailLogStorage: buildMailLogStorage(prisma, tenantId),
   };

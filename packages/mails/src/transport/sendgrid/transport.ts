@@ -1,8 +1,8 @@
 import { Mail, MailContact, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
+import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
 import { Client } from "@sendgrid/client";
 import { classes } from "@sendgrid/helpers";
-import { ClientResponse } from "@sendgrid/client/src/response.js";
+import type { ClientResponse } from "@sendgrid/client/src/response.js";
 
 const SendgridMail = classes.Mail;
 type SendgridMail = typeof SendgridMail;
@@ -13,8 +13,8 @@ export class SendgridTransport extends AbstractTransport<EmailData> {
   protected readonly providerId = "sendgrid";
   readonly #config: SendgridConfig;
 
-  constructor(config: SendgridConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: SendgridConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 

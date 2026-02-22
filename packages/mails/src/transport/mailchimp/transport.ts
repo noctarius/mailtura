@@ -1,5 +1,5 @@
 import { Mail, MailchimpConfig, MailContact } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, RecipientType, TransportConfig } from "./transport.js";
+import { AbstractTransport, type DeliveryPlan, type RecipientType, type TransportConfig } from "../transport/index.js";
 import mailchimp from "@mailchimp/mailchimp_transactional";
 
 type MailchimpClient = ReturnType<typeof mailchimp>;
@@ -10,8 +10,8 @@ export class MailchimpTransport extends AbstractTransport<Recipient> {
   protected readonly providerId = "mailchimp";
   readonly #config: MailchimpConfig;
 
-  constructor(config: MailchimpConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: MailchimpConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 

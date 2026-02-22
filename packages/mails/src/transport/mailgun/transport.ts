@@ -1,5 +1,5 @@
 import { Mail, MailContact, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
+import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
 
@@ -9,8 +9,8 @@ export class MailgunTransport extends AbstractTransport<string> {
   protected readonly providerId = "mailgun";
   readonly #config: MailgunConfig;
 
-  constructor(config: MailgunConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: MailgunConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 

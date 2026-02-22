@@ -1,5 +1,5 @@
 import { Mail, MailContact, MailjetConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
+import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
 import type { SendEmailV3_1 } from "node-mailjet";
 import { createRequire } from "node:module";
 
@@ -25,8 +25,8 @@ export class MailjetTransport extends AbstractTransport<EmailData> {
   protected readonly providerId = "mailjet";
   readonly #config: MailjetConfig;
 
-  constructor(config: MailjetConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: MailjetConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 

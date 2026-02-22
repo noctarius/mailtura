@@ -1,22 +1,11 @@
 import {
-  isDirectContent,
-  isTemplatedContent,
-  Mail,
-  MailContact,
-  MailContent,
-  MailDirectContent,
-  MailRecipient,
-} from "@mailtura/rpcmodel/mails/index.js";
-import { getRpcManager } from "../rpc/index.js";
-import {
   createTemplateCompiler,
-  ResolvedTemplate,
-  TemplateCompiler,
-  TemplateCompilerConfig,
-  TemplateResolver,
+  type ResolvedTemplate,
+  type TemplateCompiler,
+  type TemplateCompilerConfig,
+  type TemplateResolver,
 } from "@mailtura/contentcompiler";
-
-const rpcManager = getRpcManager();
+import { type Mail, type MailContact, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 
 export type UrlProxy = ResolvedTemplate["urlRelocations"][number];
 export type RecipientType = "to" | "cc" | "bcc";
@@ -54,40 +43,21 @@ export interface Transport {
 }
 
 export abstract class AbstractTransport<EmailType> implements Transport {
-  readonly #tenantId: string;
   readonly #transportConfig: TransportConfig;
   readonly #contentCompiler: TemplateCompiler;
 
-  protected constructor(tenantId: string, transportConfig: TransportConfig) {
-    this.#tenantId = tenantId;
+  protected constructor(transportConfig: TransportConfig) {
     this.#transportConfig = transportConfig;
     this.#contentCompiler = createTemplateCompiler(transportConfig.templateResolver, transportConfig.apiBase);
-  }
-
-  protected async getTemplateContent(content: MailContent): Promise<MailDirectContent> {
-    if (isDirectContent(content)) {
-      return content;
-    }
-    if (isTemplatedContent(content)) {
-      const template = await rpcManager.readTemplate(this.#tenantId, content.templateId);
-      const templateContent = template.content;
-      return {
-        content: templateContent,
-        isTemplate: true,
-      };
-    }
-    throw new Error("Unsupported content type");
   }
 
   abstract send(mail: Mail): Promise<number>;
 
   protected mergeSubstitutions(
-    templateSubstitutions: Record<string, string> | undefined,
-    mailSubstitutions: Record<string, string> | undefined,
-    recipientSubstitutions: Record<string, string> | undefined
+    mailSubstitutions?: Record<string, string>,
+    recipientSubstitutions?: Record<string, string>
   ): Record<string, string> {
     return {
-      ...(templateSubstitutions ?? {}),
       ...(mailSubstitutions ?? {}),
       ...(recipientSubstitutions ?? {}),
     };
@@ -144,12 +114,12 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     return this.hasSubstitutions(mail) ? "per-recipient" : "joined";
   }
 
-  protected normalizeRecipients(contacts: MailContact | MailContact[] | undefined): MailContact[] {
+  protected normalizeRecipients(contacts?: MailContact | MailContact[]): MailContact[] {
     if (!contacts) return [];
     return Array.isArray(contacts) ? contacts : [contacts];
   }
 
-  protected mapMailAddresses(contacts: MailContact | MailContact[] | undefined, type?: RecipientType): EmailType[] {
+  protected mapMailAddresses(contacts?: MailContact | MailContact[], type?: RecipientType): EmailType[] {
     return this.normalizeRecipients(contacts).map(contact => this.mapMailAddress(contact, type));
   }
 
@@ -184,16 +154,10 @@ export abstract class AbstractTransport<EmailType> implements Transport {
 
   protected async resolveDeliveryPlan(mail: Mail): Promise<DeliveryPlan<EmailType>[]> {
     const groupingPolicy = this.resolveRecipientGroupingPolicy(mail);
-    const content = await this.getTemplateContent(mail.content);
-
     if (groupingPolicy === "per-recipient") {
       return Promise.all(
         mail.recipients.map(async recipient => {
-          const substitutions = this.mergeSubstitutions(
-            content.substitutions,
-            mail.substitutions,
-            recipient.substitutions
-          );
+          const substitutions = this.mergeSubstitutions(mail.substitutions, recipient.substitutions);
           const resolvedTemplate = await this.resolveTemplateOrThrow(mail, substitutions);
           const contactId = this.extractRecipientContactId(recipient);
           return {

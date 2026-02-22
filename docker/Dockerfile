@@ -11,6 +11,7 @@ COPY --chown=bun:bun packages/backend/package.json /temp/dev/packages/backend/
 COPY --chown=bun:bun packages/worker/package.json /temp/dev/packages/worker/
 COPY --chown=bun:bun packages/contentcompiler/package.json /temp/dev/packages/contentcompiler/
 COPY --chown=bun:bun packages/database/package.json /temp/dev/packages/database/
+COPY --chown=bun:bun packages/mails/package.json /temp/dev/packages/mails/
 RUN cd /temp/dev && bun install --frozen-lockfile
 COPY --chown=bun:bun eslint.config.js /temp/dev/
 
@@ -24,6 +25,7 @@ COPY --chown=bun:bun packages/backend/package.json /temp/prod/packages/backend/
 COPY --chown=bun:bun packages/worker/package.json /temp/prod/packages/worker/
 COPY --chown=bun:bun packages/contentcompiler/package.json /temp/prod/packages/contentcompiler/
 COPY --chown=bun:bun packages/database/package.json /temp/prod/packages/database/
+COPY --chown=bun:bun packages/mails/package.json /temp/prod/packages/mails/
 RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile \
         --omit=dev --omit=peer --omit=optional --production \
         --filter='!./packages/worker' --filter='!./packages/frontend'
@@ -31,6 +33,7 @@ RUN cd /temp/prod && bunx modclean --run --patterns="default:*"
 RUN rm -rf /temp/prod/node_modules/@mailtura/rpcmodel
 RUN rm -rf /temp/prod/node_modules/@mailtura/contentcompiler
 RUN rm -rf /temp/prod/node_modules/@mailtura/database
+RUN rm -rf /temp/prod/node_modules/@mailtura/mails
 RUN ls -lah /temp/prod
 
 FROM base AS production-mailtura-worker
@@ -43,6 +46,7 @@ COPY --chown=bun:bun packages/backend/package.json /temp/prod/packages/backend/
 COPY --chown=bun:bun packages/worker/package.json /temp/prod/packages/worker/
 COPY --chown=bun:bun packages/contentcompiler/package.json /temp/prod/packages/contentcompiler/
 COPY --chown=bun:bun packages/database/package.json /temp/prod/packages/database/
+COPY --chown=bun:bun packages/mails/package.json /temp/prod/packages/mails/
 RUN cd /temp/prod && bun install --linker hoisted --frozen-lockfile \
         --omit=dev --omit=peer --omit=optional --production \
         --filter='!./packages/backend' --filter='!./packages/frontend'
@@ -50,6 +54,7 @@ RUN cd /temp/prod && bunx modclean --run --patterns="default:*"
 RUN rm -rf /temp/prod/node_modules/@mailtura/rpcmodel
 RUN rm -rf /temp/prod/node_modules/@mailtura/contentcompiler
 RUN rm -rf /temp/prod/node_modules/@mailtura/database
+RUN rm -rf /temp/prod/node_modules/@mailtura/mails
 RUN ls -lah /temp/prod
 
 FROM development AS builder-rpc-model
@@ -67,10 +72,17 @@ USER bun
 COPY --chown=bun:bun packages/contentcompiler /temp/dev/packages/contentcompiler/
 RUN echo Building contentcompiler... && cd /temp/dev/packages/contentcompiler && bun run build
 
+FROM builder-database AS builder-mails
+USER bun
+COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler /temp/dev/packages/contentcompiler
+COPY --chown=bun:bun packages/mails /temp/dev/packages/mails/
+RUN echo Building contentcompiler... && cd /temp/dev/packages/contentcompiler && bun run build
+
 FROM builder-database AS builder-backend
 USER bun
 COPY --chown=bun:bun packages/backend /temp/dev/packages/backend/
 COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler /temp/dev/packages/contentcompiler
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails /temp/dev/packages/mails
 RUN echo Building backend... && cd /temp/dev/packages/backend && bun run build
 
 FROM builder-rpc-model AS builder-frontend
@@ -83,6 +95,7 @@ FROM builder-database AS builder-worker
 USER bun
 COPY --chown=bun:bun packages/worker /temp/dev/packages/worker/
 COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler /temp/dev/packages/contentcompiler
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails /temp/dev/packages/mails
 RUN echo Building worker... && cd /temp/dev/packages/worker && bun run build
 
 
@@ -97,6 +110,8 @@ COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentco
 COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler/lib node_modules/@mailtura/contentcompiler/lib
 COPY --chown=bun:bun --from=builder-database /temp/dev/packages/database/package.json node_modules/@mailtura/database/
 COPY --chown=bun:bun --from=builder-database /temp/dev/packages/database/lib node_modules/@mailtura/database/lib
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails/package.json node_modules/@mailtura/mails/
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails/lib node_modules/@mailtura/mails/lib
 COPY --chown=bun:bun --from=builder-frontend /temp/dev/packages/frontend/dist public
 COPY --chown=bun:bun --from=builder-backend /temp/dev/packages/backend/dist .
 COPY --chown=bun:bun --from=builder-backend /temp/dev/packages/backend/package.json .
@@ -119,6 +134,8 @@ COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentco
 COPY --chown=bun:bun --from=builder-contentcompiler /temp/dev/packages/contentcompiler/lib node_modules/@mailtura/contentcompiler/lib
 COPY --chown=bun:bun --from=builder-database /temp/dev/packages/database/package.json node_modules/@mailtura/database/
 COPY --chown=bun:bun --from=builder-database /temp/dev/packages/database/lib node_modules/@mailtura/database/lib
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails/package.json node_modules/@mailtura/mails/
+COPY --chown=bun:bun --from=builder-mails /temp/dev/packages/mails/lib node_modules/@mailtura/mails/lib
 COPY --chown=node:node --from=builder-worker /temp/dev/packages/worker/dist .
 COPY --chown=node:node --from=builder-worker /temp/dev/packages/worker/package.json .
 COPY --chown=node:node --from=builder-worker /temp/dev/packages/worker/entrypoint.sh .

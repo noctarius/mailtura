@@ -10,15 +10,15 @@ import {
   type UsernamePasswordSmtpAuth,
 } from "@mailtura/rpcmodel/mails/index.js";
 import { createTransport as createNodemailerTransport } from "nodemailer";
-import { Address, Options } from "nodemailer/lib/mailer/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
+import type { Address, Options } from "nodemailer/lib/mailer/index.js";
+import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
 
 export class SmtpTransport extends AbstractTransport<string | Address> {
   protected readonly providerId = "smtp";
   readonly #config: SmtpConfig;
 
-  constructor(config: SmtpConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: SmtpConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 
