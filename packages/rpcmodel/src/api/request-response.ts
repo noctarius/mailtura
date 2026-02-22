@@ -324,16 +324,10 @@ export const CreateUnsubscribe = Type.Object({
   contactId: Type.String({ format: "uuid" }),
   source: UnsubscribeSource,
   global: Type.Boolean(),
-  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
+  subscriberListId: Type.Optional(Type.String({ format: "uuid" })),
 });
 
 export type CreateUnsubscribe = Static<typeof CreateUnsubscribe>;
-
-export const UpdateUnsubscribe = Type.Object({
-  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
-});
-
-export type UpdateUnsubscribe = Static<typeof UpdateUnsubscribe>;
 
 export const CreateBounce = //
   Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "email"]);

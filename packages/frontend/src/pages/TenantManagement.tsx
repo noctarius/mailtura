@@ -21,7 +21,7 @@ const TenantManagement = () => {
   const [searchTerm, setSearchTerm] = createSignal("");
   const [showCreateDialog, setShowCreateDialog] = createSignal(false);
   const [editingTenant, setEditingTenant] = createSignal<Tenant | undefined>(undefined);
-  const [deletingTenant, setDeletingTenant] = createSignal<Tenant | undefined>(undefined);
+  const [deleteTenant, setDeleteTenant] = createSignal<Tenant | undefined>(undefined);
   const [userCountByTenant, setUserCountByTenant] = createSignal<Record<string, number>>({});
 
   const tenantsQuery = useTenantsQuery();
@@ -37,19 +37,15 @@ const TenantManagement = () => {
 
     const entries = await Promise.all(
       tenantList.map(async tenant => {
-        const response = await client.GET("/api/v1/tenants/{tenant_id}/users/", {
+        const response = await client.GET("/api/v1/tenants/{tenant_id}/users/count", {
           params: {
             path: {
               tenant_id: tenant.id,
             },
-            query: {
-              limit: 1,
-            },
           },
         });
-
         if (response.error) return [tenant.id, 0] as const;
-        return [tenant.id, response.data.metadata.totalItems ?? response.data.data.length] as const;
+        return [tenant.id, response.data] as const;
       })
     );
     setUserCountByTenant(Object.fromEntries(entries));
@@ -193,7 +189,7 @@ const TenantManagement = () => {
                             <SquarePen class="w-4 h-4" />
                           </button>
                           <button
-                            onClick={() => setDeletingTenant(tenant)}
+                            onClick={() => setDeleteTenant(tenant)}
                             class="p-2 text-gray-400 hover:text-red-600 transition-colors disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:text-gray-400"
                             title="Delete Tenant"
                             disabled={tenant.name === "::system::"}
@@ -239,10 +235,10 @@ const TenantManagement = () => {
         )}
       </Show>
 
-      <Show when={!!deletingTenant()}>
+      <Show when={!!deleteTenant()}>
         <DeleteTenantDialog
-          tenant={deletingTenant}
-          onClose={() => setDeletingTenant(undefined)}
+          tenant={deleteTenant}
+          onClose={() => setDeleteTenant(undefined)}
         />
       </Show>
     </div>

@@ -199,17 +199,16 @@ model unsubscribes {
   tenant_id       String             @db.Uuid
   source          unsubscribe_source
   unsubscribed_at DateTime           @db.Timestamptz()
-  global          Boolean
-  list_ids        String[]           @db.Uuid
+  subscriber_list_id String          @db.Uuid
   contact_id      String             @db.Uuid
   created_at      DateTime           @db.Timestamptz()
   created_by      String
   updated_at      DateTime?          @db.Timestamptz()
   updated_by      String?
 
-  contacts contacts @relation(fields: [contact_id], references: [id])
+  contacts         contacts          @relation(fields: [contact_id], references: [id])
 
-  @@unique([tenant_id, contact_id])
+  @@unique([tenant_id, contact_id, subscriber_list_id])
 }
 
 model users {

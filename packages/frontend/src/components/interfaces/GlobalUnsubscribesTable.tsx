@@ -1,12 +1,13 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
-import { createMemo } from "solid-js";
+import { createMemo, createSignal, Show } from "solid-js";
 import { DataTable } from "./DataTable.js";
 import TableCellChip from "./TableCellChip.js";
 import { Calendar, Mail, Trash2 } from "lucide-solid";
 import { formatDateTime } from "../../helpers/format-date-time.js";
 import { getUnsubscribeSourceIcon } from "../../helpers/chip-icons.js";
 import { sourceBgColor, sourceDisplay, sourceTextColor } from "./UnsubscribeTable.utils.js";
+import DeleteUnsubscribeDialog from "../modals/DeleteUnsubscribeDialog.js";
 
 interface GlobalUnsubscribesTableProps {
   data: () => Unsubscribe[];
@@ -14,6 +15,8 @@ interface GlobalUnsubscribesTableProps {
 }
 
 export function GlobalUnsubscribesTable(props: GlobalUnsubscribesTableProps) {
+  const [deleteUnsubscribe, setDeleteUnsubscribe] = createSignal<Unsubscribe | undefined>();
+
   const columns = createMemo<ColumnDef<Unsubscribe, any>[]>(() => [
     {
       id: "email",
@@ -69,10 +72,18 @@ export function GlobalUnsubscribesTable(props: GlobalUnsubscribesTableProps) {
   ]);
 
   return (
-    <DataTable<Unsubscribe>
-      data={props.data}
-      columnsDefinitions={columns}
-      target={props.target}
-    />
+    <>
+      <DataTable<Unsubscribe>
+        data={props.data}
+        columnsDefinitions={columns}
+        target={props.target}
+      />
+      <Show when={!!deleteUnsubscribe()}>
+        <DeleteUnsubscribeDialog
+          unsubscribe={deleteUnsubscribe}
+          onClose={() => setDeleteUnsubscribe(undefined)}
+        />
+      </Show>
+    </>
   );
 }

@@ -191,6 +191,17 @@ export function mailConfigRoutes<
         const tenantId = request.params.tenant_id;
         const mailConfigId = request.params.mail_config_id;
 
+        const found = await prisma.mail_configs.findUnique({
+          where: {
+            id: mailConfigId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "MailConfig not found");
+        }
+
         await prisma.mail_configs.delete({
           where: {
             id: mailConfigId,

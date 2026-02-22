@@ -210,7 +210,7 @@ export function tenantRoutes<
       async (request, reply) => {
         const tenantId = request.params.tenant_id;
 
-        const found = prisma.tenants.findUnique({
+        const found = await prisma.tenants.findUnique({
           where: {
             id: tenantId,
           },

@@ -36,6 +36,7 @@ export function publicUnsubscribeRoutes<
   const querySchema = Type.Object({
     contact: Type.String({ format: "uuid" }),
     list: Type.Optional(Type.String({ format: "uuid" })),
+    global: Type.Optional(Type.String()),
   });
 
   router.get<{ Querystring: UnsubscribeQuery }>(

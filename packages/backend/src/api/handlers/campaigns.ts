@@ -204,7 +204,7 @@ export function campaignRoutes<
         const tenantId = request.params.tenant_id;
         const campaignId = request.params.campaign_id;
 
-        const found = prisma.campaigns.findUnique({
+        const found = await prisma.campaigns.findUnique({
           where: {
             id: campaignId,
             tenant_id: tenantId,

@@ -7,6 +7,7 @@ import { useListUnsubscribesQuery } from "../services/unsubscribes/use-list-unsu
 import { TableLoading } from "../components/interfaces/TableLoading.js";
 import { TablePagination } from "../components/interfaces/TablePagination.js";
 import { ListUnsubscribesTable } from "../components/interfaces/ListUnsubscribesTable.js";
+import { GLOBAL_UNSUBSCRIBE_LIST_ID } from "../constants/unsubscribes.js";
 
 const ListUnsubscribes = () => {
   const [tableTarget, setTableTarget] = createSignal<HTMLDivElement>();
@@ -45,13 +46,13 @@ const ListUnsubscribes = () => {
   };
 
   const filterQuery = createMemo(() => {
-    let query = "global = false" as string | undefined; // list unsubscribes only
+    let query = `subscriberListId != '${GLOBAL_UNSUBSCRIBE_LIST_ID}'` as string | undefined;
     const filterTerm = searchTerm();
     if (filterTerm.trim().length > 0) {
       query = `${query} AND contactId ILIKE "%${filterTerm}%"`;
     }
     if (selectedList() !== "all") {
-      query = `${query} AND listIds CONTAINS '${selectedList()}'`;
+      query = `${query} AND subscriberListId = '${selectedList()}'`;
     }
     if (selectedSource() !== "all") {
       const enumSource = toEnumSource(selectedSource());
@@ -151,7 +152,7 @@ const ListUnsubscribes = () => {
                   class="overflow-x-auto"
                 >
                   <ListUnsubscribesTable
-                    data={() => (unsubscribesQuery.data?.data || []).filter(u => (u.listIds?.length || 0) > 0)}
+                    data={() => unsubscribesQuery.data?.data || []}
                     listName={id => listNameById().get(id) || id}
                     target={tableTarget()!}
                   />
@@ -165,18 +166,17 @@ const ListUnsubscribes = () => {
           </>
         )}
 
-        {(unsubscribesQuery.data?.data || []).filter(u => (u.listIds?.length || 0) > 0).length === 0 &&
-          !unsubscribesQuery.isLoading && (
-            <div class="text-center py-12">
-              <List class="w-12 h-12 text-gray-400 mx-auto mb-4" />
-              <h3 class="text-lg font-medium text-gray-900 mb-2">No list unsubscribes found</h3>
-              <p class="text-gray-600 mb-6">
-                {searchTerm() || selectedList() !== "all" || selectedSource() !== "all"
-                  ? "Try adjusting your search or filter criteria."
-                  : "List-specific unsubscribes will appear here when users opt out of specific lists."}
-              </p>
-            </div>
-          )}
+        {(unsubscribesQuery.data?.data || []).length === 0 && !unsubscribesQuery.isLoading && (
+          <div class="text-center py-12">
+            <List class="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 class="text-lg font-medium text-gray-900 mb-2">No list unsubscribes found</h3>
+            <p class="text-gray-600 mb-6">
+              {searchTerm() || selectedList() !== "all" || selectedSource() !== "all"
+                ? "Try adjusting your search or filter criteria."
+                : "List-specific unsubscribes will appear here when users opt out of specific lists."}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

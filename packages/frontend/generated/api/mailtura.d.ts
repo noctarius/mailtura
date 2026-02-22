@@ -4,6 +4,64 @@
  */
 
 export interface paths {
+    "/unsubscribe/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query: {
+                    contact: string;
+                    list?: string;
+                    global?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        put?: never;
+        post: {
+            parameters: {
+                query: {
+                    contact: string;
+                    list?: string;
+                    global?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/": {
         parameters: {
             query?: never;
@@ -1943,6 +2001,56 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tenants/{tenant_id}/users/count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: {
+                    query?: string;
+                };
+                header?: never;
+                path: {
+                    tenant_id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            data: number;
+                        };
+                    };
+                };
+                /** @description An error response */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["ErrorResponse"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tenants/{tenant_id}/users/{user_id}/accounts/": {
         parameters: {
             query?: never;
@@ -2852,7 +2960,8 @@ export interface paths {
                          */
                         source: "UnsubscribeLink" | "ManualAddition" | "Bounce" | "Api" | "Other";
                         global: boolean;
-                        listIds: string[];
+                        /** Format: uuid */
+                        subscriberListId?: string;
                     };
                 };
             };
@@ -2931,62 +3040,7 @@ export interface paths {
                 };
             };
         };
-        put: {
-            parameters: {
-                query?: never;
-                header?: never;
-                path: {
-                    tenant_id: string;
-                    unsubscribe_id: string;
-                };
-                cookie?: never;
-            };
-            requestBody: {
-                content: {
-                    "application/json": {
-                        listIds: string[];
-                    };
-                };
-            };
-            responses: {
-                /** @description An unsubscribe in the system */
-                200: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["Unsubscribe"];
-                    };
-                };
-                /** @description An error response */
-                400: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description An error response */
-                401: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-                /** @description An error response */
-                404: {
-                    headers: {
-                        [name: string]: unknown;
-                    };
-                    content: {
-                        "application/json": components["schemas"]["ErrorResponse"];
-                    };
-                };
-            };
-        };
+        put?: never;
         post?: never;
         delete: {
             parameters: {
@@ -3927,7 +3981,8 @@ export interface components {
             /** Format: date-time */
             unsubscribedAt: string;
             global: boolean;
-            listIds: string[];
+            /** Format: uuid */
+            subscriberListId?: string;
             /** Format: date-time */
             createdAt: string;
             createdBy: string;

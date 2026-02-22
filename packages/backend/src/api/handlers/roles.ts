@@ -201,7 +201,7 @@ export function rolesRoutes<
         const tenantId = request.params.tenant_id;
         const roleId = request.params.role_id;
 
-        const found = prisma.roles.findUnique({
+        const found = await prisma.roles.findUnique({
           where: {
             id: roleId,
             tenant_id: tenantId,

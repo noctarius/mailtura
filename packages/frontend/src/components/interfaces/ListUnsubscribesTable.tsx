@@ -1,11 +1,12 @@
 import { ColumnDef } from "@tanstack/solid-table";
 import { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
-import { createMemo } from "solid-js";
+import { createMemo, createSignal, Show } from "solid-js";
 import { DataTable } from "./DataTable.js";
 import TableCellChip from "./TableCellChip.js";
 import { List as ListIcon, Mail, Trash2 } from "lucide-solid";
 import { getUnsubscribeSourceIcon } from "../../helpers/chip-icons.js";
 import { sourceBgColor, sourceDisplay, sourceTextColor } from "./UnsubscribeTable.utils.js";
+import DeleteUnsubscribeDialog from "../modals/DeleteUnsubscribeDialog.js";
 
 interface ListUnsubscribesTableProps {
   data: () => Unsubscribe[];
@@ -14,7 +15,9 @@ interface ListUnsubscribesTableProps {
 }
 
 export function ListUnsubscribesTable(props: ListUnsubscribesTableProps) {
-  const columns = createMemo<ColumnDef<Unsubscribe, any>[]>(() => [
+  const [deleteUnsubscribe, setDeleteUnsubscribe] = createSignal<Unsubscribe | undefined>();
+
+  const unsubscribeTableColumns = createMemo<ColumnDef<Unsubscribe, any>[]>(() => [
     {
       id: "email",
       header: () => "Email Address",
@@ -36,12 +39,12 @@ export function ListUnsubscribesTable(props: ListUnsubscribesTableProps) {
       header: () => "List",
       cell: info => (
         <div class="space-y-1">
-          {info.row.original.listIds.map(listId => (
+          {info.row.original.subscriberListId && (
             <div class="flex items-center space-x-2">
               <ListIcon class="w-3 h-3 text-gray-400" />
-              <span class="text-sm text-gray-900">{props.listName(listId)}</span>
+              <span class="text-sm text-gray-900">{props.listName(info.row.original.subscriberListId)}</span>
             </div>
-          ))}
+          )}
         </div>
       ),
       minSize: 260,
@@ -62,8 +65,11 @@ export function ListUnsubscribesTable(props: ListUnsubscribesTableProps) {
     {
       id: "actions",
       header: () => "Actions",
-      cell: () => (
-        <button class="p-2 text-gray-400 hover:text-red-600 transition-colors">
+      cell: info => (
+        <button
+          class="p-2 text-gray-400 hover:text-red-600 transition-colors"
+          onClick={() => setDeleteUnsubscribe(info.row.original)}
+        >
           <Trash2 class="w-4 h-4" />
         </button>
       ),
@@ -73,10 +79,18 @@ export function ListUnsubscribesTable(props: ListUnsubscribesTableProps) {
   ]);
 
   return (
-    <DataTable<Unsubscribe>
-      data={props.data}
-      columnsDefinitions={columns}
-      target={props.target}
-    />
+    <>
+      <DataTable
+        data={props.data}
+        columnsDefinitions={unsubscribeTableColumns}
+        target={props.target}
+      />
+      <Show when={!!deleteUnsubscribe()}>
+        <DeleteUnsubscribeDialog
+          unsubscribe={deleteUnsubscribe}
+          onClose={() => setDeleteUnsubscribe(undefined)}
+        />
+      </Show>
+    </>
   );
 }

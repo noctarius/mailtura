@@ -151,7 +151,7 @@ export function bouncesRoutes<
         const tenantId = request.params.tenant_id;
         const bounceId = request.params.bounce_id;
 
-        const found = prisma.bounces.findUnique({
+        const found = await prisma.bounces.findUnique({
           where: {
             id: bounceId,
             tenant_id: tenantId,

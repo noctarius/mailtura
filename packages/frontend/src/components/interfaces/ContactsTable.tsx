@@ -4,7 +4,7 @@ import { Calendar, Ellipsis, Trash2, UserMinus } from "lucide-solid";
 import { Contact } from "@mailtura/rpcmodel/api/index.js";
 import { getStatusBgColor, getStatusTextColor } from "./ContactsTable.utils.js";
 import { DataTable } from "./DataTable.js";
-import { createEffect, createMemo, createSelector, createSignal, onCleanup } from "solid-js";
+import { createEffect, createMemo, createSelector, createSignal, onCleanup, Show } from "solid-js";
 import ContextMenu, { ContextMenuAction } from "./ContextMenu.js";
 import { CreditCard as Edit } from "lucide-solid/icons/index";
 import DeleteContactDialog from "../modals/DeleteContactDialog.js";
@@ -143,12 +143,12 @@ export function ContactsTable(props: ContactsTableProps) {
         target={props.target}
         columnsDefinitions={contactsTableColumns}
       />
-      {deleteContact() && (
+      <Show when={!!deleteContact()}>
         <DeleteContactDialog
           contact={deleteContact}
           onClose={() => setDeleteContact(undefined)}
         />
-      )}
+      </Show>
     </>
   );
 }

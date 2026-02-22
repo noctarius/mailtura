@@ -229,7 +229,7 @@ export function templateRoutes<
         const tenantId = request.params.tenant_id;
         const templateId = request.params.template_id;
 
-        const found = prisma.templates.findUnique({
+        const found = await prisma.templates.findUnique({
           where: {
             id: templateId,
             tenant_id: tenantId,

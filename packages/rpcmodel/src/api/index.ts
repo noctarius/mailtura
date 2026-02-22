@@ -306,7 +306,7 @@ export const Unsubscribe = //
       source: UnsubscribeSource,
       unsubscribedAt: Type.String({ format: "date-time" }),
       global: Type.Boolean(),
-      listIds: Type.Array(Type.String({ format: "uuid" })),
+      subscriberListId: Type.Optional(Type.String({ format: "uuid" })),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),

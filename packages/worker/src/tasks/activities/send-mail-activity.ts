@@ -15,6 +15,8 @@ import { getSystemConfig } from "../../helper/system-config.js";
 import { MailLogEntry, TransportConfig, UrlProxy } from "../../mails/transport.js";
 import uuidv7 from "../../helper/uuidv7.js";
 
+const GLOBAL_UNSUBSCRIBE_LIST_ID = "00000000-0000-0000-0000-000000000000";
+
 const connectionString = process.env.DATABASE_URL;
 if (!connectionString) throw new Error("DATABASE_URL is not set");
 
@@ -178,8 +180,8 @@ const mapReceivers = async (
       },
       unsubscribes: {
         none: {
-          list_ids: {
-            hasEvery: subscriberLists.map(list => list.subscriber_list_id),
+          subscriber_list_id: {
+            in: [GLOBAL_UNSUBSCRIBE_LIST_ID, ...subscriberLists.map(list => list.subscriber_list_id)],
           },
         },
       },

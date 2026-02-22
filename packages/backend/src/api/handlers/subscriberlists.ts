@@ -210,7 +210,7 @@ export function subscriberListRoutes<
         const tenantId = request.params.tenant_id;
         const subscriberListId = request.params.subscriber_list_id;
 
-        const found = prisma.subscriber_lists.findUnique({
+        const found = await prisma.subscriber_lists.findUnique({
           where: {
             id: subscriberListId,
             tenant_id: tenantId,

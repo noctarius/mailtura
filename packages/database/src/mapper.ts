@@ -1,21 +1,22 @@
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import type {
-  AccountEntity,
-  ApiKeyEntity,
-  BounceEntity,
-  CampaignEntity,
-  ContactEntity,
-  ContactImportEntity,
-  ContactsWithSubscriptionsEntity,
-  FileEntity,
-  RoleEntity,
-  SubscriberEntity,
-  SubscriberListEntity,
-  TemplateEntity,
-  TenantEntity,
-  UnsubscribeEntity,
-  UserEntity,
-  MailConfigEntity,
+import {
+  type AccountEntity,
+  type ApiKeyEntity,
+  type BounceEntity,
+  type CampaignEntity,
+  type ContactEntity,
+  type ContactImportEntity,
+  type ContactsWithSubscriptionsEntity,
+  type FileEntity,
+  GLOBAL_UNSUBSCRIBE_LIST_ID,
+  type MailConfigEntity,
+  type RoleEntity,
+  type SubscriberEntity,
+  type SubscriberListEntity,
+  type TemplateEntity,
+  type TenantEntity,
+  type UnsubscribeEntity,
+  type UserEntity,
 } from "./index.js";
 import type {
   Account,
@@ -285,13 +286,14 @@ export function mapRole(role: RoleEntity): Role {
 
 type PotentiallyEmailUnsubscribe = UnsubscribeEntity & { contacts?: { email?: string } };
 export function mapUnsubscribe(unsubscribe: PotentiallyEmailUnsubscribe): Unsubscribe {
+  const isGlobal = unsubscribe.subscriber_list_id === GLOBAL_UNSUBSCRIBE_LIST_ID;
   return {
     id: unsubscribe.id,
     contactId: unsubscribe.contact_id,
     email: unsubscribe?.contacts?.email ?? undefined,
     source: unsubscribe.source ?? undefined,
-    global: unsubscribe.global ?? false,
-    listIds: unsubscribe.list_ids,
+    global: isGlobal,
+    subscriberListId: !isGlobal ? unsubscribe.subscriber_list_id : undefined,
     unsubscribedAt: mapDateTime(unsubscribe.unsubscribed_at),
     createdAt: mapDateTime(unsubscribe.created_at),
     createdBy: unsubscribe.created_by,
