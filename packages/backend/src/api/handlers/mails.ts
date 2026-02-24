@@ -13,7 +13,8 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { CreateSingleSend, CreateSingleSendResponse } from "@mailtura/rpcmodel/api/request-response.js";
 import { isDirectContent, isTemplatedContent } from "@mailtura/rpcmodel/mails/index.js";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
+import { resolveRecipients } from "@mailtura/mails/lib/subscriptions/index.js";
 
 export function mailRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -42,9 +43,16 @@ export function mailRoutes<
     },
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
-      console.log(JSON.stringify(request.body, null, 2));
-      const { mailConfigId, mailSenderId, subject, content, recipients, subscriberListIds, substitutions } =
-        request.body;
+      const {
+        mailConfigId,
+        mailSenderId,
+        subject,
+        content,
+        recipients,
+        subscriberListIds,
+        substitutions,
+        unsubscribeListId,
+      } = request.body;
 
       if ((!recipients || recipients.length === 0) && (!subscriberListIds || subscriberListIds.length === 0)) {
         throw createError(400, "Either recipients or subscriberListIds must be provided");
@@ -92,44 +100,34 @@ export function mailRoutes<
         throw createError(400, "Unsupported content type");
       }
 
-      if (recipients && recipients.length > 0) {
-        data.mail_receivers = {
-          create: recipients
-            .map(r => {
-              // Normalize to array of contacts for 'to'
-              const tos = Array.isArray(r.to) ? r.to : [r.to];
-              return tos.map(to => ({
-                id: uuidv7(),
-                tenant_id: tenantId,
-                email: to.email,
-                name: to.name ?? to.email,
-                substitutions: r.substitutions ?? {},
-                created_at: UTC.now().toDate(),
-                created_by: "api",
-              }));
-            })
-            .flat(),
-        };
-      } else if (subscriberListIds && subscriberListIds.length > 0) {
-        data.subscriber_lists = {
-          create: subscriberListIds.map(id => ({
-            id: uuidv7(),
-            subscriber_list_id: id,
-            tenant_id: tenantId,
-            created_at: UTC.now().toDate(),
-            created_by: "api",
+      return prisma.$transaction(async tx => {
+        const mailSending = await tx.mail_sendings.create({
+          data,
+        });
+
+        const resolvedRecipients = await resolveRecipients(
+          prisma,
+          tenantId,
+          mailSending.id,
+          {
+            recipients: recipients,
+            subscriberListIds,
+          },
+          unsubscribeListId
+        );
+
+        await tx.mail_sending_receivers.createMany({
+          data: resolvedRecipients.map(recipient => ({
+            ...recipient,
+            substitutions: recipient.substitutions ?? {},
           })),
-        };
-      }
+        });
 
-      const mailSending = await prisma.mail_sendings.create({
-        data,
+        await taskManager.createSendMailJob(tenantId, mailSending.id);
+
+        const response: CreateSingleSendResponse = { id: mailSending.id };
+        return reply.status(201).send(response);
       });
-
-      await taskManager.createSendMailJob(tenantId, mailSending.id);
-
-      const response: CreateSingleSendResponse = { id: mailSending.id };
-      return reply.status(201).send(response);
     }
   );
 }

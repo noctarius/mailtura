@@ -8,6 +8,7 @@ import {
   SubscriberList,
   Template,
   Tenant,
+  UnsubscribeList,
   UnsubscribeSource,
   User,
 } from "./index.js";
@@ -130,6 +131,7 @@ export const CreateSingleSend = //
     {
       mailConfigId: Type.String({ format: "uuid" }),
       mailSenderId: Type.String({ format: "uuid" }),
+      unsubscribeListId: Type.Optional(Type.String({ format: "uuid" })),
       subject: Type.String(),
       content: MailContent,
       // Either provide explicit recipients or subscriber list ids
@@ -225,6 +227,21 @@ export const UpdateSubscriberList = //
   ]);
 
 export type UpdateSubscriberList = Static<typeof UpdateSubscriberList>;
+
+export const CreateUnsubscribeList = //
+  Type.Omit(UnsubscribeList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "contactCount"]);
+
+export type CreateUnsubscribeList = Static<typeof CreateUnsubscribeList>;
+
+export const UpdateUnsubscribeList = //
+  Type.Intersect([
+    Type.Partial(Type.Omit(UnsubscribeList, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "description"])),
+    Type.Object({
+      description: asNullable(Type.String()),
+    }),
+  ]);
+
+export type UpdateUnsubscribeList = Static<typeof UpdateUnsubscribeList>;
 
 export const CreateUser = //
   Type.Intersect([
@@ -324,16 +341,10 @@ export const CreateUnsubscribe = Type.Object({
   contactId: Type.String({ format: "uuid" }),
   source: UnsubscribeSource,
   global: Type.Boolean(),
-  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
+  subscriberListId: Type.Optional(Type.String({ format: "uuid" })),
 });
 
 export type CreateUnsubscribe = Static<typeof CreateUnsubscribe>;
-
-export const UpdateUnsubscribe = Type.Object({
-  listIds: Type.Array(Type.String({ format: "uuid" }), { minItems: 0, uniqueItems: true }),
-});
-
-export type UpdateUnsubscribe = Static<typeof UpdateUnsubscribe>;
 
 export const CreateBounce = //
   Type.Omit(Bounce, ["id", "createdAt", "createdBy", "updatedAt", "updatedBy", "email"]);

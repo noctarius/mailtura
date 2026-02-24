@@ -14,7 +14,7 @@ import type { Bounce } from "@mailtura/rpcmodel/api/index.js";
 import { fromDateTime, mapBounce, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function bouncesRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -151,7 +151,7 @@ export function bouncesRoutes<
         const tenantId = request.params.tenant_id;
         const bounceId = request.params.bounce_id;
 
-        const found = prisma.bounces.findUnique({
+        const found = await prisma.bounces.findUnique({
           where: {
             id: bounceId,
             tenant_id: tenantId,

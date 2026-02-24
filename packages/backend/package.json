@@ -24,6 +24,7 @@
     "@mailtura/contentcompiler": "*",
     "@mailtura/database": "*",
     "@mailtura/rpcmodel": "*",
+    "@mailtura/mails": "*",
     "@prisma/adapter-pg": "^7.2.0",
     "@sendgrid/eventwebhook": "^8.0.0",
     "@temporalio/client": "catalog:",

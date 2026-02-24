@@ -14,7 +14,7 @@ import type { Subscriber, SubscriberList } from "@mailtura/rpcmodel/api/index.js
 import { mapSubscriber, mapSubscriberList, unpackOptionalNullable, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function subscriberListRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -210,7 +210,7 @@ export function subscriberListRoutes<
         const tenantId = request.params.tenant_id;
         const subscriberListId = request.params.subscriber_list_id;
 
-        const found = prisma.subscriber_lists.findUnique({
+        const found = await prisma.subscriber_lists.findUnique({
           where: {
             id: subscriberListId,
             tenant_id: tenantId,

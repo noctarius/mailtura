@@ -27,6 +27,7 @@ import {
   type template_properties,
   type templates,
   type tenants,
+  type unsubscribe_lists,
   type unsubscribe_source,
   type unsubscribes,
   type users,
@@ -83,8 +84,6 @@ export function newPrismaClient(adapter: PrismaPg) {
                 ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
                   ? args.include?._count.select
                   : {}),
-                bounces: true,
-                unsubscribes: true,
               },
             },
             subscribers: {
@@ -126,6 +125,33 @@ export function newPrismaClient(adapter: PrismaPg) {
           return query(args);
         },
       },
+      unsubscribe_lists: {
+        async $allOperations({ operation, args, query }) {
+          if (
+            operation !== "findUnique" &&
+            operation !== "findMany" &&
+            operation !== "findFirst" &&
+            operation !== "findFirstOrThrow" &&
+            operation !== "findUniqueOrThrow"
+          ) {
+            return query(args);
+          }
+
+          args.include = {
+            ...args.include,
+            _count: {
+              ...(typeof args.include?._count === "object" ? args.include?._count : {}),
+              select: {
+                ...(typeof args.include?._count === "object" && typeof args.include?._count?.select === "object"
+                  ? args.include?._count.select
+                  : {}),
+                unsubscribes: true,
+              },
+            },
+          };
+          return query(args);
+        },
+      },
       templates: {
         async $allOperations({ operation, args, query }) {
           if (
@@ -153,64 +179,18 @@ export function newPrismaClient(adapter: PrismaPg) {
           return query(args);
         },
       },
-      bounces: {
-        async $allOperations({ operation, args, query }) {
-          if (
-            operation !== "findUnique" &&
-            operation !== "findMany" &&
-            operation !== "findFirst" &&
-            operation !== "findFirstOrThrow" &&
-            operation !== "findUniqueOrThrow"
-          ) {
-            return query(args);
-          }
-
-          return query({
-            ...args,
-            include: {
-              contacts: {
-                select: {
-                  email: true,
-                },
-              },
-            },
-          });
-        },
-      },
-      unsubscribes: {
-        async $allOperations({ operation, args, query }) {
-          if (
-            operation !== "findUnique" &&
-            operation !== "findMany" &&
-            operation !== "findFirst" &&
-            operation !== "findFirstOrThrow" &&
-            operation !== "findUniqueOrThrow"
-          ) {
-            return query(args);
-          }
-
-          return query({
-            ...args,
-            include: {
-              contacts: {
-                select: {
-                  email: true,
-                },
-              },
-            },
-          });
-        },
-      },
     },
   });
 }
 
 export type PrismaType = ReturnType<typeof newPrismaClient>;
+export type PrismaTransaction = Parameters<Parameters<PrismaType["$transaction"]>[0]>[0];
 
 export type { JsonValue, JsonObject, InputJsonValue } from "./generated/prisma/internal/prismaNamespace.js";
 export { Prisma, PrismaClient } from "./generated/prisma/client.js";
 export { withPagination } from "./pagination/index.js";
 export * from "./mapper.js";
+export * from "./context/subscriptions/index.js";
 
 export function handlePrismaError(err: any) {
   if (err instanceof PrismaClientKnownRequestError) {
@@ -258,5 +238,6 @@ export type MailSenderEntity = mail_senders;
 export type MailConfigEntity = mail_configs;
 export type MailSendingReceiverEntity = mail_sending_receivers;
 export type SystemConfigEntity = system_configs;
+export type UnsubscribeListEntity = unsubscribe_lists & { _count?: { subscribers?: number } };
 
 export default {};

@@ -1,0 +1,47 @@
+{
+  "name": "@mailtura/mails",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "private": true,
+  "scripts": {
+    "build": "bun build.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@aws-sdk/client-sesv2": "^3.995.0",
+    "@mailchimp/mailchimp_transactional": "^1.1.2",
+    "@sendgrid/client": "^8.1.6",
+    "@sendgrid/helpers": "^8.0.0",
+    "@sendgrid/mail": "^8.1.6",
+    "@mailtura/rpcmodel": "*",
+    "@mailtura/database": "*",
+    "@mailtura/contentcompiler": "*",
+    "cacheable": "^2.1.1",
+    "form-data": "^4.0.5",
+    "mailgun.js": "^12.7.0",
+    "moment-timezone": "^0.6.0",
+    "node-mailjet": "^6.0.11",
+    "nodemailer": "^7.0.11",
+    "typebox": "catalog:",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "catalog:",
+    "@types/bun": "^1.2.23",
+    "@types/html-to-text": "^9.0.4",
+    "@types/jest": "^30.0.0",
+    "@types/mailchimp__mailchimp_transactional": "^1.0.11",
+    "@types/mjml": "^4.7.4",
+    "@types/nodemailer": "^7.0.3",
+    "bun-plugin-dts": "^0.3.0",
+    "eslint": "catalog:",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.4.6",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:"
+  }
+}

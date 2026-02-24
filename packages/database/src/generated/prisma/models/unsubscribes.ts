@@ -29,8 +29,8 @@ export type UnsubscribesMinAggregateOutputType = {
   tenant_id: string | null
   source: $Enums.unsubscribe_source | null
   unsubscribed_at: Date | null
-  global: boolean | null
-  contact_id: string | null
+  unsubscribe_list_id: string | null
+  email: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -42,8 +42,8 @@ export type UnsubscribesMaxAggregateOutputType = {
   tenant_id: string | null
   source: $Enums.unsubscribe_source | null
   unsubscribed_at: Date | null
-  global: boolean | null
-  contact_id: string | null
+  unsubscribe_list_id: string | null
+  email: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -55,9 +55,8 @@ export type UnsubscribesCountAggregateOutputType = {
   tenant_id: number
   source: number
   unsubscribed_at: number
-  global: number
-  list_ids: number
-  contact_id: number
+  unsubscribe_list_id: number
+  email: number
   created_at: number
   created_by: number
   updated_at: number
@@ -71,8 +70,8 @@ export type UnsubscribesMinAggregateInputType = {
   tenant_id?: true
   source?: true
   unsubscribed_at?: true
-  global?: true
-  contact_id?: true
+  unsubscribe_list_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -84,8 +83,8 @@ export type UnsubscribesMaxAggregateInputType = {
   tenant_id?: true
   source?: true
   unsubscribed_at?: true
-  global?: true
-  contact_id?: true
+  unsubscribe_list_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -97,9 +96,8 @@ export type UnsubscribesCountAggregateInputType = {
   tenant_id?: true
   source?: true
   unsubscribed_at?: true
-  global?: true
-  list_ids?: true
-  contact_id?: true
+  unsubscribe_list_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -184,9 +182,8 @@ export type UnsubscribesGroupByOutputType = {
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date
-  global: boolean
-  list_ids: string[]
-  contact_id: string
+  unsubscribe_list_id: string
+  email: string
   created_at: Date
   created_by: string
   updated_at: Date | null
@@ -219,13 +216,13 @@ export type unsubscribesWhereInput = {
   tenant_id?: Prisma.UuidFilter<"unsubscribes"> | string
   source?: Prisma.Enumunsubscribe_sourceFilter<"unsubscribes"> | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
-  global?: Prisma.BoolFilter<"unsubscribes"> | boolean
-  list_ids?: Prisma.StringNullableListFilter<"unsubscribes">
-  contact_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  unsubscribe_list_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  email?: Prisma.StringFilter<"unsubscribes"> | string
   created_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
   created_by?: Prisma.StringFilter<"unsubscribes"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"unsubscribes"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"unsubscribes"> | string | null
+  unsubscribe_lists?: Prisma.XOR<Prisma.Unsubscribe_listsScalarRelationFilter, Prisma.unsubscribe_listsWhereInput>
   contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
 }
 
@@ -234,43 +231,42 @@ export type unsubscribesOrderByWithRelationInput = {
   tenant_id?: Prisma.SortOrder
   source?: Prisma.SortOrder
   unsubscribed_at?: Prisma.SortOrder
-  global?: Prisma.SortOrder
-  list_ids?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  unsubscribe_list_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
+  unsubscribe_lists?: Prisma.unsubscribe_listsOrderByWithRelationInput
   contacts?: Prisma.contactsOrderByWithRelationInput
 }
 
 export type unsubscribesWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  tenant_id_contact_id?: Prisma.unsubscribesTenant_idContact_idCompoundUniqueInput
+  tenant_id_email_unsubscribe_list_id?: Prisma.unsubscribesTenant_idEmailUnsubscribe_list_idCompoundUniqueInput
   AND?: Prisma.unsubscribesWhereInput | Prisma.unsubscribesWhereInput[]
   OR?: Prisma.unsubscribesWhereInput[]
   NOT?: Prisma.unsubscribesWhereInput | Prisma.unsubscribesWhereInput[]
   tenant_id?: Prisma.UuidFilter<"unsubscribes"> | string
   source?: Prisma.Enumunsubscribe_sourceFilter<"unsubscribes"> | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
-  global?: Prisma.BoolFilter<"unsubscribes"> | boolean
-  list_ids?: Prisma.StringNullableListFilter<"unsubscribes">
-  contact_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  unsubscribe_list_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  email?: Prisma.StringFilter<"unsubscribes"> | string
   created_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
   created_by?: Prisma.StringFilter<"unsubscribes"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"unsubscribes"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"unsubscribes"> | string | null
+  unsubscribe_lists?: Prisma.XOR<Prisma.Unsubscribe_listsScalarRelationFilter, Prisma.unsubscribe_listsWhereInput>
   contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
-}, "id" | "tenant_id_contact_id">
+}, "id" | "tenant_id_email_unsubscribe_list_id">
 
 export type unsubscribesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tenant_id?: Prisma.SortOrder
   source?: Prisma.SortOrder
   unsubscribed_at?: Prisma.SortOrder
-  global?: Prisma.SortOrder
-  list_ids?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  unsubscribe_list_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -288,9 +284,8 @@ export type unsubscribesScalarWhereWithAggregatesInput = {
   tenant_id?: Prisma.UuidWithAggregatesFilter<"unsubscribes"> | string
   source?: Prisma.Enumunsubscribe_sourceWithAggregatesFilter<"unsubscribes"> | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeWithAggregatesFilter<"unsubscribes"> | Date | string
-  global?: Prisma.BoolWithAggregatesFilter<"unsubscribes"> | boolean
-  list_ids?: Prisma.StringNullableListFilter<"unsubscribes">
-  contact_id?: Prisma.UuidWithAggregatesFilter<"unsubscribes"> | string
+  unsubscribe_list_id?: Prisma.UuidWithAggregatesFilter<"unsubscribes"> | string
+  email?: Prisma.StringWithAggregatesFilter<"unsubscribes"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"unsubscribes"> | Date | string
   created_by?: Prisma.StringWithAggregatesFilter<"unsubscribes"> | string
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"unsubscribes"> | Date | string | null
@@ -299,15 +294,13 @@ export type unsubscribesScalarWhereWithAggregatesInput = {
 
 export type unsubscribesCreateInput = {
   id: string
-  tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  unsubscribe_lists: Prisma.unsubscribe_listsCreateNestedOneWithoutUnsubscribesInput
   contacts: Prisma.contactsCreateNestedOneWithoutUnsubscribesInput
 }
 
@@ -316,9 +309,8 @@ export type unsubscribesUncheckedCreateInput = {
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
-  contact_id: string
+  unsubscribe_list_id: string
+  email: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -327,15 +319,13 @@ export type unsubscribesUncheckedCreateInput = {
 
 export type unsubscribesUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unsubscribe_lists?: Prisma.unsubscribe_listsUpdateOneRequiredWithoutUnsubscribesNestedInput
   contacts?: Prisma.contactsUpdateOneRequiredWithoutUnsubscribesNestedInput
 }
 
@@ -344,9 +334,8 @@ export type unsubscribesUncheckedUpdateInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  unsubscribe_list_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -358,9 +347,8 @@ export type unsubscribesCreateManyInput = {
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
-  contact_id: string
+  unsubscribe_list_id: string
+  email: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -369,11 +357,8 @@ export type unsubscribesCreateManyInput = {
 
 export type unsubscribesUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -385,9 +370,8 @@ export type unsubscribesUncheckedUpdateManyInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  unsubscribe_list_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -404,9 +388,10 @@ export type unsubscribesOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type unsubscribesTenant_idContact_idCompoundUniqueInput = {
+export type unsubscribesTenant_idEmailUnsubscribe_list_idCompoundUniqueInput = {
   tenant_id: string
-  contact_id: string
+  email: string
+  unsubscribe_list_id: string
 }
 
 export type unsubscribesCountOrderByAggregateInput = {
@@ -414,9 +399,8 @@ export type unsubscribesCountOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   source?: Prisma.SortOrder
   unsubscribed_at?: Prisma.SortOrder
-  global?: Prisma.SortOrder
-  list_ids?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  unsubscribe_list_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -428,8 +412,8 @@ export type unsubscribesMaxOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   source?: Prisma.SortOrder
   unsubscribed_at?: Prisma.SortOrder
-  global?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  unsubscribe_list_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -441,8 +425,8 @@ export type unsubscribesMinOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   source?: Prisma.SortOrder
   unsubscribed_at?: Prisma.SortOrder
-  global?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  unsubscribe_list_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -491,39 +475,68 @@ export type unsubscribesUncheckedUpdateManyWithoutContactsNestedInput = {
   deleteMany?: Prisma.unsubscribesScalarWhereInput | Prisma.unsubscribesScalarWhereInput[]
 }
 
-export type unsubscribesCreatelist_idsInput = {
-  set: string[]
+export type unsubscribesCreateNestedManyWithoutUnsubscribe_listsInput = {
+  create?: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput> | Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput[] | Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput[]
+  connectOrCreate?: Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput | Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput[]
+  createMany?: Prisma.unsubscribesCreateManyUnsubscribe_listsInputEnvelope
+  connect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+}
+
+export type unsubscribesUncheckedCreateNestedManyWithoutUnsubscribe_listsInput = {
+  create?: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput> | Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput[] | Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput[]
+  connectOrCreate?: Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput | Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput[]
+  createMany?: Prisma.unsubscribesCreateManyUnsubscribe_listsInputEnvelope
+  connect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+}
+
+export type unsubscribesUpdateManyWithoutUnsubscribe_listsNestedInput = {
+  create?: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput> | Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput[] | Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput[]
+  connectOrCreate?: Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput | Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput[]
+  upsert?: Prisma.unsubscribesUpsertWithWhereUniqueWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpsertWithWhereUniqueWithoutUnsubscribe_listsInput[]
+  createMany?: Prisma.unsubscribesCreateManyUnsubscribe_listsInputEnvelope
+  set?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  disconnect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  delete?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  connect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  update?: Prisma.unsubscribesUpdateWithWhereUniqueWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpdateWithWhereUniqueWithoutUnsubscribe_listsInput[]
+  updateMany?: Prisma.unsubscribesUpdateManyWithWhereWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpdateManyWithWhereWithoutUnsubscribe_listsInput[]
+  deleteMany?: Prisma.unsubscribesScalarWhereInput | Prisma.unsubscribesScalarWhereInput[]
+}
+
+export type unsubscribesUncheckedUpdateManyWithoutUnsubscribe_listsNestedInput = {
+  create?: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput> | Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput[] | Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput[]
+  connectOrCreate?: Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput | Prisma.unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput[]
+  upsert?: Prisma.unsubscribesUpsertWithWhereUniqueWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpsertWithWhereUniqueWithoutUnsubscribe_listsInput[]
+  createMany?: Prisma.unsubscribesCreateManyUnsubscribe_listsInputEnvelope
+  set?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  disconnect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  delete?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  connect?: Prisma.unsubscribesWhereUniqueInput | Prisma.unsubscribesWhereUniqueInput[]
+  update?: Prisma.unsubscribesUpdateWithWhereUniqueWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpdateWithWhereUniqueWithoutUnsubscribe_listsInput[]
+  updateMany?: Prisma.unsubscribesUpdateManyWithWhereWithoutUnsubscribe_listsInput | Prisma.unsubscribesUpdateManyWithWhereWithoutUnsubscribe_listsInput[]
+  deleteMany?: Prisma.unsubscribesScalarWhereInput | Prisma.unsubscribesScalarWhereInput[]
 }
 
 export type Enumunsubscribe_sourceFieldUpdateOperationsInput = {
   set?: $Enums.unsubscribe_source
 }
 
-export type unsubscribesUpdatelist_idsInput = {
-  set?: string[]
-  push?: string | string[]
-}
-
 export type unsubscribesCreateWithoutContactsInput = {
   id: string
-  tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
+  unsubscribe_lists: Prisma.unsubscribe_listsCreateNestedOneWithoutUnsubscribesInput
 }
 
 export type unsubscribesUncheckedCreateWithoutContactsInput = {
   id: string
-  tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
+  unsubscribe_list_id: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -564,22 +577,68 @@ export type unsubscribesScalarWhereInput = {
   tenant_id?: Prisma.UuidFilter<"unsubscribes"> | string
   source?: Prisma.Enumunsubscribe_sourceFilter<"unsubscribes"> | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
-  global?: Prisma.BoolFilter<"unsubscribes"> | boolean
-  list_ids?: Prisma.StringNullableListFilter<"unsubscribes">
-  contact_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  unsubscribe_list_id?: Prisma.UuidFilter<"unsubscribes"> | string
+  email?: Prisma.StringFilter<"unsubscribes"> | string
   created_at?: Prisma.DateTimeFilter<"unsubscribes"> | Date | string
   created_by?: Prisma.StringFilter<"unsubscribes"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"unsubscribes"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"unsubscribes"> | string | null
 }
 
-export type unsubscribesCreateManyContactsInput = {
+export type unsubscribesCreateWithoutUnsubscribe_listsInput = {
+  id: string
+  source: $Enums.unsubscribe_source
+  unsubscribed_at: Date | string
+  created_at: Date | string
+  created_by: string
+  updated_at?: Date | string | null
+  updated_by?: string | null
+  contacts: Prisma.contactsCreateNestedOneWithoutUnsubscribesInput
+}
+
+export type unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput = {
   id: string
   tenant_id: string
   source: $Enums.unsubscribe_source
   unsubscribed_at: Date | string
-  global: boolean
-  list_ids?: Prisma.unsubscribesCreatelist_idsInput | string[]
+  email: string
+  created_at: Date | string
+  created_by: string
+  updated_at?: Date | string | null
+  updated_by?: string | null
+}
+
+export type unsubscribesCreateOrConnectWithoutUnsubscribe_listsInput = {
+  where: Prisma.unsubscribesWhereUniqueInput
+  create: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput>
+}
+
+export type unsubscribesCreateManyUnsubscribe_listsInputEnvelope = {
+  data: Prisma.unsubscribesCreateManyUnsubscribe_listsInput | Prisma.unsubscribesCreateManyUnsubscribe_listsInput[]
+  skipDuplicates?: boolean
+}
+
+export type unsubscribesUpsertWithWhereUniqueWithoutUnsubscribe_listsInput = {
+  where: Prisma.unsubscribesWhereUniqueInput
+  update: Prisma.XOR<Prisma.unsubscribesUpdateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedUpdateWithoutUnsubscribe_listsInput>
+  create: Prisma.XOR<Prisma.unsubscribesCreateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedCreateWithoutUnsubscribe_listsInput>
+}
+
+export type unsubscribesUpdateWithWhereUniqueWithoutUnsubscribe_listsInput = {
+  where: Prisma.unsubscribesWhereUniqueInput
+  data: Prisma.XOR<Prisma.unsubscribesUpdateWithoutUnsubscribe_listsInput, Prisma.unsubscribesUncheckedUpdateWithoutUnsubscribe_listsInput>
+}
+
+export type unsubscribesUpdateManyWithWhereWithoutUnsubscribe_listsInput = {
+  where: Prisma.unsubscribesScalarWhereInput
+  data: Prisma.XOR<Prisma.unsubscribesUpdateManyMutationInput, Prisma.unsubscribesUncheckedUpdateManyWithoutUnsubscribe_listsInput>
+}
+
+export type unsubscribesCreateManyContactsInput = {
+  id: string
+  source: $Enums.unsubscribe_source
+  unsubscribed_at: Date | string
+  unsubscribe_list_id: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -588,24 +647,20 @@ export type unsubscribesCreateManyContactsInput = {
 
 export type unsubscribesUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unsubscribe_lists?: Prisma.unsubscribe_listsUpdateOneRequiredWithoutUnsubscribesNestedInput
 }
 
 export type unsubscribesUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
+  unsubscribe_list_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -614,11 +669,56 @@ export type unsubscribesUncheckedUpdateWithoutContactsInput = {
 
 export type unsubscribesUncheckedUpdateManyWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
+  unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  unsubscribe_list_id?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type unsubscribesCreateManyUnsubscribe_listsInput = {
+  id: string
+  tenant_id: string
+  source: $Enums.unsubscribe_source
+  unsubscribed_at: Date | string
+  email: string
+  created_at: Date | string
+  created_by: string
+  updated_at?: Date | string | null
+  updated_by?: string | null
+}
+
+export type unsubscribesUpdateWithoutUnsubscribe_listsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
+  unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  contacts?: Prisma.contactsUpdateOneRequiredWithoutUnsubscribesNestedInput
+}
+
+export type unsubscribesUncheckedUpdateWithoutUnsubscribe_listsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
   unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  global?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  list_ids?: Prisma.unsubscribesUpdatelist_idsInput | string[]
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+}
+
+export type unsubscribesUncheckedUpdateManyWithoutUnsubscribe_listsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
+  source?: Prisma.Enumunsubscribe_sourceFieldUpdateOperationsInput | $Enums.unsubscribe_source
+  unsubscribed_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -632,13 +732,13 @@ export type unsubscribesSelect<ExtArgs extends runtime.Types.Extensions.Internal
   tenant_id?: boolean
   source?: boolean
   unsubscribed_at?: boolean
-  global?: boolean
-  list_ids?: boolean
-  contact_id?: boolean
+  unsubscribe_list_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["unsubscribes"]>
 
@@ -647,13 +747,13 @@ export type unsubscribesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   tenant_id?: boolean
   source?: boolean
   unsubscribed_at?: boolean
-  global?: boolean
-  list_ids?: boolean
-  contact_id?: boolean
+  unsubscribe_list_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["unsubscribes"]>
 
@@ -662,13 +762,13 @@ export type unsubscribesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   tenant_id?: boolean
   source?: boolean
   unsubscribed_at?: boolean
-  global?: boolean
-  list_ids?: boolean
-  contact_id?: boolean
+  unsubscribe_list_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["unsubscribes"]>
 
@@ -677,29 +777,32 @@ export type unsubscribesSelectScalar = {
   tenant_id?: boolean
   source?: boolean
   unsubscribed_at?: boolean
-  global?: boolean
-  list_ids?: boolean
-  contact_id?: boolean
+  unsubscribe_list_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
 }
 
-export type unsubscribesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "source" | "unsubscribed_at" | "global" | "list_ids" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["unsubscribes"]>
+export type unsubscribesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "source" | "unsubscribed_at" | "unsubscribe_list_id" | "email" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["unsubscribes"]>
 export type unsubscribesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }
 export type unsubscribesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }
 export type unsubscribesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  unsubscribe_lists?: boolean | Prisma.unsubscribe_listsDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }
 
 export type $unsubscribesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "unsubscribes"
   objects: {
+    unsubscribe_lists: Prisma.$unsubscribe_listsPayload<ExtArgs>
     contacts: Prisma.$contactsPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -707,9 +810,8 @@ export type $unsubscribesPayload<ExtArgs extends runtime.Types.Extensions.Intern
     tenant_id: string
     source: $Enums.unsubscribe_source
     unsubscribed_at: Date
-    global: boolean
-    list_ids: string[]
-    contact_id: string
+    unsubscribe_list_id: string
+    email: string
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -1108,6 +1210,7 @@ readonly fields: unsubscribesFieldRefs;
  */
 export interface Prisma__unsubscribesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  unsubscribe_lists<T extends Prisma.unsubscribe_listsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.unsubscribe_listsDefaultArgs<ExtArgs>>): Prisma.Prisma__unsubscribe_listsClient<runtime.Types.Result.GetResult<Prisma.$unsubscribe_listsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contacts<T extends Prisma.contactsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contactsDefaultArgs<ExtArgs>>): Prisma.Prisma__contactsClient<runtime.Types.Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1142,9 +1245,8 @@ export interface unsubscribesFieldRefs {
   readonly tenant_id: Prisma.FieldRef<"unsubscribes", 'String'>
   readonly source: Prisma.FieldRef<"unsubscribes", 'unsubscribe_source'>
   readonly unsubscribed_at: Prisma.FieldRef<"unsubscribes", 'DateTime'>
-  readonly global: Prisma.FieldRef<"unsubscribes", 'Boolean'>
-  readonly list_ids: Prisma.FieldRef<"unsubscribes", 'String[]'>
-  readonly contact_id: Prisma.FieldRef<"unsubscribes", 'String'>
+  readonly unsubscribe_list_id: Prisma.FieldRef<"unsubscribes", 'String'>
+  readonly email: Prisma.FieldRef<"unsubscribes", 'String'>
   readonly created_at: Prisma.FieldRef<"unsubscribes", 'DateTime'>
   readonly created_by: Prisma.FieldRef<"unsubscribes", 'String'>
   readonly updated_at: Prisma.FieldRef<"unsubscribes", 'DateTime'>

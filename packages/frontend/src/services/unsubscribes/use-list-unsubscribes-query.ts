@@ -14,7 +14,7 @@ export function useListUnsubscribesQuery({ tenantId, query, cursor, limit }: Lis
 
   const pageSize = limit?.() ?? 100;
   return useQuery(() => ({
-    queryKey: unsubscribesKeys.unsubscribes(tenantId(), query?.(), cursor?.(), pageSize),
+    queryKey: unsubscribesKeys.pagedUnsubscribes(tenantId(), query?.(), cursor?.(), pageSize),
     placeholderData: keepPreviousData,
     queryFn: async () => {
       if (!tenantId()) return;

@@ -215,10 +215,8 @@ export type contactsWhereInput = {
   updated_at?: Prisma.DateTimeNullableFilter<"contacts"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"contacts"> | string | null
   activities?: Prisma.ActivitiesListRelationFilter
-  bounces?: Prisma.BouncesListRelationFilter
   subscribers?: Prisma.SubscribersListRelationFilter
   unsubscribes?: Prisma.UnsubscribesListRelationFilter
-  mail_logs?: Prisma.Mail_logsListRelationFilter
 }
 
 export type contactsOrderByWithRelationInput = {
@@ -232,10 +230,8 @@ export type contactsOrderByWithRelationInput = {
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
   activities?: Prisma.activitiesOrderByRelationAggregateInput
-  bounces?: Prisma.bouncesOrderByRelationAggregateInput
   subscribers?: Prisma.subscribersOrderByRelationAggregateInput
   unsubscribes?: Prisma.unsubscribesOrderByRelationAggregateInput
-  mail_logs?: Prisma.mail_logsOrderByRelationAggregateInput
 }
 
 export type contactsWhereUniqueInput = Prisma.AtLeast<{
@@ -253,10 +249,8 @@ export type contactsWhereUniqueInput = Prisma.AtLeast<{
   updated_at?: Prisma.DateTimeNullableFilter<"contacts"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"contacts"> | string | null
   activities?: Prisma.ActivitiesListRelationFilter
-  bounces?: Prisma.BouncesListRelationFilter
   subscribers?: Prisma.SubscribersListRelationFilter
   unsubscribes?: Prisma.UnsubscribesListRelationFilter
-  mail_logs?: Prisma.Mail_logsListRelationFilter
 }, "id" | "tenant_id_email">
 
 export type contactsOrderByWithAggregationInput = {
@@ -300,10 +294,8 @@ export type contactsCreateInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsCreateNestedManyWithoutContactsInput
 }
 
 export type contactsUncheckedCreateInput = {
@@ -317,10 +309,8 @@ export type contactsUncheckedCreateInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesUncheckedCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesUncheckedCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersUncheckedCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesUncheckedCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsUncheckedCreateNestedManyWithoutContactsInput
 }
 
 export type contactsUpdateInput = {
@@ -334,10 +324,8 @@ export type contactsUpdateInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsUncheckedUpdateInput = {
@@ -351,10 +339,8 @@ export type contactsUncheckedUpdateInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUncheckedUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUncheckedUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUncheckedUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUncheckedUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsCreateManyInput = {
@@ -439,11 +425,6 @@ export type ContactsScalarRelationFilter = {
   isNot?: Prisma.contactsWhereInput
 }
 
-export type ContactsNullableScalarRelationFilter = {
-  is?: Prisma.contactsWhereInput | null
-  isNot?: Prisma.contactsWhereInput | null
-}
-
 export type contactsCreateNestedOneWithoutActivitiesInput = {
   create?: Prisma.XOR<Prisma.contactsCreateWithoutActivitiesInput, Prisma.contactsUncheckedCreateWithoutActivitiesInput>
   connectOrCreate?: Prisma.contactsCreateOrConnectWithoutActivitiesInput
@@ -456,20 +437,6 @@ export type contactsUpdateOneRequiredWithoutActivitiesNestedInput = {
   upsert?: Prisma.contactsUpsertWithoutActivitiesInput
   connect?: Prisma.contactsWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.contactsUpdateToOneWithWhereWithoutActivitiesInput, Prisma.contactsUpdateWithoutActivitiesInput>, Prisma.contactsUncheckedUpdateWithoutActivitiesInput>
-}
-
-export type contactsCreateNestedOneWithoutBouncesInput = {
-  create?: Prisma.XOR<Prisma.contactsCreateWithoutBouncesInput, Prisma.contactsUncheckedCreateWithoutBouncesInput>
-  connectOrCreate?: Prisma.contactsCreateOrConnectWithoutBouncesInput
-  connect?: Prisma.contactsWhereUniqueInput
-}
-
-export type contactsUpdateOneRequiredWithoutBouncesNestedInput = {
-  create?: Prisma.XOR<Prisma.contactsCreateWithoutBouncesInput, Prisma.contactsUncheckedCreateWithoutBouncesInput>
-  connectOrCreate?: Prisma.contactsCreateOrConnectWithoutBouncesInput
-  upsert?: Prisma.contactsUpsertWithoutBouncesInput
-  connect?: Prisma.contactsWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.contactsUpdateToOneWithWhereWithoutBouncesInput, Prisma.contactsUpdateWithoutBouncesInput>, Prisma.contactsUncheckedUpdateWithoutBouncesInput>
 }
 
 export type contactsCreateNestedOneWithoutSubscribersInput = {
@@ -500,22 +467,6 @@ export type contactsUpdateOneRequiredWithoutUnsubscribesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.contactsUpdateToOneWithWhereWithoutUnsubscribesInput, Prisma.contactsUpdateWithoutUnsubscribesInput>, Prisma.contactsUncheckedUpdateWithoutUnsubscribesInput>
 }
 
-export type contactsCreateNestedOneWithoutMail_logsInput = {
-  create?: Prisma.XOR<Prisma.contactsCreateWithoutMail_logsInput, Prisma.contactsUncheckedCreateWithoutMail_logsInput>
-  connectOrCreate?: Prisma.contactsCreateOrConnectWithoutMail_logsInput
-  connect?: Prisma.contactsWhereUniqueInput
-}
-
-export type contactsUpdateOneWithoutMail_logsNestedInput = {
-  create?: Prisma.XOR<Prisma.contactsCreateWithoutMail_logsInput, Prisma.contactsUncheckedCreateWithoutMail_logsInput>
-  connectOrCreate?: Prisma.contactsCreateOrConnectWithoutMail_logsInput
-  upsert?: Prisma.contactsUpsertWithoutMail_logsInput
-  disconnect?: Prisma.contactsWhereInput | boolean
-  delete?: Prisma.contactsWhereInput | boolean
-  connect?: Prisma.contactsWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.contactsUpdateToOneWithWhereWithoutMail_logsInput, Prisma.contactsUpdateWithoutMail_logsInput>, Prisma.contactsUncheckedUpdateWithoutMail_logsInput>
-}
-
 export type contactsCreateWithoutActivitiesInput = {
   id: string
   tenant_id: string
@@ -526,10 +477,8 @@ export type contactsCreateWithoutActivitiesInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
-  bounces?: Prisma.bouncesCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsCreateNestedManyWithoutContactsInput
 }
 
 export type contactsUncheckedCreateWithoutActivitiesInput = {
@@ -542,10 +491,8 @@ export type contactsUncheckedCreateWithoutActivitiesInput = {
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
-  bounces?: Prisma.bouncesUncheckedCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersUncheckedCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesUncheckedCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsUncheckedCreateNestedManyWithoutContactsInput
 }
 
 export type contactsCreateOrConnectWithoutActivitiesInput = {
@@ -574,10 +521,8 @@ export type contactsUpdateWithoutActivitiesInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bounces?: Prisma.bouncesUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsUncheckedUpdateWithoutActivitiesInput = {
@@ -590,90 +535,8 @@ export type contactsUncheckedUpdateWithoutActivitiesInput = {
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  bounces?: Prisma.bouncesUncheckedUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUncheckedUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUncheckedUpdateManyWithoutContactsNestedInput
-}
-
-export type contactsCreateWithoutBouncesInput = {
-  id: string
-  tenant_id: string
-  email: string
-  first_name?: string | null
-  last_name?: string | null
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-  activities?: Prisma.activitiesCreateNestedManyWithoutReceiversInput
-  subscribers?: Prisma.subscribersCreateNestedManyWithoutContactsInput
-  unsubscribes?: Prisma.unsubscribesCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsCreateNestedManyWithoutContactsInput
-}
-
-export type contactsUncheckedCreateWithoutBouncesInput = {
-  id: string
-  tenant_id: string
-  email: string
-  first_name?: string | null
-  last_name?: string | null
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-  activities?: Prisma.activitiesUncheckedCreateNestedManyWithoutReceiversInput
-  subscribers?: Prisma.subscribersUncheckedCreateNestedManyWithoutContactsInput
-  unsubscribes?: Prisma.unsubscribesUncheckedCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsUncheckedCreateNestedManyWithoutContactsInput
-}
-
-export type contactsCreateOrConnectWithoutBouncesInput = {
-  where: Prisma.contactsWhereUniqueInput
-  create: Prisma.XOR<Prisma.contactsCreateWithoutBouncesInput, Prisma.contactsUncheckedCreateWithoutBouncesInput>
-}
-
-export type contactsUpsertWithoutBouncesInput = {
-  update: Prisma.XOR<Prisma.contactsUpdateWithoutBouncesInput, Prisma.contactsUncheckedUpdateWithoutBouncesInput>
-  create: Prisma.XOR<Prisma.contactsCreateWithoutBouncesInput, Prisma.contactsUncheckedCreateWithoutBouncesInput>
-  where?: Prisma.contactsWhereInput
-}
-
-export type contactsUpdateToOneWithWhereWithoutBouncesInput = {
-  where?: Prisma.contactsWhereInput
-  data: Prisma.XOR<Prisma.contactsUpdateWithoutBouncesInput, Prisma.contactsUncheckedUpdateWithoutBouncesInput>
-}
-
-export type contactsUpdateWithoutBouncesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activities?: Prisma.activitiesUpdateManyWithoutReceiversNestedInput
-  subscribers?: Prisma.subscribersUpdateManyWithoutContactsNestedInput
-  unsubscribes?: Prisma.unsubscribesUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUpdateManyWithoutContactsNestedInput
-}
-
-export type contactsUncheckedUpdateWithoutBouncesInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activities?: Prisma.activitiesUncheckedUpdateManyWithoutReceiversNestedInput
-  subscribers?: Prisma.subscribersUncheckedUpdateManyWithoutContactsNestedInput
-  unsubscribes?: Prisma.unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUncheckedUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsCreateWithoutSubscribersInput = {
@@ -687,9 +550,7 @@ export type contactsCreateWithoutSubscribersInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsCreateNestedManyWithoutContactsInput
 }
 
 export type contactsUncheckedCreateWithoutSubscribersInput = {
@@ -703,9 +564,7 @@ export type contactsUncheckedCreateWithoutSubscribersInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesUncheckedCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesUncheckedCreateNestedManyWithoutContactsInput
   unsubscribes?: Prisma.unsubscribesUncheckedCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsUncheckedCreateNestedManyWithoutContactsInput
 }
 
 export type contactsCreateOrConnectWithoutSubscribersInput = {
@@ -735,9 +594,7 @@ export type contactsUpdateWithoutSubscribersInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsUncheckedUpdateWithoutSubscribersInput = {
@@ -751,9 +608,7 @@ export type contactsUncheckedUpdateWithoutSubscribersInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUncheckedUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUncheckedUpdateManyWithoutContactsNestedInput
   unsubscribes?: Prisma.unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUncheckedUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsCreateWithoutUnsubscribesInput = {
@@ -767,9 +622,7 @@ export type contactsCreateWithoutUnsubscribesInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsCreateNestedManyWithoutContactsInput
 }
 
 export type contactsUncheckedCreateWithoutUnsubscribesInput = {
@@ -783,9 +636,7 @@ export type contactsUncheckedCreateWithoutUnsubscribesInput = {
   updated_at?: Date | string | null
   updated_by?: string | null
   activities?: Prisma.activitiesUncheckedCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesUncheckedCreateNestedManyWithoutContactsInput
   subscribers?: Prisma.subscribersUncheckedCreateNestedManyWithoutContactsInput
-  mail_logs?: Prisma.mail_logsUncheckedCreateNestedManyWithoutContactsInput
 }
 
 export type contactsCreateOrConnectWithoutUnsubscribesInput = {
@@ -815,9 +666,7 @@ export type contactsUpdateWithoutUnsubscribesInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUpdateManyWithoutContactsNestedInput
 }
 
 export type contactsUncheckedUpdateWithoutUnsubscribesInput = {
@@ -831,89 +680,7 @@ export type contactsUncheckedUpdateWithoutUnsubscribesInput = {
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activities?: Prisma.activitiesUncheckedUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUncheckedUpdateManyWithoutContactsNestedInput
   subscribers?: Prisma.subscribersUncheckedUpdateManyWithoutContactsNestedInput
-  mail_logs?: Prisma.mail_logsUncheckedUpdateManyWithoutContactsNestedInput
-}
-
-export type contactsCreateWithoutMail_logsInput = {
-  id: string
-  tenant_id: string
-  email: string
-  first_name?: string | null
-  last_name?: string | null
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-  activities?: Prisma.activitiesCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesCreateNestedManyWithoutContactsInput
-  subscribers?: Prisma.subscribersCreateNestedManyWithoutContactsInput
-  unsubscribes?: Prisma.unsubscribesCreateNestedManyWithoutContactsInput
-}
-
-export type contactsUncheckedCreateWithoutMail_logsInput = {
-  id: string
-  tenant_id: string
-  email: string
-  first_name?: string | null
-  last_name?: string | null
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-  activities?: Prisma.activitiesUncheckedCreateNestedManyWithoutReceiversInput
-  bounces?: Prisma.bouncesUncheckedCreateNestedManyWithoutContactsInput
-  subscribers?: Prisma.subscribersUncheckedCreateNestedManyWithoutContactsInput
-  unsubscribes?: Prisma.unsubscribesUncheckedCreateNestedManyWithoutContactsInput
-}
-
-export type contactsCreateOrConnectWithoutMail_logsInput = {
-  where: Prisma.contactsWhereUniqueInput
-  create: Prisma.XOR<Prisma.contactsCreateWithoutMail_logsInput, Prisma.contactsUncheckedCreateWithoutMail_logsInput>
-}
-
-export type contactsUpsertWithoutMail_logsInput = {
-  update: Prisma.XOR<Prisma.contactsUpdateWithoutMail_logsInput, Prisma.contactsUncheckedUpdateWithoutMail_logsInput>
-  create: Prisma.XOR<Prisma.contactsCreateWithoutMail_logsInput, Prisma.contactsUncheckedCreateWithoutMail_logsInput>
-  where?: Prisma.contactsWhereInput
-}
-
-export type contactsUpdateToOneWithWhereWithoutMail_logsInput = {
-  where?: Prisma.contactsWhereInput
-  data: Prisma.XOR<Prisma.contactsUpdateWithoutMail_logsInput, Prisma.contactsUncheckedUpdateWithoutMail_logsInput>
-}
-
-export type contactsUpdateWithoutMail_logsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activities?: Prisma.activitiesUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUpdateManyWithoutContactsNestedInput
-  subscribers?: Prisma.subscribersUpdateManyWithoutContactsNestedInput
-  unsubscribes?: Prisma.unsubscribesUpdateManyWithoutContactsNestedInput
-}
-
-export type contactsUncheckedUpdateWithoutMail_logsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  email?: Prisma.StringFieldUpdateOperationsInput | string
-  first_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  last_name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  activities?: Prisma.activitiesUncheckedUpdateManyWithoutReceiversNestedInput
-  bounces?: Prisma.bouncesUncheckedUpdateManyWithoutContactsNestedInput
-  subscribers?: Prisma.subscribersUncheckedUpdateManyWithoutContactsNestedInput
-  unsubscribes?: Prisma.unsubscribesUncheckedUpdateManyWithoutContactsNestedInput
 }
 
 
@@ -923,18 +690,14 @@ export type contactsUncheckedUpdateWithoutMail_logsInput = {
 
 export type ContactsCountOutputType = {
   activities: number
-  bounces: number
   subscribers: number
   unsubscribes: number
-  mail_logs: number
 }
 
 export type ContactsCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   activities?: boolean | ContactsCountOutputTypeCountActivitiesArgs
-  bounces?: boolean | ContactsCountOutputTypeCountBouncesArgs
   subscribers?: boolean | ContactsCountOutputTypeCountSubscribersArgs
   unsubscribes?: boolean | ContactsCountOutputTypeCountUnsubscribesArgs
-  mail_logs?: boolean | ContactsCountOutputTypeCountMail_logsArgs
 }
 
 /**
@@ -957,13 +720,6 @@ export type ContactsCountOutputTypeCountActivitiesArgs<ExtArgs extends runtime.T
 /**
  * ContactsCountOutputType without action
  */
-export type ContactsCountOutputTypeCountBouncesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.bouncesWhereInput
-}
-
-/**
- * ContactsCountOutputType without action
- */
 export type ContactsCountOutputTypeCountSubscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.subscribersWhereInput
 }
@@ -973,13 +729,6 @@ export type ContactsCountOutputTypeCountSubscribersArgs<ExtArgs extends runtime.
  */
 export type ContactsCountOutputTypeCountUnsubscribesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.unsubscribesWhereInput
-}
-
-/**
- * ContactsCountOutputType without action
- */
-export type ContactsCountOutputTypeCountMail_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.mail_logsWhereInput
 }
 
 
@@ -994,10 +743,8 @@ export type contactsSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updated_at?: boolean
   updated_by?: boolean
   activities?: boolean | Prisma.contacts$activitiesArgs<ExtArgs>
-  bounces?: boolean | Prisma.contacts$bouncesArgs<ExtArgs>
   subscribers?: boolean | Prisma.contacts$subscribersArgs<ExtArgs>
   unsubscribes?: boolean | Prisma.contacts$unsubscribesArgs<ExtArgs>
-  mail_logs?: boolean | Prisma.contacts$mail_logsArgs<ExtArgs>
   _count?: boolean | Prisma.ContactsCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contacts"]>
 
@@ -1040,10 +787,8 @@ export type contactsSelectScalar = {
 export type contactsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "email" | "first_name" | "last_name" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["contacts"]>
 export type contactsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   activities?: boolean | Prisma.contacts$activitiesArgs<ExtArgs>
-  bounces?: boolean | Prisma.contacts$bouncesArgs<ExtArgs>
   subscribers?: boolean | Prisma.contacts$subscribersArgs<ExtArgs>
   unsubscribes?: boolean | Prisma.contacts$unsubscribesArgs<ExtArgs>
-  mail_logs?: boolean | Prisma.contacts$mail_logsArgs<ExtArgs>
   _count?: boolean | Prisma.ContactsCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type contactsIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1053,10 +798,8 @@ export type $contactsPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   name: "contacts"
   objects: {
     activities: Prisma.$activitiesPayload<ExtArgs>[]
-    bounces: Prisma.$bouncesPayload<ExtArgs>[]
     subscribers: Prisma.$subscribersPayload<ExtArgs>[]
     unsubscribes: Prisma.$unsubscribesPayload<ExtArgs>[]
-    mail_logs: Prisma.$mail_logsPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1463,10 +1206,8 @@ readonly fields: contactsFieldRefs;
 export interface Prisma__contactsClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   activities<T extends Prisma.contacts$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contacts$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$activitiesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  bounces<T extends Prisma.contacts$bouncesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contacts$bouncesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$bouncesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscribers<T extends Prisma.contacts$subscribersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contacts$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$subscribersPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   unsubscribes<T extends Prisma.contacts$unsubscribesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contacts$unsubscribesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$unsubscribesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  mail_logs<T extends Prisma.contacts$mail_logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contacts$mail_logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$mail_logsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1926,30 +1667,6 @@ export type contacts$activitiesArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
- * contacts.bounces
- */
-export type contacts$bouncesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the bounces
-   */
-  select?: Prisma.bouncesSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the bounces
-   */
-  omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  where?: Prisma.bouncesWhereInput
-  orderBy?: Prisma.bouncesOrderByWithRelationInput | Prisma.bouncesOrderByWithRelationInput[]
-  cursor?: Prisma.bouncesWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.BouncesScalarFieldEnum | Prisma.BouncesScalarFieldEnum[]
-}
-
-/**
  * contacts.subscribers
  */
 export type contacts$subscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1995,30 +1712,6 @@ export type contacts$unsubscribesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.UnsubscribesScalarFieldEnum | Prisma.UnsubscribesScalarFieldEnum[]
-}
-
-/**
- * contacts.mail_logs
- */
-export type contacts$mail_logsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the mail_logs
-   */
-  select?: Prisma.mail_logsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the mail_logs
-   */
-  omit?: Prisma.mail_logsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.mail_logsInclude<ExtArgs> | null
-  where?: Prisma.mail_logsWhereInput
-  orderBy?: Prisma.mail_logsOrderByWithRelationInput | Prisma.mail_logsOrderByWithRelationInput[]
-  cursor?: Prisma.mail_logsWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.Mail_logsScalarFieldEnum | Prisma.Mail_logsScalarFieldEnum[]
 }
 
 /**

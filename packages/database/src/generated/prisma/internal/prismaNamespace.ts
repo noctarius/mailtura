@@ -391,6 +391,7 @@ export const ModelName = {
   bounces: 'bounces',
   subscribers: 'subscribers',
   subscriber_lists: 'subscriber_lists',
+  unsubscribe_lists: 'unsubscribe_lists',
   unsubscribes: 'unsubscribes',
   users: 'users',
   api_keys: 'api_keys',
@@ -408,7 +409,6 @@ export const ModelName = {
   mail_logs: 'mail_logs',
   webhooks: 'webhooks',
   mail_sendings: 'mail_sendings',
-  mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
   mail_sending_receivers: 'mail_sending_receivers',
@@ -429,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_sendings_on_subscriber_lists" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers" | "system_configs" | "contacts_with_subscriptions"
+    modelProps: "tenants" | "contacts" | "campaigns" | "activities" | "bounces" | "subscribers" | "subscriber_lists" | "unsubscribe_lists" | "unsubscribes" | "users" | "api_keys" | "template_properties" | "templates" | "contact_imports" | "files" | "accounts" | "verifications" | "two_factors" | "passkeys" | "sessions" | "roles" | "mail_configs" | "mail_logs" | "webhooks" | "mail_sendings" | "mail_url_proxies" | "mail_senders" | "mail_sending_receivers" | "system_configs" | "contacts_with_subscriptions"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -948,6 +948,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.subscriber_listsCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.Subscriber_listsCountAggregateOutputType> | number
+        }
+      }
+    }
+    unsubscribe_lists: {
+      payload: Prisma.$unsubscribe_listsPayload<ExtArgs>
+      fields: Prisma.unsubscribe_listsFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.unsubscribe_listsFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.unsubscribe_listsFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        findFirst: {
+          args: Prisma.unsubscribe_listsFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.unsubscribe_listsFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        findMany: {
+          args: Prisma.unsubscribe_listsFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>[]
+        }
+        create: {
+          args: Prisma.unsubscribe_listsCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        createMany: {
+          args: Prisma.unsubscribe_listsCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.unsubscribe_listsCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>[]
+        }
+        delete: {
+          args: Prisma.unsubscribe_listsDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        update: {
+          args: Prisma.unsubscribe_listsUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        deleteMany: {
+          args: Prisma.unsubscribe_listsDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.unsubscribe_listsUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.unsubscribe_listsUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>[]
+        }
+        upsert: {
+          args: Prisma.unsubscribe_listsUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$unsubscribe_listsPayload>
+        }
+        aggregate: {
+          args: Prisma.Unsubscribe_listsAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateUnsubscribe_lists>
+        }
+        groupBy: {
+          args: Prisma.unsubscribe_listsGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Unsubscribe_listsGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.unsubscribe_listsCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.Unsubscribe_listsCountAggregateOutputType> | number
         }
       }
     }
@@ -2209,80 +2283,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    mail_sendings_on_subscriber_lists: {
-      payload: Prisma.$mail_sendings_on_subscriber_listsPayload<ExtArgs>
-      fields: Prisma.mail_sendings_on_subscriber_listsFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.mail_sendings_on_subscriber_listsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.mail_sendings_on_subscriber_listsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        findFirst: {
-          args: Prisma.mail_sendings_on_subscriber_listsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.mail_sendings_on_subscriber_listsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        findMany: {
-          args: Prisma.mail_sendings_on_subscriber_listsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
-        }
-        create: {
-          args: Prisma.mail_sendings_on_subscriber_listsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        createMany: {
-          args: Prisma.mail_sendings_on_subscriber_listsCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.mail_sendings_on_subscriber_listsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
-        }
-        delete: {
-          args: Prisma.mail_sendings_on_subscriber_listsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        update: {
-          args: Prisma.mail_sendings_on_subscriber_listsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        deleteMany: {
-          args: Prisma.mail_sendings_on_subscriber_listsDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.mail_sendings_on_subscriber_listsUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.mail_sendings_on_subscriber_listsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>[]
-        }
-        upsert: {
-          args: Prisma.mail_sendings_on_subscriber_listsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$mail_sendings_on_subscriber_listsPayload>
-        }
-        aggregate: {
-          args: Prisma.Mail_sendings_on_subscriber_listsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateMail_sendings_on_subscriber_lists>
-        }
-        groupBy: {
-          args: Prisma.mail_sendings_on_subscriber_listsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Mail_sendings_on_subscriber_listsGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.mail_sendings_on_subscriber_listsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.Mail_sendings_on_subscriber_listsCountAggregateOutputType> | number
-        }
-      }
-    }
     mail_url_proxies: {
       payload: Prisma.$mail_url_proxiesPayload<ExtArgs>
       fields: Prisma.mail_url_proxiesFieldRefs
@@ -2734,7 +2734,7 @@ export const BouncesScalarFieldEnum = {
   bounced_at: 'bounced_at',
   reason: 'reason',
   bounce_type: 'bounce_type',
-  contact_id: 'contact_id',
+  email: 'email',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -2774,14 +2774,27 @@ export const Subscriber_listsScalarFieldEnum = {
 export type Subscriber_listsScalarFieldEnum = (typeof Subscriber_listsScalarFieldEnum)[keyof typeof Subscriber_listsScalarFieldEnum]
 
 
+export const Unsubscribe_listsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  description: 'description',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type Unsubscribe_listsScalarFieldEnum = (typeof Unsubscribe_listsScalarFieldEnum)[keyof typeof Unsubscribe_listsScalarFieldEnum]
+
+
 export const UnsubscribesScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
   source: 'source',
   unsubscribed_at: 'unsubscribed_at',
-  global: 'global',
-  list_ids: 'list_ids',
-  contact_id: 'contact_id',
+  unsubscribe_list_id: 'unsubscribe_list_id',
+  email: 'email',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -3004,7 +3017,7 @@ export type Mail_configsScalarFieldEnum = (typeof Mail_configsScalarFieldEnum)[k
 export const Mail_logsScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
-  contact_id: 'contact_id',
+  email: 'email',
   provider_id: 'provider_id',
   provider_mail_id: 'provider_mail_id',
   opens: 'opens',
@@ -3048,14 +3061,6 @@ export const Mail_sendingsScalarFieldEnum = {
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
 
 
-export const Mail_sendings_on_subscriber_listsScalarFieldEnum = {
-  mail_sendings_id: 'mail_sendings_id',
-  subscriber_list_id: 'subscriber_list_id'
-} as const
-
-export type Mail_sendings_on_subscriber_listsScalarFieldEnum = (typeof Mail_sendings_on_subscriber_listsScalarFieldEnum)[keyof typeof Mail_sendings_on_subscriber_listsScalarFieldEnum]
-
-
 export const Mail_url_proxiesScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
@@ -3073,6 +3078,7 @@ export const Mail_sendersScalarFieldEnum = {
   tenant_id: 'tenant_id',
   name: 'name',
   email: 'email',
+  reply_to: 'reply_to',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -3090,7 +3096,9 @@ export const Mail_sending_receiversScalarFieldEnum = {
   name: 'name',
   substitutions: 'substitutions',
   created_at: 'created_at',
-  created_by: 'created_by'
+  created_by: 'created_by',
+  cc: 'cc',
+  bcc: 'bcc'
 } as const
 
 export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]
@@ -3472,6 +3480,7 @@ export type GlobalOmitConfig = {
   bounces?: Prisma.bouncesOmit
   subscribers?: Prisma.subscribersOmit
   subscriber_lists?: Prisma.subscriber_listsOmit
+  unsubscribe_lists?: Prisma.unsubscribe_listsOmit
   unsubscribes?: Prisma.unsubscribesOmit
   users?: Prisma.usersOmit
   api_keys?: Prisma.api_keysOmit
@@ -3489,7 +3498,6 @@ export type GlobalOmitConfig = {
   mail_logs?: Prisma.mail_logsOmit
   webhooks?: Prisma.webhooksOmit
   mail_sendings?: Prisma.mail_sendingsOmit
-  mail_sendings_on_subscriber_lists?: Prisma.mail_sendings_on_subscriber_listsOmit
   mail_url_proxies?: Prisma.mail_url_proxiesOmit
   mail_senders?: Prisma.mail_sendersOmit
   mail_sending_receivers?: Prisma.mail_sending_receiversOmit

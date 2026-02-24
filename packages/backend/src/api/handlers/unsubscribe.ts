@@ -9,12 +9,12 @@ import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/ty
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../router/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { CreateUnsubscribe, UpdateUnsubscribe } from "@mailtura/rpcmodel/api/request-response.js";
+import { CreateUnsubscribe } from "@mailtura/rpcmodel/api/request-response.js";
 import type { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
-import { mapUnsubscribe, withPagination } from "@mailtura/database";
+import { GLOBAL_UNSUBSCRIBE_LIST_ID, mapUnsubscribe, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function unsubscribeRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -78,14 +78,16 @@ export function unsubscribeRoutes<
     async (request, reply) => {
       const tenantId = request.params.tenant_id;
 
+      const isGlobal = request.body.global ?? false;
+      const subscriberListId = isGlobal ? GLOBAL_UNSUBSCRIBE_LIST_ID : request.body.subscriberListId;
+
       const newUnsubscribe = await prisma.unsubscribes.create({
         data: {
           id: uuidv7(),
           tenant_id: tenantId,
           contact_id: request.body.contactId,
           source: request.body.source,
-          global: request.body.global,
-          list_ids: request.body.listIds,
+          subscriber_list_id: subscriberListId ?? GLOBAL_UNSUBSCRIBE_LIST_ID,
           unsubscribed_at: UTC.now().toDate(),
           created_at: UTC.now().toDate(),
           created_by: "api",
@@ -132,59 +134,6 @@ export function unsubscribeRoutes<
       }
     );
 
-    subRouter.put<{
-      Params: { tenant_id: string; unsubscribe_id: string };
-      Body: UpdateUnsubscribe;
-      Reply: Unsubscribe;
-    }>(
-      "/",
-      {
-        schema: {
-          tags: ["suppressions"],
-          params: Type.Object({
-            tenant_id: Type.String({ format: "uuid" }),
-            unsubscribe_id: Type.String({ format: "uuid" }),
-          }),
-          body: UpdateUnsubscribe,
-          response: {
-            200: Type.Ref("Unsubscribe"),
-            400: Type.Ref("ErrorResponse"),
-            401: Type.Ref("ErrorResponse"),
-            404: Type.Ref("ErrorResponse"),
-          },
-        },
-      },
-      async request => {
-        const tenantId = request.params.tenant_id;
-        const unsubscribeId = request.params.unsubscribe_id;
-
-        if (Object.keys(request.body).length === 0) {
-          throw createError(400, "No data provided");
-        }
-
-        const oldUnsubscribe = await prisma.unsubscribes.findUnique({
-          where: {
-            id: unsubscribeId,
-            tenant_id: tenantId,
-          },
-        });
-        if (!oldUnsubscribe) {
-          throw createError(404, "Unsubscribe not found");
-        }
-
-        const newUnsubscribe = await prisma.unsubscribes.update({
-          where: { id: unsubscribeId, tenant_id: tenantId },
-          data: {
-            list_ids: request.body.listIds,
-            updated_at: UTC.now().toDate(),
-            updated_by: "api",
-          },
-        });
-
-        return mapUnsubscribe(newUnsubscribe);
-      }
-    );
-
     subRouter.delete<{ Params: { tenant_id: string; unsubscribe_id: string } }>(
       "/",
       {
@@ -205,7 +154,7 @@ export function unsubscribeRoutes<
         const tenantId = request.params.tenant_id;
         const unsubscribeId = request.params.unsubscribe_id;
 
-        const found = prisma.unsubscribes.findUnique({
+        const found = await prisma.unsubscribes.findUnique({
           where: {
             id: unsubscribeId,
             tenant_id: tenantId,
@@ -216,14 +165,43 @@ export function unsubscribeRoutes<
           throw createError(404, "Unsubscribe not found");
         }
 
-        await prisma.unsubscribes.delete({
-          where: {
-            id: unsubscribeId,
-            tenant_id: tenantId,
-          },
-        });
+        return await prisma.$transaction(async tx => {
+          await tx.unsubscribes.delete({
+            where: {
+              id: unsubscribeId,
+              tenant_id: tenantId,
+            },
+          });
 
-        return reply.status(204).send();
+          const contactId = found.contact_id;
+          const subscriberListId = found.subscriber_list_id;
+          await tx.subscribers.upsert({
+            where: {
+              tenant_id_contact_id_subscriber_list_id: {
+                tenant_id: tenantId,
+                contact_id: contactId,
+                subscriber_list_id: subscriberListId,
+              },
+            },
+            create: {
+              id: uuidv7(),
+              tenant_id: tenantId,
+              contact_id: contactId,
+              status: "Subscribed",
+              subscriber_list_id: subscriberListId,
+              subscribed_at: UTC.now().toDate(),
+              created_at: UTC.now().toDate(),
+              created_by: "api",
+            },
+            update: {
+              status: "Subscribed",
+              updated_at: UTC.now().toDate(),
+              updated_by: "api",
+            },
+          });
+
+          return reply.status(204).send();
+        });
       }
     );
   });

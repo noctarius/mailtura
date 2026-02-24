@@ -6,6 +6,7 @@ import { TablePagination } from "../components/interfaces/TablePagination.js";
 import { useTenantId } from "../hooks/useTenantId.js";
 import { debounce } from "lodash";
 import { useGlobalUnsubscribesQuery } from "../services/unsubscribes/use-global-unsubscribes-query.js";
+import { GLOBAL_UNSUBSCRIBE_LIST_ID } from "../constants/unsubscribes.js";
 
 const GlobalUnsubscribes = () => {
   const [tableTarget, setTableTarget] = createSignal<HTMLDivElement>();
@@ -36,7 +37,7 @@ const GlobalUnsubscribes = () => {
   };
 
   const filterQuery = createMemo(() => {
-    let query = "global = true" as string | undefined;
+    let query = `subscriberListId = '${GLOBAL_UNSUBSCRIBE_LIST_ID}'` as string | undefined;
     const filterTerm = searchTerm();
     if (filterTerm.trim().length > 0) {
       // We only have contactId in the model; search on contactId for now

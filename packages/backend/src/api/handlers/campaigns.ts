@@ -14,7 +14,7 @@ import type { Campaign, CampaignStatus } from "@mailtura/rpcmodel/api/index.js";
 import { fromDateTime, mapCampaign, unpackOptionalNullable, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function campaignRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -204,7 +204,7 @@ export function campaignRoutes<
         const tenantId = request.params.tenant_id;
         const campaignId = request.params.campaign_id;
 
-        const found = prisma.campaigns.findUnique({
+        const found = await prisma.campaigns.findUnique({
           where: {
             id: campaignId,
             tenant_id: tenantId,

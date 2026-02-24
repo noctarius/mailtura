@@ -1,21 +1,23 @@
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import type {
-  AccountEntity,
-  ApiKeyEntity,
-  BounceEntity,
-  CampaignEntity,
-  ContactEntity,
-  ContactImportEntity,
-  ContactsWithSubscriptionsEntity,
-  FileEntity,
-  RoleEntity,
-  SubscriberEntity,
-  SubscriberListEntity,
-  TemplateEntity,
-  TenantEntity,
-  UnsubscribeEntity,
-  UserEntity,
-  MailConfigEntity,
+import {
+  type AccountEntity,
+  type ApiKeyEntity,
+  type BounceEntity,
+  type CampaignEntity,
+  type ContactEntity,
+  type ContactImportEntity,
+  type ContactsWithSubscriptionsEntity,
+  type FileEntity,
+  GLOBAL_UNSUBSCRIBE_LIST_ID,
+  type MailConfigEntity,
+  type RoleEntity,
+  type SubscriberEntity,
+  type SubscriberListEntity,
+  type TemplateEntity,
+  type TenantEntity,
+  type UnsubscribeEntity,
+  type UnsubscribeListEntity,
+  type UserEntity,
 } from "./index.js";
 import type {
   Account,
@@ -79,26 +81,20 @@ export function mapTenant(tenant: TenantEntity): Tenant {
 }
 
 type PotentiallyCountedContact = ContactEntity & {
-  _count?: { bounces?: number; unsubscribes?: number };
+  _count?: { unsubscribes?: number };
   subscribers?: any[];
 };
-type CountedContact = PotentiallyCountedContact & { _count: { bounces: number; unsubscribes: number } };
+type CountedContact = PotentiallyCountedContact & { _count: { unsubscribes: number } };
 type SubscriberContact = PotentiallyCountedContact & { subscribers: any[] };
 export function mapContact(contact: PotentiallyCountedContact): Contact {
   const hasCount = (contact: PotentiallyCountedContact): contact is CountedContact =>
     contact._count !== undefined && //
-    contact._count.bounces !== undefined &&
     contact._count.unsubscribes !== undefined;
 
   const hasSubscribers = (contact: PotentiallyCountedContact): contact is SubscriberContact =>
     contact.subscribers !== undefined;
 
-  const status = hasCount(contact)
-    ? contact._count.bounces > 0 || contact._count.unsubscribes > 0
-      ? "Unsubscribed"
-      : "Subscribed"
-    : "Unknown";
-
+  const status = hasCount(contact) ? (contact._count.unsubscribes > 0 ? "Unsubscribed" : "Subscribed") : "Unknown";
   return {
     id: contact.id,
     email: contact.email,
@@ -189,6 +185,25 @@ export function mapSubscriberList(subscriberList: PotentiallyCountedSubscriberLi
     createdBy: subscriberList.created_by,
     updatedAt: mapDateTime(subscriberList.updated_at),
     updatedBy: subscriberList.updated_by ?? undefined,
+  };
+}
+
+type PotentiallyCountedUnsubscribeList = UnsubscribeListEntity & { _count?: { unsubscribes?: number } };
+type CountedUnsubscribeList = PotentiallyCountedUnsubscribeList & { _count: { unsubscribes: number } };
+export function mapUnsubscribeList(unsubscribeList: PotentiallyCountedUnsubscribeList): SubscriberList {
+  const hasCount = (unsubscribeList: PotentiallyCountedUnsubscribeList): unsubscribeList is CountedUnsubscribeList =>
+    unsubscribeList._count !== undefined && //
+    unsubscribeList._count.unsubscribes !== undefined;
+
+  return {
+    id: unsubscribeList.id,
+    name: unsubscribeList.name,
+    description: unsubscribeList.description ?? undefined,
+    contactCount: hasCount(unsubscribeList) ? unsubscribeList._count.unsubscribes : 0,
+    createdAt: mapDateTime(unsubscribeList.created_at),
+    createdBy: unsubscribeList.created_by,
+    updatedAt: mapDateTime(unsubscribeList.updated_at),
+    updatedBy: unsubscribeList.updated_by ?? undefined,
   };
 }
 
@@ -283,15 +298,14 @@ export function mapRole(role: RoleEntity): Role {
   };
 }
 
-type PotentiallyEmailUnsubscribe = UnsubscribeEntity & { contacts?: { email?: string } };
-export function mapUnsubscribe(unsubscribe: PotentiallyEmailUnsubscribe): Unsubscribe {
+export function mapUnsubscribe(unsubscribe: UnsubscribeEntity): Unsubscribe {
+  const isGlobal = unsubscribe.unsubscribe_list_id === GLOBAL_UNSUBSCRIBE_LIST_ID;
   return {
     id: unsubscribe.id,
-    contactId: unsubscribe.contact_id,
-    email: unsubscribe?.contacts?.email ?? undefined,
+    email: unsubscribe.email,
     source: unsubscribe.source ?? undefined,
-    global: unsubscribe.global ?? false,
-    listIds: unsubscribe.list_ids,
+    global: isGlobal,
+    unsubscribeListId: !isGlobal ? unsubscribe.unsubscribe_list_id : undefined,
     unsubscribedAt: mapDateTime(unsubscribe.unsubscribed_at),
     createdAt: mapDateTime(unsubscribe.created_at),
     createdBy: unsubscribe.created_by,
@@ -300,13 +314,11 @@ export function mapUnsubscribe(unsubscribe: PotentiallyEmailUnsubscribe): Unsubs
   };
 }
 
-type PotentiallyEmailBounce = BounceEntity & { contacts?: { email?: string } };
-export function mapBounce(bounce: PotentiallyEmailBounce): Bounce {
+export function mapBounce(bounce: BounceEntity): Bounce {
   return {
     id: bounce.id,
     reason: bounce.reason,
-    contactId: bounce.contact_id,
-    email: bounce?.contacts?.email ?? undefined,
+    email: bounce.email,
     bouncedAt: mapDateTime(bounce.bounced_at),
     bounceType: bounce.bounce_type,
     createdAt: mapDateTime(bounce.created_at),

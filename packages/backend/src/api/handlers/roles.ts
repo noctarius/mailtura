@@ -14,7 +14,7 @@ import type { Role } from "@mailtura/rpcmodel/api/index.js";
 import { mapRole, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function rolesRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -201,7 +201,7 @@ export function rolesRoutes<
         const tenantId = request.params.tenant_id;
         const roleId = request.params.role_id;
 
-        const found = prisma.roles.findUnique({
+        const found = await prisma.roles.findUnique({
           where: {
             id: roleId,
             tenant_id: tenantId,

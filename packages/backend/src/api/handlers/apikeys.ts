@@ -14,7 +14,7 @@ import { generateNewKey } from "../../auth/apiKey.js";
 import type { ApiKey } from "@mailtura/rpcmodel/api/index.js";
 import { fromDateTime, mapApiKey, unpackOptionalNullable } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function apiKeyRoutes<
   RawServer extends RawServerBase = RawServerDefault,

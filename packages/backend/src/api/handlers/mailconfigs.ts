@@ -14,7 +14,7 @@ import type { MailConfig } from "@mailtura/rpcmodel/mails/index.js";
 import { mapMailConfig, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function mailConfigRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -190,6 +190,17 @@ export function mailConfigRoutes<
       async (request, reply) => {
         const tenantId = request.params.tenant_id;
         const mailConfigId = request.params.mail_config_id;
+
+        const found = await prisma.mail_configs.findUnique({
+          where: {
+            id: mailConfigId,
+            tenant_id: tenantId,
+          },
+        });
+
+        if (!found) {
+          throw createError(404, "MailConfig not found");
+        }
 
         await prisma.mail_configs.delete({
           where: {

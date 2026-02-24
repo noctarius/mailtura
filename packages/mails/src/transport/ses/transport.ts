@@ -1,6 +1,6 @@
-import { Mail, MailContact, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
-import { SendEmailCommand, SendEmailCommandInput, SESClient } from "@aws-sdk/client-ses";
+import { type DirectMailContact, SesConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { AbstractTransport, type DeliveryPlan, type DirectMail, type TransportConfig } from "../index.js";
+import { SendEmailCommand, type SendEmailCommandInput, SESv2Client } from "@aws-sdk/client-sesv2";
 
 type SendEmailRequest = SendEmailCommandInput;
 
@@ -8,13 +8,13 @@ export class SesTransport extends AbstractTransport<string> {
   protected readonly providerId = "ses";
   readonly #config: SesConfig;
 
-  constructor(config: SesConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: SesConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 
-  async send(mail: Mail): Promise<number> {
-    const client = new SESClient({
+  async send(mail: DirectMail): Promise<number> {
+    const client = new SESv2Client({
       region: this.#config.region,
       credentials: {
         accessKeyId: this.#config.accessKeyId,
@@ -33,25 +33,28 @@ export class SesTransport extends AbstractTransport<string> {
     });
   }
 
-  #makeRequest(from: string, mail: Mail, item: DeliveryPlan<string>): SendEmailRequest {
+  #makeRequest(from: string, mail: DirectMail, item: DeliveryPlan<string>): SendEmailRequest {
     return {
-      Source: from,
+      FromEmailAddress: from,
       Destination: {
         ToAddresses: item.to,
         CcAddresses: item.cc,
         BccAddresses: item.bcc,
       },
-      Message: {
-        Subject: { Data: mail.subject },
-        Body: {
-          Html: { Data: item.html },
-          Text: { Data: item.text },
+      Content: {
+        Simple: {
+          Subject: { Data: mail.subject },
+          Body: {
+            Html: { Data: item.html },
+            Text: { Data: item.text },
+          },
+          Headers: [],
         },
       },
     };
   }
 
-  mapMailAddress(contact: MailContact): string {
+  mapMailAddress(contact: DirectMailContact): string {
     return contact.name ? `${contact.name} <${contact.email}>` : contact.email;
   }
 }

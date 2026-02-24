@@ -180,10 +180,32 @@ export const MailConfig = Type.Intersect(
 
 export type MailConfig = Static<typeof MailConfig>;
 
-export const MailContact = Type.Object({
-  email: Type.String(),
-  name: Type.Optional(Type.String()),
-});
+export const ReferenceMailContact = Type.Object(
+  {
+    contactId: Type.String({ format: "uuid" }),
+  },
+  {
+    $id: "ReferenceMailContact",
+    description: "Reference to a mail contact",
+  }
+);
+
+export type ReferenceMailContact = Static<typeof ReferenceMailContact>;
+
+export const DirectMailContact = Type.Object(
+  {
+    email: Type.String(),
+    name: Type.Optional(Type.String()),
+  },
+  {
+    $id: "DirectMailContact",
+    description: "Direct mail contact",
+  }
+);
+
+export type DirectMailContact = Static<typeof DirectMailContact>;
+
+export const MailContact = Type.Union([ReferenceMailContact, DirectMailContact]);
 
 export type MailContact = Static<typeof MailContact>;
 
@@ -247,7 +269,7 @@ export type MailContent = Static<typeof MailContent>;
 
 export const MailRecipient = Type.Object(
   {
-    to: Type.Union([MailContact, Type.Array(MailContact)]),
+    to: MailContact,
     cc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
     bcc: Type.Optional(Type.Union([MailContact, Type.Array(MailContact)])),
     replyTo: Type.Optional(MailContact),

@@ -1,28 +1,27 @@
 import {
   ClientOauth2SmtpAuth,
+  type DirectMailContact,
   isClientOauth2Auth,
   isServiceOauth2Auth,
   isUsernamePasswordAuth,
-  Mail,
-  MailContact,
   ServiceOauth2SmtpAuth,
   SmtpConfig,
   type UsernamePasswordSmtpAuth,
 } from "@mailtura/rpcmodel/mails/index.js";
 import { createTransport as createNodemailerTransport } from "nodemailer";
-import { Address, Options } from "nodemailer/lib/mailer/index.js";
-import { AbstractTransport, DeliveryPlan, TransportConfig } from "./transport.js";
+import type { Address, Options } from "nodemailer/lib/mailer/index.js";
+import { AbstractTransport, type DeliveryPlan, type DirectMail, type TransportConfig } from "../index.js";
 
 export class SmtpTransport extends AbstractTransport<string | Address> {
   protected readonly providerId = "smtp";
   readonly #config: SmtpConfig;
 
-  constructor(config: SmtpConfig, tenantId: string, transportConfig: TransportConfig) {
-    super(tenantId, transportConfig);
+  constructor(config: SmtpConfig, transportConfig: TransportConfig) {
+    super(transportConfig);
     this.#config = config;
   }
 
-  async send(mail: Mail): Promise<number> {
+  async send(mail: DirectMail): Promise<number> {
     const transport = createNodemailerTransport({
       host: this.#config.host,
       port: this.#config.port,
@@ -43,11 +42,11 @@ export class SmtpTransport extends AbstractTransport<string | Address> {
     });
   }
 
-  protected mapMailAddress(contact: MailContact): string | Address {
+  protected mapMailAddress(contact: DirectMailContact): string | Address {
     return contact.name ? { name: contact.name, address: contact.email } : contact.email;
   }
 
-  #makeMailOptions(from: string | Address, mail: Mail, item: DeliveryPlan<string | Address>): Options {
+  #makeMailOptions(from: string | Address, mail: DirectMail, item: DeliveryPlan<string | Address>): Options {
     return {
       from,
       to: item.to,

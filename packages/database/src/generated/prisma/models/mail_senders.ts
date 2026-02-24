@@ -29,6 +29,7 @@ export type Mail_sendersMinAggregateOutputType = {
   tenant_id: string | null
   name: string | null
   email: string | null
+  reply_to: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -40,6 +41,7 @@ export type Mail_sendersMaxAggregateOutputType = {
   tenant_id: string | null
   name: string | null
   email: string | null
+  reply_to: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -51,6 +53,7 @@ export type Mail_sendersCountAggregateOutputType = {
   tenant_id: number
   name: number
   email: number
+  reply_to: number
   created_at: number
   created_by: number
   updated_at: number
@@ -64,6 +67,7 @@ export type Mail_sendersMinAggregateInputType = {
   tenant_id?: true
   name?: true
   email?: true
+  reply_to?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -75,6 +79,7 @@ export type Mail_sendersMaxAggregateInputType = {
   tenant_id?: true
   name?: true
   email?: true
+  reply_to?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -86,6 +91,7 @@ export type Mail_sendersCountAggregateInputType = {
   tenant_id?: true
   name?: true
   email?: true
+  reply_to?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -170,6 +176,7 @@ export type Mail_sendersGroupByOutputType = {
   tenant_id: string
   name: string
   email: string
+  reply_to: string | null
   created_at: Date
   created_by: string
   updated_at: Date | null
@@ -202,6 +209,7 @@ export type mail_sendersWhereInput = {
   tenant_id?: Prisma.UuidFilter<"mail_senders"> | string
   name?: Prisma.StringFilter<"mail_senders"> | string
   email?: Prisma.StringFilter<"mail_senders"> | string
+  reply_to?: Prisma.StringNullableFilter<"mail_senders"> | string | null
   created_at?: Prisma.DateTimeFilter<"mail_senders"> | Date | string
   created_by?: Prisma.StringFilter<"mail_senders"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"mail_senders"> | Date | string | null
@@ -214,6 +222,7 @@ export type mail_sendersOrderByWithRelationInput = {
   tenant_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  reply_to?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -229,6 +238,7 @@ export type mail_sendersWhereUniqueInput = Prisma.AtLeast<{
   tenant_id?: Prisma.UuidFilter<"mail_senders"> | string
   name?: Prisma.StringFilter<"mail_senders"> | string
   email?: Prisma.StringFilter<"mail_senders"> | string
+  reply_to?: Prisma.StringNullableFilter<"mail_senders"> | string | null
   created_at?: Prisma.DateTimeFilter<"mail_senders"> | Date | string
   created_by?: Prisma.StringFilter<"mail_senders"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"mail_senders"> | Date | string | null
@@ -241,6 +251,7 @@ export type mail_sendersOrderByWithAggregationInput = {
   tenant_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  reply_to?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -258,6 +269,7 @@ export type mail_sendersScalarWhereWithAggregatesInput = {
   tenant_id?: Prisma.UuidWithAggregatesFilter<"mail_senders"> | string
   name?: Prisma.StringWithAggregatesFilter<"mail_senders"> | string
   email?: Prisma.StringWithAggregatesFilter<"mail_senders"> | string
+  reply_to?: Prisma.StringNullableWithAggregatesFilter<"mail_senders"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"mail_senders"> | Date | string
   created_by?: Prisma.StringWithAggregatesFilter<"mail_senders"> | string
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"mail_senders"> | Date | string | null
@@ -269,6 +281,7 @@ export type mail_sendersCreateInput = {
   tenant_id: string
   name: string
   email: string
+  reply_to?: string | null
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -281,6 +294,7 @@ export type mail_sendersUncheckedCreateInput = {
   tenant_id: string
   name: string
   email: string
+  reply_to?: string | null
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -293,6 +307,7 @@ export type mail_sendersUpdateInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -305,6 +320,7 @@ export type mail_sendersUncheckedUpdateInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -317,6 +333,7 @@ export type mail_sendersCreateManyInput = {
   tenant_id: string
   name: string
   email: string
+  reply_to?: string | null
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -328,6 +345,7 @@ export type mail_sendersUpdateManyMutationInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -339,6 +357,7 @@ export type mail_sendersUncheckedUpdateManyInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -355,6 +374,7 @@ export type mail_sendersCountOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  reply_to?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -366,6 +386,7 @@ export type mail_sendersMaxOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  reply_to?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -377,6 +398,7 @@ export type mail_sendersMinOrderByAggregateInput = {
   tenant_id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   email?: Prisma.SortOrder
+  reply_to?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -402,6 +424,7 @@ export type mail_sendersCreateWithoutMail_sendingsInput = {
   tenant_id: string
   name: string
   email: string
+  reply_to?: string | null
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -413,6 +436,7 @@ export type mail_sendersUncheckedCreateWithoutMail_sendingsInput = {
   tenant_id: string
   name: string
   email: string
+  reply_to?: string | null
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -440,6 +464,7 @@ export type mail_sendersUpdateWithoutMail_sendingsInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -451,6 +476,7 @@ export type mail_sendersUncheckedUpdateWithoutMail_sendingsInput = {
   tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
+  reply_to?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -493,6 +519,7 @@ export type mail_sendersSelect<ExtArgs extends runtime.Types.Extensions.Internal
   tenant_id?: boolean
   name?: boolean
   email?: boolean
+  reply_to?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
@@ -506,6 +533,7 @@ export type mail_sendersSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   tenant_id?: boolean
   name?: boolean
   email?: boolean
+  reply_to?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
@@ -517,6 +545,7 @@ export type mail_sendersSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   tenant_id?: boolean
   name?: boolean
   email?: boolean
+  reply_to?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
@@ -528,13 +557,14 @@ export type mail_sendersSelectScalar = {
   tenant_id?: boolean
   name?: boolean
   email?: boolean
+  reply_to?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
 }
 
-export type mail_sendersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "name" | "email" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_senders"]>
+export type mail_sendersOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "name" | "email" | "reply_to" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["mail_senders"]>
 export type mail_sendersInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mail_sendings?: boolean | Prisma.mail_senders$mail_sendingsArgs<ExtArgs>
   _count?: boolean | Prisma.Mail_sendersCountOutputTypeDefaultArgs<ExtArgs>
@@ -552,6 +582,7 @@ export type $mail_sendersPayload<ExtArgs extends runtime.Types.Extensions.Intern
     tenant_id: string
     name: string
     email: string
+    reply_to: string | null
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -984,6 +1015,7 @@ export interface mail_sendersFieldRefs {
   readonly tenant_id: Prisma.FieldRef<"mail_senders", 'String'>
   readonly name: Prisma.FieldRef<"mail_senders", 'String'>
   readonly email: Prisma.FieldRef<"mail_senders", 'String'>
+  readonly reply_to: Prisma.FieldRef<"mail_senders", 'String'>
   readonly created_at: Prisma.FieldRef<"mail_senders", 'DateTime'>
   readonly created_by: Prisma.FieldRef<"mail_senders", 'String'>
   readonly updated_at: Prisma.FieldRef<"mail_senders", 'DateTime'>

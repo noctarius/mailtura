@@ -15,8 +15,13 @@ import type { User } from "@mailtura/rpcmodel/api/index.js";
 import { mapUser, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { sendInviteEmail } from "../../mail/index.js";
-import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
+import {
+  PaginationMetadata,
+  PaginationQueryParameters,
+  parseQueryParameter,
+  whereClause,
+} from "@mailtura/rpcmodel/pagination/index.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -214,7 +219,7 @@ export function userRoutes<
         const tenantId = request.params.tenant_id;
         const userId = request.params.user_id;
 
-        const found = prisma.users.findUnique({
+        const found = await prisma.users.findUnique({
           where: {
             id: userId,
             tenant_id: tenantId,
@@ -247,6 +252,46 @@ export function userRoutes<
         });
 
         return reply.status(204).send();
+      }
+    );
+
+    router.get<{
+      Params: { tenant_id: string };
+      Reply: { data: number };
+      Querystring: {
+        query?: string;
+      };
+    }>(
+      "/count",
+      {
+        schema: {
+          tags: ["users"],
+          querystring: Type.Object({
+            query: Type.Optional(Type.String()),
+          }),
+          response: {
+            200: Type.Object({
+              data: Type.Integer(),
+            }),
+            401: Type.Ref("ErrorResponse"),
+          },
+        },
+      },
+      async request => {
+        const tenantId = request.params.tenant_id;
+
+        const query = request.query.query ? parseQueryParameter(request.query.query) : undefined;
+        const where = whereClause<any>(query, undefined, "tenant_id");
+        const userCount = await prisma.users.count({
+          where: {
+            tenant_id: tenantId,
+            ...where,
+          },
+        });
+
+        return {
+          data: userCount,
+        };
       }
     );
 

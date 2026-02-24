@@ -14,7 +14,7 @@ import { createEmailVerificationToken } from "better-auth/api";
 import type { Auth } from "better-auth";
 import { mapUser } from "@mailtura/database";
 import { sendInviteEmail } from "../mail/index.js";
-import uuidv7 from "../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 const SignUpEmail = Type.Object({
   email: Type.String({ format: "email" }),

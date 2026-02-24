@@ -30,7 +30,7 @@ export type BouncesMinAggregateOutputType = {
   bounced_at: Date | null
   reason: string | null
   bounce_type: $Enums.bounce_type | null
-  contact_id: string | null
+  email: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -43,7 +43,7 @@ export type BouncesMaxAggregateOutputType = {
   bounced_at: Date | null
   reason: string | null
   bounce_type: $Enums.bounce_type | null
-  contact_id: string | null
+  email: string | null
   created_at: Date | null
   created_by: string | null
   updated_at: Date | null
@@ -56,7 +56,7 @@ export type BouncesCountAggregateOutputType = {
   bounced_at: number
   reason: number
   bounce_type: number
-  contact_id: number
+  email: number
   created_at: number
   created_by: number
   updated_at: number
@@ -71,7 +71,7 @@ export type BouncesMinAggregateInputType = {
   bounced_at?: true
   reason?: true
   bounce_type?: true
-  contact_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -84,7 +84,7 @@ export type BouncesMaxAggregateInputType = {
   bounced_at?: true
   reason?: true
   bounce_type?: true
-  contact_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -97,7 +97,7 @@ export type BouncesCountAggregateInputType = {
   bounced_at?: true
   reason?: true
   bounce_type?: true
-  contact_id?: true
+  email?: true
   created_at?: true
   created_by?: true
   updated_at?: true
@@ -183,7 +183,7 @@ export type BouncesGroupByOutputType = {
   bounced_at: Date
   reason: string
   bounce_type: $Enums.bounce_type
-  contact_id: string
+  email: string
   created_at: Date
   created_by: string
   updated_at: Date | null
@@ -217,12 +217,11 @@ export type bouncesWhereInput = {
   bounced_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
   reason?: Prisma.StringFilter<"bounces"> | string
   bounce_type?: Prisma.Enumbounce_typeFilter<"bounces"> | $Enums.bounce_type
-  contact_id?: Prisma.UuidFilter<"bounces"> | string
+  email?: Prisma.StringFilter<"bounces"> | string
   created_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
   created_by?: Prisma.StringFilter<"bounces"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"bounces"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"bounces"> | string | null
-  contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
 }
 
 export type bouncesOrderByWithRelationInput = {
@@ -231,17 +230,16 @@ export type bouncesOrderByWithRelationInput = {
   bounced_at?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   bounce_type?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
   updated_by?: Prisma.SortOrderInput | Prisma.SortOrder
-  contacts?: Prisma.contactsOrderByWithRelationInput
 }
 
 export type bouncesWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  tenant_id_contact_id?: Prisma.bouncesTenant_idContact_idCompoundUniqueInput
+  tenant_id_email?: Prisma.bouncesTenant_idEmailCompoundUniqueInput
   AND?: Prisma.bouncesWhereInput | Prisma.bouncesWhereInput[]
   OR?: Prisma.bouncesWhereInput[]
   NOT?: Prisma.bouncesWhereInput | Prisma.bouncesWhereInput[]
@@ -249,13 +247,12 @@ export type bouncesWhereUniqueInput = Prisma.AtLeast<{
   bounced_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
   reason?: Prisma.StringFilter<"bounces"> | string
   bounce_type?: Prisma.Enumbounce_typeFilter<"bounces"> | $Enums.bounce_type
-  contact_id?: Prisma.UuidFilter<"bounces"> | string
+  email?: Prisma.StringFilter<"bounces"> | string
   created_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
   created_by?: Prisma.StringFilter<"bounces"> | string
   updated_at?: Prisma.DateTimeNullableFilter<"bounces"> | Date | string | null
   updated_by?: Prisma.StringNullableFilter<"bounces"> | string | null
-  contacts?: Prisma.XOR<Prisma.ContactsScalarRelationFilter, Prisma.contactsWhereInput>
-}, "id" | "tenant_id_contact_id">
+}, "id" | "tenant_id_email">
 
 export type bouncesOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -263,7 +260,7 @@ export type bouncesOrderByWithAggregationInput = {
   bounced_at?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   bounce_type?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -282,7 +279,7 @@ export type bouncesScalarWhereWithAggregatesInput = {
   bounced_at?: Prisma.DateTimeWithAggregatesFilter<"bounces"> | Date | string
   reason?: Prisma.StringWithAggregatesFilter<"bounces"> | string
   bounce_type?: Prisma.Enumbounce_typeWithAggregatesFilter<"bounces"> | $Enums.bounce_type
-  contact_id?: Prisma.UuidWithAggregatesFilter<"bounces"> | string
+  email?: Prisma.StringWithAggregatesFilter<"bounces"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"bounces"> | Date | string
   created_by?: Prisma.StringWithAggregatesFilter<"bounces"> | string
   updated_at?: Prisma.DateTimeNullableWithAggregatesFilter<"bounces"> | Date | string | null
@@ -295,11 +292,11 @@ export type bouncesCreateInput = {
   bounced_at: Date | string
   reason: string
   bounce_type: $Enums.bounce_type
+  email: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
   updated_by?: string | null
-  contacts: Prisma.contactsCreateNestedOneWithoutBouncesInput
 }
 
 export type bouncesUncheckedCreateInput = {
@@ -308,7 +305,7 @@ export type bouncesUncheckedCreateInput = {
   bounced_at: Date | string
   reason: string
   bounce_type: $Enums.bounce_type
-  contact_id: string
+  email: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -321,11 +318,11 @@ export type bouncesUpdateInput = {
   bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  contacts?: Prisma.contactsUpdateOneRequiredWithoutBouncesNestedInput
 }
 
 export type bouncesUncheckedUpdateInput = {
@@ -334,7 +331,7 @@ export type bouncesUncheckedUpdateInput = {
   bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -347,7 +344,7 @@ export type bouncesCreateManyInput = {
   bounced_at: Date | string
   reason: string
   bounce_type: $Enums.bounce_type
-  contact_id: string
+  email: string
   created_at: Date | string
   created_by: string
   updated_at?: Date | string | null
@@ -360,6 +357,7 @@ export type bouncesUpdateManyMutationInput = {
   bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -372,26 +370,16 @@ export type bouncesUncheckedUpdateManyInput = {
   bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   reason?: Prisma.StringFieldUpdateOperationsInput | string
   bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
-  contact_id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
   updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
-export type BouncesListRelationFilter = {
-  every?: Prisma.bouncesWhereInput
-  some?: Prisma.bouncesWhereInput
-  none?: Prisma.bouncesWhereInput
-}
-
-export type bouncesOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
-export type bouncesTenant_idContact_idCompoundUniqueInput = {
+export type bouncesTenant_idEmailCompoundUniqueInput = {
   tenant_id: string
-  contact_id: string
+  email: string
 }
 
 export type bouncesCountOrderByAggregateInput = {
@@ -400,7 +388,7 @@ export type bouncesCountOrderByAggregateInput = {
   bounced_at?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   bounce_type?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -413,7 +401,7 @@ export type bouncesMaxOrderByAggregateInput = {
   bounced_at?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   bounce_type?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
@@ -426,171 +414,15 @@ export type bouncesMinOrderByAggregateInput = {
   bounced_at?: Prisma.SortOrder
   reason?: Prisma.SortOrder
   bounce_type?: Prisma.SortOrder
-  contact_id?: Prisma.SortOrder
+  email?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   updated_by?: Prisma.SortOrder
 }
 
-export type bouncesCreateNestedManyWithoutContactsInput = {
-  create?: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput> | Prisma.bouncesCreateWithoutContactsInput[] | Prisma.bouncesUncheckedCreateWithoutContactsInput[]
-  connectOrCreate?: Prisma.bouncesCreateOrConnectWithoutContactsInput | Prisma.bouncesCreateOrConnectWithoutContactsInput[]
-  createMany?: Prisma.bouncesCreateManyContactsInputEnvelope
-  connect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-}
-
-export type bouncesUncheckedCreateNestedManyWithoutContactsInput = {
-  create?: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput> | Prisma.bouncesCreateWithoutContactsInput[] | Prisma.bouncesUncheckedCreateWithoutContactsInput[]
-  connectOrCreate?: Prisma.bouncesCreateOrConnectWithoutContactsInput | Prisma.bouncesCreateOrConnectWithoutContactsInput[]
-  createMany?: Prisma.bouncesCreateManyContactsInputEnvelope
-  connect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-}
-
-export type bouncesUpdateManyWithoutContactsNestedInput = {
-  create?: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput> | Prisma.bouncesCreateWithoutContactsInput[] | Prisma.bouncesUncheckedCreateWithoutContactsInput[]
-  connectOrCreate?: Prisma.bouncesCreateOrConnectWithoutContactsInput | Prisma.bouncesCreateOrConnectWithoutContactsInput[]
-  upsert?: Prisma.bouncesUpsertWithWhereUniqueWithoutContactsInput | Prisma.bouncesUpsertWithWhereUniqueWithoutContactsInput[]
-  createMany?: Prisma.bouncesCreateManyContactsInputEnvelope
-  set?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  disconnect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  delete?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  connect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  update?: Prisma.bouncesUpdateWithWhereUniqueWithoutContactsInput | Prisma.bouncesUpdateWithWhereUniqueWithoutContactsInput[]
-  updateMany?: Prisma.bouncesUpdateManyWithWhereWithoutContactsInput | Prisma.bouncesUpdateManyWithWhereWithoutContactsInput[]
-  deleteMany?: Prisma.bouncesScalarWhereInput | Prisma.bouncesScalarWhereInput[]
-}
-
-export type bouncesUncheckedUpdateManyWithoutContactsNestedInput = {
-  create?: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput> | Prisma.bouncesCreateWithoutContactsInput[] | Prisma.bouncesUncheckedCreateWithoutContactsInput[]
-  connectOrCreate?: Prisma.bouncesCreateOrConnectWithoutContactsInput | Prisma.bouncesCreateOrConnectWithoutContactsInput[]
-  upsert?: Prisma.bouncesUpsertWithWhereUniqueWithoutContactsInput | Prisma.bouncesUpsertWithWhereUniqueWithoutContactsInput[]
-  createMany?: Prisma.bouncesCreateManyContactsInputEnvelope
-  set?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  disconnect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  delete?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  connect?: Prisma.bouncesWhereUniqueInput | Prisma.bouncesWhereUniqueInput[]
-  update?: Prisma.bouncesUpdateWithWhereUniqueWithoutContactsInput | Prisma.bouncesUpdateWithWhereUniqueWithoutContactsInput[]
-  updateMany?: Prisma.bouncesUpdateManyWithWhereWithoutContactsInput | Prisma.bouncesUpdateManyWithWhereWithoutContactsInput[]
-  deleteMany?: Prisma.bouncesScalarWhereInput | Prisma.bouncesScalarWhereInput[]
-}
-
 export type Enumbounce_typeFieldUpdateOperationsInput = {
   set?: $Enums.bounce_type
-}
-
-export type bouncesCreateWithoutContactsInput = {
-  id: string
-  tenant_id: string
-  bounced_at: Date | string
-  reason: string
-  bounce_type: $Enums.bounce_type
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-}
-
-export type bouncesUncheckedCreateWithoutContactsInput = {
-  id: string
-  tenant_id: string
-  bounced_at: Date | string
-  reason: string
-  bounce_type: $Enums.bounce_type
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-}
-
-export type bouncesCreateOrConnectWithoutContactsInput = {
-  where: Prisma.bouncesWhereUniqueInput
-  create: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput>
-}
-
-export type bouncesCreateManyContactsInputEnvelope = {
-  data: Prisma.bouncesCreateManyContactsInput | Prisma.bouncesCreateManyContactsInput[]
-  skipDuplicates?: boolean
-}
-
-export type bouncesUpsertWithWhereUniqueWithoutContactsInput = {
-  where: Prisma.bouncesWhereUniqueInput
-  update: Prisma.XOR<Prisma.bouncesUpdateWithoutContactsInput, Prisma.bouncesUncheckedUpdateWithoutContactsInput>
-  create: Prisma.XOR<Prisma.bouncesCreateWithoutContactsInput, Prisma.bouncesUncheckedCreateWithoutContactsInput>
-}
-
-export type bouncesUpdateWithWhereUniqueWithoutContactsInput = {
-  where: Prisma.bouncesWhereUniqueInput
-  data: Prisma.XOR<Prisma.bouncesUpdateWithoutContactsInput, Prisma.bouncesUncheckedUpdateWithoutContactsInput>
-}
-
-export type bouncesUpdateManyWithWhereWithoutContactsInput = {
-  where: Prisma.bouncesScalarWhereInput
-  data: Prisma.XOR<Prisma.bouncesUpdateManyMutationInput, Prisma.bouncesUncheckedUpdateManyWithoutContactsInput>
-}
-
-export type bouncesScalarWhereInput = {
-  AND?: Prisma.bouncesScalarWhereInput | Prisma.bouncesScalarWhereInput[]
-  OR?: Prisma.bouncesScalarWhereInput[]
-  NOT?: Prisma.bouncesScalarWhereInput | Prisma.bouncesScalarWhereInput[]
-  id?: Prisma.UuidFilter<"bounces"> | string
-  tenant_id?: Prisma.UuidFilter<"bounces"> | string
-  bounced_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
-  reason?: Prisma.StringFilter<"bounces"> | string
-  bounce_type?: Prisma.Enumbounce_typeFilter<"bounces"> | $Enums.bounce_type
-  contact_id?: Prisma.UuidFilter<"bounces"> | string
-  created_at?: Prisma.DateTimeFilter<"bounces"> | Date | string
-  created_by?: Prisma.StringFilter<"bounces"> | string
-  updated_at?: Prisma.DateTimeNullableFilter<"bounces"> | Date | string | null
-  updated_by?: Prisma.StringNullableFilter<"bounces"> | string | null
-}
-
-export type bouncesCreateManyContactsInput = {
-  id: string
-  tenant_id: string
-  bounced_at: Date | string
-  reason: string
-  bounce_type: $Enums.bounce_type
-  created_at: Date | string
-  created_by: string
-  updated_at?: Date | string | null
-  updated_by?: string | null
-}
-
-export type bouncesUpdateWithoutContactsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reason?: Prisma.StringFieldUpdateOperationsInput | string
-  bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type bouncesUncheckedUpdateWithoutContactsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reason?: Prisma.StringFieldUpdateOperationsInput | string
-  bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
-export type bouncesUncheckedUpdateManyWithoutContactsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  tenant_id?: Prisma.StringFieldUpdateOperationsInput | string
-  bounced_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  reason?: Prisma.StringFieldUpdateOperationsInput | string
-  bounce_type?: Prisma.Enumbounce_typeFieldUpdateOperationsInput | $Enums.bounce_type
-  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  created_by?: Prisma.StringFieldUpdateOperationsInput | string
-  updated_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-  updated_by?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -601,12 +433,11 @@ export type bouncesSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   bounced_at?: boolean
   reason?: boolean
   bounce_type?: boolean
-  contact_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bounces"]>
 
 export type bouncesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -615,12 +446,11 @@ export type bouncesSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   bounced_at?: boolean
   reason?: boolean
   bounce_type?: boolean
-  contact_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bounces"]>
 
 export type bouncesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -629,12 +459,11 @@ export type bouncesSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   bounced_at?: boolean
   reason?: boolean
   bounce_type?: boolean
-  contact_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["bounces"]>
 
 export type bouncesSelectScalar = {
@@ -643,36 +472,25 @@ export type bouncesSelectScalar = {
   bounced_at?: boolean
   reason?: boolean
   bounce_type?: boolean
-  contact_id?: boolean
+  email?: boolean
   created_at?: boolean
   created_by?: boolean
   updated_at?: boolean
   updated_by?: boolean
 }
 
-export type bouncesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "bounced_at" | "reason" | "bounce_type" | "contact_id" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["bounces"]>
-export type bouncesInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
-}
-export type bouncesIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
-}
-export type bouncesIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  contacts?: boolean | Prisma.contactsDefaultArgs<ExtArgs>
-}
+export type bouncesOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "bounced_at" | "reason" | "bounce_type" | "email" | "created_at" | "created_by" | "updated_at" | "updated_by", ExtArgs["result"]["bounces"]>
 
 export type $bouncesPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "bounces"
-  objects: {
-    contacts: Prisma.$contactsPayload<ExtArgs>
-  }
+  objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     tenant_id: string
     bounced_at: Date
     reason: string
     bounce_type: $Enums.bounce_type
-    contact_id: string
+    email: string
     created_at: Date
     created_by: string
     updated_at: Date | null
@@ -1071,7 +889,6 @@ readonly fields: bouncesFieldRefs;
  */
 export interface Prisma__bouncesClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  contacts<T extends Prisma.contactsDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.contactsDefaultArgs<ExtArgs>>): Prisma.Prisma__contactsClient<runtime.Types.Result.GetResult<Prisma.$contactsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1106,7 +923,7 @@ export interface bouncesFieldRefs {
   readonly bounced_at: Prisma.FieldRef<"bounces", 'DateTime'>
   readonly reason: Prisma.FieldRef<"bounces", 'String'>
   readonly bounce_type: Prisma.FieldRef<"bounces", 'bounce_type'>
-  readonly contact_id: Prisma.FieldRef<"bounces", 'String'>
+  readonly email: Prisma.FieldRef<"bounces", 'String'>
   readonly created_at: Prisma.FieldRef<"bounces", 'DateTime'>
   readonly created_by: Prisma.FieldRef<"bounces", 'String'>
   readonly updated_at: Prisma.FieldRef<"bounces", 'DateTime'>
@@ -1128,10 +945,6 @@ export type bouncesFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  /**
    * Filter, which bounces to fetch.
    */
   where: Prisma.bouncesWhereUniqueInput
@@ -1151,10 +964,6 @@ export type bouncesFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  /**
    * Filter, which bounces to fetch.
    */
   where: Prisma.bouncesWhereUniqueInput
@@ -1173,10 +982,6 @@ export type bouncesFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the bounces
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
   /**
    * Filter, which bounces to fetch.
    */
@@ -1227,10 +1032,6 @@ export type bouncesFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  /**
    * Filter, which bounces to fetch.
    */
   where?: Prisma.bouncesWhereInput
@@ -1280,10 +1081,6 @@ export type bouncesFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  /**
    * Filter, which bounces to fetch.
    */
   where?: Prisma.bouncesWhereInput
@@ -1328,10 +1125,6 @@ export type bouncesCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
   /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
-  /**
    * The data needed to create a bounces.
    */
   data: Prisma.XOR<Prisma.bouncesCreateInput, Prisma.bouncesUncheckedCreateInput>
@@ -1366,10 +1159,6 @@ export type bouncesCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    */
   data: Prisma.bouncesCreateManyInput | Prisma.bouncesCreateManyInput[]
   skipDuplicates?: boolean
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1384,10 +1173,6 @@ export type bouncesUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the bounces
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
   /**
    * The data needed to update a bounces.
    */
@@ -1441,10 +1226,6 @@ export type bouncesUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many bounces to update.
    */
   limit?: number
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1459,10 +1240,6 @@ export type bouncesUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the bounces
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
   /**
    * The filter to search for the bounces to update in case it exists.
    */
@@ -1490,10 +1267,6 @@ export type bouncesDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the bounces
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
   /**
    * Filter which bounces to delete.
    */
@@ -1527,8 +1300,4 @@ export type bouncesDefaultArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the bounces
    */
   omit?: Prisma.bouncesOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.bouncesInclude<ExtArgs> | null
 }

@@ -24,7 +24,7 @@ import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
 import { mapContact, mapContactImport, mapContactsWithSubscriptions, Prisma, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,
@@ -222,6 +222,7 @@ export function contactRoutes<
                 created_by: "api",
               },
               update: {
+                status: "Subscribed",
                 updated_at: UTC.now().toDate(),
                 updated_by: "api",
               },
@@ -321,8 +322,15 @@ export function contactRoutes<
         return prisma.$transaction(async tx => {
           if (listsToAdd.length > 0) {
             for (const listId of listsToAdd) {
-              await tx.subscribers.create({
-                data: {
+              await tx.subscribers.upsert({
+                where: {
+                  tenant_id_contact_id_subscriber_list_id: {
+                    tenant_id: tenantId,
+                    contact_id: contactId,
+                    subscriber_list_id: listId,
+                  },
+                },
+                create: {
                   id: uuidv7(),
                   tenant_id: tenantId,
                   contact_id: contactId,
@@ -331,6 +339,11 @@ export function contactRoutes<
                   subscribed_at: UTC.now().toDate(),
                   created_at: UTC.now().toDate(),
                   created_by: "api",
+                },
+                update: {
+                  status: "Subscribed",
+                  updated_at: UTC.now().toDate(),
+                  updated_by: "api",
                 },
               });
             }
@@ -385,7 +398,7 @@ export function contactRoutes<
         const tenantId = request.params.tenant_id;
         const contactId = request.params.contact_id;
 
-        const found = prisma.contacts.findUnique({
+        const found = await prisma.contacts.findUnique({
           where: {
             id: contactId,
             tenant_id: tenantId,

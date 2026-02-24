@@ -53,6 +53,8 @@ export type Mail_sending_receiversCountAggregateOutputType = {
   substitutions: number
   created_at: number
   created_by: number
+  cc: number
+  bcc: number
   _all: number
 }
 
@@ -86,6 +88,8 @@ export type Mail_sending_receiversCountAggregateInputType = {
   substitutions?: true
   created_at?: true
   created_by?: true
+  cc?: true
+  bcc?: true
   _all?: true
 }
 
@@ -170,6 +174,8 @@ export type Mail_sending_receiversGroupByOutputType = {
   substitutions: runtime.JsonValue
   created_at: Date
   created_by: string
+  cc: string[]
+  bcc: string[]
   _count: Mail_sending_receiversCountAggregateOutputType | null
   _min: Mail_sending_receiversMinAggregateOutputType | null
   _max: Mail_sending_receiversMaxAggregateOutputType | null
@@ -202,6 +208,8 @@ export type mail_sending_receiversWhereInput = {
   substitutions?: Prisma.JsonFilter<"mail_sending_receivers">
   created_at?: Prisma.DateTimeFilter<"mail_sending_receivers"> | Date | string
   created_by?: Prisma.StringFilter<"mail_sending_receivers"> | string
+  cc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
+  bcc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
   mail_sendings?: Prisma.XOR<Prisma.Mail_sendingsScalarRelationFilter, Prisma.mail_sendingsWhereInput>
 }
 
@@ -214,6 +222,8 @@ export type mail_sending_receiversOrderByWithRelationInput = {
   substitutions?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
+  cc?: Prisma.SortOrder
+  bcc?: Prisma.SortOrder
   mail_sendings?: Prisma.mail_sendingsOrderByWithRelationInput
 }
 
@@ -229,6 +239,8 @@ export type mail_sending_receiversWhereUniqueInput = Prisma.AtLeast<{
   substitutions?: Prisma.JsonFilter<"mail_sending_receivers">
   created_at?: Prisma.DateTimeFilter<"mail_sending_receivers"> | Date | string
   created_by?: Prisma.StringFilter<"mail_sending_receivers"> | string
+  cc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
+  bcc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
   mail_sendings?: Prisma.XOR<Prisma.Mail_sendingsScalarRelationFilter, Prisma.mail_sendingsWhereInput>
 }, "id">
 
@@ -241,6 +253,8 @@ export type mail_sending_receiversOrderByWithAggregationInput = {
   substitutions?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
+  cc?: Prisma.SortOrder
+  bcc?: Prisma.SortOrder
   _count?: Prisma.mail_sending_receiversCountOrderByAggregateInput
   _max?: Prisma.mail_sending_receiversMaxOrderByAggregateInput
   _min?: Prisma.mail_sending_receiversMinOrderByAggregateInput
@@ -258,6 +272,8 @@ export type mail_sending_receiversScalarWhereWithAggregatesInput = {
   substitutions?: Prisma.JsonWithAggregatesFilter<"mail_sending_receivers">
   created_at?: Prisma.DateTimeWithAggregatesFilter<"mail_sending_receivers"> | Date | string
   created_by?: Prisma.StringWithAggregatesFilter<"mail_sending_receivers"> | string
+  cc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
+  bcc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
 }
 
 export type mail_sending_receiversCreateInput = {
@@ -268,6 +284,8 @@ export type mail_sending_receiversCreateInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
   mail_sendings: Prisma.mail_sendingsCreateNestedOneWithoutMail_receiversInput
 }
 
@@ -280,6 +298,8 @@ export type mail_sending_receiversUncheckedCreateInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
 }
 
 export type mail_sending_receiversUpdateInput = {
@@ -290,6 +310,8 @@ export type mail_sending_receiversUpdateInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
   mail_sendings?: Prisma.mail_sendingsUpdateOneRequiredWithoutMail_receiversNestedInput
 }
 
@@ -302,6 +324,8 @@ export type mail_sending_receiversUncheckedUpdateInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 export type mail_sending_receiversCreateManyInput = {
@@ -313,6 +337,8 @@ export type mail_sending_receiversCreateManyInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
 }
 
 export type mail_sending_receiversUpdateManyMutationInput = {
@@ -323,6 +349,8 @@ export type mail_sending_receiversUpdateManyMutationInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 export type mail_sending_receiversUncheckedUpdateManyInput = {
@@ -334,6 +362,8 @@ export type mail_sending_receiversUncheckedUpdateManyInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 export type Mail_sending_receiversListRelationFilter = {
@@ -355,6 +385,8 @@ export type mail_sending_receiversCountOrderByAggregateInput = {
   substitutions?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   created_by?: Prisma.SortOrder
+  cc?: Prisma.SortOrder
+  bcc?: Prisma.SortOrder
 }
 
 export type mail_sending_receiversMaxOrderByAggregateInput = {
@@ -419,6 +451,24 @@ export type mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsNestedI
   deleteMany?: Prisma.mail_sending_receiversScalarWhereInput | Prisma.mail_sending_receiversScalarWhereInput[]
 }
 
+export type mail_sending_receiversCreateccInput = {
+  set: string[]
+}
+
+export type mail_sending_receiversCreatebccInput = {
+  set: string[]
+}
+
+export type mail_sending_receiversUpdateccInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
+export type mail_sending_receiversUpdatebccInput = {
+  set?: string[]
+  push?: string | string[]
+}
+
 export type mail_sending_receiversCreateWithoutMail_sendingsInput = {
   id: string
   tenant_id: string
@@ -427,6 +477,8 @@ export type mail_sending_receiversCreateWithoutMail_sendingsInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
 }
 
 export type mail_sending_receiversUncheckedCreateWithoutMail_sendingsInput = {
@@ -437,6 +489,8 @@ export type mail_sending_receiversUncheckedCreateWithoutMail_sendingsInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
 }
 
 export type mail_sending_receiversCreateOrConnectWithoutMail_sendingsInput = {
@@ -477,6 +531,8 @@ export type mail_sending_receiversScalarWhereInput = {
   substitutions?: Prisma.JsonFilter<"mail_sending_receivers">
   created_at?: Prisma.DateTimeFilter<"mail_sending_receivers"> | Date | string
   created_by?: Prisma.StringFilter<"mail_sending_receivers"> | string
+  cc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
+  bcc?: Prisma.StringNullableListFilter<"mail_sending_receivers">
 }
 
 export type mail_sending_receiversCreateManyMail_sendingsInput = {
@@ -487,6 +543,8 @@ export type mail_sending_receiversCreateManyMail_sendingsInput = {
   substitutions: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at: Date | string
   created_by: string
+  cc?: Prisma.mail_sending_receiversCreateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversCreatebccInput | string[]
 }
 
 export type mail_sending_receiversUpdateWithoutMail_sendingsInput = {
@@ -497,6 +555,8 @@ export type mail_sending_receiversUpdateWithoutMail_sendingsInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 export type mail_sending_receiversUncheckedUpdateWithoutMail_sendingsInput = {
@@ -507,6 +567,8 @@ export type mail_sending_receiversUncheckedUpdateWithoutMail_sendingsInput = {
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 export type mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsInput = {
@@ -517,6 +579,8 @@ export type mail_sending_receiversUncheckedUpdateManyWithoutMail_sendingsInput =
   substitutions?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_by?: Prisma.StringFieldUpdateOperationsInput | string
+  cc?: Prisma.mail_sending_receiversUpdateccInput | string[]
+  bcc?: Prisma.mail_sending_receiversUpdatebccInput | string[]
 }
 
 
@@ -530,6 +594,8 @@ export type mail_sending_receiversSelect<ExtArgs extends runtime.Types.Extension
   substitutions?: boolean
   created_at?: boolean
   created_by?: boolean
+  cc?: boolean
+  bcc?: boolean
   mail_sendings?: boolean | Prisma.mail_sendingsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sending_receivers"]>
 
@@ -542,6 +608,8 @@ export type mail_sending_receiversSelectCreateManyAndReturn<ExtArgs extends runt
   substitutions?: boolean
   created_at?: boolean
   created_by?: boolean
+  cc?: boolean
+  bcc?: boolean
   mail_sendings?: boolean | Prisma.mail_sendingsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sending_receivers"]>
 
@@ -554,6 +622,8 @@ export type mail_sending_receiversSelectUpdateManyAndReturn<ExtArgs extends runt
   substitutions?: boolean
   created_at?: boolean
   created_by?: boolean
+  cc?: boolean
+  bcc?: boolean
   mail_sendings?: boolean | Prisma.mail_sendingsDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["mail_sending_receivers"]>
 
@@ -566,9 +636,11 @@ export type mail_sending_receiversSelectScalar = {
   substitutions?: boolean
   created_at?: boolean
   created_by?: boolean
+  cc?: boolean
+  bcc?: boolean
 }
 
-export type mail_sending_receiversOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "mail_sending_id" | "email" | "name" | "substitutions" | "created_at" | "created_by", ExtArgs["result"]["mail_sending_receivers"]>
+export type mail_sending_receiversOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tenant_id" | "mail_sending_id" | "email" | "name" | "substitutions" | "created_at" | "created_by" | "cc" | "bcc", ExtArgs["result"]["mail_sending_receivers"]>
 export type mail_sending_receiversInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   mail_sendings?: boolean | Prisma.mail_sendingsDefaultArgs<ExtArgs>
 }
@@ -593,6 +665,8 @@ export type $mail_sending_receiversPayload<ExtArgs extends runtime.Types.Extensi
     substitutions: runtime.JsonValue
     created_at: Date
     created_by: string
+    cc: string[]
+    bcc: string[]
   }, ExtArgs["result"]["mail_sending_receivers"]>
   composites: {}
 }
@@ -1025,6 +1099,8 @@ export interface mail_sending_receiversFieldRefs {
   readonly substitutions: Prisma.FieldRef<"mail_sending_receivers", 'Json'>
   readonly created_at: Prisma.FieldRef<"mail_sending_receivers", 'DateTime'>
   readonly created_by: Prisma.FieldRef<"mail_sending_receivers", 'String'>
+  readonly cc: Prisma.FieldRef<"mail_sending_receivers", 'String[]'>
+  readonly bcc: Prisma.FieldRef<"mail_sending_receivers", 'String[]'>
 }
     
 
