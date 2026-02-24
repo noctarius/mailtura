@@ -10,7 +10,7 @@ import { registerCustomAuthRoutes } from "./custom-handlers.js";
 import { createRouter } from "../router/index.js";
 import { sendMagicLinkEmail, sendResetPasswordEmail, sendVerificationEmail } from "../mail/index.js";
 import type { ServerContext } from "../context/index.js";
-import uuidv7 from "../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 declare module "fastify" {
   interface FastifyInstance {

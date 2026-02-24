@@ -46,7 +46,6 @@
     "tsx": "^4.20.6",
     "typescript": "catalog:",
     "typescript-eslint": "catalog:",
-    "uuid": "^13.0.0",
     "vite-node": "^3.2.4"
   },
   "trustedDependencies": ["@nestjs/core"]

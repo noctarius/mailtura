@@ -26,7 +26,7 @@ import type { Tenant } from "@mailtura/rpcmodel/api/index.js";
 import { mapTenant } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { hasAnyPermission } from "@mailtura/rpcmodel/auth/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function tenantRoutes<
   RawServer extends RawServerBase = RawServerDefault,

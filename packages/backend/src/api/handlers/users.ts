@@ -15,13 +15,13 @@ import type { User } from "@mailtura/rpcmodel/api/index.js";
 import { mapUser, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { sendInviteEmail } from "../../mail/index.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 import {
   PaginationMetadata,
   PaginationQueryParameters,
   parseQueryParameter,
   whereClause,
 } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
 
 export function userRoutes<
   RawServer extends RawServerBase = RawServerDefault,

@@ -13,7 +13,7 @@ import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { newPasswordHasher } from "../../auth/password-hasher.js";
 import { CreateMailConfig } from "@mailtura/rpcmodel/api/request-response.js";
 import { Prisma } from "@mailtura/database";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 const UserEmail = Type.Object({
   email: Type.String({ format: "email" }),

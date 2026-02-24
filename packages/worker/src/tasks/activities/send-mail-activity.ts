@@ -1,7 +1,7 @@
 import type { SendMailArguments } from "@mailtura/rpcmodel/tasks/index.js";
 import { log } from "@temporalio/activity";
 import {
-  GLOBAL_UNSUBSCRIBE_LIST_ID,
+  MailSenderEntity,
   MailSendingEntity,
   MailSendingReceiverEntity,
   mapTemplate,
@@ -9,11 +9,11 @@ import {
   newPrismaPg,
   PrismaType,
 } from "@mailtura/database";
-import { MailLogEntry, newMailTransport, TransportConfig, UrlProxy } from "@mailtura/mails";
-import { type MailContent, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
+import { DirectMailRecipient, MailLogEntry, newMailTransport, TransportConfig, UrlProxy } from "@mailtura/mails";
+import { type MailContent } from "@mailtura/rpcmodel/mails/index.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
 import { getSystemConfig } from "../../helper/system-config.js";
-import uuidv7 from "../../helper/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 import { TemplateResolver } from "@mailtura/contentcompiler";
 
 const connectionString = process.env.DATABASE_URL;
@@ -21,7 +21,6 @@ if (!connectionString) throw new Error("DATABASE_URL is not set");
 
 type MailSending = MailSendingEntity & {
   mail_receivers: MailSendingReceiverEntity[];
-  subscriber_lists: { subscriber_list_id: string }[];
 };
 
 const buildTemplateResolver = (prisma: PrismaType, tenantId: string): TemplateResolver => {
@@ -62,7 +61,7 @@ const buildMailLogStorage = (prisma: PrismaType, tenantId: string) => {
         return {
           id,
           tenant_id: tenantId,
-          contact_id: entry.contactId ?? null,
+          email: entry.email,
           provider_id: entry.providerId,
           provider_mail_id: entry.providerMailId ?? id,
           opens: 0,
@@ -93,7 +92,6 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
       mail_sender: true,
       mail_config: true,
       mail_receivers: true,
-      subscriber_lists: true,
     },
   });
 
@@ -129,7 +127,7 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
     throw new Error(`Mail transport not found for mail sending ${mailSendingId} on tenant ${tenantId}`);
   }
 
-  const recipients = await mapReceivers(prisma, mailSending, 0, batchSize);
+  const recipients = await getMailReceiverBatch(prisma, mailSending, mailSender, 0, batchSize);
   await transport.send({
     from,
     subject: mailSending.subject,
@@ -141,74 +139,30 @@ export async function sendMailBatch(args: SendMailArguments): Promise<number> {
   return 0;
 }
 
-const mapReceivers = async (
+const getMailReceiverBatch = async (
   prisma: PrismaType,
   mailSending: MailSending,
+  mailSender: MailSenderEntity,
   offset: number,
   batchSize: number
-): Promise<MailRecipient[]> => {
-  const receivers = mailSending.mail_receivers;
-  if (receivers && receivers.length > 0) {
-    const contacts = await prisma.contacts.findMany({
-      where: {
-        tenant_id: mailSending.tenant_id,
-        email: {
-          in: receivers.map(receiver => receiver.email),
-        },
-      },
-    });
-
-    const contactIdByEmail = new Map(contacts.map(contact => [contact.email, contact.id]));
-    return receivers.map(receiver => ({
-      to: {
-        name: receiver.name,
-        email: receiver.email,
-      },
-      substitutions: {
-        ...((receiver.substitutions as Record<string, string> | undefined) ?? {}),
-        contactId: contactIdByEmail.get(receiver.email),
-      },
-    }));
-  }
-
-  const subscriberLists = mailSending.subscriber_lists;
-
-  const contacts = await prisma.contacts.findMany({
+): Promise<DirectMailRecipient[]> => {
+  const mailSendingReceivers = await prisma.mail_sending_receivers.findMany({
     where: {
-      subscribers: {
-        some: {
-          subscriber_list_id: {
-            in: subscriberLists.map(list => list.subscriber_list_id),
-          },
-        },
-      },
-      unsubscribes: {
-        none: {
-          subscriber_list_id: {
-            in: [GLOBAL_UNSUBSCRIBE_LIST_ID, ...subscriberLists.map(list => list.subscriber_list_id)],
-          },
-        },
-      },
+      mail_sending_id: mailSending.id,
     },
     skip: offset,
     take: batchSize,
     orderBy: {
-      id: "asc",
+      created_by: "asc",
     },
   });
 
-  return contacts.map(contact => ({
-    to: {
-      name: contact.first_name ?? undefined,
-      email: contact.email,
-    },
-    substitutions: {
-      firstName: (contact.first_name ?? undefined)!,
-      lastName: (contact.last_name ?? undefined)!,
-      email: contact.email,
-      contactId: contact.id,
-      createdAt: UTC.parse(contact.created_at).formatIsoTime(),
-    },
+  return mailSendingReceivers.map(receiver => ({
+    to: { email: receiver.email, name: receiver.name },
+    cc: receiver.cc.map(cc => ({ email: cc })),
+    replyTo: { name: mailSender.name, email: mailSender.reply_to ?? mailSender.email },
+    bcc: receiver.bcc.map(bcc => ({ email: bcc })),
+    substitutions: receiver.substitutions as Record<string, string> | undefined,
   }));
 };
 

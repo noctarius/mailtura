@@ -38,10 +38,8 @@ model contacts {
   updated_by String?
 
   activities   activities[]
-  bounces      bounces[]
   subscribers  subscribers[]
   unsubscribes unsubscribes[]
-  mail_logs    mail_logs[]
 
   @@unique([tenant_id, email])
 }
@@ -134,15 +132,13 @@ model bounces {
   bounced_at  DateTime    @db.Timestamptz()
   reason      String
   bounce_type bounce_type
-  contact_id  String      @db.Uuid
+  email       String
   created_at  DateTime    @db.Timestamptz()
   created_by  String
   updated_at  DateTime?   @db.Timestamptz()
   updated_by  String?
 
-  contacts contacts @relation(fields: [contact_id], references: [id])
-
-  @@unique([tenant_id, contact_id])
+  @@unique([tenant_id, email])
 }
 
 enum subscriber_status {
@@ -180,8 +176,22 @@ model subscriber_lists {
   updated_at  DateTime? @db.Timestamptz()
   updated_by  String?
 
-  subscribers   subscribers[]
-  mail_sendings mail_sendings_on_subscriber_lists[]
+  subscribers subscribers[]
+
+  @@unique([tenant_id, name])
+}
+
+model unsubscribe_lists {
+  id          String    @id @db.Uuid
+  tenant_id   String    @db.Uuid
+  name        String
+  description String?
+  created_at  DateTime  @db.Timestamptz()
+  created_by  String
+  updated_at  DateTime? @db.Timestamptz()
+  updated_by  String?
+
+  unsubscribes unsubscribes[]
 
   @@unique([tenant_id, name])
 }
@@ -190,25 +200,27 @@ enum unsubscribe_source {
   UnsubscribeLink
   ManualAddition
   Bounce
+  Complaint
   Api
   Other
 }
 
 model unsubscribes {
-  id              String             @id @db.Uuid
-  tenant_id       String             @db.Uuid
-  source          unsubscribe_source
-  unsubscribed_at DateTime           @db.Timestamptz()
-  subscriber_list_id String          @db.Uuid
-  contact_id      String             @db.Uuid
-  created_at      DateTime           @db.Timestamptz()
-  created_by      String
-  updated_at      DateTime?          @db.Timestamptz()
-  updated_by      String?
+  id                  String             @id @db.Uuid
+  tenant_id           String             @db.Uuid
+  source              unsubscribe_source
+  unsubscribed_at     DateTime           @db.Timestamptz()
+  unsubscribe_list_id String             @db.Uuid
+  email               String
+  created_at          DateTime           @db.Timestamptz()
+  created_by          String
+  updated_at          DateTime?          @db.Timestamptz()
+  updated_by          String?
 
-  contacts         contacts          @relation(fields: [contact_id], references: [id])
+  unsubscribe_lists unsubscribe_lists @relation(fields: [unsubscribe_list_id], references: [id])
+  contacts          contacts          @relation(fields: [tenant_id, email], references: [tenant_id, email])
 
-  @@unique([tenant_id, contact_id, subscriber_list_id])
+  @@unique([tenant_id, email, unsubscribe_list_id])
 }
 
 model users {
@@ -436,6 +448,7 @@ model mail_configs {
 
 enum mail_log_status {
   Delivered
+  Forwarded
   Pending
   Scheduled
   Bounced
@@ -445,7 +458,7 @@ enum mail_log_status {
 model mail_logs {
   id               String          @id @db.Uuid
   tenant_id        String          @db.Uuid
-  contact_id       String?         @db.Uuid
+  email            String
   provider_id      String
   provider_mail_id String
   opens            Int
@@ -455,8 +468,6 @@ model mail_logs {
   created_by       String
   updated_at       DateTime?       @db.Timestamptz()
   updated_by       String?
-
-  contacts contacts? @relation(fields: [contact_id], references: [id])
 
   @@unique([provider_id, provider_mail_id])
   @@index([tenant_id])
@@ -489,20 +500,9 @@ model mail_sendings {
   mail_sender mail_senders @relation(fields: [mail_sender_id], references: [id])
   mail_config mail_configs @relation(fields: [mail_config_id], references: [id])
 
-  subscriber_lists mail_sendings_on_subscriber_lists[]
-  mail_receivers   mail_sending_receivers[]
+  mail_receivers mail_sending_receivers[]
 
   @@index([tenant_id])
-}
-
-model mail_sendings_on_subscriber_lists {
-  mail_sendings_id   String @db.Uuid
-  subscriber_list_id String @db.Uuid
-
-  mail_sendings    mail_sendings    @relation(fields: [mail_sendings_id], references: [id])
-  subscriber_lists subscriber_lists @relation(fields: [subscriber_list_id], references: [id])
-
-  @@id([mail_sendings_id, subscriber_list_id])
 }
 
 model mail_url_proxies {
@@ -521,6 +521,7 @@ model mail_senders {
   tenant_id  String    @db.Uuid
   name       String
   email      String
+  reply_to   String?
   created_at DateTime  @db.Timestamptz()
   created_by String
   updated_at DateTime? @db.Timestamptz()
@@ -540,6 +541,8 @@ model mail_sending_receivers {
   substitutions   Json     @db.JsonB
   created_at      DateTime @db.Timestamptz()
   created_by      String
+  cc              String[]
+  bcc             String[]
 
   mail_sendings mail_sendings @relation(fields: [mail_sending_id], references: [id])
 

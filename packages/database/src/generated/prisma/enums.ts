@@ -76,6 +76,7 @@ export const unsubscribe_source = {
   UnsubscribeLink: 'UnsubscribeLink',
   ManualAddition: 'ManualAddition',
   Bounce: 'Bounce',
+  Complaint: 'Complaint',
   Api: 'Api',
   Other: 'Other'
 } as const
@@ -85,6 +86,7 @@ export type unsubscribe_source = (typeof unsubscribe_source)[keyof typeof unsubs
 
 export const mail_log_status = {
   Delivered: 'Delivered',
+  Forwarded: 'Forwarded',
   Pending: 'Pending',
   Scheduled: 'Scheduled',
   Bounced: 'Bounced',

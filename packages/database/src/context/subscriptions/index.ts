@@ -6,8 +6,8 @@ export const GLOBAL_UNSUBSCRIBE_LIST_ID = "00000000-0000-0000-0000-000000000000"
 
 export interface UnsubscribeContactInput {
   tenantId: string;
-  contactId: string;
-  listIds: string[];
+  email: string;
+  unsubscribeListIds: string[];
   actor?: string;
 }
 
@@ -73,18 +73,18 @@ export async function buildSubscriptionContext(
       .filter((subscription): subscription is { id: string; name: string } => {
         return typeof subscription.name === "string" && subscription.name.length > 0;
       }),
-    unsubscribeLists: (listIds: string[], actor?: string) =>
+    unsubscribeLists: (unsubscribeListIds: string[], actor?: string) =>
       unsubscribeContact(prisma, {
         tenantId: contact.tenant_id,
-        contactId,
-        listIds,
+        email: contact.email,
+        unsubscribeListIds,
         actor,
       }),
     unsubscribeGlobal: (actor?: string) =>
       unsubscribeContact(prisma, {
         tenantId: contact.tenant_id,
-        contactId,
-        listIds: [GLOBAL_UNSUBSCRIBE_LIST_ID],
+        email: contact.email,
+        unsubscribeListIds: [GLOBAL_UNSUBSCRIBE_LIST_ID],
         actor,
       }),
   };
@@ -92,53 +92,46 @@ export async function buildSubscriptionContext(
 
 export async function unsubscribeContact(prisma: PrismaType, input: UnsubscribeContactInput): Promise<void> {
   const actor = input.actor ?? "api";
-  const listIds = distinctSubscriptionIds(input.listIds);
+  const unsubscribeListIds = distinctSubscriptionIds(input.unsubscribeListIds);
   await prisma.$transaction(async tx => {
-    if (listIds.includes(GLOBAL_UNSUBSCRIBE_LIST_ID)) {
-      await tx.subscribers.updateMany({
-        where: {
-          tenant_id: input.tenantId,
-          contact_id: input.contactId,
+    await tx.subscribers.updateMany({
+      where: {
+        tenant_id: input.tenantId,
+        contacts: {
+          email: input.email,
         },
-        data: {
-          status: "Unsubscribed",
-          updated_at: UTC.now().toDate(),
-          updated_by: actor,
-        },
-      });
-    } else if (listIds.length > 0) {
-      await tx.subscribers.updateMany({
-        where: {
-          tenant_id: input.tenantId,
-          contact_id: input.contactId,
-          subscriber_list_id: {
-            in: listIds,
-          },
-        },
-        data: {
-          status: "Unsubscribed",
-          updated_at: UTC.now().toDate(),
-          updated_by: actor,
-        },
-      });
-    }
+        // If unsubscribeListIds is empty or includes global unsubscribe, unsubscribe from all lists
+        ...(unsubscribeListIds.length > 0 && !unsubscribeListIds.includes(GLOBAL_UNSUBSCRIBE_LIST_ID)
+          ? {
+              subscriber_list_id: {
+                in: unsubscribeListIds,
+              },
+            }
+          : {}),
+      },
+      data: {
+        status: "Unsubscribed",
+        updated_at: UTC.now().toDate(),
+        updated_by: actor,
+      },
+    });
 
     await Promise.all(
-      listIds.map(subscriberListId =>
+      unsubscribeListIds.map(unsubscribeListId =>
         tx.unsubscribes.upsert({
           where: {
-            tenant_id_contact_id_subscriber_list_id: {
+            tenant_id_email_unsubscribe_list_id: {
               tenant_id: input.tenantId,
-              contact_id: input.contactId,
-              subscriber_list_id: subscriberListId,
+              email: input.email,
+              unsubscribe_list_id: unsubscribeListId,
             },
           },
           create: {
             id: randomUUID(),
             tenant_id: input.tenantId,
-            contact_id: input.contactId,
+            email: input.email,
             source: "UnsubscribeLink",
-            subscriber_list_id: subscriberListId,
+            unsubscribe_list_id: unsubscribeListId,
             unsubscribed_at: UTC.now().toDate(),
             created_at: UTC.now().toDate(),
             created_by: actor,

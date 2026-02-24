@@ -1,5 +1,11 @@
-import { Mail, MailchimpConfig, MailContact } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, type DeliveryPlan, type RecipientType, type TransportConfig } from "../transport/index.js";
+import { type DirectMailContact, MailchimpConfig } from "@mailtura/rpcmodel/mails/index.js";
+import {
+  AbstractTransport,
+  type DeliveryPlan,
+  type DirectMail,
+  type RecipientType,
+  type TransportConfig,
+} from "../index.js";
 import mailchimp from "@mailchimp/mailchimp_transactional";
 
 type MailchimpClient = ReturnType<typeof mailchimp>;
@@ -15,7 +21,7 @@ export class MailchimpTransport extends AbstractTransport<Recipient> {
     this.#config = config;
   }
 
-  async send(mail: Mail): Promise<number> {
+  async send(mail: DirectMail): Promise<number> {
     const client = mailchimp(this.#config.apiKey);
 
     const deliveryPlan = await this.resolveDeliveryPlan(mail);
@@ -27,7 +33,7 @@ export class MailchimpTransport extends AbstractTransport<Recipient> {
     });
   }
 
-  protected override mapMailAddress(contact: MailContact, type?: RecipientType): mailchimp.MessageRecipient {
+  protected override mapMailAddress(contact: DirectMailContact, type?: RecipientType): mailchimp.MessageRecipient {
     return {
       email: contact.email,
       name: contact.name,
@@ -35,7 +41,7 @@ export class MailchimpTransport extends AbstractTransport<Recipient> {
     };
   }
 
-  #makeMessage(mail: Mail, item: DeliveryPlan<Recipient>): Message {
+  #makeMessage(mail: DirectMail, item: DeliveryPlan<Recipient>): Message {
     return {
       from_email: mail.from.email,
       from_name: mail.from.name,

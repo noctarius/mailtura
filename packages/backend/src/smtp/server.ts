@@ -11,7 +11,7 @@ import type { ServerContext } from "../context/index.js";
 import type { PrismaType } from "@mailtura/database";
 import type { TaskManager } from "../tasks/index.js";
 import { hasPermission } from "@mailtura/rpcmodel/auth/index.js";
-import uuidv7 from "../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 interface SmtpSession extends SMTPServerSession {
   user?: any;

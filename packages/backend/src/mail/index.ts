@@ -4,7 +4,7 @@ import { createEmailVerificationToken } from "better-auth/api";
 import { getBaseConfig } from "../system/index.js";
 import { getBaseSystemUrl } from "../helpers/base-system-url.js";
 import type { TaskManager } from "../tasks/index.js";
-import uuidv7 from "../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 const authSecret = process.env.MAILTURA_AUTH_SECRET;
 if (!authSecret) {

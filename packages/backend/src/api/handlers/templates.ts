@@ -15,7 +15,7 @@ import { createTemplateCompiler, isTemplateError } from "@mailtura/contentcompil
 import { mapTemplate, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function templateRoutes<
   RawServer extends RawServerBase = RawServerDefault,

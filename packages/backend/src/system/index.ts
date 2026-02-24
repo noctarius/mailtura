@@ -1,5 +1,4 @@
 import type { PrismaType } from "@mailtura/database";
-import uuidv7 from "../helpers/uuidv7.js";
 
 export interface BaseConfiguration {
   siteAddress: string;

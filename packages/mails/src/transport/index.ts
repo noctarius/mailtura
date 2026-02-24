@@ -5,7 +5,7 @@ import {
   type TemplateCompilerConfig,
   type TemplateResolver,
 } from "@mailtura/contentcompiler";
-import { type Mail, type MailContact, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
+import { type DirectMailContact, type Mail, type MailRecipient } from "@mailtura/rpcmodel/mails/index.js";
 
 export type UrlProxy = ResolvedTemplate["urlRelocations"][number];
 export type RecipientType = "to" | "cc" | "bcc";
@@ -15,7 +15,7 @@ export interface DeliveryPlan<EmailType> {
   to: EmailType[];
   cc: EmailType[];
   bcc: EmailType[];
-  contactIds: Array<string | undefined>;
+  emails: string[];
   html: string;
   text: string;
   recipientCount: number;
@@ -26,10 +26,21 @@ export interface DeliverySendResult {
 }
 
 export interface MailLogEntry {
-  contactId?: string;
+  email: string;
   providerId: string;
   providerMailId?: string;
 }
+
+export type DirectMailRecipient = Omit<MailRecipient, "to" | "cc" | "bcc"> & {
+  to: DirectMailContact;
+  cc?: DirectMailContact[];
+  bcc?: DirectMailContact[];
+};
+
+export type DirectMail = Omit<Mail, "recipients" | "from"> & {
+  from: DirectMailContact;
+  recipients: DirectMailRecipient[];
+};
 
 export interface TransportConfig {
   apiBase: string;
@@ -39,7 +50,7 @@ export interface TransportConfig {
 }
 
 export interface Transport {
-  send(mail: Mail): Promise<number>;
+  send(mail: DirectMail): Promise<number>;
 }
 
 export abstract class AbstractTransport<EmailType> implements Transport {
@@ -51,7 +62,7 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     this.#contentCompiler = createTemplateCompiler(transportConfig.templateResolver, transportConfig.apiBase);
   }
 
-  abstract send(mail: Mail): Promise<number>;
+  abstract send(mail: DirectMail): Promise<number>;
 
   protected mergeSubstitutions(
     mailSubstitutions?: Record<string, string>,
@@ -64,7 +75,7 @@ export abstract class AbstractTransport<EmailType> implements Transport {
   }
 
   protected async resolveTemplate<T extends Record<string, any> = any>(
-    mail: Mail,
+    mail: DirectMail,
     substitutions?: T,
     bypassCache?: boolean
   ): Promise<Omit<ResolvedTemplate, "urlRelocations">> {
@@ -98,32 +109,32 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     };
   }
 
-  protected hasSubstitutions(mail: Mail): boolean {
+  protected hasSubstitutions(mail: DirectMail): boolean {
     return mail.recipients.some(
       recipient => recipient.substitutions && Object.keys(recipient.substitutions).length > 0
     );
   }
 
-  protected recipientGroupingPolicy(_mail: Mail): RecipientGroupingPolicy {
+  protected recipientGroupingPolicy(_mail: DirectMail): RecipientGroupingPolicy {
     return "per-recipient";
   }
 
-  protected resolveRecipientGroupingPolicy(mail: Mail): Exclude<RecipientGroupingPolicy, "auto"> {
+  protected resolveRecipientGroupingPolicy(mail: DirectMail): Exclude<RecipientGroupingPolicy, "auto"> {
     const policy = this.recipientGroupingPolicy(mail);
     if (policy !== "auto") return policy;
     return this.hasSubstitutions(mail) ? "per-recipient" : "joined";
   }
 
-  protected normalizeRecipients(contacts?: MailContact | MailContact[]): MailContact[] {
+  protected normalizeRecipients(contacts?: DirectMailContact | DirectMailContact[]): DirectMailContact[] {
     if (!contacts) return [];
     return Array.isArray(contacts) ? contacts : [contacts];
   }
 
-  protected mapMailAddresses(contacts?: MailContact | MailContact[], type?: RecipientType): EmailType[] {
+  protected mapMailAddresses(contacts?: DirectMailContact | DirectMailContact[], type?: RecipientType): EmailType[] {
     return this.normalizeRecipients(contacts).map(contact => this.mapMailAddress(contact, type));
   }
 
-  protected mapRecipientAddresses(recipient: MailRecipient): Pick<DeliveryPlan<EmailType>, "to" | "cc" | "bcc"> {
+  protected mapRecipientAddresses(recipient: DirectMailRecipient): Pick<DeliveryPlan<EmailType>, "to" | "cc" | "bcc"> {
     return {
       to: this.mapMailAddresses(recipient.to, "to"),
       cc: this.mapMailAddresses(recipient.cc, "cc"),
@@ -131,14 +142,8 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     };
   }
 
-  protected extractRecipientContactId(recipient: MailRecipient): string | undefined {
-    const substitutions = recipient.substitutions as Record<string, unknown> | undefined;
-    const contactId = substitutions?.contactId;
-    return typeof contactId === "string" && contactId.length > 0 ? contactId : undefined;
-  }
-
   protected async resolveTemplateOrThrow<T extends Record<string, any> = any>(
-    mail: Mail,
+    mail: DirectMail,
     substitutions?: T,
     bypassCache?: boolean
   ): Promise<{ html: string; text: string }> {
@@ -152,17 +157,16 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     };
   }
 
-  protected async resolveDeliveryPlan(mail: Mail): Promise<DeliveryPlan<EmailType>[]> {
+  protected async resolveDeliveryPlan(mail: DirectMail): Promise<DeliveryPlan<EmailType>[]> {
     const groupingPolicy = this.resolveRecipientGroupingPolicy(mail);
     if (groupingPolicy === "per-recipient") {
       return Promise.all(
         mail.recipients.map(async recipient => {
           const substitutions = this.mergeSubstitutions(mail.substitutions, recipient.substitutions);
           const resolvedTemplate = await this.resolveTemplateOrThrow(mail, substitutions);
-          const contactId = this.extractRecipientContactId(recipient);
           return {
             ...this.mapRecipientAddresses(recipient),
-            contactIds: contactId ? [contactId] : [],
+            emails: [recipient.to.email],
             html: resolvedTemplate.html,
             text: resolvedTemplate.text,
             recipientCount: 1,
@@ -173,13 +177,12 @@ export abstract class AbstractTransport<EmailType> implements Transport {
 
     const resolvedTemplate = await this.resolveTemplateOrThrow(mail);
     const mappedRecipients = mail.recipients.map(recipient => this.mapRecipientAddresses(recipient));
-    const contactIds = mail.recipients.map(recipient => this.extractRecipientContactId(recipient));
     return [
       {
         to: mappedRecipients.flatMap(recipient => recipient.to),
         cc: mappedRecipients.flatMap(recipient => recipient.cc),
         bcc: mappedRecipients.flatMap(recipient => recipient.bcc),
-        contactIds,
+        emails: mail.recipients.map(recipient => recipient.to.email),
         html: resolvedTemplate.html,
         text: resolvedTemplate.text,
         recipientCount: mail.recipients.length,
@@ -195,11 +198,10 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     for (const [index, item] of deliveryPlan.entries()) {
       try {
         const result = await sender(item);
-        const contactIds = this.#normalizeContactIds(item.contactIds, item.recipientCount);
         const providerMailId = item.recipientCount === 1 ? result?.providerMailId : undefined;
         await this.#transportConfig.mailLogStorage(
-          contactIds.map(contactId => ({
-            contactId,
+          item.emails.map(email => ({
+            email,
             providerId: this.providerId,
             providerMailId,
           }))
@@ -214,13 +216,6 @@ export abstract class AbstractTransport<EmailType> implements Transport {
     return sentCount;
   }
 
-  #normalizeContactIds(contactIds: Array<string | undefined>, recipientCount: number): Array<string | undefined> {
-    if (contactIds.length >= recipientCount) {
-      return contactIds.slice(0, recipientCount);
-    }
-    return contactIds.concat(Array(recipientCount - contactIds.length).fill(undefined));
-  }
-
   protected abstract readonly providerId: string;
-  protected abstract mapMailAddress(contact: MailContact, type?: RecipientType): EmailType;
+  protected abstract mapMailAddress(contact: DirectMailContact, type?: RecipientType): EmailType;
 }

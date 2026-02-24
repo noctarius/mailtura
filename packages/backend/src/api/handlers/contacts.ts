@@ -24,7 +24,7 @@ import type { Contact, ContactImport } from "@mailtura/rpcmodel/api/index.js";
 import { mapContact, mapContactImport, mapContactsWithSubscriptions, Prisma, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { type PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function contactRoutes<
   RawServer extends RawServerBase = RawServerDefault,

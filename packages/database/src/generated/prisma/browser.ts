@@ -53,6 +53,11 @@ export type subscribers = Prisma.subscribersModel
  */
 export type subscriber_lists = Prisma.subscriber_listsModel
 /**
+ * Model unsubscribe_lists
+ * 
+ */
+export type unsubscribe_lists = Prisma.unsubscribe_listsModel
+/**
  * Model unsubscribes
  * 
  */
@@ -137,11 +142,6 @@ export type webhooks = Prisma.webhooksModel
  * 
  */
 export type mail_sendings = Prisma.mail_sendingsModel
-/**
- * Model mail_sendings_on_subscriber_lists
- * 
- */
-export type mail_sendings_on_subscriber_lists = Prisma.mail_sendings_on_subscriber_listsModel
 /**
  * Model mail_url_proxies
  * 

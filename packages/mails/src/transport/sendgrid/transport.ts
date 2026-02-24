@@ -1,5 +1,5 @@
-import { Mail, MailContact, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
+import { type DirectMailContact, SendgridConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { AbstractTransport, type DeliveryPlan, type DirectMail, type TransportConfig } from "../index.js";
 import { Client } from "@sendgrid/client";
 import { classes } from "@sendgrid/helpers";
 import type { ClientResponse } from "@sendgrid/client/src/response.js";
@@ -18,7 +18,7 @@ export class SendgridTransport extends AbstractTransport<EmailData> {
     this.#config = config;
   }
 
-  async send(mail: Mail): Promise<number> {
+  async send(mail: DirectMail): Promise<number> {
     const client = new Client();
 
     client.setDataResidency(this.#config.region ?? "global");
@@ -44,11 +44,11 @@ export class SendgridTransport extends AbstractTransport<EmailData> {
     });
   }
 
-  protected mapMailAddress(contact: MailContact): EmailData {
+  protected mapMailAddress(contact: DirectMailContact): EmailData {
     return { name: contact.name, email: contact.email };
   }
 
-  #makeMailData(from: EmailData, mail: Mail, item: DeliveryPlan<EmailData>): MailData {
+  #makeMailData(from: EmailData, mail: DirectMail, item: DeliveryPlan<EmailData>): MailData {
     return {
       from,
       subject: mail.subject,

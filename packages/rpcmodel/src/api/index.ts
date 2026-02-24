@@ -45,10 +45,7 @@ export const Contact = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      email: Type.String({
-        format: "email",
-        pattern: email,
-      }),
+      email: Type.String({ format: "email", pattern: email }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       subscriptions: Type.Array(Type.String({ format: "uuid" }), { minItems: 1, uniqueItems: true }),
@@ -205,8 +202,7 @@ export const Bounce = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      contactId: Type.String({ format: "uuid" }),
-      email: Type.Optional(Type.String({ format: "email" })),
+      email: Type.String({ format: "email", pattern: email }),
       bouncedAt: Type.String({ format: "date-time" }),
       reason: Type.String(),
       bounceType: BounceType,
@@ -279,19 +275,41 @@ export const SubscriberList = //
 
 export type SubscriberList = Static<typeof SubscriberList>;
 
+export const UnsubscribeList = //
+  Type.Object(
+    {
+      id: Type.String({ format: "uuid" }),
+      name: Type.String(),
+      description: Type.Optional(Type.String()),
+      contactCount: Type.Integer({ minimum: 0 }),
+      createdAt: Type.String({ format: "date-time" }),
+      createdBy: Type.String(),
+      updatedAt: Type.Optional(Type.String({ format: "date-time" })),
+      updatedBy: Type.Optional(Type.String()),
+    },
+    {
+      $id: "UnsubscribeList",
+      description: "A list of unsubscribers in the system",
+      additionalProperties: false,
+    }
+  );
+
+export type UnsubscribeList = Static<typeof UnsubscribeList>;
+
 export const UnsubscribeSource = //
   Type.Union(
     [
       Type.Literal("UnsubscribeLink"),
       Type.Literal("ManualAddition"),
       Type.Literal("Bounce"),
+      Type.Literal("Complaint"),
       Type.Literal("Api"),
       Type.Literal("Other"),
     ],
     {
       $id: "UnsubscribeSource",
       description: "The source of an unsubscribe",
-      default: "Email",
+      default: "UnsubscribeLink",
     }
   );
 
@@ -301,12 +319,11 @@ export const Unsubscribe = //
   Type.Object(
     {
       id: Type.String({ format: "uuid" }),
-      contactId: Type.String({ format: "uuid" }),
-      email: Type.Optional(Type.String({ format: "email" })),
+      email: Type.String({ format: "email", pattern: email }),
       source: UnsubscribeSource,
       unsubscribedAt: Type.String({ format: "date-time" }),
       global: Type.Boolean(),
-      subscriberListId: Type.Optional(Type.String({ format: "uuid" })),
+      unsubscribeListId: Type.Optional(Type.String({ format: "uuid" })),
       createdAt: Type.String({ format: "date-time" }),
       createdBy: Type.String(),
       updatedAt: Type.Optional(Type.String({ format: "date-time" })),
@@ -326,7 +343,7 @@ export const User = //
     {
       id: Type.String({ format: "uuid" }),
       tenantId: Type.String({ format: "uuid" }),
-      email: Type.String({ format: "email" }),
+      email: Type.String({ format: "email", pattern: email }),
       firstName: Type.Optional(Type.String()),
       lastName: Type.Optional(Type.String()),
       roleId: Type.String({ format: "uuid" }),
@@ -531,7 +548,8 @@ export type Account = Static<typeof Account>;
 export const MailSender = Type.Object({
   id: Type.String({ format: "uuid" }),
   name: Type.String(),
-  email: Type.String({ format: "email" }),
+  email: Type.String({ format: "email", pattern: email }),
+  replyTo: Type.Optional(Type.String({ format: "email", pattern: email })),
   createdAt: Type.String({ format: "date-time" }),
   createdBy: Type.String(),
   updatedAt: Type.Optional(Type.String({ format: "date-time" })),

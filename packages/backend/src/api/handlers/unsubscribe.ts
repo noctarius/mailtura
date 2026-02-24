@@ -14,7 +14,7 @@ import type { Unsubscribe } from "@mailtura/rpcmodel/api/index.js";
 import { GLOBAL_UNSUBSCRIBE_LIST_ID, mapUnsubscribe, withPagination } from "@mailtura/database";
 import { createError } from "@mailtura/rpcmodel/api/errors.js";
 import { PaginationMetadata, PaginationQueryParameters } from "@mailtura/rpcmodel/pagination/index.js";
-import uuidv7 from "../../helpers/uuidv7.js";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 export function unsubscribeRoutes<
   RawServer extends RawServerBase = RawServerDefault,

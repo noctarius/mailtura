@@ -1,5 +1,5 @@
-import { Mail, MailContact, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
-import { AbstractTransport, type DeliveryPlan, type TransportConfig } from "../transport/index.js";
+import { type DirectMailContact, MailgunConfig } from "@mailtura/rpcmodel/mails/index.js";
+import { AbstractTransport, type DeliveryPlan, type DirectMail, type TransportConfig } from "../index.js";
 import Mailgun from "mailgun.js";
 import FormData from "form-data";
 
@@ -14,7 +14,7 @@ export class MailgunTransport extends AbstractTransport<string> {
     this.#config = config;
   }
 
-  async send(mail: Mail): Promise<number> {
+  async send(mail: DirectMail): Promise<number> {
     const mailgun = new Mailgun(FormData);
     const mg = mailgun.client({
       username: "api",
@@ -30,11 +30,11 @@ export class MailgunTransport extends AbstractTransport<string> {
     });
   }
 
-  protected mapMailAddress(contact: MailContact): string {
+  protected mapMailAddress(contact: DirectMailContact): string {
     return contact.name ? `${contact.name} <${contact.email}>` : contact.email;
   }
 
-  #makeMessage(from: string, mail: Mail, item: DeliveryPlan<string>): MailgunMessageData {
+  #makeMessage(from: string, mail: DirectMail, item: DeliveryPlan<string>): MailgunMessageData {
     return {
       from,
       to: item.to,

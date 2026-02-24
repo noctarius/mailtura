@@ -58,6 +58,7 @@ export const ModelName = {
   bounces: 'bounces',
   subscribers: 'subscribers',
   subscriber_lists: 'subscriber_lists',
+  unsubscribe_lists: 'unsubscribe_lists',
   unsubscribes: 'unsubscribes',
   users: 'users',
   api_keys: 'api_keys',
@@ -75,7 +76,6 @@ export const ModelName = {
   mail_logs: 'mail_logs',
   webhooks: 'webhooks',
   mail_sendings: 'mail_sendings',
-  mail_sendings_on_subscriber_lists: 'mail_sendings_on_subscriber_lists',
   mail_url_proxies: 'mail_url_proxies',
   mail_senders: 'mail_senders',
   mail_sending_receivers: 'mail_sending_receivers',
@@ -185,7 +185,7 @@ export const BouncesScalarFieldEnum = {
   bounced_at: 'bounced_at',
   reason: 'reason',
   bounce_type: 'bounce_type',
-  contact_id: 'contact_id',
+  email: 'email',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -225,13 +225,27 @@ export const Subscriber_listsScalarFieldEnum = {
 export type Subscriber_listsScalarFieldEnum = (typeof Subscriber_listsScalarFieldEnum)[keyof typeof Subscriber_listsScalarFieldEnum]
 
 
+export const Unsubscribe_listsScalarFieldEnum = {
+  id: 'id',
+  tenant_id: 'tenant_id',
+  name: 'name',
+  description: 'description',
+  created_at: 'created_at',
+  created_by: 'created_by',
+  updated_at: 'updated_at',
+  updated_by: 'updated_by'
+} as const
+
+export type Unsubscribe_listsScalarFieldEnum = (typeof Unsubscribe_listsScalarFieldEnum)[keyof typeof Unsubscribe_listsScalarFieldEnum]
+
+
 export const UnsubscribesScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
   source: 'source',
   unsubscribed_at: 'unsubscribed_at',
-  subscriber_list_id: 'subscriber_list_id',
-  contact_id: 'contact_id',
+  unsubscribe_list_id: 'unsubscribe_list_id',
+  email: 'email',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -454,7 +468,7 @@ export type Mail_configsScalarFieldEnum = (typeof Mail_configsScalarFieldEnum)[k
 export const Mail_logsScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
-  contact_id: 'contact_id',
+  email: 'email',
   provider_id: 'provider_id',
   provider_mail_id: 'provider_mail_id',
   opens: 'opens',
@@ -498,14 +512,6 @@ export const Mail_sendingsScalarFieldEnum = {
 export type Mail_sendingsScalarFieldEnum = (typeof Mail_sendingsScalarFieldEnum)[keyof typeof Mail_sendingsScalarFieldEnum]
 
 
-export const Mail_sendings_on_subscriber_listsScalarFieldEnum = {
-  mail_sendings_id: 'mail_sendings_id',
-  subscriber_list_id: 'subscriber_list_id'
-} as const
-
-export type Mail_sendings_on_subscriber_listsScalarFieldEnum = (typeof Mail_sendings_on_subscriber_listsScalarFieldEnum)[keyof typeof Mail_sendings_on_subscriber_listsScalarFieldEnum]
-
-
 export const Mail_url_proxiesScalarFieldEnum = {
   id: 'id',
   tenant_id: 'tenant_id',
@@ -523,6 +529,7 @@ export const Mail_sendersScalarFieldEnum = {
   tenant_id: 'tenant_id',
   name: 'name',
   email: 'email',
+  reply_to: 'reply_to',
   created_at: 'created_at',
   created_by: 'created_by',
   updated_at: 'updated_at',
@@ -540,7 +547,9 @@ export const Mail_sending_receiversScalarFieldEnum = {
   name: 'name',
   substitutions: 'substitutions',
   created_at: 'created_at',
-  created_by: 'created_by'
+  created_by: 'created_by',
+  cc: 'cc',
+  bcc: 'bcc'
 } as const
 
 export type Mail_sending_receiversScalarFieldEnum = (typeof Mail_sending_receiversScalarFieldEnum)[keyof typeof Mail_sending_receiversScalarFieldEnum]

@@ -7,9 +7,9 @@ import type {
 import type { FastifyTypeProvider, FastifyTypeProviderDefault } from "fastify/types/type-provider.js";
 import type { FastifyBaseLogger } from "fastify/types/logger.js";
 import type { Router } from "../../../router/index.js";
-import uuidv7 from "../../../helpers/uuidv7.js";
 import { UTC } from "@mailtura/rpcmodel/time/Timezone.js";
-import { GLOBAL_UNSUBSCRIBE_LIST_ID } from "@mailtura/database";
+import { GLOBAL_UNSUBSCRIBE_LIST_ID, type PrismaTransaction } from "@mailtura/database";
+import { uuidv7 } from "@mailtura/rpcmodel/helpers/index.js";
 
 type SnsEnvelope = {
   Type?: "Notification" | "SubscriptionConfirmation" | "UnsubscribeConfirmation" | string;
@@ -77,6 +77,104 @@ const resolveSesBounceReason = (notification: SesNotification): string => {
 
 const resolveSesComplaintReason = (notification: SesNotification): string => {
   return notification.complaint?.complaintFeedbackType ?? notification.notificationType ?? "SES complaint";
+};
+
+const updateBounce = async (
+  tx: PrismaTransaction,
+  tenantId: string,
+  email: string,
+  bounceType: "Hard" | "Soft",
+  bounceReason: string,
+  eventTime: Date
+) => {
+  tx.bounces.upsert({
+    where: {
+      tenant_id_email: {
+        tenant_id: tenantId,
+        email,
+      },
+    },
+    create: {
+      id: uuidv7(),
+      tenant_id: tenantId,
+      email,
+      bounced_at: eventTime,
+      bounce_type: bounceType,
+      reason: bounceReason,
+      created_at: new Date(),
+      created_by: "webhook:ses",
+    },
+    update: {
+      bounced_at: eventTime,
+      bounce_type: bounceType,
+      reason: bounceReason,
+      updated_at: new Date(),
+      updated_by: "webhook:ses",
+    },
+  });
+};
+
+const updateSubscriberStatus = async (
+  tx: PrismaTransaction,
+  tenantId: string,
+  email: string,
+  status: "Bounced" | "Complaint"
+) => {
+  const contact = await tx.contacts.findUnique({
+    where: {
+      tenant_id_email: {
+        tenant_id: tenantId,
+        email,
+      },
+    },
+  });
+
+  if (contact) {
+    await tx.subscribers.updateMany({
+      where: {
+        tenant_id: tenantId,
+        contact_id: contact.id,
+      },
+      data: {
+        status,
+        updated_at: UTC.now().toDate(),
+        updated_by: "webhook:ses",
+      },
+    });
+  }
+};
+
+const updateUnsubscribes = async (
+  tx: PrismaTransaction,
+  tenantId: string,
+  email: string,
+  source: "Bounce" | "Complaint",
+  eventTime: Date
+) => {
+  await tx.unsubscribes.upsert({
+    where: {
+      tenant_id_email_unsubscribe_list_id: {
+        tenant_id: tenantId,
+        email: email,
+        unsubscribe_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
+      },
+    },
+    create: {
+      id: uuidv7(),
+      tenant_id: tenantId,
+      email: email,
+      source: source,
+      unsubscribe_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
+      unsubscribed_at: eventTime,
+      created_at: UTC.now().toDate(),
+      created_by: "webhook:ses",
+    },
+    update: {
+      unsubscribed_at: eventTime,
+      updated_at: UTC.now().toDate(),
+      updated_by: "webhook:ses",
+    },
+  });
 };
 
 export function sesRoutes<
@@ -159,151 +257,28 @@ export function sesRoutes<
         },
       });
 
-      if (!mailLog?.contact_id) {
+      if (!mailLog) {
         return reply.status(200).send();
       }
 
       const tenantId = webhook.tenant_id;
-      const contactId = mailLog.contact_id;
-
       if (eventType === "Bounce") {
         const bouncedAt = parseEventDate(notification.bounce?.timestamp, notification.mail?.timestamp);
         const reason = resolveSesBounceReason(notification);
         const bounceType = mapSesBounceType(notification.bounce?.bounceType);
 
         await prisma.$transaction(async tx => {
-          await tx.bounces.upsert({
-            where: {
-              tenant_id_contact_id: {
-                tenant_id: tenantId,
-                contact_id: contactId,
-              },
-            },
-            create: {
-              id: uuidv7(),
-              tenant_id: tenantId,
-              contact_id: contactId,
-              bounced_at: bouncedAt,
-              reason,
-              bounce_type: bounceType,
-              created_at: UTC.now().toDate(),
-              created_by: "webhook:ses",
-            },
-            update: {
-              bounced_at: bouncedAt,
-              reason,
-              bounce_type: bounceType,
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
-
-          await tx.subscribers.updateMany({
-            where: {
-              tenant_id: tenantId,
-              contact_id: contactId,
-            },
-            data: {
-              status: "Bounced",
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
-
-          await tx.unsubscribes.upsert({
-            where: {
-              tenant_id_contact_id_subscriber_list_id: {
-                tenant_id: tenantId,
-                contact_id: contactId,
-                subscriber_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
-              },
-            },
-            create: {
-              id: uuidv7(),
-              tenant_id: tenantId,
-              contact_id: contactId,
-              source: "Bounce",
-              subscriber_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
-              unsubscribed_at: bouncedAt,
-              created_at: UTC.now().toDate(),
-              created_by: "webhook:ses",
-            },
-            update: {
-              unsubscribed_at: bouncedAt,
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
+          await updateSubscriberStatus(tx, tenantId, mailLog.email, "Bounced");
+          await updateUnsubscribes(tx, tenantId, mailLog.email, "Bounce", bouncedAt);
+          await updateBounce(tx, tenantId, mailLog.email, bounceType, reason, bouncedAt);
         });
-      }
-
-      if (eventType === "Complaint") {
+      } else if (eventType === "Complaint") {
         const complainedAt = parseEventDate(notification.complaint?.timestamp, notification.mail?.timestamp);
         const reason = resolveSesComplaintReason(notification);
 
         await prisma.$transaction(async tx => {
-          await tx.subscribers.updateMany({
-            where: {
-              tenant_id: tenantId,
-              contact_id: contactId,
-            },
-            data: {
-              status: "Complaint",
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
-
-          await tx.unsubscribes.upsert({
-            where: {
-              tenant_id_contact_id_subscriber_list_id: {
-                tenant_id: tenantId,
-                contact_id: contactId,
-                subscriber_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
-              },
-            },
-            create: {
-              id: uuidv7(),
-              tenant_id: tenantId,
-              contact_id: contactId,
-              source: "Other",
-              subscriber_list_id: GLOBAL_UNSUBSCRIBE_LIST_ID,
-              unsubscribed_at: complainedAt,
-              created_at: UTC.now().toDate(),
-              created_by: "webhook:ses",
-            },
-            update: {
-              unsubscribed_at: complainedAt,
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
-
-          await tx.bounces.upsert({
-            where: {
-              tenant_id_contact_id: {
-                tenant_id: tenantId,
-                contact_id: contactId,
-              },
-            },
-            create: {
-              id: uuidv7(),
-              tenant_id: tenantId,
-              contact_id: contactId,
-              bounced_at: complainedAt,
-              reason,
-              bounce_type: "Soft",
-              created_at: UTC.now().toDate(),
-              created_by: "webhook:ses",
-            },
-            update: {
-              bounced_at: complainedAt,
-              reason,
-              bounce_type: "Soft",
-              updated_at: UTC.now().toDate(),
-              updated_by: "webhook:ses",
-            },
-          });
+          await updateSubscriberStatus(tx, tenantId, mailLog.email, "Complaint");
+          await updateUnsubscribes(tx, tenantId, mailLog.email, "Complaint", complainedAt);
         });
       }
 
